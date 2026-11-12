@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x.ai — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   xAI — Design Showcase
+   Near-black canvas, white outline pills, weight-400 display,
+   uppercase tracked mono eyebrows. Dark-canvas only.
+   ============================================================ */
+:root {
+  /* colors */
+  --primary: #ffffff;
+  --on-primary: #0a0a0a;
+  --ink: #ffffff;
+  --ink-hover: #fafaf7;
+  --body: #dadbdf;
+  --body-mid: #7d8187;
+  --mute: #7d8187;
+  --hairline: #212327;
+  --canvas: #0a0a0a;
+  --canvas-soft: #1a1c20;
+  --canvas-card: #191919;
+  --canvas-mid: #363a3f;
+  --accent-sunset: #ff7a17;
+  --accent-sunset-soft: #ffc285;
+  --accent-dusk: #7c3aed;
+  --accent-twilight: #c4b5fd;
+  --accent-breeze: #a0c3ec;
+  --accent-midnight: #0d1726;
+
+  /* radii */
+  --rounded-none: 0px;
+  --rounded-sm: 8px;
+  --rounded-pill: 9999px;
+
+  /* spacing */
+  --sp-xxs: 2px;
+  --sp-xs: 4px;
+  --sp-sm: 8px;
+  --sp-md: 12px;
+  --sp-lg: 16px;
+  --sp-xl: 24px;
+  --sp-2xl: 32px;
+  --sp-3xl: 48px;
+  --sp-4xl: 64px;
+
+  /* type families */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { background: var(--canvas); }
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  background: var(--canvas);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+/* ---------- type scale ---------- */
+.t-display-xl { font-size: 96px; font-weight: 400; line-height: 96px; letter-spacing: -2.4px; }
+.t-display-lg { font-size: 72px; font-weight: 400; line-height: 72px; letter-spacing: -1.8px; }
+.t-display-md { font-size: 48px; font-weight: 400; line-height: 48px; letter-spacing: -1.2px; }
+.t-display-sm { font-size: 32px; font-weight: 400; line-height: 36px; letter-spacing: -0.6px; }
+.t-display-xs { font-size: 20px; font-weight: 400; line-height: 28px; }
+.t-body-lg { font-size: 18px; font-weight: 400; line-height: 28px; }
+.t-body-md { font-size: 16px; font-weight: 400; line-height: 24px; }
+.t-body-sm { font-size: 14px; font-weight: 400; line-height: 20px; }
+.t-caption-mono { font-family: var(--font-mono); font-size: 14px; font-weight: 400; line-height: 20px; letter-spacing: 1.4px; text-transform: uppercase; }
+.t-caption-mono-sm { font-family: var(--font-mono); font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 1.2px; text-transform: uppercase; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-xl); }
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+}
+.sg-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-lg);
+}
+.sg-banner-left { display: flex; align-items: baseline; gap: var(--sp-lg); }
+.sg-banner-folder {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.sg-banner-name {
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+.sg-banner-desc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mute);
+  text-align: right;
+}
+@media (max-width: 900px) { .sg-banner-desc { display: none; } }
+
+/* ============================================================
+   SECTION SCAFFOLD
+   ============================================================ */
+.sg-section-head { padding: var(--sp-4xl) 0 var(--sp-2xl); }
+.sg-section-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: var(--sp-md);
+}
+.sg-section-title { font-size: 48px; font-weight: 400; line-height: 48px; letter-spacing: -1.2px; }
+.sg-block { padding: var(--sp-2xl) 0; border-top: 1px solid var(--hairline); }
+.sg-block-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: var(--sp-xl);
+}
+.sg-block-label::before {
+  content: "// ";
+  color: var(--canvas-mid);
+}
+
+/* ---------- 1. color tokens ---------- */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: var(--sp-lg);
+}
+.swatch {
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  overflow: hidden;
+  background: var(--canvas-card);
+}
+.swatch-chip { height: 72px; border-bottom: 1px solid var(--hairline); }
+.swatch-meta { padding: var(--sp-md) var(--sp-lg); }
+.swatch-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.swatch-hex { font-size: 13px; color: var(--mute); margin-top: var(--sp-xxs); }
+
+/* ---------- 2. typography specimen ---------- */
+.spec-row {
+  padding: var(--sp-lg) 0;
+  border-bottom: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--sp-xl);
+  align-items: baseline;
+}
+.spec-token { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--mute); }
+.spec-sample { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 900px) {
+  .spec-row { grid-template-columns: 1fr; gap: var(--sp-sm); }
+  .spec-sample { white-space: normal; }
+  .t-display-xl { font-size: 56px; line-height: 56px; letter-spacing: -1.4px; }
+  .t-display-lg { font-size: 44px; line-height: 44px; letter-spacing: -1px; }
+}
+
+/* ---------- 3. buttons ---------- */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-lg); }
+.btn {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  border-radius: var(--rounded-pill);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.btn-md { padding: var(--sp-sm) var(--sp-lg); }
+.btn-lg { padding: var(--sp-md) var(--sp-xl); }
+.btn-sm { padding: var(--sp-xs) var(--sp-md); }
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.btn-outline:hover, .btn-look-hover {
+  background: var(--canvas-soft);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+.btn-primary:hover { background: var(--ink-hover); }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink);
+  padding: var(--sp-sm) var(--sp-md);
+}
+.btn-ghost:hover { background: var(--canvas-soft); }
+.btn-note { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--mute); }
+.btn-stack { display: flex; flex-direction: column; gap: var(--sp-sm); align-items: flex-start; }
+.btn-stack-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--mute); margin-bottom: var(--sp-xxs); }
+
+/* ---------- 4. inputs ---------- */
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 340px));
+  gap: var(--sp-xl);
+}
+@media (max-width: 900px) { .input-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: var(--sp-sm); }
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.text-input {
+  background: var(--canvas-soft);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  padding: var(--sp-md) var(--sp-lg);
+  outline: none;
+  transition: border-color 160ms ease;
+  width: 100%;
+}
+.text-input::placeholder { color: var(--body-mid); }
+.text-input:focus, .text-input-look-focus { border-color: rgba(255, 255, 255, 0.5); }
+.text-input:disabled, .text-input-look-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.select-wrap { position: relative; width: 100%; }
+.select {
+  appearance: none;
+  background: var(--canvas-soft);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  padding: var(--sp-md) var(--sp-3xl) var(--sp-md) var(--sp-lg);
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+}
+.select-chevron {
+  position: absolute;
+  right: var(--sp-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--body-mid);
+}
+.switch-row { display: flex; align-items: center; gap: var(--sp-lg); }
+.switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: var(--rounded-pill);
+  background: var(--canvas-mid);
+  border: 1px solid var(--hairline);
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform 160ms ease;
+}
+.switch-on { background: var(--primary); border-color: var(--primary); }
+.switch-on::after { transform: translateX(18px); background: var(--on-primary); }
+.switch-off-label { font-size: 14px; color: var(--body-mid); }
+
+/* ---------- 5. cards ---------- */
+.card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-xl); }
+@media (max-width: 900px) { .card-grid { grid-template-columns: 1fr; } }
+.card {
+  background: var(--canvas-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  padding: var(--sp-xl);
+}
+.card-title { font-size: 20px; line-height: 28px; letter-spacing: -0.3px; margin-bottom: var(--sp-md); }
+.card-body { font-size: 16px; line-height: 24px; color: var(--body); margin-bottom: var(--sp-xl); }
+.card .btn-sm { padding: var(--sp-xs) var(--sp-md); }
+.card-stat-value { font-size: 48px; line-height: 48px; letter-spacing: -1.2px; margin: var(--sp-lg) 0 var(--sp-sm); }
+.card-stat-delta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent-sunset-soft); }
+.card-eyebrow { margin-bottom: var(--sp-sm); }
+
+/* ---------- 6. badges ---------- */
+.badge-row { display: flex; flex-wrap: wrap; gap: var(--sp-md); }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: var(--sp-xs) var(--sp-md);
+  border-radius: var(--rounded-pill);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--ink);
+}
+.badge-solid { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.badge-sunset { border-color: rgba(255, 122, 23, 0.5); color: var(--accent-sunset-soft); }
+.badge-twilight { border-color: rgba(196, 181, 253, 0.4); color: var(--accent-twilight); }
+.badge-mute { border-color: var(--hairline); color: var(--body-mid); }
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ---------- 7. navigation ---------- */
+.nav-demo {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  padding: var(--sp-md) var(--sp-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-xl);
+}
+.nav-brand { display: flex; align-items: center; gap: var(--sp-md); font-size: 16px; letter-spacing: -0.3px; }
+.nav-links { display: flex; align-items: center; gap: var(--sp-2xl); }
+.nav-link {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink);
+  text-decoration: none;
+  padding: var(--sp-xs) 0;
+  transition: color 160ms ease;
+}
+.nav-link:hover { color: var(--body-mid); }
+.nav-actions { display: flex; align-items: center; gap: var(--sp-md); }
+@media (max-width: 900px) { .nav-links { display: none; } }
+
+/* ---------- 8. table ---------- */
+.data-table { width: 100%; border-collapse: collapse; border: 1px solid var(--hairline); border-radius: var(--rounded-sm); overflow: hidden; }
+.data-table th {
+  background: var(--canvas-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-align: left;
+  padding: var(--sp-md) var(--sp-lg);
+  border-bottom: 1px solid var(--hairline);
+}
+.data-table td {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--body);
+  padding: var(--sp-md) var(--sp-lg);
+  border-bottom: 1px solid var(--hairline);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .mono-cell { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1.2px; }
+.status-live { color: var(--accent-sunset-soft); }
+.status-scale { color: var(--accent-breeze); }
+
+/* ============================================================
+   FINISHED PRODUCT
+   ============================================================ */
+.lp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+}
+.lp-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lp-logo { display: flex; align-items: center; gap: var(--sp-sm); }
+.lp-wordmark { font-size: 18px; letter-spacing: -0.4px; }
+
+/* hero */
+.lp-hero { padding: var(--sp-4xl) 0 var(--sp-3xl); }
+.lp-hero-eyebrow { margin-bottom: var(--sp-xl); color: var(--body-mid); }
+.lp-hero h1 {
+  font-size: 96px;
+  font-weight: 400;
+  line-height: 96px;
+  letter-spacing: -2.4px;
+  max-width: 1000px;
+  margin-bottom: var(--sp-xl);
+}
+.lp-hero-sub { font-size: 18px; line-height: 28px; color: var(--body); max-width: 560px; margin-bottom: var(--sp-2xl); }
+.lp-hero-actions { display: flex; flex-wrap: wrap; gap: var(--sp-md); margin-bottom: var(--sp-3xl); }
+.lp-hero-visual {
+  border: 1px solid var(--hairline);
+  border-radius: var(--rounded-sm);
+  background: var(--accent-midnight);
+  overflow: hidden;
+  position: relative;
+}
+.lp-hero-visual svg { display: block; width: 100%; height: auto; }
+@media (max-width: 900px) {
+  .lp-hero h1 { font-size: 48px; line-height: 48px; letter-spacing: -1.2px; }
+}
+
+/* social proof */
+.lp-proof { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: var(--sp-xl) 0; }
+.lp-proof-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-xl); }
+.lp-proof-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--mute); }
+.lp-proof-logos { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2xl); color: var(--body-mid); font-family: var(--font-mono); font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; }
+
+/* features */
+.lp-features { padding: var(--sp-4xl) 0; }
+.lp-section-head { margin-bottom: var(--sp-2xl); }
+.lp-eyebrow { margin-bottom: var(--sp-md); color: var(--body-mid); }
+.lp-section-title { font-size: 48px; font-weight: 400; line-height: 48px; letter-spacing: -1.2px; max-width: 760px; }
+.lp-section-sub { font-size: 18px; line-height: 28px; color: var(--body); max-width: 560px; margin-top: var(--sp-lg); }
+.lp-feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-xl); margin-top: var(--sp-3xl); }
+@media (max-width: 900px) { .lp-feature-grid { grid-template-columns: 1fr; } }
+.lp-feature-card { display: flex; flex-direction: column; }
+.lp-feature-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--rounded-pill);
+  border: 1px solid var(--hairline);
+  background: var(--canvas-soft);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--sp-xl);
+}
+.lp-feature-card h3 { font-size: 20px; font-weight: 400; line-height: 28px; margin-bottom: var(--sp-sm); }
+.lp-feature-card p { font-size: 16px; line-height: 24px; color: var(--body); margin-bottom: var(--sp-xl); flex-grow: 1; }
+.lp-feature-card .btn { align-self: flex-start; }
+
+/* stats */
+.lp-stats { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: var(--sp-3xl) 0; }
+.lp-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-xl); }
+@media (max-width: 900px) { .lp-stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.lp-stat-value { font-size: 48px; font-weight: 400; line-height: 48px; letter-spacing: -1.2px; margin-bottom: var(--sp-sm); }
+.lp-stat-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--mute); }
+
+/* quote */
+.lp-quote { padding: var(--sp-4xl) 0; }
+.lp-quote blockquote {
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: -0.6px;
+  max-width: 880px;
+  margin-bottom: var(--sp-xl);
+}
+.lp-quote-attrib { display: flex; align-items: center; gap: var(--sp-lg); }
+.lp-quote-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--hairline);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 1.2px;
+  color: var(--ink); background: var(--canvas-soft);
+}
+.lp-quote-name { font-size: 14px; color: var(--ink); }
+.lp-quote-role { font-size: 14px; color: var(--mute); }
+
+/* CTA band */
+.lp-cta {
+  border-top: 1px solid var(--hairline);
+  padding: var(--sp-4xl) 0;
+  text-align: center;
+}
+.lp-cta h2 {
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 72px;
+  letter-spacing: -1.8px;
+  margin-bottom: var(--sp-xl);
+}
+@media (max-width: 900px) { .lp-cta h2 { font-size: 40px; line-height: 40px; letter-spacing: -1px; } }
+.lp-cta p { font-size: 18px; line-height: 28px; color: var(--body); max-width: 520px; margin: 0 auto var(--sp-2xl); }
+.lp-cta-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--sp-md); }
+
+/* footer */
+.lp-footer { border-top: 1px solid var(--hairline); padding: var(--sp-3xl) 0 var(--sp-2xl); }
+.lp-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--sp-3xl);
+  margin-bottom: var(--sp-3xl);
+}
+@media (max-width: 900px) { .lp-footer-grid { grid-template-columns: 1fr 1fr; } }
+.lp-footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: var(--sp-lg);
+}
+.lp-footer-col a {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--body);
+  text-decoration: none;
+  padding: var(--sp-xs) 0;
+  transition: color 160ms ease;
+}
+.lp-footer-col a:hover { color: var(--ink); }
+.lp-footer-brand p { font-size: 14px; line-height: 20px; color: var(--mute); max-width: 300px; margin-top: var(--sp-lg); }
+.lp-footer-bottom {
+  border-top: 1px solid var(--hairline);
+  padding-top: var(--sp-xl);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-lg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== BANNER ==================== -->
+<header class="sg-banner">
+  <div class="sg-banner-inner">
+    <div class="sg-banner-left">
+      <span class="sg-banner-folder">x.ai</span>
+      <span class="sg-banner-name">xAI</span>
+    </div>
+    <div class="sg-banner-desc">Engineered-cosmic — near-black canvas, white outline pills, weight-400 display</div>
+  </div>
+</header>
+
+<main>
+<!-- ==================== COMPONENTS ==================== -->
+<section id="components">
+  <div class="container">
+    <div class="sg-section-head">
+      <div class="sg-section-label">Section 01</div>
+      <h2 class="sg-section-title">Components</h2>
+    </div>
+
+    <!-- 1. Color tokens -->
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:#0a0a0a"></div><div class="swatch-meta"><div class="swatch-name">Canvas</div><div class="swatch-hex">#0a0a0a</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#ffffff; border-bottom:1px solid #212327"></div><div class="swatch-meta"><div class="swatch-name">Primary</div><div class="swatch-hex">#ffffff</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#1a1c20"></div><div class="swatch-meta"><div class="swatch-name">Canvas Soft</div><div class="swatch-hex">#1a1c20</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#191919"></div><div class="swatch-meta"><div class="swatch-name">Canvas Card</div><div class="swatch-hex">#191919</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#363a3f"></div><div class="swatch-meta"><div class="swatch-name">Canvas Mid</div><div class="swatch-hex">#363a3f</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#212327"></div><div class="swatch-meta"><div class="swatch-name">Hairline</div><div class="swatch-hex">#212327</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#dadbdf"></div><div class="swatch-meta"><div class="swatch-name">Body</div><div class="swatch-hex">#dadbdf</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#7d8187"></div><div class="swatch-meta"><div class="swatch-name">Mute</div><div class="swatch-hex">#7d8187</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#ff7a17"></div><div class="swatch-meta"><div class="swatch-name">Sunset</div><div class="swatch-hex">#ff7a17</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#7c3aed"></div><div class="swatch-meta"><div class="swatch-name">Dusk</div><div class="swatch-hex">#7c3aed</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#c4b5fd"></div><div class="swatch-meta"><div class="swatch-name">Twilight</div><div class="swatch-hex">#c4b5fd</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#a0c3ec"></div><div class="swatch-meta"><div class="swatch-name">Breeze</div><div class="swatch-hex">#a0c3ec</div></div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen</div>
+      <div class="spec-row"><span class="spec-token">display-xl / 96</span><span class="spec-sample t-display-xl">Understand the universe</span></div>
+      <div class="spec-row"><span class="spec-token">display-lg / 72</span><span class="spec-sample t-display-lg">Compute at frontier scale</span></div>
+      <div class="spec-row"><span class="spec-token">display-md / 48</span><span class="spec-sample t-display-md">Reasoning built from scratch</span></div>
+      <div class="spec-row"><span class="spec-token">display-sm / 32</span><span class="spec-sample t-display-sm">Colossus clusters, trained end to end</span></div>
+      <div class="spec-row"><span class="spec-token">display-xs / 20</span><span class="spec-sample t-display-xs">The pill is the entire shape system</span></div>
+      <div class="spec-row"><span class="spec-token">body-lg / 18</span><span class="spec-sample t-body-lg">A research lab announcing its work rather than a SaaS marketing site.</span></div>
+      <div class="spec-row"><span class="spec-token">body-md / 16</span><span class="spec-sample t-body-md">Weight 400 for everything. The brand never bolds.</span></div>
+      <div class="spec-row"><span class="spec-token">body-sm / 14</span><span class="spec-sample t-body-sm">Negative tracking plus size hierarchy do the emphasis work.</span></div>
+      <div class="spec-row"><span class="spec-token">caption-mono / 14</span><span class="spec-sample t-caption-mono">Eyebrow reads as a code comment</span></div>
+      <div class="spec-row" style="border-bottom:none"><span class="spec-token">caption-mono-sm / 12</span><span class="spec-sample t-caption-mono-sm">Metric counters and fine labels</span></div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons — the pill is the brand</div>
+      <div class="btn-row" style="margin-bottom: var(--sp-xl)">
+        <button class="btn btn-md btn-primary">Sign up</button>
+        <button class="btn btn-md btn-outline">Try Grok</button>
+        <button class="btn btn-md btn-outline btn-look-hover">Read announcement</button>
+        <button class="btn btn-md btn-ghost">Read the research</button>
+        <span class="btn-note">md / 40px</span>
+      </div>
+      <div class="btn-row" style="margin-bottom: var(--sp-xl)">
+        <button class="btn btn-lg btn-primary">Sign up now</button>
+        <button class="btn btn-lg btn-outline">Build with the API</button>
+        <span class="btn-note">lg / 44px</span>
+      </div>
+      <div class="btn-row">
+        <div class="btn-stack"><span class="btn-stack-label">sm — card CTA</span><button class="btn btn-sm btn-outline">Read</button></div>
+        <div class="btn-stack"><span class="btn-stack-label">sm — hover state</span><button class="btn btn-sm btn-outline btn-look-hover">Read</button></div>
+        <div class="btn-stack"><span class="btn-stack-label">sm — white filled</span><button class="btn btn-sm btn-primary">Sign up</button></div>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs</div>
+      <div class="input-grid">
+        <div class="field">
+          <span class="field-label">API key name</span>
+          <input class="text-input" type="text" placeholder="grok-prod-key-01">
+        </div>
+        <div class="field">
+          <span class="field-label">Focus state</span>
+          <input class="text-input text-input-look-focus" type="text" value="xai-9f2e7c4a">
+        </div>
+        <div class="field">
+          <span class="field-label">Region</span>
+          <div class="select-wrap">
+            <select class="select">
+              <option>us-central-1</option>
+              <option>us-east-1</option>
+              <option>eu-west-1</option>
+            </select>
+            <svg class="select-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.2"/></svg>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label">Disabled</span>
+          <input class="text-input text-input-look-disabled" type="text" value="colossus-cluster" disabled>
+        </div>
+        <div class="field">
+          <span class="field-label">Streaming responses</span>
+          <div class="switch-row">
+            <div class="switch switch-on" role="switch" aria-checked="true"></div>
+            <span class="switch-off-label">Enabled</span>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label">Rate-limit guardrails</span>
+          <div class="switch-row">
+            <div class="switch" role="switch" aria-checked="false"></div>
+            <span class="switch-off-label">Off</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">Cards — hairline borders, no shadows</div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="t-caption-mono-sm card-eyebrow" style="color: var(--body-mid)">Grok 4</div>
+          <div class="card-title">Frontier reasoning, in real time</div>
+          <p class="card-body">Grok reads live context from the platform and reasons over it with the latest model weights — no fine-tune required, no data leaving your tenancy.</p>
+          <button class="btn btn-sm btn-outline">Try Grok</button>
+        </div>
+        <div class="card">
+          <div class="t-caption-mono-sm card-eyebrow" style="color: var(--body-mid)">Colossus throughput</div>
+          <div class="card-stat-value">2.8M</div>
+          <div class="card-stat-delta">+34% tokens/sec quarter over quarter</div>
+          <p class="card-body" style="margin-top: var(--sp-lg); margin-bottom: 0">Sustained inference throughput across the training cluster, measured at peak weekly load.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">Badges &amp; pills</div>
+      <div class="badge-row">
+        <span class="badge badge-solid">New</span>
+        <span class="badge badge-sunset"><span class="badge-dot"></span>Grok 4 Live</span>
+        <span class="badge badge-twilight">Voice Mode</span>
+        <span class="badge badge-mute">API v1</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation</div>
+      <nav class="nav-demo">
+        <div class="nav-brand">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="#ffffff" stroke-width="1"/><path d="M6 14L14 6" stroke="#ffffff" stroke-width="1"/></svg>
+          <span>xAI</span>
+        </div>
+        <div class="nav-links">
+          <a class="nav-link" href="#">Grok</a>
+          <a class="nav-link" href="#">API</a>
+          <a class="nav-link" href="#">Research</a>
+          <a class="nav-link" href="#">Company</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-sm btn-outline">Sign in</button>
+          <button class="btn btn-sm btn-primary">Try Grok</button>
+        </div>
+      </nav>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="sg-block">
+      <div class="sg-block-label">Data table</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Model</th><th>Endpoint</th><th>Context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:var(--ink)">Grok 4</td><td class="mono-cell">grok-4-latest</td><td>256K</td><td class="mono-cell status-live">Live</td></tr>
+          <tr><td style="color:var(--ink)">Grok 4 Fast</td><td class="mono-cell">grok-4-fast</td><td>128K</td><td class="mono-cell status-live">Live</td></tr>
+          <tr><td style="color:var(--ink)">Grok 3</td><td class="mono-cell">grok-3</td><td>131K</td><td class="mono-cell status-scale">Legacy</td></tr>
+          <tr><td style="color:var(--ink)">Grok 5 Preview</td><td class="mono-cell">grok-5-preview</td><td>512K</td><td class="mono-cell" style="color:var(--body-mid)">Waitlist</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FINISHED PRODUCT ==================== -->
+<section id="product">
+  <nav class="lp-nav">
+    <div class="lp-nav-inner">
+      <div class="lp-logo">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="#ffffff" stroke-width="1"/><path d="M6 14L14 6" stroke="#ffffff" stroke-width="1"/></svg>
+        <span class="lp-wordmark">xAI</span>
+      </div>
+      <div class="nav-links">
+        <a class="nav-link" href="#">Grok</a>
+        <a class="nav-link" href="#">API</a>
+        <a class="nav-link" href="#">Research</a>
+        <a class="nav-link" href="#">Company</a>
+        <a class="nav-link" href="#">Careers</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-sm btn-outline">Sign in</button>
+        <button class="btn btn-sm btn-primary">Try Grok</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- hero -->
+  <div class="container lp-hero">
+    <div class="t-caption-mono lp-hero-eyebrow">Announcing Grok 4</div>
+    <h1>Understand the universe</h1>
+    <p class="lp-hero-sub">We build AI to accelerate human scientific discovery. Grok 4 is our most capable model yet — trained on Colossus, reasoning in real time.</p>
+    <div class="lp-hero-actions">
+      <button class="btn btn-lg btn-primary">Try Grok now</button>
+      <button class="btn btn-lg btn-outline">Read the announcement</button>
+    </div>
+    <div class="lp-hero-visual">
+      <svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract orbital visualization">
+        <defs>
+          <radialGradient id="xaiGlow" cx="50%" cy="42%" r="60%">
+            <stop offset="0%" stop-color="#0d1726"/>
+            <stop offset="55%" stop-color="#0d1726"/>
+            <stop offset="100%" stop-color="#0a0a0a"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="420" fill="url(#xaiGlow)"/>
+        <!-- orbit rings -->
+        <ellipse cx="600" cy="210" rx="360" ry="140" fill="none" stroke="#212327" stroke-width="1"/>
+        <ellipse cx="600" cy="210" rx="250" ry="98" fill="none" stroke="#363a3f" stroke-width="1" transform="rotate(-14 600 210)"/>
+        <ellipse cx="600" cy="210" rx="150" ry="58" fill="none" stroke="#212327" stroke-width="1" transform="rotate(18 600 210)"/>
+        <!-- core -->
+        <circle cx="600" cy="210" r="34" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+        <circle cx="600" cy="210" r="10" fill="#ff7a17"/>
+        <!-- nodes -->
+        <circle cx="960" cy="210" r="7" fill="#c4b5fd"/>
+        <circle cx="378" cy="150" r="6" fill="#a0c3ec"/>
+        <circle cx="700" cy="120" r="5" fill="#7c3aed"/>
+        <circle cx="470" cy="292" r="6" fill="#ffc285"/>
+        <!-- data lines -->
+        <path d="M634 210 L960 210" stroke="#363a3f" stroke-width="1" stroke-dasharray="2 5"/>
+        <path d="M580 190 L378 150" stroke="#212327" stroke-width="1" stroke-dasharray="2 5"/>
+        <path d="M618 240 L470 292" stroke="#212327" stroke-width="1" stroke-dasharray="2 5"/>
+        <!-- mono tick labels -->
+        <text x="60" y="48" fill="#7d8187" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="1.4">GROK-4 // LIVE CONTEXT 256K</text>
+        <text x="60" y="392" fill="#363a3f" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="1.4">COLOSSUS-1 &middot; MEMPHIS, TN</text>
+        <text x="1080" y="392" fill="#363a3f" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="1.4">FIG 01</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- social proof -->
+  <div class="lp-proof">
+    <div class="container lp-proof-inner">
+      <span class="lp-proof-label">Trusted in production by</span>
+      <div class="lp-proof-logos">
+        <span>NVIDIA</span><span>Anduril</span><span>CMU</span><span>Black Forest</span><span>Hyperloom</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- features -->
+  <div class="container lp-features">
+    <div class="lp-section-head">
+      <div class="t-caption-mono lp-eyebrow">The Platform</div>
+      <h2 class="lp-section-title">One lab. Three ways in.</h2>
+      <p class="lp-section-sub">From consumer reasoning to raw model access — everything runs on the same Colossus infrastructure.</p>
+    </div>
+    <div class="lp-feature-grid">
+      <div class="card lp-feature-card">
+        <div class="lp-feature-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#ffffff" stroke-width="1"/><circle cx="8" cy="8" r="2" fill="#ff7a17"/></svg>
+        </div>
+        <h3>Grok</h3>
+        <p>A reasoning assistant with real-time knowledge of the world. Ask follow-ups, share context, get answers grounded in what is happening right now.</p>
+        <button class="btn btn-sm btn-outline">Try Grok</button>
+      </div>
+      <div class="card lp-feature-card">
+        <div class="lp-feature-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12V7m4 5V4m4 8V9" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/></svg>
+        </div>
+        <h3>API</h3>
+        <p>Grok 4 with function calling, structured outputs and 256K context — served from the same weights that power grok.com, with usage-based pricing.</p>
+        <button class="btn btn-sm btn-outline">Get API access</button>
+      </div>
+      <div class="card lp-feature-card">
+        <div class="lp-feature-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 10c1.5-4 3.5-6 5-6s3.5 2 5 6" stroke="#ffffff" stroke-width="1"/><path d="M3 10h10" stroke="#363a3f" stroke-width="1"/></svg>
+        </div>
+        <h3>Research</h3>
+        <p>Published work on scaling reinforcement learning, interpretability and long-horizon agents — the papers behind the product, released as we go.</p>
+        <button class="btn btn-sm btn-outline">Read the research</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- stats -->
+  <div class="lp-stats">
+    <div class="container lp-stats-grid">
+      <div><div class="lp-stat-value">256K</div><div class="lp-stat-label">Context window</div></div>
+      <div><div class="lp-stat-value">2.8M</div><div class="lp-stat-label">Tokens / second</div></div>
+      <div><div class="lp-stat-value">100K</div><div class="lp-stat-label">GPUs on Colossus</div></div>
+      <div><div class="lp-stat-value">99.95%</div><div class="lp-stat-label">API uptime, trailing 90d</div></div>
+    </div>
+  </div>
+
+  <!-- quote -->
+  <div class="container lp-quote">
+    <div class="t-caption-mono lp-eyebrow" style="margin-bottom: var(--sp-xl)">From the launch notes</div>
+    <blockquote>Grok 4 spent its training run learning to think before it speaks. On graduate-level reasoning benchmarks it now outperforms every model we have measured it against.</blockquote>
+    <div class="lp-quote-attrib">
+      <div class="lp-quote-avatar">XM</div>
+      <div>
+        <div class="lp-quote-name">xAI Model Team</div>
+        <div class="lp-quote-role">Grok 4 launch, July 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="lp-cta">
+    <div class="container">
+      <div class="t-caption-mono" style="color: var(--body-mid); margin-bottom: var(--sp-lg)">Get started</div>
+      <h2>Build with Grok today</h2>
+      <p>Create an API key in minutes, or take Grok for a spin — no card required on the free tier.</p>
+      <div class="lp-cta-actions">
+        <button class="btn btn-lg btn-primary">Sign up now</button>
+        <button class="btn btn-lg btn-outline">Read the docs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="lp-footer">
+    <div class="container">
+      <div class="lp-footer-grid">
+        <div class="lp-footer-brand">
+          <div class="lp-logo">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="#ffffff" stroke-width="1"/><path d="M6 14L14 6" stroke="#ffffff" stroke-width="1"/></svg>
+            <span class="lp-wordmark">xAI</span>
+          </div>
+          <p>Understanding the true nature of the universe.</p>
+        </div>
+        <div class="lp-footer-col">
+          <h4>Products</h4>
+          <a href="#">Grok</a>
+          <a href="#">Grok API</a>
+          <a href="#">Voice Mode</a>
+          <a href="#">Enterprise</a>
+        </div>
+        <div class="lp-footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Careers</a>
+          <a href="#">News</a>
+          <a href="#">Legal</a>
+        </div>
+        <div class="lp-footer-col">
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">Research</a>
+          <a href="#">Status</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="lp-footer-bottom">
+        <span>&copy; 2026 xAI Corp</span>
+        <span>Made on Colossus</span>
+      </div>
+    </div>
+  </footer>
+</section>
+</main>
+
+</body>
+</html>

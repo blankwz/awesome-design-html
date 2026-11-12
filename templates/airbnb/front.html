@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airbnb — Homes &amp; Experiences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ff385c; --primary-active:#e00b41; --primary-disabled:#ffd1da;
+  --luxe:#460479; --plus:#92174d;
+  --ink:#222222; --body:#3f3f3f; --muted:#6a6a6a; --muted-soft:#929292;
+  --hairline:#dddddd; --hairline-soft:#ebebeb; --border-strong:#c1c1c1;
+  --canvas:#ffffff; --surface-soft:#f7f7f7; --surface-strong:#f2f2f2;
+  --on-primary:#ffffff; --error:#c13515; --legal-link:#428bff;
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-xl:32px; --r-full:9999px;
+  --sp-sm:8px; --sp-md:12px; --sp-base:16px; --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px; --sp-section:64px;
+  --font:'Inter','Circular',-apple-system,system-ui,Roboto,'Helvetica Neue',sans-serif;
+  --shadow-float:rgba(0,0,0,.02) 0 0 0 1px, rgba(0,0,0,.04) 0 2px 6px 0, rgba(0,0,0,.1) 0 4px 8px 0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);font-size:14px;line-height:1.43;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer;border:none;background:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+
+/* ===== TOP NAV ===== */
+.topnav{height:80px;border-bottom:1px solid var(--hairline);position:sticky;top:0;z-index:50;background:var(--canvas)}
+.topnav .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:6px}
+.logo svg{width:32px;height:32px;color:var(--primary)}
+.logo .word{font-size:19px;font-weight:700;letter-spacing:-.4px}
+.tabs{display:flex;gap:32px;height:80px;align-items:stretch}
+.ptab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--muted);font-size:16px;font-weight:600;position:relative;min-width:92px}
+.ptab svg{width:26px;height:26px}
+.ptab .new{position:absolute;top:12px;right:6px;background:#fff;border:1px solid var(--ink);font-size:8px;font-weight:700;letter-spacing:.32px;text-transform:uppercase;padding:1px 5px;border-radius:9999px}
+.ptab:hover{color:var(--ink)}
+.ptab.active{color:var(--ink)}
+.ptab.active::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:4px}
+.nav-link{font-size:14px;font-weight:500;padding:12px 16px;border-radius:9999px}
+.nav-link:hover{background:var(--surface-soft)}
+.icon-rel{position:relative}
+.icon-rel .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:9999px;background:var(--primary);border:2px solid #fff}
+.icon-circle{width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.icon-circle:hover{background:var(--surface-soft)}
+.account{display:flex;align-items:center;gap:12px;border:1px solid var(--hairline);border-radius:9999px;padding:5px 5px 5px 14px;box-shadow:var(--shadow-float)}
+.avatar{width:30px;height:30px;border-radius:9999px;background:linear-gradient(135deg,#7d7777,#4f4b4b);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+
+/* ===== SEARCH PILL ===== */
+.searchband{padding:24px 0 8px}
+.searchpill{margin:0 auto;max-width:860px;height:64px;border:1px solid var(--hairline);border-radius:9999px;box-shadow:var(--shadow-float);display:flex;align-items:center;background:#fff}
+.seg{flex:1;padding:10px 24px;border-radius:9999px;text-align:left}
+.seg:hover{background:var(--surface-soft)}
+.seg label{display:block;font-size:12px;font-weight:700}
+.seg input{border:none;outline:none;width:100%;font-family:var(--font);font-size:14px;background:transparent;margin-top:2px}
+.seg input::placeholder{color:var(--muted)}
+.seg + .seg{border-left:1px solid var(--hairline)}
+.orb{width:48px;height:48px;border-radius:9999px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;margin-right:8px;flex:none}
+.orb:hover{background:var(--primary-active)}
+.orb svg{width:18px;height:18px}
+
+/* ===== CATEGORY STRIP ===== */
+.catstrip{display:flex;gap:4px;overflow-x:auto;padding:16px 0 8px;border-bottom:1px solid var(--hairline-soft)}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 16px;color:var(--muted);font-size:14px;font-weight:500;min-width:88px;border-bottom:2px solid transparent;flex:none}
+.cat svg{width:24px;height:24px}
+.cat:hover{color:var(--ink);border-bottom-color:var(--hairline)}
+.cat.active{color:var(--ink);border-bottom-color:var(--ink)}
+.cat.active svg{color:var(--primary)}
+
+/* ===== SECTION HEADS ===== */
+.section{padding:32px 0}
+.sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.h1{font-size:28px;font-weight:700;line-height:1.43}
+.h2{font-size:21px;font-weight:700}
+.sub{font-size:14px;color:var(--muted);margin-top:4px}
+.show-all{font-size:14px;font-weight:600;border:1px solid var(--ink);border-radius:8px;padding:10px 20px;background:#fff;flex:none}
+.show-all:hover{background:var(--surface-soft)}
+
+/* ===== PROPERTY GRID ===== */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px 16px;margin-top:24px}
+.pcard .plate{position:relative;aspect-ratio:20/19;border-radius:14px;overflow:hidden}
+.art{position:absolute;inset:0}
+.g1{background:linear-gradient(150deg,#f6d5c3,#e8a08a 45%,#c96a5c)}
+.g2{background:linear-gradient(160deg,#cfe3f5,#8db6dd 55%,#5c86b8)}
+.g3{background:linear-gradient(150deg,#dfe8cf,#a9c188 55%,#75945c)}
+.g4{background:linear-gradient(155deg,#efe0ee,#c99ec6 55%,#96628f)}
+.g5{background:linear-gradient(150deg,#f7e3b8,#e5b96a 55%,#b98336)}
+.g6{background:linear-gradient(160deg,#d4dde6,#9aa9b8 55%,#61707f)}
+.g7{background:linear-gradient(150deg,#e3d6c4,#bfa184 55%,#8a6d4e)}
+.g8{background:linear-gradient(155deg,#f2d9d9,#d99c9c 55%,#a85f5f)}
+.art svg{position:absolute;inset:0;width:100%;height:100%}
+.badge{position:absolute;top:12px;left:12px;border-radius:9999px;font-size:11px;font-weight:600;padding:5px 10px;box-shadow:var(--shadow-float);z-index:2;background:#fff;color:var(--ink)}
+.badge.luxe{background:var(--luxe);color:#fff;box-shadow:none}
+.heart{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.5);z-index:2}
+.heart svg{width:22px;height:22px;fill:currentColor;stroke:#fff;stroke-width:1.5}
+.heart.saved{color:var(--primary)}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:4px;z-index:2}
+.dots i{width:6px;height:6px;border-radius:9999px;background:rgba(255,255,255,.55)}
+.dots i.on{background:#fff}
+.meta{padding:10px 2px 0}
+.meta .row1{display:flex;justify-content:space-between;gap:8px}
+.meta .title{font-size:16px;font-weight:600;line-height:1.25}
+.meta .score{font-size:14px;font-weight:500;display:flex;gap:3px;align-items:center;flex:none}
+.meta .line{font-size:14px;color:var(--muted);margin-top:2px}
+.meta .price{font-size:14px;margin-top:6px}
+.meta .price b{font-weight:600}
+.datepill{display:inline-flex;align-items:center;gap:5px;margin-top:6px;background:var(--surface-soft);border-radius:9999px;padding:3px 10px;font-size:12px;font-weight:600}
+.datepill.sale{background:var(--primary);color:#fff}
+
+/* ===== FEATURED DETAIL ===== */
+.detail{display:grid;grid-template-columns:1.6fr .9fr;gap:32px;margin-top:24px;align-items:start}
+.gallery .main{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:linear-gradient(140deg,#f3d9c8,#dfa88f 40%,#b06a58)}
+.gallery .main .badge{position:absolute}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.thumb{aspect-ratio:4/3;border-radius:8px;border:2px solid transparent}
+.thumb.sel{border-color:var(--ink)}
+.t2{background:linear-gradient(140deg,#cfe3f5,#6f9cc9)}
+.t3{background:linear-gradient(140deg,#e8ddcb,#b3946e)}
+.t4{background:linear-gradient(140deg,#dfe8cf,#88a268)}
+.t5{background:linear-gradient(140deg,#efe0ee,#96628f)}
+.detail-head{display:flex;justify-content:space-between;gap:16px;margin-bottom:6px}
+.detail-head h2{font-size:22px;font-weight:500;letter-spacing:-.44px;line-height:1.18}
+.detail-head .lnk{font-size:14px;font-weight:600;text-decoration:underline;flex:none;padding-top:4px}
+.spec{font-size:16px;color:var(--body)}
+.amenities{margin:16px 0 8px;padding:4px 0 8px;border-top:1px solid var(--hairline-soft);border-bottom:1px solid var(--hairline-soft)}
+.amenity{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:16px}
+.amenity svg{width:22px;height:22px;flex:none}
+.ratebox{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0 4px}
+.ratebox .big{font-size:44px;font-weight:700;letter-spacing:-1px;line-height:1.1}
+.ratebox .cap{font-size:13px;color:var(--muted)}
+.rescard{border:1px solid var(--hairline);border-radius:14px;padding:24px;box-shadow:var(--shadow-float);position:sticky;top:104px}
+.rescard .price{font-size:21px;font-weight:700}
+.rescard .price span{font-size:16px;font-weight:400;color:var(--body)}
+.rangegrid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border-strong);border-radius:8px;overflow:hidden;margin:16px 0 12px}
+.rangegrid .cell{padding:10px 12px}
+.rangegrid .cell + .cell{border-left:1px solid var(--hairline)}
+.rangegrid label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.rangegrid input{border:none;outline:none;width:100%;font-family:var(--font);font-size:14px;margin-top:2px}
+.rangegrid .wide{grid-column:1/-1;border-top:1px solid var(--hairline)}
+.stepper{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border-strong);border-radius:8px;padding:10px 14px;margin-bottom:16px}
+.stepper .lab{font-size:14px;font-weight:500}
+.stepper .lab span{display:block;font-size:13px;color:var(--muted);font-weight:400}
+.stepctl{display:flex;align-items:center;gap:14px}
+.stepbtn{width:32px;height:32px;border-radius:9999px;border:1px solid var(--border-strong);color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center}
+.stepbtn:hover{border-color:var(--ink);color:var(--ink)}
+.btn-primary{display:block;width:100%;background:var(--primary);color:#fff;font-size:16px;font-weight:500;padding:14px 24px;border-radius:8px;text-align:center}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-ghost{display:block;width:100%;text-align:center;font-size:14px;font-weight:600;text-decoration:underline;padding:12px 0 2px}
+.fees{margin-top:16px;font-size:14px;color:var(--body)}
+.fees .fr{display:flex;justify-content:space-between;padding:6px 0}
+.fees .tot{border-top:1px solid var(--hairline);margin-top:8px;padding-top:12px;font-weight:600;font-size:16px;color:var(--ink)}
+.nochg{font-size:13px;color:var(--muted);margin-top:10px;text-decoration:underline}
+.reviews{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+.review .who{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.review .av{width:44px;height:44px;border-radius:9999px;color:#fff;font-weight:600;display:flex;align-items:center;justify-content:center;font-size:15px}
+.av-a{background:linear-gradient(135deg,#e0a17c,#b06a45)}
+.av-b{background:linear-gradient(135deg,#8faece,#4f7aa8)}
+.review .who b{font-size:16px;display:block}
+.review .who span{font-size:14px;color:var(--muted)}
+.review p{font-size:14px;color:var(--body);line-height:1.5}
+.review .more{font-size:14px;font-weight:600;text-decoration:underline}
+
+/* ===== CHECKOUT BAND ===== */
+.checkout{background:var(--surface-soft);border-top:1px solid var(--hairline-soft);border-bottom:1px solid var(--hairline-soft);padding:56px 0;margin-top:40px}
+.checkout-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:start}
+.trips h3{font-size:21px;font-weight:700;margin-bottom:16px}
+.trip{display:flex;gap:16px;align-items:center;background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:16px}
+.trip + .trip{margin-top:12px}
+.trip .shot{width:96px;height:72px;border-radius:8px;flex:none}
+.trip .info{flex:1}
+.trip .info b{font-size:16px;font-weight:600;display:block}
+.trip .info span{font-size:14px;color:var(--muted)}
+.trip .amt{font-size:16px;font-weight:600;flex:none}
+.trip .rm{font-size:13px;color:var(--muted);text-decoration:underline;flex:none}
+.summary{background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:24px;box-shadow:var(--shadow-float)}
+.summary h3{font-size:21px;font-weight:700;margin-bottom:16px}
+.summary .fr{display:flex;justify-content:space-between;font-size:14px;color:var(--body);padding:7px 0}
+.summary .fr.discount{color:#0a8a44}
+.summary .fr.total{border-top:1px solid var(--hairline);margin-top:8px;padding-top:14px;font-size:18px;font-weight:700;color:var(--ink)}
+.promo{display:flex;gap:8px;margin:14px 0}
+.promo input{flex:1;border:1px solid var(--hairline);border-radius:8px;padding:0 12px;height:56px;font-family:var(--font);font-size:14px;outline:none}
+.promo input:focus{border:2px solid var(--ink)}
+.promo button{background:#fff;border:1px solid var(--ink);border-radius:8px;padding:0 24px;font-size:16px;font-weight:500}
+.summary .fine{font-size:13px;color:var(--muted);margin-top:12px}
+
+/* ===== FOOTER ===== */
+footer{padding:48px 0 0}
+.fcols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.fcol h4{font-size:16px;font-weight:500;margin-bottom:14px}
+.fcol a{display:block;font-size:14px;padding:6px 0}
+.fcol a:hover{text-decoration:underline}
+.legal{border-top:1px solid var(--hairline);margin-top:32px;padding:24px 0 40px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+.legal .links,.legal .soc{display:flex;gap:20px;align-items:center}
+.legal a:hover{color:var(--ink)}
+
+@media (max-width:1128px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:960px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .detail,.checkout-grid,.reviews{grid-template-columns:1fr}
+  .tabs{display:none}
+  .rescard{position:static}
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 1c2.2 0 3.4 1.1 4.5 3.4l6.4 13.4c.5 1.1.8 2 .8 3.1 0 3.1-2.3 5.1-5.2 5.1-1.7 0-3.4-.8-5-2.4-.7-.7-1.3-1.5-1.9-2.4h.1c-.6.9-1.2 1.7-1.9 2.4-1.6 1.6-3.3 2.4-5 2.4-2.9 0-5.2-2-5.2-5.1 0-1.1.3-2 .8-3.1L11.5 4.4C12.6 2.1 13.8 1 16 1zm-.6 3.1L8.9 18.6c-.4.8-.6 1.5-.6 2.2 0 1.5 1 2.4 2.5 2.4 1.1 0 2.2-.6 3.4-1.8.9-.9 1.7-2.1 2.4-3.4-1.5-2.4-2.4-4.4-2.4-6 0-2.4 1.6-4 3.6-4s3.6 1.6 3.6 4c0 1.6-.9 3.6-2.4 6 .7 1.3 1.5 2.5 2.4 3.4 1.2 1.2 2.3 1.8 3.4 1.8 1.5 0 2.5-.9 2.5-2.4 0-.7-.2-1.4-.6-2.2l-6.5-13.5h-1.2zm.6 6.1c-.9 0-1.6.8-1.6 1.9 0 1.1.6 2.5 1.6 4.2 1-1.7 1.6-3.1 1.6-4.2 0-1.1-.7-1.9-1.6-1.9z"/></svg>
+      <span class="word">airbnb</span>
+    </a>
+    <nav class="tabs">
+      <a class="ptab active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9h13v-9"/><path d="M10 19v-5h4v5"/></svg>
+        <span>Homes</span>
+      </a>
+      <a class="ptab" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v10M7.5 9.5l9 5M16.5 9.5l-9 5"/></svg>
+        <span>Experiences</span><span class="new">New</span>
+      </a>
+      <a class="ptab" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l2.4 5.6L20 9.3l-4.2 4 1.1 5.9L12 16.3 7.1 19.2l1.1-5.9L4 9.3l5.6-.7z"/></svg>
+        <span>Services</span><span class="new">New</span>
+      </a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-link" href="#">Become a host</a>
+      <button class="icon-circle" aria-label="Language">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg>
+      </button>
+      <div class="account">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <span class="avatar">MK</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="searchband">
+  <div class="wrap">
+    <form class="searchpill" onsubmit="return false">
+      <div class="seg"><label>Where</label><input type="text" placeholder="Search destinations"></div>
+      <div class="seg"><label>Date</label><input type="text" placeholder="Add dates"></div>
+      <div class="seg"><label>Who</label><input type="text" placeholder="Add guests"></div>
+      <button class="orb" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="catstrip">
+    <a class="cat active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9h13v-9"/></svg><span>Homes</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V8l8-4 8 4v11"/><path d="M9 19v-6h6v6"/></svg><span>Cabins</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 20h20M4 20V9l6-4v15M14 20V6l6 3v11"/></svg><span>Cities</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"/><path d="M5 13l1.5-6h11L19 13"/><path d="M4 17v3h16v-3"/></svg><span>Beachfront</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M8 7V5h8v2M4 13h16"/></svg><span>Luxe</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg><span>Weekend</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg><span>Design</span></a>
+    <a class="cat" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20V9M12 20V4M18 20v-8"/><path d="M3 20h18"/></svg><span>Popular</span></a>
+  </div>
+
+  <section class="section">
+    <div class="sechead">
+      <div>
+        <h1 class="h1">Popular homes in Big Sky</h1>
+        <p class="sub">Guest favorite · Verified stays · Free cancellation for 48 hours</p>
+      </div>
+      <button class="show-all">Show all</button>
+    </div>
+    <div class="grid">
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g1"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><path d="M0 150 L60 90 L110 130 L160 70 L200 110 V190 H0 Z" fill="rgba(255,255,255,.22)"/><path d="M0 175 L50 130 L105 165 L155 115 L200 150 V190 H0 Z" fill="rgba(255,255,255,.30)"/><circle cx="152" cy="44" r="20" fill="rgba(255,255,255,.45)"/></svg></div>
+          <span class="badge">Guest favorite</span>
+          <button class="heart saved" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+          <div class="dots"><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Timber A-Frame near Lone Peak</span><span class="score">★ 4.96</span></div>
+          <p class="line">Big Sky, Montana</p>
+          <p class="line">Mar 12 – 17 · Ski-in access</p>
+          <p class="price"><b>$412</b> night</p>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g2"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><rect x="30" y="60" width="140" height="80" rx="6" fill="rgba(255,255,255,.28)"/><path d="M20 62 100 30l80 32z" fill="rgba(255,255,255,.4)"/><rect x="85" y="90" width="30" height="50" fill="rgba(0,0,0,.12)"/></svg></div>
+          <span class="badge">Guest favorite</span>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Harborview Loft with Terrace</span><span class="score">★ 4.89</span></div>
+          <p class="line">Portland, Maine</p>
+          <p class="line">Apr 3 – 8 · Ocean views</p>
+          <p class="price"><b>$236</b> night</p>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g3"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><circle cx="70" cy="80" r="34" fill="rgba(255,255,255,.35)"/><path d="M0 160 Q60 110 120 150 T200 140 V190 H0 Z" fill="rgba(255,255,255,.3)"/></svg></div>
+          <span class="badge">Guest favorite</span>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Cedar Cabin in the Pines</span><span class="score">★ 4.92</span></div>
+          <p class="line">Hood River, Oregon</p>
+          <p class="line">Mar 21 – 24 · Hot tub</p>
+          <p class="price"><b>$189</b> night</p>
+          <span class="datepill sale">Rare find</span>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g4"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><rect x="45" y="55" width="110" height="90" rx="10" fill="rgba(255,255,255,.3)"/><rect x="60" y="70" width="34" height="34" rx="4" fill="rgba(255,255,255,.5)"/><rect x="106" y="70" width="34" height="34" rx="4" fill="rgba(255,255,255,.5)"/><rect x="84" y="112" width="32" height="33" fill="rgba(0,0,0,.14)"/></svg></div>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Desert Casita &amp; Plunge Pool</span><span class="score">★ 4.98</span></div>
+          <p class="line">Joshua Tree, California</p>
+          <p class="line">Apr 10 – 14 · Stargazing deck</p>
+          <p class="price"><b>$305</b> night</p>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g5"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><path d="M0 130 L70 80 L130 120 L200 60 V190 H0 Z" fill="rgba(255,255,255,.25)"/><path d="M0 165 L55 125 L110 158 L165 110 L200 135 V190 H0 Z" fill="rgba(255,255,255,.35)"/></svg></div>
+          <span class="badge">Guest favorite</span>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Sunset Ranch with Riding Trails</span><span class="score">★ 4.87</span></div>
+          <p class="line">Santa Ynez, California</p>
+          <p class="line">May 2 – 6 · Horses included</p>
+          <p class="price"><b>$540</b> night</p>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g6"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><rect x="40" y="70" width="120" height="70" rx="8" fill="rgba(255,255,255,.3)"/><rect x="52" y="82" width="24" height="24" rx="3" fill="rgba(255,255,255,.5)"/><rect x="84" y="82" width="24" height="24" rx="3" fill="rgba(255,255,255,.5)"/><rect x="116" y="82" width="24" height="24" rx="3" fill="rgba(255,255,255,.5)"/></svg></div>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Skyline Studio Above the Park</span><span class="score">★ 4.84</span></div>
+          <p class="line">Chicago, Illinois</p>
+          <p class="line">Mar 28 – 31 · Walk to L</p>
+          <p class="price"><b>$164</b> night</p>
+          <span class="datepill">Price dropped</span>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g7"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><circle cx="100" cy="85" r="40" fill="rgba(255,255,255,.3)"/><circle cx="100" cy="85" r="24" fill="rgba(255,255,255,.35)"/><path d="M0 160 H200 V190 H0 Z" fill="rgba(255,255,255,.28)"/></svg></div>
+          <span class="badge luxe">Airbnb Luxe</span>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Villa Serena on the Amalfi Coast</span><span class="score">★ 5.0</span></div>
+          <p class="line">Positano, Italy</p>
+          <p class="line">Jun 6 – 13 · Chef &amp; concierge</p>
+          <p class="price"><b>$2,150</b> night</p>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="plate">
+          <div class="art g8"><svg viewBox="0 0 200 190" preserveAspectRatio="none"><path d="M20 150 Q60 70 100 120 T190 95" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="10" stroke-linecap="round"/><circle cx="55" cy="60" r="14" fill="rgba(255,255,255,.45)"/></svg></div>
+          <span class="badge">Guest favorite</span>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+        <div class="meta">
+          <div class="row1"><span class="title">Lakehouse Dock &amp; Sauna</span><span class="score">★ 4.94</span></div>
+          <p class="line">Lake Placid, New York</p>
+          <p class="line">Apr 18 – 21 · Private dock</p>
+          <p class="price"><b>$278</b> night</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="detail">
+      <div class="gallery">
+        <div class="main">
+          <span class="badge">Guest favorite</span>
+          <button class="heart" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5.5-7 10-7 10z"/></svg></button>
+          <div class="dots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="thumbs">
+          <div class="thumb sel t2"></div>
+          <div class="thumb t3"></div>
+          <div class="thumb t4"></div>
+          <div class="thumb t5"></div>
+        </div>
+        <div class="detail-head" style="margin-top:20px">
+          <h2>Cliffside Cabin Above the Gorge, minutes from town</h2>
+          <a class="lnk" href="#">Show photos</a>
+        </div>
+        <p class="spec">Entire cabin · 2 guests · 1 bedroom · 1 bath · Gorge view</p>
+        <div class="amenities">
+          <div class="amenity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18v-6a8 8 0 0 1 16 0v6"/><path d="M2 18h20"/></svg> Dedicated workspace with gorge views</div>
+          <div class="amenity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="13" r="6"/><path d="M12 13l3-3M9 3h6"/></svg> Wood-fired hot tub under the canopy</div>
+          <div class="amenity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M3 12h18" opacity="0"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg> Self check-in with smart lock</div>
+          <div class="amenity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"/><path d="M3 12c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"/></svg> Free cancellation before Mar 9</div>
+        </div>
+        <div class="reviews">
+          <div class="review">
+            <div class="who"><span class="av av-a">DR</span><div><b>Dana R.</b><span>Portland · February 2026</span></div></div>
+            <p>“Waking up to the gorge fog was unreal. The cabin is spotless, the hot tub is magic, and Dana's trail guide sent us to a waterfall we'd never have found.”</p>
+            <a class="more" href="#">Show more</a>
+          </div>
+          <div class="review">
+            <div class="who"><span class="av av-b">JT</span><div><b>Jonah T.</b><span>Seattle · January 2026</span></div></div>
+            <p>“Immaculate place, exactly as photographed. Check-in took thirty seconds and the host answered within minutes when we asked about firewood.”</p>
+            <a class="more" href="#">Show more</a>
+          </div>
+        </div>
+      </div>
+      <aside class="rescard">
+        <p class="price">$268 <span>night</span></p>
+        <div class="ratebox">
+          <span class="big">4.96</span>
+          <span class="cap">Guest<br>favorite</span>
+        </div>
+        <div class="rangegrid">
+          <div class="cell"><label>Dates</label><input value="Mar 12 – 17"></div>
+          <div class="cell"><label>Guests</label><input value="2 guests"></div>
+          <div class="cell wide"><label>Bring your pup</label><input placeholder="Add your dog"></div>
+        </div>
+        <div class="stepper">
+          <span class="lab">Nights<span>5 nights total</span></span>
+          <div class="stepctl">
+            <button class="stepbtn">−</button><b>5</b><button class="stepbtn">+</button>
+          </div>
+        </div>
+        <a class="btn-primary" href="#">Reserve</a>
+        <a class="btn-ghost" href="#">You won't be charged yet</a>
+        <div class="fees">
+          <div class="fr"><span>$268 × 5 nights</span><span>$1,340</span></div>
+          <div class="fr"><span>Cleaning fee</span><span>$85</span></div>
+          <div class="fr"><span>Airbnb service fee</span><span>$203</span></div>
+          <div class="fr"><span>Taxes</span><span>$118</span></div>
+          <div class="fr tot"><span>Total before taxes</span><span>$1,746</span></div>
+        </div>
+        <p class="nochg">This is a rare find — usually booked</p>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<section class="checkout">
+  <div class="wrap checkout-grid">
+    <div class="trips">
+      <h3>Your upcoming trips</h3>
+      <div class="trip">
+        <div class="shot t2"></div>
+        <div class="info"><b>Harborview Loft with Terrace</b><span>Apr 3 – 8 · Portland, Maine · 2 guests</span></div>
+        <span class="amt">$1,324</span>
+        <a class="rm" href="#">Remove</a>
+      </div>
+      <div class="trip">
+        <div class="shot t4"></div>
+        <div class="info"><b>Cedar Cabin in the Pines</b><span>Mar 21 – 24 · Hood River, Oregon · 2 guests</span></div>
+        <span class="amt">$629</span>
+        <a class="rm" href="#">Remove</a>
+      </div>
+      <div class="trip">
+        <div class="shot t3"></div>
+        <div class="info"><b>Cliffside Cabin Above the Gorge</b><span>Mar 12 – 17 · Columbia River Gorge · 2 guests</span></div>
+        <span class="amt">$1,746</span>
+        <a class="rm" href="#">Remove</a>
+      </div>
+    </div>
+    <aside class="summary">
+      <h3>Trip checkout</h3>
+      <div class="fr"><span>3 stays · 12 nights</span><span>$3,699</span></div>
+      <div class="fr"><span>Cleaning fees</span><span>$224</span></div>
+      <div class="fr"><span>Service fees</span><span>$352</span></div>
+      <div class="fr"><span>Lodging taxes</span><span>$197</span></div>
+      <div class="fr discount"><span>Multi-stay discount</span><span>−$185</span></div>
+      <div class="fr total"><span>Total</span><span>$4,287</span></div>
+      <div class="promo">
+        <input type="text" placeholder="Promotion code">
+        <button>Apply</button>
+      </div>
+      <a class="btn-primary" href="#">Confirm and pay</a>
+      <p class="fine">Free cancellation on each stay up to 48 hours before check-in. You'll only be charged when each host confirms.</p>
+    </aside>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fcol">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">AirCover for guests</a>
+        <a href="#">Anti-discrimination</a>
+        <a href="#">Cancellation options</a>
+        <a href="#">Report neighborhood concern</a>
+      </div>
+      <div class="fcol">
+        <h4>Hosting</h4>
+        <a href="#">Airbnb your home</a>
+        <a href="#">AirCover for Hosts</a>
+        <a href="#">Hosting resources</a>
+        <a href="#">Community forum</a>
+        <a href="#">Hosting responsibly</a>
+      </div>
+      <div class="fcol">
+        <h4>Airbnb</h4>
+        <a href="#">Newsroom</a>
+        <a href="#">New features</a>
+        <a href="#">Careers</a>
+        <a href="#">Investors</a>
+        <a href="#">Gift cards</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Airbnb, Inc. · Privacy · Terms · Sitemap</span>
+      <div class="links">
+        <a href="#">🌐 English (US)</a>
+        <a href="#">$ USD</a>
+      </div>
+      <div class="soc">
+        <a href="#">Facebook</a>
+        <a href="#">X</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wise — Send Money to 160+ Countries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#9fe870; --on-primary:#0e0f0c; --primary-active:#cdffad; --primary-neutral:#c5edab; --primary-pale:#e2f6d5;
+  --ink:#0e0f0c; --ink-deep:#163300; --body:#454745; --mute:#868685;
+  --canvas:#ffffff; --canvas-soft:#e8ebe6;
+  --positive:#2ead4b; --positive-deep:#054d28; --warning:#ffd11a; --warning-content:#4a3b1c;
+  --negative:#d03238; --negative-deep:#a72027; --negative-bg:#320707;
+  --accent-orange:#ffc091; --accent-cyan:#38c8ff;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:24px; --s-2xl:32px; --s-3xl:48px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--s-xl)}
+.display{font-weight:900;letter-spacing:0}
+
+/* ---------- nav ---------- */
+.topnav{position:sticky;top:0;z-index:60;background:var(--canvas)}
+.topnav .wrap{display:flex;align-items:center;gap:var(--s-xl);height:72px}
+.logo{display:flex;align-items:center;gap:9px;font-size:22px;font-weight:900;letter-spacing:-0.5px}
+.flag-mark{width:30px;height:30px;border-radius:var(--r-sm);overflow:hidden;display:grid;flex:none}
+.flag-mark i{display:block;width:100%;height:50%;background:var(--primary)}
+.flag-mark i:last-child{background:var(--ink-deep)}
+.navlinks{display:flex;gap:var(--s-lg);font-size:14px;font-weight:600}
+.navlinks a{color:var(--ink);padding:10px 4px}
+.navlinks a:hover{color:var(--body)}
+.navlinks a.on{box-shadow:inset 0 -3px 0 var(--primary)}
+.top-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;border:1px solid var(--ink);border-radius:var(--r-md);padding:9px 12px;width:210px}
+.nav-search input{border:0;outline:0;font-size:14px;width:100%;color:var(--ink);background:transparent}
+.nav-search input::placeholder{color:var(--mute)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-full);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{background:var(--canvas-soft)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:var(--primary);border:2px solid var(--canvas)}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--ink);color:var(--primary);font-size:12px;font-weight:600;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:600;line-height:24px;padding:12px 24px;border-radius:var(--r-xl);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-secondary{background:var(--canvas-soft);color:var(--ink)}
+.btn-secondary:hover{background:var(--primary-neutral)}
+.btn-tertiary{background:var(--canvas);color:var(--ink);border-color:var(--ink)}
+.btn-tertiary:hover{background:var(--canvas-soft)}
+.btn-sm{padding:8px 16px;font-size:14px}
+
+/* ---------- sage hero ---------- */
+.hero{background:var(--canvas-soft);padding:var(--s-3xl) 0}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s-2xl);align-items:center}
+.hero h1{font-size:clamp(40px,5vw,64px);font-weight:900;line-height:1.0;letter-spacing:0}
+.hero .lead{font-size:20px;line-height:1.5;color:var(--body);margin-top:var(--s-lg);max-width:460px}
+.hero-cta{display:flex;gap:var(--s-md);margin-top:var(--s-2xl);flex-wrap:wrap}
+.hero-proof{display:flex;gap:var(--s-xl);margin-top:var(--s-2xl);flex-wrap:wrap}
+.hero-proof b{display:block;font-size:24px;font-weight:900}
+.hero-proof span{font-size:14px;color:var(--mute)}
+
+/* ---------- converter (signature) ---------- */
+.converter{background:var(--canvas);border:1px solid var(--ink);border-radius:var(--r-xl);padding:var(--s-xl)}
+.conv-row{display:flex;align-items:center;gap:var(--s-md);background:var(--canvas-soft);border-radius:var(--r-lg);padding:var(--s-md) var(--s-lg);margin-bottom:var(--s-md)}
+.conv-row .amt{flex:1}
+.conv-row .amt label{display:block;font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.3px}
+.conv-row .amt input{border:0;outline:0;background:transparent;font-size:26px;font-weight:900;width:100%;color:var(--ink)}
+.curr{display:flex;align-items:center;gap:8px;background:var(--primary-pale);border:0;border-radius:var(--r-pill);padding:8px 14px;font-size:16px;font-weight:600;cursor:pointer;color:var(--ink-deep)}
+.curr .f{width:22px;height:16px;border-radius:2px;overflow:hidden;display:block}
+.swap{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--ink);background:var(--canvas);cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);display:grid;place-items:center;margin:-20px auto;position:relative;z-index:2}
+.conv-rate{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--body);padding:var(--s-sm) 2px}
+.conv-rate b{color:var(--positive-deep);font-weight:600}
+.badge-positive{display:inline-block;background:var(--primary-pale);color:var(--positive-deep);font-size:14px;font-weight:600;padding:4px 12px;border-radius:var(--r-pill)}
+.badge-negative{display:inline-block;background:var(--negative-bg);color:#fff;font-size:14px;font-weight:600;padding:4px 12px;border-radius:var(--r-pill)}
+.conv-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--s-md);flex-wrap:wrap}
+.conv-total{font-size:14px;color:var(--mute)}
+.conv-total b{display:block;font-size:22px;font-weight:900;color:var(--ink)}
+
+/* ---------- chips / grid ---------- */
+.band{padding:var(--s-3xl) 0}
+.chips{display:flex;gap:var(--s-sm);flex-wrap:wrap;padding-bottom:var(--s-xl)}
+.chip{font-size:14px;font-weight:600;padding:8px 16px;border-radius:var(--r-pill);border:0;background:var(--canvas-soft);color:var(--ink);cursor:pointer}
+.chip:hover{background:var(--primary-neutral)}
+.chip.active{background:var(--ink);color:var(--canvas)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:var(--s-lg);margin-bottom:var(--s-xl)}
+.section-head h2{font-size:40px;font-weight:900;line-height:1.0}
+.section-head a{font-size:16px;font-weight:600;color:var(--ink-deep);background:var(--primary-pale);padding:8px 16px;border-radius:var(--r-pill)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.route{background:var(--canvas);border-radius:var(--r-xl);padding:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-sm);box-shadow:0 2px 10px rgba(14,15,12,.05);position:relative;transition:transform .15s}
+.route:hover{transform:translateY(-3px)}
+.flag-lg{width:56px;height:40px;border-radius:var(--r-sm);overflow:hidden;display:grid;grid-template-rows:1fr 1fr;position:relative}
+.flag-lg i{display:block}
+.route .badge{position:absolute;top:var(--s-lg);right:var(--s-lg)}
+.route h3{font-size:24px;font-weight:600;letter-spacing:-0.48px;line-height:1.2}
+.route .meta{font-size:14px;color:var(--body)}
+.rate-line{margin-top:auto;padding-top:var(--s-md);border-top:1px solid var(--canvas-soft)}
+.rate-line .r-val{font-size:22px;font-weight:900}
+.rate-line .r-lbl{font-size:14px;color:var(--mute)}
+.fee-row{display:flex;align-items:center;justify-content:space-between;font-size:14px}
+/* stripes for css flags */
+.f-eu{background:linear-gradient(180deg,#003399 50%,#003399 50%);position:relative}
+.f-eu::after{content:"";position:absolute;inset:30% 42%;background:radial-gradient(circle,#ffcc00 40%,transparent 42%);border-radius:50%}
+.f-gb{background:linear-gradient(180deg,#012169 50%,#012169 50%);position:relative}
+.f-gb::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,transparent 44%,#fff 44%,#fff 56%,transparent 56%),linear-gradient(90deg,transparent 44%,#fff 44%,#fff 56%,transparent 56%)}
+.f-us{background:linear-gradient(180deg,#b22234 25%,#fff 25%,#fff 40%,#b22234 40%,#b22234 55%,#fff 55%,#fff 70%,#b22234 70%);position:relative}
+.f-us::after{content:"";position:absolute;top:8%;left:8%;width:34%;height:38%;background:#3c3b6e;border-radius:2px}
+.f-in{background:linear-gradient(180deg,#ff9933 33.4%,#fff 33.4%,#fff 66.7%,#138808 66.7%);position:relative}
+.f-in::after{content:"";position:absolute;inset:38% 44%;border:2px solid #000080;border-radius:50%}
+.f-jp{background:#fff;position:relative}
+.f-jp::after{content:"";position:absolute;inset:22% 36%;background:#bc002d;border-radius:50%}
+.f-au{background:linear-gradient(180deg,#012169 50%,#012169 50%);position:relative}
+.f-au::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,transparent 42%,#fff 42%,#fff 58%,transparent 58%),linear-gradient(90deg,transparent 42%,#fff 42%,#fff 58%,transparent 58%)}
+.f-au::after{content:"";position:absolute;top:12%;right:12%;width:22%;height:26%;background:#e4002b;border-radius:2px}
+.f-ca{background:linear-gradient(90deg,#d80621 30%,#fff 30%,#fff 70%,#d80621 70%)}
+.f-br{background:linear-gradient(180deg,#009b3a 50%,#ffdf00 50%);position:relative}
+.f-br::after{content:"";position:absolute;inset:26% 34%;background:#002776;border-radius:50%}
+.f-es{background:linear-gradient(180deg,#aa151b 25%,#f1bf00 25%,#f1bf00 75%,#aa151b 75%)}
+
+/* ---------- featured / transfer detail ---------- */
+.detail{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--s-2xl);background:var(--canvas);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:0 2px 12px rgba(14,15,12,.06)}
+.detail-visual{background:var(--primary-pale);border-radius:var(--r-lg);padding:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-md)}
+.detail-visual .cv-head{display:flex;align-items:center;gap:var(--s-md)}
+.detail-visual .cv-head b{font-size:16px;font-weight:600}
+.tl{display:flex;flex-direction:column;gap:var(--s-md)}
+.tl-item{display:flex;align-items:center;gap:var(--s-md);background:var(--canvas);border-radius:var(--r-lg);padding:var(--s-md) var(--s-lg)}
+.tl-item .f{width:34px;height:24px;border-radius:4px;overflow:hidden;flex:none}
+.tl-item .tx{flex:1}
+.tl-item .tx b{display:block;font-size:14px;font-weight:600}
+.tl-item .tx span{font-size:12px;color:var(--mute)}
+.tl-item .amt2{font-size:16px;font-weight:900}
+.arrive{align-self:flex-start;background:var(--ink);color:var(--primary);font-size:14px;font-weight:600;padding:6px 14px;border-radius:var(--r-pill)}
+.detail-info h3{font-size:32px;font-weight:600;letter-spacing:-0.96px;line-height:1.2}
+.detail-info .lead{font-size:16px;color:var(--body);margin:var(--s-xs) 0 var(--s-xl)}
+.opt-label{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:var(--s-sm)}
+.opt-label span{color:var(--mute);font-weight:400}
+.opt-row{display:flex;gap:var(--s-sm);flex-wrap:wrap;margin-bottom:var(--s-xl)}
+.opt{font-size:14px;font-weight:600;padding:10px 16px;border-radius:var(--r-md);border:1px solid var(--ink);background:var(--canvas);color:var(--ink);cursor:pointer}
+.opt:hover{background:var(--canvas-soft)}
+.opt.on{background:var(--ink);color:var(--canvas)}
+.buy-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--ink);border-radius:var(--r-md);background:var(--canvas)}
+.stepper button{width:40px;height:44px;border:0;background:transparent;font-size:18px;font-weight:600;cursor:pointer;color:var(--ink)}
+.stepper b{min-width:30px;text-align:center;font-size:16px;font-weight:600}
+.detail-price{font-size:24px;font-weight:600;margin:var(--s-lg) 0 var(--s-md)}
+.detail-price small{font-size:16px;font-weight:400;color:var(--body)}
+.review-box{margin-top:var(--s-xl);border-top:1px solid var(--canvas-soft);padding-top:var(--s-xl)}
+.review{margin-top:var(--s-md);font-size:16px;color:var(--body)}
+.review b{display:block;font-size:14px;font-weight:600;color:var(--mute);margin-top:4px}
+
+/* ---------- transfer summary (cart) ---------- */
+.cart-band{padding:var(--s-3xl) 0;background:var(--canvas-soft)}
+.cart-band h2{font-size:40px;font-weight:900;margin-bottom:var(--s-xl)}
+.cart{max-width:720px;background:var(--canvas);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:0 2px 12px rgba(14,15,12,.06)}
+.line{display:flex;align-items:center;gap:var(--s-lg);padding:var(--s-md) 0;border-bottom:1px solid var(--canvas-soft)}
+.line:last-of-type{border-bottom:0}
+.line .f-sm{width:38px;height:27px;border-radius:4px;overflow:hidden;flex:none}
+.line .li-info{flex:1}
+.line .li-info b{font-size:16px;font-weight:600;display:block}
+.line .li-info span{font-size:14px;color:var(--mute)}
+.line .li-price{font-size:16px;font-weight:600}
+.sum-row{display:flex;justify-content:space-between;font-size:16px;color:var(--body);padding:4px 0}
+.sum-row.total{font-size:20px;font-weight:600;color:var(--ink);border-top:1px solid var(--canvas-soft);margin-top:var(--s-sm);padding-top:var(--s-md)}
+.cart .btn-primary{width:100%;margin-top:var(--s-lg)}
+.cart-note{font-size:14px;color:var(--mute);text-align:center;margin-top:var(--s-md)}
+
+/* ---------- dark promo + footer ---------- */
+.promo{background:var(--ink);color:var(--primary);border-radius:var(--r-xl);padding:var(--s-2xl);display:flex;align-items:center;justify-content:space-between;gap:var(--s-xl);margin:var(--s-3xl) 0}
+.promo h3{font-size:40px;font-weight:900;line-height:1.0;color:var(--primary)}
+.promo p{font-size:16px;color:var(--canvas-soft);margin-top:var(--s-sm);max-width:480px}
+footer{background:var(--ink);color:var(--canvas-soft);padding:var(--s-3xl) 0;margin-top:var(--s-3xl)}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--s-3xl)}
+.foot-eyebrow{font-size:12px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.3px;margin-bottom:var(--s-md)}
+footer p{font-size:14px;color:#b9bdb7;max-width:320px;line-height:1.5}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:var(--s-sm);font-size:14px;color:#d7dad5}
+footer ul a:hover{color:var(--primary)}
+.news{display:flex;gap:var(--s-sm);margin-top:var(--s-md);max-width:380px}
+.news input{flex:1;background:transparent;border:1px solid #3a3d38;border-radius:var(--r-md);color:var(--canvas);font-size:14px;padding:11px 12px;outline:0}
+.news input::placeholder{color:#7d817b}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);border-top:1px solid #2a2d28;margin-top:var(--s-3xl);padding-top:var(--s-xl);font-size:14px;color:#7d817b;flex-wrap:wrap}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:var(--r-full);background:#222520;display:grid;place-items:center;font-size:12px;font-weight:600;color:#d7dad5}
+.socials a:hover{background:var(--primary);color:var(--on-primary)}
+
+@media (max-width:960px){
+  .wrap{padding:0 var(--s-lg)}
+  .navlinks,.nav-search{display:none}
+  .grid{grid-template-columns:1fr 1fr}
+  .hero-grid,.detail{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .promo{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <span class="flag-mark"><i></i><i></i></span>
+      wise
+    </a>
+    <nav class="navlinks">
+      <a class="on" href="#">Send money</a>
+      <a href="#">Multi-currency</a>
+      <a href="#">Business</a>
+      <a href="#">Help</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#868685" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" placeholder="Currency or country">
+    </div>
+    <button class="icon-btn" aria-label="Transfers">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9h13l-3-3M19 15H6l3 3"/></svg>
+      <span class="dot"></span>
+    </button>
+    <span class="avatar">NL</span>
+    <a class="btn btn-primary btn-sm" href="#">Sign up</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <h1>Send money at the real rate</h1>
+        <p class="lead">The mid-market rate with one small, upfront fee. No weekend markups, no surprises on the receiving end.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#featured">Start a transfer</a>
+          <a class="btn btn-tertiary" href="#">Check rates</a>
+        </div>
+        <div class="hero-proof">
+          <div><b>12.8M</b><span>people &amp; businesses</span></div>
+          <div><b>160+</b><span>countries</span></div>
+          <div><b>50</b><span>currencies</span></div>
+        </div>
+      </div>
+      <div class="converter">
+        <div class="conv-row">
+          <div class="amt">
+            <label>You send</label>
+            <input type="text" value="2,000.00">
+          </div>
+          <button class="curr"><span class="f f-gb" style="width:22px;height:16px"></span>GBP</button>
+        </div>
+        <div class="swap">⇅</div>
+        <div class="conv-row">
+          <div class="amt">
+            <label>Recipient gets</label>
+            <input type="text" value="2,347.12">
+          </div>
+          <button class="curr"><span class="f f-eu" style="width:22px;height:16px"></span>EUR</button>
+        </div>
+        <div class="conv-rate">
+          <span>1 GBP = <b>1.1736 EUR</b> · mid-market rate</span>
+          <span class="badge-positive">Arrives today</span>
+        </div>
+        <div class="conv-foot">
+          <div class="conv-total"><b>£4.42</b>total fee · 0.22%</div>
+          <a class="btn btn-primary" href="#cart">Continue</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="chips">
+      <button class="chip active">Popular routes</button>
+      <button class="chip">Europe</button>
+      <button class="chip">Americas</button>
+      <button class="chip">Asia-Pacific</button>
+      <button class="chip">Africa</button>
+      <button class="chip">Business payouts</button>
+    </div>
+    <div class="section-head">
+      <h2>Top routes this week</h2>
+      <a href="#">All 160+ countries →</a>
+    </div>
+    <div class="grid">
+      <article class="route">
+        <span class="flag-lg f-eu"><i></i></span>
+        <span class="badge badge-positive">Fastest</span>
+        <h3>UK → Eurozone</h3>
+        <div class="meta">GBP → EUR · 20 countries</div>
+        <div class="rate-line"><div class="r-val">1.1736</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£4.42 · 0.22%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-us"><i></i></span>
+        <h3>UK → United States</h3>
+        <div class="meta">GBP → USD · ACH or wire</div>
+        <div class="rate-line"><div class="r-val">1.2631</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£5.10 · 0.26%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-in"><i></i></span>
+        <h3>UK → India</h3>
+        <div class="meta">GBP → INR · UPI or bank</div>
+        <div class="rate-line"><div class="r-val">105.28</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£6.84 · 0.34%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-jp"><i></i></span>
+        <span class="badge badge-negative">Rate update</span>
+        <h3>UK → Japan</h3>
+        <div class="meta">GBP → JPY · bank transfer</div>
+        <div class="rate-line"><div class="r-val">193.44</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£5.95 · 0.30%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-au"><i></i></span>
+        <h3>UK → Australia</h3>
+        <div class="meta">GBP → AUD · bank transfer</div>
+        <div class="rate-line"><div class="r-val">1.9402</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£5.58 · 0.28%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-ca"><i></i></span>
+        <h3>UK → Canada</h3>
+        <div class="meta">GBP → CAD · bank transfer</div>
+        <div class="rate-line"><div class="r-val">1.7588</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£5.32 · 0.27%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-br"><i></i></span>
+        <span class="badge badge-positive">New route</span>
+        <h3>UK → Brazil</h3>
+        <div class="meta">GBP → BRL · PIX in seconds</div>
+        <div class="rate-line"><div class="r-val">6.8910</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>£7.20 · 0.36%</b></div>
+      </article>
+      <article class="route">
+        <span class="flag-lg f-es"><i></i></span>
+        <h3>Spain → Philippines</h3>
+        <div class="meta">EUR → PHP · GCash or bank</div>
+        <div class="rate-line"><div class="r-val">63.104</div><div class="r-lbl">mid-market rate</div></div>
+        <div class="fee-row"><span>Fee</span><b>€2.94 · 0.48%</b></div>
+      </article>
+    </div>
+
+    <div class="promo">
+      <div>
+        <h3>Hold 50 currencies in one account</h3>
+        <p>Get local account details in GBP, EUR, USD, AUD and more. Get paid like a local, convert when the rate is right.</p>
+      </div>
+      <a class="btn btn-primary" href="#">Open a balance</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="featured" style="padding-bottom:var(--s-3xl)">
+  <div class="section-head"><h2>UK → Eurozone, in detail</h2></div>
+  <div class="detail">
+    <div class="detail-visual">
+      <div class="cv-head"><span class="badge-positive">On track</span><b>Transfer #W-58120433 · started 09:41</b></div>
+      <div class="tl">
+        <div class="tl-item"><span class="f f-gb"></span><div class="tx"><b>You sent £2,000.00</b><span>Debited from GBP balance · 09:41</span></div><div class="amt2">£2,000</div></div>
+        <div class="tl-item"><span class="f" style="background:var(--primary)"></span><div class="tx"><b>Converted at mid-market</b><span>1.1736 · fee £4.42 · 09:41</span></div><div class="amt2">€2,347</div></div>
+        <div class="tl-item"><span class="f f-eu"></span><div class="tx"><b>Arriving in France</b><span>Société Générale ····4821 · by 17:00 today</span></div><div class="amt2">€2,347.12</div></div>
+      </div>
+      <span class="arrive">Usually arrives within hours, not days</span>
+    </div>
+    <div class="detail-info">
+      <h3>Send £2,000 GBP to EUR</h3>
+      <p class="lead">Recipient pays nothing. One upfront fee of £4.42, converted at the real mid-market rate you see on Google.</p>
+      <div class="opt-label">Speed <span>— how fast it lands</span></div>
+      <div class="opt-row">
+        <button class="opt">Standard · free</button>
+        <button class="opt on">Today · included</button>
+        <button class="opt">Instant · +£1.20</button>
+      </div>
+      <div class="opt-label">Transfer type <span>— who's paying</span></div>
+      <div class="opt-row">
+        <button class="opt on">Personal</button>
+        <button class="opt">Business invoice</button>
+      </div>
+      <div class="detail-price">€2,347.12<small> · arrives today · fee £4.42 (0.22%)</small></div>
+      <div class="buy-row">
+        <div class="stepper">
+          <button aria-label="Decrease">−</button><b>1</b><button aria-label="Increase">+</button>
+        </div>
+        <a class="btn btn-primary" href="#cart">Set up transfer</a>
+        <a class="btn btn-secondary" href="#">Save as template</a>
+      </div>
+      <div class="review-box">
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-weight:900;font-size:18px">4.8</span><span style="color:var(--mute);font-size:14px">· 268,401 Trustpilot reviews</span></div>
+        <p class="review">“Sent rent from London to Lisbon for three years. The rate is always exactly what Google says, and it lands the same day.”<b>Marta Silveira — sends GBP → EUR monthly</b></p>
+        <p class="review">“I pay my Warsaw contractors every Friday. Batch payouts replaced two days of bank admin.”<b>Oliver Hart — founder, Studio Rill</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cart-band" id="cart">
+  <div class="wrap">
+    <h2>Transfer summary</h2>
+    <div class="cart">
+      <div class="line">
+        <span class="f-sm f-gb"></span>
+        <div class="li-info"><b>You send £2,000.00 GBP</b><span>Debited today · GBP balance</span></div>
+        <div class="li-price">£2,000.00</div>
+      </div>
+      <div class="line">
+        <span class="f-sm f-eu"></span>
+        <div class="li-info"><b>Recipient gets €2,347.12 EUR</b><span>1.1736 mid-market · Société Générale ····4821</span></div>
+        <div class="li-price">€2,347.12</div>
+      </div>
+      <div class="line">
+        <span class="f-sm" style="background:var(--primary)"></span>
+        <div class="li-info"><b>Our fee</b><span>0.22% · shown upfront, always</span></div>
+        <div class="li-price">£4.42</div>
+      </div>
+      <div class="sum-row" style="margin-top:12px"><span>Speed upgrade</span><span>Included — arrives today</span></div>
+      <div class="sum-row total"><span>Total cost</span><span>£2,004.42</span></div>
+      <a class="btn btn-primary" href="#">Confirm &amp; send</a>
+      <p class="cart-note">Protected by 2-factor approval · FCA regulated · cancel free while pending</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-eyebrow">Rate alerts</div>
+        <p>Tell us the rate you're waiting for and we'll ping you the moment the market hits it.</p>
+        <div class="news">
+          <input type="email" placeholder="Email address">
+          <a class="btn btn-primary btn-sm" href="#">Create alert</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Send money</div>
+        <ul>
+          <li><a href="#">GBP → EUR</a></li>
+          <li><a href="#">GBP → USD</a></li>
+          <li><a href="#">GBP → INR</a></li>
+          <li><a href="#">All routes</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Account</div>
+        <ul>
+          <li><a href="#">Multi-currency balance</a></li>
+          <li><a href="#">Debit card</a></li>
+          <li><a href="#">Interest on balances</a></li>
+          <li><a href="#">Business</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Company</div>
+        <ul>
+          <li><a href="#">About Wise</a></li>
+          <li><a href="#">Mission</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Wise Payments Ltd · Terms · Privacy · Cookies · FCA #591933</span>
+      <div class="socials"><a href="#">X</a><a href="#">IG</a><a href="#">YT</a><a href="#">IN</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

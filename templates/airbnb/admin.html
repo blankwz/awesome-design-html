@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airbnb Admin — Hosting Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ff385c; --primary-active:#e00b41; --primary-disabled:#ffd1da;
+  --luxe:#460479; --plus:#92174d;
+  --ink:#222222; --body:#3f3f3f; --muted:#6a6a6a; --muted-soft:#929292;
+  --hairline:#dddddd; --hairline-soft:#ebebeb; --border-strong:#c1c1c1;
+  --canvas:#ffffff; --surface-soft:#f7f7f7; --surface-strong:#f2f2f2;
+  --on-primary:#ffffff; --error:#c13515; --legal-link:#428bff;
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-full:9999px;
+  --sp-sm:8px; --sp-md:12px; --sp-base:16px; --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px;
+  --font:'Inter','Circular',-apple-system,system-ui,Roboto,'Helvetica Neue',sans-serif;
+  --shadow-float:rgba(0,0,0,.02) 0 0 0 1px, rgba(0,0,0,.04) 0 2px 6px 0, rgba(0,0,0,.1) 0 4px 8px 0;
+  /* semantic badges */
+  --ok-bg:#e3f6ec; --ok-tx:#0a6c3d;
+  --warn-bg:#fdf1e0; --warn-tx:#8a5c12;
+  --danger-bg:#fdecea; --danger-tx:#c13515;
+  --neutral-bg:#f2f2f2; --neutral-tx:#6a6a6a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);font-size:14px;line-height:1.43;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer;border:none;background:none}
+input{font-family:var(--font)}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ===== SIDEBAR ===== */
+.side{border-right:1px solid var(--hairline);padding:24px 16px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh}
+.side .logo{display:flex;align-items:center;gap:8px;padding:4px 10px 20px}
+.side .logo svg{width:30px;height:30px;color:var(--primary)}
+.side .logo b{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.side .tag{font-size:8px;font-weight:700;letter-spacing:.32px;text-transform:uppercase;border:1px solid var(--ink);border-radius:9999px;padding:1px 6px;margin-left:2px}
+.mlabel{font-size:12px;font-weight:700;color:var(--muted);padding:14px 10px 6px}
+.mitem{display:flex;align-items:center;gap:12px;padding:10px;border-radius:9999px;font-size:14px;font-weight:500;color:var(--body)}
+.mitem svg{width:18px;height:18px;flex:none}
+.mitem:hover{background:var(--surface-soft)}
+.mitem.active{background:var(--surface-soft);color:var(--ink);font-weight:600;box-shadow:var(--shadow-float)}
+.mitem .count{margin-left:auto;font-size:12px;color:var(--muted);background:var(--surface-strong);border-radius:9999px;padding:1px 8px}
+.mitem.active .count{background:#fff;color:var(--primary)}
+.usercard{margin-top:auto;border:1px solid var(--hairline);border-radius:14px;padding:14px;display:flex;gap:10px;align-items:center}
+.usercard .av{width:36px;height:36px;border-radius:9999px;background:linear-gradient(135deg,#7d7777,#4f4b4b);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.usercard b{font-size:14px;display:block}
+.usercard span{font-size:12px;color:var(--muted)}
+
+/* ===== TOPBAR ===== */
+.main{min-width:0}
+.topbar{height:72px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;background:var(--canvas);z-index:40}
+.crumbs{font-size:14px;color:var(--muted)}
+.crumbs b{color:var(--ink);font-weight:600}
+.globalsearch{margin-left:auto;display:flex;align-items:center;gap:10px;border:1px solid var(--hairline);border-radius:9999px;box-shadow:var(--shadow-float);height:48px;padding:0 8px 0 20px;width:380px}
+.globalsearch svg{width:16px;height:16px;color:var(--muted);flex:none}
+.globalsearch input{border:none;outline:none;flex:1;font-size:14px;background:transparent}
+.globalsearch kbd{font-size:11px;color:var(--muted);border:1px solid var(--hairline);border-radius:6px;padding:2px 6px}
+.tb-ic{width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;position:relative;color:var(--ink)}
+.tb-ic:hover{background:var(--surface-soft)}
+.tb-ic .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:9999px;background:var(--primary);border:2px solid #fff}
+.tb-avatar{width:34px;height:34px;border-radius:9999px;background:linear-gradient(135deg,#7d7777,#4f4b4b);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.pillbtn{background:var(--primary);color:#fff;font-size:14px;font-weight:500;border-radius:9999px;padding:10px 20px}
+.pillbtn:hover{background:var(--primary-active)}
+
+.page{padding:32px 24px 48px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.page-left{min-width:0}
+h1{font-size:28px;font-weight:700}
+.pagesub{font-size:14px;color:var(--muted);margin-top:4px}
+.secthead{display:flex;align-items:center;justify-content:space-between;margin:32px 0 16px}
+.secthead:first-of-type{margin-top:28px}
+h2{font-size:21px;font-weight:700}
+.filterchips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:14px;font-weight:500;border:1px solid var(--hairline);border-radius:9999px;padding:8px 16px;background:#fff;color:var(--ink)}
+.chip:hover{border-color:var(--border-strong)}
+.chip.on{border-color:var(--ink);font-weight:600}
+
+/* ===== KPI ===== */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border:1px solid var(--hairline);border-radius:14px;padding:20px;background:#fff}
+.kpi .lab{font-size:14px;color:var(--muted)}
+.kpi .val{font-size:28px;font-weight:700;margin-top:6px}
+.kpi .delta{font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-top:6px}
+.up{color:#0a8a44}
+.down{color:var(--error)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:12px}
+.spark i{flex:1;background:var(--surface-strong);border-radius:3px 3px 0 0;min-height:4px}
+.spark i.hot{background:var(--primary)}
+
+/* ===== CHARTS ===== */
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.card{border:1px solid var(--hairline);border-radius:14px;padding:24px;background:#fff}
+.card h3{font-size:16px;font-weight:600}
+.card .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px;margin-top:24px}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:34px;background:var(--surface-strong);border-radius:8px 8px 4px 4px;position:relative}
+.bar.hot{background:var(--primary)}
+.bar .tip{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--muted)}
+.bcol span{font-size:12px;color:var(--muted)}
+.donut-wrap{display:flex;gap:24px;align-items:center;margin-top:20px}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .ctr b{font-size:28px;font-weight:700}
+.donut .ctr span{font-size:12px;color:var(--muted)}
+.legend{display:grid;gap:10px;font-size:14px}
+.legend .li{display:flex;align-items:center;gap:10px}
+.legend .sw{width:12px;height:12px;border-radius:4px;flex:none}
+.legend b{margin-left:auto;font-weight:600}
+
+/* ===== TABLE ===== */
+.tablecard{border:1px solid var(--hairline);border-radius:14px;background:#fff;overflow:hidden;margin-top:16px}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);text-align:left;padding:14px 16px;border-bottom:1px solid var(--hairline);background:var(--surface-soft)}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--hairline-soft);font-size:14px;vertical-align:middle}
+tbody tr:hover{background:var(--surface-soft)}
+tbody tr:last-child td{border-bottom:none}
+.listingcell{display:flex;align-items:center;gap:12px}
+.thumb{width:52px;height:40px;border-radius:8px;flex:none}
+.listingcell b{font-weight:600;display:block}
+.listingcell span{font-size:12px;color:var(--muted)}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:9999px;padding:4px 12px}
+.badge::before{content:"";width:6px;height:6px;border-radius:9999px;background:currentColor}
+.b-ok{background:var(--ok-bg);color:var(--ok-tx)}
+.b-warn{background:var(--warn-bg);color:var(--warn-tx)}
+.b-danger{background:var(--danger-bg);color:var(--danger-tx)}
+.b-neutral{background:var(--neutral-bg);color:var(--neutral-tx)}
+.amt{font-weight:600}
+.actions{display:flex;gap:4px;justify-content:flex-end}
+.act{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.act:hover{background:var(--surface-strong);color:var(--ink)}
+.tfoot{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;font-size:14px;color:var(--muted)}
+.pager{display:flex;gap:6px}
+.pg{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink);border:1px solid transparent}
+.pg:hover{background:var(--surface-soft)}
+.pg.on{background:var(--ink);color:#fff}
+
+/* ===== ACTIVITY PANEL ===== */
+.panel{border:1px solid var(--hairline);border-radius:14px;padding:24px;background:#fff;position:sticky;top:96px}
+.panel h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.panel .sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+.feed{display:grid;gap:0}
+.ev{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hairline-soft)}
+.ev:last-child{border-bottom:none}
+.ev .dot{width:10px;height:10px;border-radius:9999px;flex:none;margin-top:5px}
+.ev p{font-size:14px;color:var(--body)}
+.ev p b{color:var(--ink);font-weight:600}
+.ev time{font-size:12px;color:var(--muted)}
+.d-rose{background:var(--primary)}
+.d-green{background:#0a8a44}
+.d-amber{background:#d9a032}
+.d-gray{background:var(--muted-soft)}
+.d-violet{background:var(--luxe)}
+.quickstats{margin-top:20px;padding-top:20px;border-top:1px solid var(--hairline-soft)}
+.qs{display:flex;justify-content:space-between;font-size:14px;padding:7px 0}
+.qs b{font-weight:600}
+
+@media (max-width:1128px){.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .page{grid-template-columns:1fr}
+  .panel{position:static}
+  .globalsearch{width:200px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 1c2.2 0 3.4 1.1 4.5 3.4l6.4 13.4c.5 1.1.8 2 .8 3.1 0 3.1-2.3 5.1-5.2 5.1-1.7 0-3.4-.8-5-2.4-.7-.7-1.3-1.5-1.9-2.4h.1c-.6.9-1.2 1.7-1.9 2.4-1.6 1.6-3.3 2.4-5 2.4-2.9 0-5.2-2-5.2-5.1 0-1.1.3-2 .8-3.1L11.5 4.4C12.6 2.1 13.8 1 16 1zm-.6 3.1L8.9 18.6c-.4.8-.6 1.5-.6 2.2 0 1.5 1 2.4 2.5 2.4 1.1 0 2.2-.6 3.4-1.8.9-.9 1.7-2.1 2.4-3.4-1.5-2.4-2.4-4.4-2.4-6 0-2.4 1.6-4 3.6-4s3.6 1.6 3.6 4c0 1.6-.9 3.6-2.4 6 .7 1.3 1.5 2.5 2.4 3.4 1.2 1.2 2.3 1.8 3.4 1.8 1.5 0 2.5-.9 2.5-2.4 0-.7-.2-1.4-.6-2.2l-6.5-13.5h-1.2zm.6 6.1c-.9 0-1.6.8-1.6 1.9 0 1.1.6 2.5 1.6 4.2 1-1.7 1.6-3.1 1.6-4.2 0-1.1-.7-1.9-1.6-1.9z"/></svg>
+      <b>airbnb</b><span class="tag">Admin</span>
+    </div>
+    <span class="mlabel">Overview</span>
+    <a class="mitem active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Dashboard</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V8l8-4 8 4v11"/><path d="M9 19v-6h6v6"/></svg>Listings<span class="count">24</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Reservations<span class="count">9</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>Messages<span class="count">17</span></a>
+    <span class="mlabel">Business</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 4v5c0 4.4-3 8.4-7 9-4-.6-7-4.6-7-9V7z"/></svg>Payouts</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l2.4 5.6L20 9.3l-4.2 4 1.1 5.9L12 16.3 7.1 19.2l1.1-5.9L4 9.3l5.6-.7z"/></svg>Reviews</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20V9M12 20V4M18 20v-8"/><path d="M3 20h18"/></svg>Analytics</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>Guests</a>
+    <span class="mlabel">System</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.07-.4.1-.8.1-1.2z"/></svg>Settings</a>
+    <div class="usercard">
+      <span class="av">MK</span>
+      <div><b>Maya Kessler</b><span>Portfolio admin</span></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">Portfolio &nbsp;/&nbsp; <b>Dashboard</b></div>
+      <div class="globalsearch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        <input type="text" placeholder="Search listings, guests, reservations">
+        <kbd>⌘K</kbd>
+      </div>
+      <button class="tb-ic" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 9a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="tb-avatar">MK</span>
+      <button class="pillbtn">+ New listing</button>
+    </header>
+
+    <div class="page">
+      <div class="page-left">
+        <h1>Good morning, Maya</h1>
+        <p class="pagesub">Your portfolio earned <b>$18,420</b> across 24 listings in the last 30 days.</p>
+
+        <div class="secthead">
+          <h2>Performance</h2>
+          <div class="filterchips">
+            <button class="chip">7 days</button>
+            <button class="chip on">30 days</button>
+            <button class="chip">90 days</button>
+            <button class="chip">Year</button>
+          </div>
+        </div>
+        <div class="kpis">
+          <div class="kpi">
+            <p class="lab">Gross earnings</p>
+            <p class="val">$18,420</p>
+            <p class="delta up">↑ 12.4%</p>
+            <div class="spark"><i style="height:40%"></i><i style="height:55%"></i><i style="height:35%"></i><i style="height:60%"></i><i style="height:50%"></i><i style="height:75%"></i><i class="hot" style="height:95%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Occupancy rate</p>
+            <p class="val">78%</p>
+            <p class="delta up">↑ 3.1 pts</p>
+            <div class="spark"><i style="height:45%"></i><i style="height:50%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:70%"></i><i class="hot" style="height:82%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Average daily rate</p>
+            <p class="val">$312</p>
+            <p class="delta down">↓ 2.0%</p>
+            <div class="spark"><i style="height:70%"></i><i style="height:75%"></i><i style="height:80%"></i><i style="height:66%"></i><i style="height:72%"></i><i style="height:64%"></i><i class="hot" style="height:60%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Guest rating</p>
+            <p class="val">4.92</p>
+            <p class="delta up">↑ 0.04</p>
+            <div class="spark"><i style="height:60%"></i><i style="height:64%"></i><i style="height:62%"></i><i style="height:68%"></i><i style="height:70%"></i><i style="height:74%"></i><i class="hot" style="height:80%"></i></div>
+          </div>
+        </div>
+
+        <div class="secthead"><h2>Bookings &amp; revenue mix</h2></div>
+        <div class="charts">
+          <div class="card">
+            <h3>Nights booked per month</h3>
+            <p class="sub">Trailing 12 months · all listings</p>
+            <div class="bars">
+              <div class="bcol"><div class="bar" style="height:42%"><span class="tip">86</span></div><span>Nov</span></div>
+              <div class="bcol"><div class="bar" style="height:38%"><span class="tip">78</span></div><span>Dec</span></div>
+              <div class="bcol"><div class="bar" style="height:55%"><span class="tip">112</span></div><span>Jan</span></div>
+              <div class="bcol"><div class="bar" style="height:50%"><span class="tip">101</span></div><span>Feb</span></div>
+              <div class="bcol"><div class="bar" style="height:64%"><span class="tip">130</span></div><span>Mar</span></div>
+              <div class="bcol"><div class="bar hot" style="height:88%"><span class="tip">178</span></div><span>Apr</span></div>
+              <div class="bcol"><div class="bar" style="height:72%"><span class="tip">146</span></div><span>May</span></div>
+              <div class="bcol"><div class="bar" style="height:80%"><span class="tip">162</span></div><span>Jun</span></div>
+              <div class="bcol"><div class="bar" style="height:58%"><span class="tip">118</span></div><span>Jul</span></div>
+              <div class="bcol"><div class="bar" style="height:47%"><span class="tip">96</span></div><span>Aug</span></div>
+              <div class="bcol"><div class="bar" style="height:52%"><span class="tip">106</span></div><span>Sep</span></div>
+              <div class="bcol"><div class="bar" style="height:44%"><span class="tip">90</span></div><span>Oct</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Revenue by stay type</h3>
+            <p class="sub">Last 30 days</p>
+            <div class="donut-wrap">
+              <div class="donut">
+                <svg viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#f2f2f2" stroke-width="7"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#ff385c" stroke-width="7" stroke-dasharray="48 52" stroke-dashoffset="0"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#460479" stroke-width="7" stroke-dasharray="27 73" stroke-dashoffset="-48"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#92174d" stroke-width="7" stroke-dasharray="15 85" stroke-dashoffset="-75"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#c1c1c1" stroke-width="7" stroke-dasharray="10 90" stroke-dashoffset="-90"/>
+                </svg>
+                <div class="ctr"><b>$18.4k</b><span>total</span></div>
+              </div>
+              <div class="legend">
+                <div class="li"><span class="sw" style="background:#ff385c"></span>Entire homes<b>48%</b></div>
+                <div class="li"><span class="sw" style="background:#460479"></span>Airbnb Luxe<b>27%</b></div>
+                <div class="li"><span class="sw" style="background:#92174d"></span>Private rooms<b>15%</b></div>
+                <div class="li"><span class="sw" style="background:#c1c1c1"></span>Experiences<b>10%</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="secthead">
+          <h2>Listings</h2>
+          <div class="filterchips">
+            <button class="chip on">All</button>
+            <button class="chip">Live</button>
+            <button class="chip">Pending</button>
+            <button class="chip">Suspended</button>
+          </div>
+        </div>
+        <div class="tablecard">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:44px"><input type="checkbox" aria-label="Select all"></th>
+                <th>Listing</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>30-day payout</th>
+                <th>Updated</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#f3d9c8,#b06a58)"></span><div><b>Cliffside Cabin Above the Gorge</b><span>Columbia River Gorge, OR</span></div></div></td>
+                <td>Entire home</td>
+                <td><span class="badge b-ok">Live</span></td>
+                <td class="amt">$4,812</td>
+                <td>Oct 24, 2026</td>
+                <td><div class="actions"><button class="act" title="View">👁</button><button class="act" title="Edit">✎</button><button class="act" title="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#efe0ee,#96628f)"></span><div><b>Desert Casita &amp; Plunge Pool</b><span>Joshua Tree, CA</span></div></div></td>
+                <td>Entire home</td>
+                <td><span class="badge b-ok">Live</span></td>
+                <td class="amt">$3,660</td>
+                <td>Oct 23, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#e3d6c4,#8a6d4e)"></span><div><b>Villa Serena on the Amalfi Coast</b><span>Positano, Italy</span></div></div></td>
+                <td>Airbnb Luxe</td>
+                <td><span class="badge b-ok">Live</span></td>
+                <td class="amt">$6,450</td>
+                <td>Oct 22, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#dfe8cf,#88a268)"></span><div><b>Cedar Cabin in the Pines</b><span>Hood River, OR</span></div></div></td>
+                <td>Cabin</td>
+                <td><span class="badge b-warn">In review</span></td>
+                <td class="amt">$1,134</td>
+                <td>Oct 21, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#d4dde6,#61707f)"></span><div><b>Skyline Studio Above the Park</b><span>Chicago, IL</span></div></div></td>
+                <td>Private room</td>
+                <td><span class="badge b-ok">Live</span></td>
+                <td class="amt">$984</td>
+                <td>Oct 20, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#f2d9d9,#a85f5f)"></span><div><b>Lakehouse Dock &amp; Sauna</b><span>Lake Placid, NY</span></div></div></td>
+                <td>Entire home</td>
+                <td><span class="badge b-danger">Suspended</span></td>
+                <td class="amt">$0</td>
+                <td>Oct 18, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#cfe3f5,#5c86b8)"></span><div><b>Harborview Loft with Terrace</b><span>Portland, ME</span></div></div></td>
+                <td>Entire home</td>
+                <td><span class="badge b-ok">Live</span></td>
+                <td class="amt">$1,552</td>
+                <td>Oct 17, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="listingcell"><span class="thumb" style="background:linear-gradient(140deg,#f7e3b8,#b98336)"></span><div><b>Sunset Ranch Riding Trails</b><span>Santa Ynez, CA</span></div></div></td>
+                <td>Experience</td>
+                <td><span class="badge b-neutral">Draft</span></td>
+                <td class="amt">$—</td>
+                <td>Oct 15, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tfoot">
+            <span>Showing 1–8 of 24 listings</span>
+            <div class="pager">
+              <button class="pg">‹</button>
+              <button class="pg on">1</button>
+              <button class="pg">2</button>
+              <button class="pg">3</button>
+              <button class="pg">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3>Recent activity</h3>
+        <p class="sub">Across your portfolio · last 24 hours</p>
+        <div class="feed">
+          <div class="ev"><span class="dot d-green"></span><div><p><b>Reservation confirmed</b> — Harborview Loft, Apr 3–8, 2 guests</p><time>12 min ago</time></div></div>
+          <div class="ev"><span class="dot d-rose"></span><div><p><b>New 5-star review</b> on Cliffside Cabin — “Waking up to the gorge fog was unreal.”</p><time>1 hr ago</time></div></div>
+          <div class="ev"><span class="dot d-amber"></span><div><p><b>License expiring</b> — Desert Casita short-term rental permit ends Nov 30</p><time>3 hrs ago</time></div></div>
+          <div class="ev"><span class="dot d-violet"></span><div><p><b>Luxe inspection passed</b> — Villa Serena verified for the 2027 season</p><time>6 hrs ago</time></div></div>
+          <div class="ev"><span class="dot d-gray"></span><div><p><b>Payout sent</b> — $6,450 to First Interstate ••4471</p><time>Yesterday</time></div></div>
+        </div>
+        <div class="quickstats">
+          <div class="qs"><span>Response rate</span><b>98%</b></div>
+          <div class="qs"><span>Response time</span><b>24 min</b></div>
+          <div class="qs"><span>Cancellation rate</span><b>1.2%</b></div>
+          <div class="qs"><span>Next payout</span><b>Nov 1 · $7,890</b></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</body>
+</html>

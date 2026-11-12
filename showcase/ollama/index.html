@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ollama — Design Showcase</title>
+<style>
+:root{
+  /* colors */
+  --c-primary:#000000;
+  --c-on-primary:#ffffff;
+  --c-ink:#000000;
+  --c-ink-deep:#090909;
+  --c-charcoal:#525252;
+  --c-body:#737373;
+  --c-mute:#a3a3a3;
+  --c-canvas:#ffffff;
+  --c-surface-soft:#fafafa;
+  --c-surface-card:#ffffff;
+  --c-hairline:#e5e5e5;
+  --c-hairline-strong:#d4d4d4;
+  --c-on-dark:#ffffff;
+  --c-on-dark-mute:rgba(255,255,255,0.7);
+  --c-surface-dark:#171717;
+  --c-focus-ring:rgba(59,130,246,0.5);
+  --c-link:#000000;
+  --c-link-mute:#737373;
+  --c-terminal-red:#ff5f56;
+  --c-terminal-yellow:#ffbd2e;
+  --c-terminal-green:#27c93f;
+  /* rounded */
+  --r-none:0px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-full:9999px;
+  /* spacing */
+  --s-xxs:2px; --s-xs:4px; --s-sm:8px; --s-md:12px;
+  --s-lg:16px; --s-xl:24px; --s-xxl:32px; --s-section:88px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color:var(--c-ink);
+  background:var(--c-canvas);
+  font-size:16px;line-height:1.5;
+}
+/* ═══ banner ═══ */
+.sg-banner{
+  background:var(--c-canvas);
+  color:var(--c-ink);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;
+  border-bottom:1px solid var(--c-hairline);
+}
+.sg-banner .sg-left{display:flex;align-items:center;gap:16px;}
+.sg-banner .sg-folder{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;color:var(--c-body);
+}
+.sg-banner .sg-brand{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:18px;font-weight:600;
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+}
+.sg-banner .sg-brand svg{display:block;}
+.sg-banner .sg-desc{
+  font-size:13px;color:var(--c-body);
+  max-width:560px;text-align:right;
+}
+main{max-width:960px;margin:0 auto;padding:0 24px;}
+.sg-section-title{
+  font-size:13px;font-weight:500;color:var(--c-mute);
+  border-bottom:1px solid var(--c-hairline);
+  padding-bottom:var(--s-sm);
+  margin-bottom:var(--s-section);
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+}
+.sg-block-label{
+  font-size:14px;font-weight:500;color:var(--c-ink);
+  margin-bottom:var(--s-md);
+}
+.sg-block{margin-bottom:var(--s-section);}
+/* ── color tokens ── */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:var(--s-md);}
+.swatch{border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden;}
+.swatch .chip{height:60px;}
+.swatch .meta{padding:8px 10px;background:var(--c-canvas);}
+.swatch .name{font-size:12px;font-weight:500;}
+.swatch .hex{font-size:11px;color:var(--c-body);font-family:ui-monospace,Menlo,monospace;}
+/* ── typography ── */
+.type-spec{border-top:1px solid var(--c-hairline);}
+.type-row{
+  padding:var(--s-lg) 0;
+  border-bottom:1px solid var(--c-hairline);
+  display:flex;align-items:baseline;gap:var(--s-xl);flex-wrap:wrap;
+}
+.type-row .tag{
+  font-size:11px;color:var(--c-mute);
+  font-family:ui-monospace,Menlo,monospace;min-width:200px;
+}
+.t-display-xl{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito','Segoe UI',system-ui,sans-serif;
+  font-size:36px;font-weight:500;line-height:1.11;
+}
+.t-display-lg{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito','Segoe UI',system-ui,sans-serif;
+  font-size:30px;font-weight:500;line-height:1.2;
+}
+.t-heading-lg{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:24px;font-weight:600;line-height:1.33;
+}
+.t-h-md{font-size:20px;font-weight:500;line-height:1.4;}
+.t-h-sm{font-size:18px;font-weight:500;line-height:1.56;}
+.t-body{font-size:16px;font-weight:400;line-height:1.5;}
+.t-body-strong{font-size:16px;font-weight:500;line-height:1.5;}
+.t-bsm{font-size:14px;color:var(--c-charcoal);}
+.t-cap{font-size:12px;color:var(--c-mute);}
+.t-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:16px;}
+.t-code-sm{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;}
+/* ── buttons ── */
+.btn-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;text-decoration:none;
+  font:500 14px/1 ui-sans-serif,system-ui,sans-serif;
+  border-radius:var(--r-full);
+  padding:10px 20px;height:36px;
+}
+.btn-primary{background:var(--c-primary);color:var(--c-on-primary);}
+.btn-primary:hover{background:var(--c-ink-deep);}
+.btn-primary.pressed{background:var(--c-ink-deep);outline:2px solid var(--c-hairline);outline-offset:3px;}
+.btn-secondary{background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline-strong);}
+.btn-secondary:hover{background:var(--c-surface-soft);}
+.btn-pill-on-dark{background:var(--c-canvas);color:var(--c-ink);}
+.btn-disabled{background:var(--c-surface-soft);color:var(--c-mute);cursor:not-allowed;}
+/* ── inputs ── */
+.input-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.search-pill{
+  display:inline-flex;align-items:center;gap:var(--s-xs);
+  background:var(--c-surface-soft);color:var(--c-ink);
+  border:1px solid transparent;
+  border-radius:var(--r-full);
+  padding:6px 16px;height:36px;width:280px;
+}
+.search-pill input{border:none;background:transparent;outline:none;font:400 14px ui-sans-serif,system-ui;width:100%;}
+.search-pill input::placeholder{color:var(--c-body);}
+.search-pill.focus{background:var(--c-canvas);border-color:var(--c-ink);box-shadow:0 0 0 3px var(--c-focus-ring);}
+.text-input{
+  background:var(--c-canvas);color:var(--c-ink);
+  font:400 16px/1.5 ui-sans-serif,system-ui,sans-serif;
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-full);
+  padding:6px 16px;height:40px;width:260px;outline:none;
+}
+.text-input.focus{border-color:var(--c-ink);box-shadow:0 0 0 3px var(--c-focus-ring);}
+.command-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--c-surface-soft);
+  font-family:ui-monospace,Menlo,monospace;font-size:14px;
+  border-radius:var(--r-full);padding:6px 12px;
+}
+.command-tag .copy{color:var(--c-mute);font-size:12px;}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+.check .box{width:18px;height:18px;border:1px solid var(--c-hairline-strong);border-radius:var(--r-sm);display:inline-flex;align-items:center;justify-content:center;color:transparent;font-size:12px;}
+.check.on .box{background:var(--c-primary);border-color:var(--c-primary);color:#fff;}
+.check.disabled{color:var(--c-mute);cursor:not-allowed;}
+.check.disabled .box{background:var(--c-surface-soft);}
+/* ── terminal card ── */
+.terminal-card{
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-lg);
+  background:var(--c-canvas);
+}
+.terminal-card .lights{display:flex;gap:var(--s-xs);margin-bottom:var(--s-md);}
+.terminal-card .lights span{width:12px;height:12px;border-radius:var(--r-full);}
+.terminal-card pre{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14px;line-height:1.43;
+  color:var(--c-ink);
+  white-space:pre-wrap;
+}
+.terminal-card .cm{color:var(--c-mute);}
+/* ── cards ── */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md);}
+.pricing-card{
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  padding:32px;
+  background:var(--c-canvas);
+}
+.pricing-card .mascot{font-size:28px;line-height:1;margin-bottom:var(--s-md);}
+.pricing-card h4{font-size:20px;font-weight:500;}
+.pricing-card .tier-desc{font-size:14px;color:var(--c-body);margin:4px 0 var(--s-lg);}
+.pricing-card .price{font-size:30px;font-weight:500;font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;}
+.pricing-card .price span{font-size:14px;font-weight:400;color:var(--c-body);}
+.pricing-card ul{list-style:none;margin:var(--s-lg) 0;}
+.pricing-card li{font-size:14px;color:var(--c-charcoal);padding:4px 0;display:flex;gap:8px;}
+.pricing-card li::before{content:"✓";color:var(--c-ink);font-weight:500;}
+.pricing-card.dark{
+  background:var(--c-surface-dark);color:var(--c-on-dark);
+  border-color:var(--c-surface-dark);
+}
+.pricing-card.dark .tier-desc{color:var(--c-on-dark-mute);}
+.pricing-card.dark li{color:var(--c-on-dark-mute);}
+.pricing-card.dark li::before{content:"✓";color:var(--c-on-dark);}
+.pricing-card.dark .price span{color:var(--c-on-dark-mute);}
+/* ── badges ── */
+.badge-row{display:flex;gap:var(--s-sm);flex-wrap:wrap;align-items:center;}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;
+  border-radius:var(--r-full);padding:4px 12px;
+}
+.badge.soft{background:var(--c-surface-soft);color:var(--c-ink);border:1px solid var(--c-hairline);}
+.badge.outline{background:transparent;color:var(--c-ink);border:1px solid var(--c-hairline-strong);}
+.badge.mono{background:var(--c-surface-soft);font-family:ui-monospace,Menlo,monospace;font-size:13px;}
+.badge.dark{background:var(--c-surface-dark);color:var(--c-on-dark);}
+/* ── nav ── */
+.nav-demo{border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden;}
+.primary-nav{
+  background:var(--c-canvas);color:var(--c-ink);
+  height:56px;display:flex;align-items:center;gap:var(--s-lg);
+  padding:0 var(--s-lg);
+}
+.primary-nav .logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;}
+.primary-nav .links{display:flex;gap:var(--s-md);}
+.primary-nav .links a{
+  font-size:14px;font-weight:500;color:var(--c-ink);text-decoration:none;
+  padding:6px 10px;border-radius:var(--r-full);
+}
+.primary-nav .links a:hover{background:var(--c-surface-soft);}
+.primary-nav .right{margin-left:auto;display:flex;align-items:center;gap:var(--s-md);}
+/* ── table/list ── */
+.faq-list{border-top:1px solid var(--c-hairline);}
+.faq-row{padding:var(--s-lg) 0;border-bottom:1px solid var(--c-hairline);}
+.faq-row .q{font-size:18px;font-weight:500;}
+.faq-row .a{font-size:16px;color:var(--c-body);margin-top:var(--s-xs);}
+.faq-row .a a{color:var(--c-body);}
+.mini-table{width:100%;border-collapse:collapse;font-size:14px;}
+.mini-table th{
+  text-align:left;font-size:12px;font-weight:500;color:var(--c-mute);
+  padding:8px 12px;border-bottom:1px solid var(--c-hairline-strong);
+}
+.mini-table td{padding:8px 12px;border-bottom:1px solid var(--c-hairline);color:var(--c-charcoal);}
+.mini-table td.b{font-weight:500;color:var(--c-ink);}
+/* ═══ product ═══ */
+#product{margin-top:var(--s-section);}
+.hero{
+  text-align:center;
+  padding:var(--s-section) 0;
+}
+.hero .mascot{font-size:64px;line-height:1;margin-bottom:var(--s-lg);}
+.hero h1{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:36px;font-weight:500;line-height:1.11;
+  max-width:560px;margin:0 auto var(--s-lg);
+}
+.hero .install-snippet{
+  display:inline-flex;align-items:center;gap:var(--s-md);
+  background:var(--c-surface-soft);
+  border-radius:var(--r-full);
+  padding:12px 20px;height:48px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:16px;
+  margin-bottom:var(--s-md);
+}
+.hero .install-snippet .copy{color:var(--c-mute);font-size:13px;}
+.hero .sub{font-size:14px;font-weight:500;color:var(--c-body);margin-bottom:var(--s-lg);}
+.hero .cta-row{display:flex;justify-content:center;gap:var(--s-md);}
+.logo-strip{
+  display:flex;align-items:center;justify-content:center;gap:var(--s-xxl);
+  padding:var(--s-lg) 0 var(--s-section);
+  flex-wrap:wrap;
+  font-size:14px;font-weight:500;color:var(--c-mute);
+}
+.section-head{text-align:center;margin-bottom:var(--s-xl);}
+.section-head h2{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:30px;font-weight:500;
+}
+.section-head p{font-size:16px;color:var(--c-body);margin-top:var(--s-xs);}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-xxl);align-items:center;margin-bottom:var(--s-section);}
+.split h3{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:24px;font-weight:600;margin-bottom:var(--s-sm);
+}
+.split p{font-size:16px;color:var(--c-body);margin-bottom:var(--s-md);}
+.split ul{list-style:none;}
+.split li{font-size:14px;color:var(--c-charcoal);padding:4px 0;display:flex;gap:8px;}
+.split li::before{content:"✓";font-weight:500;}
+.privacy-strip{
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s-lg);
+  align-items:center;
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-xl);
+  margin-bottom:var(--s-section);
+}
+.privacy-strip .lock{font-size:36px;line-height:1;}
+.privacy-strip h3{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:24px;font-weight:600;
+}
+.privacy-strip p{font-size:16px;color:var(--c-body);margin-top:4px;}
+.pricing-head{text-align:center;margin-bottom:var(--s-xl);}
+.pricing-head h2{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:30px;font-weight:500;
+}
+.pricing-head p{font-size:16px;color:var(--c-body);margin-top:var(--s-xs);}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md);margin-bottom:var(--s-section);}
+.quote{
+  max-width:640px;margin:0 auto var(--s-section);
+  text-align:center;
+}
+.quote blockquote{
+  font-family:'SF Pro Rounded',ui-rounded,'Nunito',system-ui,sans-serif;
+  font-size:24px;font-weight:600;line-height:1.33;
+}
+.quote cite{
+  display:block;font-style:normal;
+  font-size:14px;color:var(--c-body);margin-top:var(--s-md);
+}
+.cta-strip-dark{
+  background:var(--c-surface-dark);color:var(--c-on-dark);
+  border-radius:var(--r-lg);
+  padding:24px 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap;
+  margin-bottom:var(--s-section);
+}
+.cta-strip-dark h3{font-size:24px;font-weight:600;}
+footer.sg-footer{
+  border-top:1px solid var(--c-hairline);
+  padding:32px 0;
+  display:flex;align-items:center;justify-content:center;gap:var(--s-lg);flex-wrap:wrap;
+  font-size:12px;color:var(--c-body);
+}
+.sg-footer a{color:var(--c-body);text-decoration:none;}
+.sg-footer a:hover{color:var(--c-ink);}
+@media (max-width:900px){
+  .card-grid,.pricing-grid{grid-template-columns:1fr;}
+  .split{grid-template-columns:1fr;}
+  .primary-nav .links{display:none;}
+  .primary-nav .search{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-folder">ollama</span>
+    <span class="sg-brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="14" cy="15" rx="7" ry="8" />
+        <circle cx="14" cy="5" r="2.4"/>
+        <path d="M11.2 6.5 12.4 9"/><path d="M16.8 6.5 15.6 9"/>
+        <circle cx="11.5" cy="13.5" r="0.7" fill="#000"/><circle cx="16.5" cy="13.5" r="0.7" fill="#000"/>
+        <path d="M12.5 17.2 Q14 18.6 15.5 17.2"/>
+      </svg>
+      Ollama
+    </span>
+  </div>
+  <div class="sg-desc">Documentation-first minimalism — a paper-white README rendered with care, black pill CTAs, and a hand-drawn llama as the only ornament.</div>
+</header>
+
+<main>
+  <!-- ═══════════ COMPONENTS ═══════════ -->
+  <section id="components" style="padding-top:var(--s-section);">
+    <div class="sg-section-title">$ components --list</div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><div class="name">Primary</div><div class="hex">#000000</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid #e5e5e5"></div><div class="meta"><div class="name">Canvas</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#fafafa"></div><div class="meta"><div class="name">Soft Surface</div><div class="hex">#FAFAFA</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#171717"></div><div class="meta"><div class="name">Surface Dark</div><div class="hex">#171717</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#737373"></div><div class="meta"><div class="name">Body</div><div class="hex">#737373</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#a3a3a3"></div><div class="meta"><div class="name">Mute</div><div class="hex">#A3A3A3</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ff5f56"></div><div class="meta"><div class="name">Terminal Red</div><div class="hex">#FF5F56</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffbd2e"></div><div class="meta"><div class="name">Terminal Yellow</div><div class="hex">#FFBD2E</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#27c93f"></div><div class="meta"><div class="name">Terminal Green</div><div class="hex">#27C93F</div></div></div>
+        <div class="swatch"><div class="chip" style="background:rgba(59,130,246,0.5)"></div><div class="meta"><div class="name">Focus Ring</div><div class="hex">rgba(59,130,246,.5)</div></div></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="tag">display-xl · 36/500</span><span class="t-display-xl">The easiest way to build with open models</span></div>
+        <div class="type-row"><span class="tag">display-lg · 30/500</span><span class="t-display-lg">Pricing</span></div>
+        <div class="type-row"><span class="tag">heading-lg · 24/600</span><span class="t-heading-lg">Start local. Scale cloud.</span></div>
+        <div class="type-row"><span class="tag">heading-md · 20/500</span><span class="t-h-md">Pro</span></div>
+        <div class="type-row"><span class="tag">heading-sm · 18/500</span><span class="t-h-sm">Frequently asked questions</span></div>
+        <div class="type-row"><span class="tag">body-md · 16/400</span><span class="t-body">Ollama runs open models like Llama, Qwen and DeepSeek entirely on your own machine.</span></div>
+        <div class="type-row"><span class="tag">body-sm · 14/400</span><span class="t-bsm">Access larger models on data-center-grade hardware.</span></div>
+        <div class="type-row"><span class="tag">code-md · 16 mono</span><span class="t-code">curl -fsSL https://ollama.com/install.sh | sh</span></div>
+        <div class="type-row"><span class="tag">code-sm · 14 mono</span><span class="t-code-sm">ollama pull llama3.2:3b</span></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Download</button>
+        <button class="btn btn-primary pressed">Pressed</button>
+        <button class="btn btn-secondary">Sign in</button>
+        <button class="btn btn-pill-on-dark" style="outline:2px solid var(--c-hairline);outline-offset:3px;">Get Max</button>
+        <button class="btn btn-disabled">Disabled</button>
+        <span class="command-tag">ollama run llama3.2 <span class="copy">⧉</span></span>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs</div>
+      <div class="input-row">
+        <label class="search-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input placeholder="Search models">
+        </label>
+        <label class="search-pill focus">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input value="llama3.2">
+        </label>
+        <input class="text-input" placeholder="Email address">
+        <input class="text-input focus" value="dev@local.host">
+        <label class="check on"><span class="box">✓</span>Keep models updated</label>
+        <label class="check disabled"><span class="box">✓</span>Share telemetry</label>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Cards — terminal &amp; pricing</div>
+      <div class="card-grid">
+        <div class="terminal-card" style="grid-column:span 3;">
+          <div class="lights"><span style="background:#ff5f56;"></span><span style="background:#ffbd2e;"></span><span style="background:#27c93f;"></span></div>
+          <pre><span class="cm"># run a model entirely on your machine</span>
+$ ollama run llama3.2
+<span class="cm">&gt;&gt;&gt;</span> summarize the meeting notes below
+Sure — here are the three key decisions...</pre>
+        </div>
+      </div>
+      <div class="card-grid" style="margin-top:var(--s-md);">
+        <div class="pricing-card">
+          <div class="mascot">🦙</div>
+          <h4>Free</h4>
+          <div class="tier-desc">Run models locally, forever.</div>
+          <div class="price">$0</div>
+          <ul><li>Unlimited local models</li><li>OpenAI-compatible API</li><li>Community support</li></ul>
+          <button class="btn btn-primary" style="width:100%;">Download</button>
+        </div>
+        <div class="pricing-card">
+          <div class="mascot">🦙</div>
+          <h4>Pro</h4>
+          <div class="tier-desc">Solve harder tasks, faster.</div>
+          <div class="price">$20 <span>/ month</span></div>
+          <ul><li>Cloud models</li><li>Access larger models</li><li>Everything in Free</li></ul>
+          <button class="btn btn-primary" style="width:100%;">Get Pro</button>
+        </div>
+        <div class="pricing-card dark">
+          <div class="mascot">🦙</div>
+          <h4>Max</h4>
+          <div class="tier-desc">The full power of the cloud.</div>
+          <div class="price">$60 <span>/ month</span></div>
+          <ul><li>Priority access</li><li>Longer context windows</li><li>Everything in Pro</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Badges</div>
+      <div class="badge-row">
+        <span class="badge soft">New</span>
+        <span class="badge outline">Open source</span>
+        <span class="badge mono">$ ollama pull llama3.2</span>
+        <span class="badge dark">Cloud &amp; local</span>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation</div>
+      <div class="nav-demo">
+        <nav class="primary-nav">
+          <span class="logo">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="14" cy="15" rx="7" ry="8"/><circle cx="14" cy="5" r="2.4"/><path d="M11.2 6.5 12.4 9"/><path d="M16.8 6.5 15.6 9"/>
+            </svg>
+            Ollama
+          </span>
+          <div class="links"><a href="#">Models</a><a href="#">Docs</a><a href="#">Blog</a><a href="#">Pricing</a></div>
+          <label class="search-pill" style="width:220px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input placeholder="Search models">
+          </label>
+          <div class="right">
+            <a href="#" style="font-size:14px;font-weight:500;color:#000;text-decoration:none;">Sign in</a>
+            <button class="btn btn-primary">Download</button>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">FAQ rows &amp; table</div>
+      <div class="faq-list">
+        <div class="faq-row">
+          <div class="q">Is my data sent anywhere?</div>
+          <div class="a">No. Models run entirely on your hardware. Your data stays yours — see <a href="#">hello@ollama.com</a> with any questions.</div>
+        </div>
+        <div class="faq-row">
+          <div class="q">Which models are supported?</div>
+          <div class="a">Llama, Qwen, DeepSeek, Gemma, Mistral and hundreds more from the model library.</div>
+        </div>
+        <div class="faq-row">
+          <div class="q">Can I use the OpenAI SDK?</div>
+          <div class="a">Yes — the Ollama API is OpenAI-compatible, so existing client libraries work unchanged.</div>
+        </div>
+      </div>
+      <table class="mini-table" style="margin-top:var(--s-section);">
+        <thead><tr><th>Plan</th><th>Context window</th><th>Hardware</th><th>Price</th></tr></thead>
+        <tbody>
+          <tr><td class="b">Free</td><td>Your machine</td><td>Local GPU / CPU</td><td class="b">$0</td></tr>
+          <tr><td class="b">Pro</td><td>128K</td><td>Data-center grade</td><td class="b">$20/mo</td></tr>
+          <tr><td class="b">Max</td><td>Longest available</td><td>Dedicated cloud</td><td class="b">$60/mo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ PRODUCT ═══════════ -->
+  <section id="product">
+    <div class="sg-section-title">$ product --preview</div>
+
+    <div class="hero">
+      <div class="mascot">
+        <svg width="88" height="88" viewBox="0 0 28 28" fill="none" stroke="#000" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="14" cy="15" rx="7" ry="8"/><circle cx="14" cy="5" r="2.4"/><path d="M11.2 6.5 12.4 9"/><path d="M16.8 6.5 15.6 9"/><circle cx="11.5" cy="13.5" r="0.6" fill="#000"/><circle cx="16.5" cy="13.5" r="0.6" fill="#000"/><path d="M12.5 17.2 Q14 18.6 15.5 17.2"/>
+        </svg>
+    </div>
+      <h1>The easiest way to build with open models</h1>
+      <div class="install-snippet">curl -fsSL https://ollama.com/install.sh | sh <span class="copy">⧉</span></div>
+      <div class="sub">Power OpenClaw with Ollama · macOS · Linux · Windows</div>
+      <div class="cta-row">
+        <button class="btn btn-primary">Download for macOS</button>
+        <button class="btn btn-secondary">Browse models</button>
+      </div>
+    </div>
+
+    <div class="logo-strip">Llama · Qwen · DeepSeek · Gemma · Mistral · Phi · GLM · GPT-OSS</div>
+
+    <div class="split">
+      <div>
+        <h3>Automate your work</h3>
+        <p>Ollama connects to your tools and runs tasks with open models — no data leaves your machine.</p>
+        <ul>
+          <li>OpenAI-compatible API on localhost:11434</li>
+          <li>Tool calling and structured outputs</li>
+          <li>One-command model management</li>
+        </ul>
+        <button class="btn btn-secondary" style="margin-top:var(--s-md);">See more apps →</button>
+      </div>
+      <div class="terminal-card">
+        <div class="lights"><span style="background:#ff5f56;"></span><span style="background:#ffbd2e;"></span><span style="background:#27c93f;"></span></div>
+        <pre><span class="cm"># start building in seconds</span>
+$ ollama launch openclaw
+<span class="cm">✓ model loaded (4.7 GB)</span>
+<span class="cm">✓ api ready at</span> http://localhost:11434
+&gt;&gt;&gt refactoring the ingest pipeline... done</pre>
+      </div>
+    </div>
+
+    <div class="privacy-strip">
+      <div class="lock">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </div>
+      <div>
+        <h3>Your data stays yours</h3>
+        <p>Everything runs locally by default. No telemetry, no prompts on our servers — read the code, it's open source.</p>
+      </div>
+    </div>
+
+    <div class="pricing-head">
+      <h2>Start local. Scale cloud.</h2>
+      <p>Free forever on your machine, with cloud capacity when you need it.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="mascot">🦙</div>
+        <h4>Free</h4>
+        <div class="tier-desc">Run models locally, forever.</div>
+        <div class="price">$0</div>
+        <ul><li>Unlimited local models</li><li>OpenAI-compatible API</li><li>Community support</li></ul>
+        <button class="btn btn-primary" style="width:100%;">Download</button>
+      </div>
+      <div class="pricing-card">
+        <div class="mascot">🦙</div>
+        <h4>Pro</h4>
+        <div class="tier-desc">Solve harder tasks, faster.</div>
+        <div class="price">$20 <span>/ month</span></div>
+        <ul><li>Cloud models</li><li>Access larger models</li><li>Everything in Free</li></ul>
+        <button class="btn btn-primary" style="width:100%;">Get Pro</button>
+      </div>
+      <div class="pricing-card dark">
+        <div class="mascot">🦙</div>
+        <h4>Max</h4>
+        <div class="tier-desc">The full power of the cloud.</div>
+        <div class="price">$60 <span>/ month</span></div>
+        <ul><li>Priority access</li><li>Longest context windows</li><li>Everything in Pro</li></ul>
+        <button class="btn btn-pill-on-dark" style="width:100%;">Get Max</button>
+      </div>
+  	</div>
+
+    <div class="quote">
+      <blockquote>"Ollama is the first AI tool our security team approved on day one — everything stays on the laptop."</blockquote>
+      <cite>Staff Engineer — FinTech platform, 400-person team</cite>
+    </div>
+
+    <div class="cta-strip-dark">
+      <h3>Ready to run open models?</h3>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <span class="command-tag" style="background:#262626;color:#fff;">curl -fsSL https://ollama.com/install.sh | sh <span class="copy" style="color:#a3a3a3;">⧉</span></span>
+        <button class="btn btn-pill-on-dark">Download</button>
+      </div>
+    </div>
+
+    <footer class="sg-footer">
+      <a href="#">Download</a><span>·</span><a href="#">Blog</a><span>·</span><a href="#">Docs</a><span>·</span><a href="#">GitHub</a><span>·</span><a href="#">Discord</a><span>·</span><a href="#">X</a><span>·</span><a href="#">Contact</a><span>·</span><a href="#">Privacy</a><span>·</span><a href="#">Terms</a>
+      <span style="margin-left:auto;">© 2026 Ollama</span>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

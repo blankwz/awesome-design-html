@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohere — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   COHERE — controlled enterprise-AI editorial system
+   White canvas · deep green product bands · coral taxonomy chips
+   ============================================================ */
+:root {
+  /* colors */
+  --c-primary: #17171c;
+  --c-cohere-black: #000000;
+  --c-ink: #212121;
+  --c-deep-green: #003c33;
+  --c-dark-navy: #071829;
+  --c-canvas: #ffffff;
+  --c-soft-stone: #eeece7;
+  --c-pale-green: #edfce9;
+  --c-pale-blue: #f1f5ff;
+  --c-hairline: #d9d9dd;
+  --c-border-light: #e5e7eb;
+  --c-card-border: #f2f2f2;
+  --c-muted: #93939f;
+  --c-slate: #75758a;
+  --c-body-muted: #616161;
+  --c-action-blue: #1863dc;
+  --c-focus-blue: #4c6ee6;
+  --c-coral: #ff7759;
+  --c-coral-soft: #ffad9b;
+  --c-form-focus: #9b60aa;
+  --c-on-primary: #ffffff;
+  --c-on-dark: #ffffff;
+  --c-error: #b30000;
+
+  --f-display: "CohereText", "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --f-body: "Unica77 Cohere Web", "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
+  --f-mono: "CohereMono", "JetBrains Mono", Arial, ui-monospace, monospace;
+
+  --r-xs: 4px; --r-sm: 8px; --r-md: 16px; --r-lg: 22px; --r-xl: 30px;
+  --r-pill: 32px; --r-full: 9999px;
+
+  --s-xxs: 2px; --s-xs: 6px; --s-sm: 8px; --s-md: 12px;
+  --s-lg: 16px; --s-xl: 24px; --s-xxl: 32px; --s-section: 80px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3 { font-family: var(--f-display); font-weight: 400; color: var(--c-ink); }
+
+/* ---------- type tokens ---------- */
+.t-hero-display  { font-family: var(--f-display); font-size: 96px; font-weight: 400; line-height: 1; letter-spacing: -1.92px; color: var(--c-ink); }
+.t-product-disp  { font-family: var(--f-display); font-size: 72px; font-weight: 400; line-height: 1; letter-spacing: -1.44px; color: var(--c-ink); }
+.t-section-disp  { font-family: var(--f-body); font-size: 60px; font-weight: 400; line-height: 1; letter-spacing: -1.2px; color: var(--c-ink); }
+.t-section-head  { font-family: var(--f-body); font-size: 48px; font-weight: 400; line-height: 1.2; letter-spacing: -0.48px; color: var(--c-ink); }
+.t-card-heading  { font-family: var(--f-body); font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: -0.32px; color: var(--c-ink); }
+.t-feature-head  { font-family: var(--f-body); font-size: 24px; font-weight: 400; line-height: 1.3; color: var(--c-ink); }
+.t-body-large    { font-size: 18px; font-weight: 400; line-height: 1.4; color: var(--c-ink); }
+.t-body          { font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--c-ink); }
+.t-button        { font-size: 14px; font-weight: 500; line-height: 1.71; }
+.t-caption       { font-size: 14px; font-weight: 400; line-height: 1.4; }
+.t-mono-label    { font-family: var(--f-mono); font-size: 14px; letter-spacing: 0.28px; text-transform: uppercase; }
+.t-micro         { font-size: 12px; font-weight: 400; line-height: 1.4; }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 var(--s-xl); }
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 44px; padding: 0 var(--s-lg);
+  background: var(--c-cohere-black); color: var(--c-on-dark);
+}
+.sg-banner .sg-id { display: flex; align-items: center; gap: var(--s-lg); }
+.sg-banner .sg-folder { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-muted); }
+.sg-banner .sg-brand { font-family: var(--f-display); font-size: 16px; color: var(--c-on-dark); }
+.sg-banner .sg-desc { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.28px; color: var(--c-muted); }
+@media (max-width: 900px) { .sg-banner .sg-desc { display: none; } }
+
+/* ============================================================
+   COMPONENTS SECTION
+   ============================================================ */
+#components { padding: var(--s-xxl) 0 var(--s-section); }
+.sg-section-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-xl); }
+.sg-block { margin-bottom: var(--s-section); }
+.sg-block-title { display: flex; align-items: baseline; gap: var(--s-lg); margin-bottom: var(--s-xl); }
+.sg-block-title .num { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; color: var(--c-muted); }
+.sg-block-title h3 { font-size: 24px; letter-spacing: 0; }
+.sg-block-title .rule { flex: 1; height: 1px; background: var(--c-hairline); }
+
+/* color tokens */
+.swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-md); }
+.swatch { border: 1px solid var(--c-card-border); border-radius: var(--r-xs); overflow: hidden; }
+.swatch .chip { height: 64px; }
+.swatch .meta { padding: var(--s-sm) var(--s-md); }
+.swatch .name { font-size: 12px; font-weight: 500; color: var(--c-ink); margin-bottom: 2px; }
+.swatch .hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.28px; color: var(--c-slate); }
+
+/* typography specimen */
+.specimen .row { display: grid; grid-template-columns: 240px 1fr; gap: var(--s-xl); padding: var(--s-xl) 0; border-bottom: 1px solid var(--c-hairline); align-items: baseline; }
+.specimen .row:last-child { border-bottom: none; }
+.specimen .tok { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-slate); }
+
+/* buttons */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-lg); }
+.btn-primary-c {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 24px; border-radius: var(--r-pill);
+  background: var(--c-primary); color: var(--c-on-primary);
+  font-size: 14px; font-weight: 500; line-height: 1.71;
+  text-decoration: none; cursor: pointer; border: 1px solid var(--c-primary);
+  transition: background 0.15s ease;
+}
+.btn-primary-c:hover { background: #000000; }
+.btn-primary-c.inverse { background: var(--c-canvas); color: var(--c-primary); border-color: var(--c-canvas); }
+.btn-secondary-c { font-size: 16px; color: var(--c-ink); text-decoration: underline; text-underline-offset: 4px; padding: 8px 0; }
+.btn-pill-outline { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: var(--r-xl); border: 1px solid var(--c-primary); color: var(--c-primary); font-size: 14px; font-weight: 500; text-decoration: none; background: transparent; }
+
+/* inputs */
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-lg); max-width: 720px; }
+.field label { display: block; font-size: 13px; font-weight: 500; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.field input, .field select {
+  width: 100%; height: 44px; padding: 12px 16px;
+  background: var(--c-canvas); border: 1px solid var(--c-hairline); border-radius: var(--r-xs);
+  color: var(--c-ink); font-family: var(--f-body); font-size: 16px; outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field input::placeholder { color: var(--c-muted); }
+.field input:focus { border-color: var(--c-form-focus); box-shadow: 0 0 0 1px var(--c-form-focus); }
+.field input:disabled { background: var(--c-soft-stone); color: var(--c-muted); cursor: not-allowed; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%2375758a' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+
+/* cards */
+.cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-xl); }
+.cap-card { padding: var(--s-xl) 0 0; border-top: 1px solid var(--c-ink); }
+.cap-card .illu { height: 88px; margin-bottom: var(--s-xl); display: flex; align-items: flex-end; }
+.cap-card h4 { margin-bottom: var(--s-md); }
+.cap-card p { font-size: 16px; color: var(--c-body-muted); margin-bottom: var(--s-lg); }
+.cap-card a { font-size: 16px; color: var(--c-action-blue); text-decoration: underline; text-underline-offset: 3px; }
+.product-card { background: var(--c-soft-stone); border-radius: var(--r-sm); padding: var(--s-xxl); }
+.product-card .p-name { font-size: 24px; color: var(--c-ink); margin-bottom: var(--s-sm); }
+.product-card .p-desc { font-size: 15px; color: var(--c-body-muted); margin-bottom: var(--s-lg); }
+.product-card ul { list-style: none; border-top: 1px solid #d8d3c8; margin-bottom: var(--s-xl); }
+.product-card li { display: flex; gap: var(--s-sm); align-items: baseline; font-size: 14px; color: var(--c-ink); padding: var(--s-sm) 0; border-bottom: 1px solid #d8d3c8; }
+.product-card li svg { width: 12px; height: 12px; flex-shrink: 0; stroke: var(--c-deep-green); }
+
+/* agent console (dark mockup) */
+.console { background: var(--c-primary); border-radius: var(--r-sm); padding: var(--s-xl); color: var(--c-on-dark); }
+.console .cs-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-xl); }
+.console .cs-head .l { display: flex; align-items: center; gap: var(--s-md); }
+.console .cs-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-coral); }
+.console .cs-head p { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: #b9b9c2; }
+.console .cs-chip { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.28px; text-transform: uppercase; padding: 3px 10px; border-radius: var(--r-full); border: 1px solid #3a3a44; color: #b9b9c2; }
+.console .cs-chip.live { border-color: rgba(255,119,89,0.5); color: var(--c-coral); }
+.console .row { display: flex; align-items: center; gap: var(--s-md); padding: var(--s-md); border: 1px solid #2c2c34; border-radius: var(--r-xs); margin-bottom: var(--s-sm); }
+.console .row .nm { font-size: 14px; font-weight: 500; color: var(--c-on-dark); }
+.console .row .sub { font-size: 12px; color: #8d8d99; }
+.console .row .st { margin-left: auto; font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.28px; text-transform: uppercase; padding: 2px 8px; border-radius: var(--r-full); }
+.console .st.ok { color: #6fd3a4; border: 1px solid rgba(111,211,164,0.35); }
+.console .st.run { color: var(--c-coral); border: 1px solid rgba(255,119,89,0.4); }
+.console .prompt { display: flex; align-items: center; gap: var(--s-md); margin-top: var(--s-lg); padding: var(--s-md); border: 1px solid #3a3a44; border-radius: var(--r-xs); }
+.console .prompt span { font-size: 13px; color: #8d8d99; }
+.console .prompt .arr { margin-left: auto; color: var(--c-coral); }
+
+/* badges / chips */
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--s-md); align-items: center; }
+.chip-coral { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: var(--r-sm); border: 1px solid var(--c-coral); color: var(--c-coral); font-size: 16px; background: transparent; text-decoration: none; }
+.chip-coral.active { background: var(--c-coral); color: #3d1408; border-color: var(--c-coral); }
+.chip-mono { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: var(--r-full); border: 1px solid var(--c-hairline); font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-slate); }
+.chip-green { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: var(--r-full); background: var(--c-pale-green); color: #0b5138; font-size: 13px; font-weight: 500; }
+
+/* nav */
+.nav-demo { border: 1px solid var(--c-border-light); border-radius: var(--r-xs); }
+.topnav { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 var(--s-xl); background: var(--c-canvas); }
+.topnav .logo { font-family: var(--f-display); font-size: 19px; color: var(--c-ink); }
+.topnav .menu { display: flex; gap: var(--s-xl); }
+.topnav .menu a { font-size: 14px; font-weight: 500; color: var(--c-ink); text-decoration: none; }
+.topnav .right { display: flex; align-items: center; gap: var(--s-lg); }
+.topnav .signin { font-size: 14px; font-weight: 500; color: var(--c-ink); text-decoration: none; }
+
+/* research table */
+.research-row { display: grid; grid-template-columns: 1fr 220px 130px; gap: var(--s-xl); align-items: center; padding: var(--s-xl) 0; border-bottom: 1px solid var(--c-hairline); }
+.research-row:last-child { border-bottom: none; }
+.research-row .ttl { font-size: 18px; color: var(--c-ink); text-decoration: none; }
+.research-row .ttl:hover { text-decoration: underline; }
+.research-row .topics { display: flex; gap: var(--s-sm); flex-wrap: wrap; }
+.research-row .date { font-size: 14px; color: var(--c-slate); text-align: right; }
+
+/* ============================================================
+   PRODUCT SECTION
+   ============================================================ */
+#product { border-top: 1px solid var(--c-hairline); }
+.announce { height: 36px; display: flex; align-items: center; justify-content: center; gap: var(--s-md); background: var(--c-cohere-black); color: var(--c-on-dark); }
+.announce p { font-size: 12px; color: #c8c8cf; }
+.announce a { font-size: 12px; color: var(--c-on-dark); text-decoration: underline; text-underline-offset: 3px; }
+.site-nav { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1240px; margin: 0 auto; padding: 0 var(--s-xl); }
+.site-nav .logo { font-family: var(--f-display); font-size: 19px; color: var(--c-ink); }
+.site-nav .menu { display: flex; gap: var(--s-xl); }
+.site-nav .menu a { font-size: 14px; font-weight: 500; color: var(--c-ink); text-decoration: none; }
+.site-nav .right { display: flex; align-items: center; gap: var(--s-lg); }
+.site-nav .signin { font-size: 14px; font-weight: 500; color: var(--c-ink); text-decoration: none; }
+
+.hero { max-width: 1240px; margin: 0 auto; padding: var(--s-section) var(--s-xl) var(--s-xl); text-align: center; }
+.hero h1 { margin-bottom: var(--s-xl); }
+.hero .sub { max-width: 560px; margin: 0 auto var(--s-xxl); font-size: 18px; line-height: 1.5; color: var(--c-body-muted); }
+.hero .cta-row { display: flex; justify-content: center; align-items: center; gap: var(--s-xl); }
+
+.hero-media { display: grid; grid-template-columns: 3fr 2fr; gap: var(--s-lg); max-width: 1240px; margin: 0 auto; padding: 0 var(--s-xl) var(--s-section); }
+.media-main { border-radius: var(--r-lg); background: linear-gradient(145deg, #0e2438 0%, var(--c-dark-navy) 45%, #04101d 100%); padding: var(--s-xxl); display: flex; flex-direction: column; justify-content: center; min-height: 420px; position: relative; overflow: hidden; }
+.media-main::before { content: ""; position: absolute; inset: 0; background:
+  radial-gradient(60% 50% at 80% 15%, rgba(24,99,220,0.35) 0%, transparent 60%),
+  radial-gradient(45% 40% at 15% 90%, rgba(255,119,89,0.22) 0%, transparent 60%); }
+.media-main .inner { position: relative; }
+.media-main .tagline { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: #8fb7e8; margin-bottom: var(--s-lg); }
+.media-main h3 { font-size: 32px; letter-spacing: -0.32px; color: var(--c-on-dark); margin-bottom: var(--s-md); }
+.media-main p { font-size: 15px; color: #a9bdd6; max-width: 400px; }
+.media-side { border-radius: var(--r-lg); overflow: hidden; background: linear-gradient(160deg, #ffd9cc 0%, var(--c-coral) 55%, #d94f2b 100%); min-height: 420px; position: relative; }
+.media-side::after { content: ""; position: absolute; inset: 0; background: radial-gradient(55% 45% at 30% 25%, rgba(255,255,255,0.45), transparent 60%); }
+
+.logos { padding: var(--s-section) 0; }
+.logos .inner { max-width: 1240px; margin: 0 auto; padding: 0 var(--s-xl); text-align: center; }
+.logos .lead { font-size: 18px; color: var(--c-body-muted); margin-bottom: var(--s-xxl); }
+.logos .row { display: flex; justify-content: center; align-items: center; gap: var(--s-xxl); flex-wrap: wrap; }
+.logos .lg { font-size: 17px; font-weight: 500; color: var(--c-ink); opacity: 0.85; }
+
+.section { padding: var(--s-section) 0; max-width: 1240px; margin: 0 auto; padding-left: var(--s-xl); padding-right: var(--s-xl); }
+.section-head { max-width: 620px; margin-bottom: var(--s-xxl); }
+.section-head .kick { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-slate); margin-bottom: var(--s-lg); }
+.section-head h2 { margin-bottom: var(--s-md); }
+.section-head p { font-size: 18px; color: var(--c-body-muted); }
+
+.band-green { background: var(--c-deep-green); }
+.band-green .section-head h2 { color: var(--c-on-dark); }
+.band-green .section-head p { color: #9db8b0; }
+.band-green .section-head .kick { color: var(--c-coral-soft); }
+.band-green .cap-card { border-top-color: rgba(255,255,255,0.4); }
+.band-green .cap-card h4 { color: var(--c-on-dark); }
+.band-green .cap-card p { color: #9db8b0; }
+.band-green .cap-card a { color: var(--c-coral-soft); }
+.band-green .panel { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.14); border-radius: var(--r-sm); padding: var(--s-xl); }
+.band-green .panel h4 { font-size: 20px; color: var(--c-on-dark); margin-bottom: var(--s-md); }
+.band-green .panel p { font-size: 15px; color: #9db8b0; margin-bottom: var(--s-lg); }
+.band-green .panel a { font-size: 14px; font-weight: 500; color: var(--c-on-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+.blog-band { background: var(--c-pale-blue); }
+.filter-row { display: flex; flex-wrap: wrap; gap: var(--s-md); margin-bottom: var(--s-xl); }
+.filter-row .big { font-size: 24px; padding: 8px 14px; }
+
+.footer { background: var(--c-primary); color: var(--c-on-dark); padding: var(--s-section) 0 var(--s-xl); }
+.footer .inner { max-width: 1240px; margin: 0 auto; padding: 0 var(--s-xl); }
+.newsletter { display: grid; grid-template-columns: 7fr 5fr; gap: var(--s-xxl); align-items: center; padding-bottom: var(--s-xxl); border-bottom: 1px solid #2c2c34; margin-bottom: var(--s-xxl); }
+.newsletter .coral-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-coral); margin-bottom: var(--s-md); }
+.newsletter h3 { font-size: 40px; letter-spacing: -0.4px; color: var(--c-on-dark); margin-bottom: var(--s-md); }
+.newsletter .legal { font-size: 12px; color: #8d8d99; margin-top: var(--s-md); }
+.newsletter .email-row { display: flex; align-items: center; border-bottom: 1px solid #4a4a55; padding-bottom: var(--s-md); }
+.newsletter .email-row input { flex: 1; background: transparent; border: none; outline: none; color: var(--c-on-dark); font-size: 16px; font-family: var(--f-body); }
+.newsletter .email-row input::placeholder { color: #6f6f7a; }
+.newsletter .email-row .arr { color: var(--c-on-dark); font-size: 18px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: var(--s-xl); margin-bottom: var(--s-xxl); }
+.footer .f-logo { font-family: var(--f-display); font-size: 19px; color: var(--c-on-dark); margin-bottom: var(--s-md); }
+.footer .f-note { font-size: 14px; color: #8d8d99; max-width: 260px; }
+.footer h5 { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.28px; text-transform: uppercase; color: var(--c-on-dark); margin-bottom: var(--s-lg); }
+.footer ul { list-style: none; }
+.footer li { margin-bottom: var(--s-sm); }
+.footer a { font-size: 14px; color: #8d8d99; text-decoration: none; }
+.footer a:hover { color: var(--c-on-dark); }
+.footer-legal { display: flex; justify-content: space-between; padding-top: var(--s-xl); }
+.footer-legal p { font-size: 12px; color: #6f6f7a; }
+
+@media (max-width: 900px) {
+  .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+  .specimen .row { grid-template-columns: 1fr; gap: var(--s-sm); }
+  .cap-grid, .form-grid { grid-template-columns: 1fr; }
+  .hero-media, .newsletter { grid-template-columns: 1fr; }
+  .research-row { grid-template-columns: 1fr; gap: var(--s-sm); }
+  .research-row .date { text-align: left; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .t-hero-display { font-size: 48px; letter-spacing: -1px; }
+  .t-product-disp { font-size: 40px; letter-spacing: -0.8px; }
+  .t-section-disp { font-size: 34px; }
+  .site-nav .menu { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">cohere</span>
+    <span class="sg-brand">Cohere</span>
+  </div>
+  <span class="sg-desc">Controlled enterprise AI — white editorial canvas, deep green product bands, coral taxonomy</span>
+</header>
+
+<main>
+  <section id="components">
+    <div class="wrap">
+      <p class="sg-section-label">Components — Cohere Design System</p>
+
+      <!-- 1. Color tokens -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">01</span><h3>Color Tokens</h3><span class="rule"></span></div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><p class="name">Cohere Black</p><p class="hex">#000000</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#17171c"></div><div class="meta"><p class="name">Near-Black Primary</p><p class="hex">#17171C</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#003c33"></div><div class="meta"><p class="name">Deep Green</p><p class="hex">#003C33</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#071829"></div><div class="meta"><p class="name">Dark Navy</p><p class="hex">#071829</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#eeece7"></div><div class="meta"><p class="name">Soft Stone</p><p class="hex">#EEECE7</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#edfce9"></div><div class="meta"><p class="name">Pale Green Wash</p><p class="hex">#EDFCE9</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#f1f5ff"></div><div class="meta"><p class="name">Pale Blue Wash</p><p class="hex">#F1F5FF</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#1863dc"></div><div class="meta"><p class="name">Action Blue</p><p class="hex">#1863DC</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ff7759"></div><div class="meta"><p class="name">Coral</p><p class="hex">#FF7759</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ffad9b"></div><div class="meta"><p class="name">Coral Soft</p><p class="hex">#FFAD9B</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#d9d9dd"></div><div class="meta"><p class="name">Hairline</p><p class="hex">#D9D9DD</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#93939f"></div><div class="meta"><p class="name">Muted Slate</p><p class="hex">#93939F</p></div></div>
+        </div>
+      </div>
+
+      <!-- 2. Typography -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">02</span><h3>Typography</h3><span class="rule"></span></div>
+        <div class="specimen">
+          <div class="row"><span class="tok">hero-display · CohereText 96/400</span><p class="t-hero-display">AI built for enterprise</p></div>
+          <div class="row"><span class="tok">product-display · CohereText 72/400</span><p class="t-product-disp">Secure. Scalable. Yours.</p></div>
+          <div class="row"><span class="tok">section-display · Unica77 60/400</span><p class="t-section-disp">Deploy where your data lives</p></div>
+          <div class="row"><span class="tok">section-heading · Unica77 48/400</span><p class="t-section-head">The leading AI workspace for business</p></div>
+          <div class="row"><span class="tok">card-heading · Unica77 32/400</span><p class="t-card-heading">Retrieval that respects access rights</p></div>
+          <div class="row"><span class="tok">feature-heading · Unica77 24/400</span><p class="t-feature-head">Grounded generations, every time</p></div>
+          <div class="row"><span class="tok">body-large · Unica77 18/400</span><p class="t-body-large">Cohere brings frontier AI inside your security perimeter — deployed in your cloud, tuned on your data, answering with your sources.</p></div>
+          <div class="row"><span class="tok">body · Unica77 16/400</span><p class="t-body">North is the agent workspace that reads your documents, drafts your deliverables and cites every claim it makes.</p></div>
+          <div class="row"><span class="tok">mono-label · CohereMono 14/+0.28px</span><p class="t-mono-label" style="color:var(--c-slate)">System · Command A · Rerank 4.0</p></div>
+        </div>
+      </div>
+
+      <!-- 3. Buttons -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">03</span><h3>Buttons</h3><span class="rule"></span></div>
+        <div class="btn-row">
+          <a class="btn-primary-c" href="#">Request a demo</a>
+          <a class="btn-primary-c inverse" href="#">Try the Playground</a>
+          <a class="btn-secondary-c" href="#">Explore products</a>
+          <a class="btn-pill-outline" href="#">Read the research</a>
+          <a class="btn-pill-outline" href="#">Multimodal</a>
+        </div>
+      </div>
+
+      <!-- 4. Inputs -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">04</span><h3>Inputs</h3><span class="rule"></span></div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="em">Work email</label>
+            <input id="em" type="email" placeholder="name@company.com">
+          </div>
+          <div class="field">
+            <label for="em2">Work email — focused</label>
+            <input id="em2" type="email" value="a.okafor@meridian.bank" style="border-color:#9b60aa;box-shadow:0 0 0 1px #9b60aa">
+          </div>
+          <div class="field">
+            <label for="cloud">Deployment cloud</label>
+            <select id="cloud">
+              <option>Private cloud (AWS / Azure / GCP)</option>
+              <option>On-premises / air-gapped</option>
+              <option>Cohere-managed (SaaS)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="reg">Region — disabled</label>
+            <input id="reg" value="EU (Frankfurt) — managed by admin" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Cards -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">05</span><h3>Cards</h3><span class="rule"></span></div>
+        <div class="cap-grid" style="margin-bottom:var(--s-xxl)">
+          <div class="cap-card">
+            <div class="illu">
+              <svg width="96" height="80" viewBox="0 0 96 80" fill="none" stroke="#212121" stroke-width="1.2"><circle cx="48" cy="26" r="14"/><path d="M48 40v20M30 62h36M20 22c8 6 20 8 28 8s20-2 28-8"/></svg>
+            </div>
+            <h4 class="t-feature-head">World-class multilingual models</h4>
+            <p>Command A understands and generates across 23 languages, with enterprise-grade throughput on commodity hardware.</p>
+            <a href="#">Explore models</a>
+          </div>
+          <div class="cap-card">
+            <div class="illu">
+              <svg width="96" height="80" viewBox="0 0 96 80" fill="none" stroke="#212121" stroke-width="1.2"><rect x="14" y="16" width="68" height="48" rx="3"/><path d="M14 30h68M26 42h30M26 52h40"/><circle cx="70" cy="42" r="4"/></svg>
+            </div>
+            <h4 class="t-feature-head">Retrieval with permissions intact</h4>
+            <p>Rerank 4.0 and Embed 4 search your corpus without breaking a single access-control rule — answers cite their sources.</p>
+            <a href="#">See RAG in action</a>
+          </div>
+          <div class="cap-card">
+            <div class="illu">
+              <svg width="96" height="80" viewBox="0 0 96 80" fill="none" stroke="#212121" stroke-width="1.2"><path d="M20 60 40 38l14 10 22-26"/><path d="M62 22h14v14"/></svg>
+            </div>
+            <h4 class="t-feature-head">Agents that finish the workflow</h4>
+            <p>North orchestrates multi-step work across your systems — drafted, checked against policy, and logged for audit.</p>
+            <a href="#">Meet North</a>
+          </div>
+        </div>
+        <div class="cap-grid">
+          <div class="product-card">
+            <p class="p-name">Command A</p>
+            <p class="p-desc">Our flagship model for agentic enterprise work.</p>
+            <ul>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>23 languages</li>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>256k context</li>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>Tool use &amp; code execution</li>
+            </ul>
+            <a class="btn-pill-outline" href="#">Read model card</a>
+          </div>
+          <div class="product-card">
+            <p class="p-name">North</p>
+            <p class="p-desc">The secure agent workspace for every employee.</p>
+            <ul>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>Cited, grounded answers</li>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>Deploys in your VPC</li>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>Full audit trail</li>
+            </ul>
+            <a class="btn-pill-outline" href="#">Request access</a>
+          </div>
+          <div class="product-card">
+            <p class="p-name">Embed &amp; Rerank</p>
+            <p class="p-desc">Search infrastructure for enterprise knowledge.</p>
+            <ul>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>Multimodal embeddings</li>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>100+ languages</li>
+              <li><svg viewBox="0 0 12 12" fill="none" stroke-width="1.8"><path d="M2.5 6.5 5 9l4.5-6"/></svg>Permission-aware ranking</li>
+            </ul>
+            <a class="btn-pill-outline" href="#">Try in Playground</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent console dark mockup -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">06</span><h3>Agent Console</h3><span class="rule"></span></div>
+        <div class="console" style="max-width:640px">
+          <div class="cs-head">
+            <div class="l"><span class="dot"></span><p>North — workspace activity</p></div>
+            <span class="cs-chip live">3 agents live</span>
+          </div>
+          <div class="row">
+            <div><p class="nm">contract-review</p><p class="sub">Q2 vendor agreements · policy v4</p></div>
+            <span class="st ok">Done</span>
+          </div>
+          <div class="row">
+            <div><p class="nm">research-brief</p><p class="sub">Competitor pricing · 14 sources cited</p></div>
+            <span class="st run">Running</span>
+          </div>
+          <div class="row">
+            <div><p class="nm">ticket-triage</p><p class="sub">Routed 212 tickets · 98.4% accuracy</p></div>
+            <span class="st ok">Done</span>
+          </div>
+          <div class="prompt">
+            <span>Ask North, or describe a workflow…</span>
+            <span class="arr">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Chips -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">07</span><h3>Chips &amp; Tags</h3><span class="rule"></span></div>
+        <div class="chip-row">
+          <a class="chip-coral active" href="#">All</a>
+          <a class="chip-coral" href="#">Research</a>
+          <a class="chip-coral" href="#">Product</a>
+          <a class="chip-coral" href="#">Open Science</a>
+          <span class="chip-mono">Command A</span>
+          <span class="chip-green">SOC 2 Type II</span>
+        </div>
+      </div>
+
+      <!-- 7. Navigation -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">08</span><h3>Navigation</h3><span class="rule"></span></div>
+        <div class="nav-demo">
+          <nav class="topnav">
+            <div class="logo">Cohere</div>
+            <div class="menu">
+              <a href="#">Products</a><a href="#">Solutions</a><a href="#">Research</a><a href="#">Company</a>
+            </div>
+            <div class="right">
+              <a class="signin" href="#">Sign in</a>
+              <a class="btn-primary-c" href="#" style="padding:6px 16px;line-height:1.5">Get started</a>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Research table -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">09</span><h3>Research Table</h3><span class="rule"></span></div>
+        <div class="research-row">
+          <a class="ttl" href="#">Command A: an open-weights frontier model for enterprise agents</a>
+          <div class="topics"><span class="chip-mono">Models</span><span class="chip-mono">Agents</span></div>
+          <span class="date">Mar 12, 2026</span>
+        </div>
+        <div class="research-row">
+          <a class="ttl" href="#">Permission-aware retrieval at billion-document scale</a>
+          <div class="topics"><span class="chip-mono">Retrieval</span></div>
+          <span class="date">Feb 03, 2026</span>
+        </div>
+        <div class="research-row">
+          <a class="ttl" href="#">Measuring citation faithfulness in grounded generation</a>
+          <div class="topics"><span class="chip-mono">Evaluation</span><span class="chip-mono">Safety</span></div>
+          <span class="date">Jan 21, 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINISHED PRODUCT — Cohere landing page
+       ============================================================ -->
+  <section id="product">
+    <div class="announce">
+      <p>Command A is now available with open weights.</p>
+      <a href="#">Learn more</a>
+    </div>
+    <nav class="site-nav">
+      <div class="logo">Cohere</div>
+      <div class="menu">
+        <a href="#">Products</a><a href="#">Solutions</a><a href="#">Research</a><a href="#">Company</a>
+      </div>
+      <div class="right">
+        <a class="signin" href="#">Sign in</a>
+        <a class="btn-primary-c" href="#" style="padding:6px 16px;line-height:1.5">Get started</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1 class="t-hero-display">AI built for<br>the enterprise</h1>
+      <p class="sub">Cohere brings frontier language, retrieval and agent technology inside your security perimeter — deployed in your cloud, grounded in your data, audited end to end.</p>
+      <div class="cta-row">
+        <a class="btn-primary-c" href="#">Request a demo</a>
+        <a class="btn-secondary-c" href="#">Try the Playground</a>
+      </div>
+    </div>
+
+    <div class="hero-media">
+      <div class="media-main">
+        <div class="inner">
+          <p class="tagline">North · Agent Workspace</p>
+          <h3>Every answer, sourced and safe</h3>
+          <p>North reads your documents, drafts your deliverables and cites every claim — operating entirely inside your own cloud.</p>
+        </div>
+      </div>
+      <div class="media-side" aria-hidden="true"></div>
+    </div>
+
+    <div class="logos">
+      <div class="inner">
+        <p class="lead">Trusted by the enterprises the world runs on</p>
+        <div class="row">
+          <span class="lg">Oracle</span><span class="lg">NTT Data</span><span class="lg">Bell Canada</span><span class="lg">RBC</span><span class="lg">LG CNS</span><span class="lg">Bloomberg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="band-green">
+      <div class="section">
+        <div class="section-head">
+          <p class="kick">The platform</p>
+          <h2 class="t-section-head">Built for regulated industries</h2>
+          <p>Deploy in your VPC, on-premises, or air-gapped. Your data never trains our models — and every output carries its evidence.</p>
+        </div>
+        <div class="cap-grid">
+          <div class="panel">
+            <h4>Deploy anywhere</h4>
+            <p>Same model weights across Cohere-managed cloud, your private cloud, and fully air-gapped environments.</p>
+            <a href="#">Deployment options</a>
+          </div>
+          <div class="panel">
+            <h4>Grounded by default</h4>
+            <p>Retrieval-augmented generation with permission-aware search keeps answers inside what each user may see.</p>
+            <a href="#">How grounding works</a>
+          </div>
+          <div class="panel">
+            <h4>Audit everything</h4>
+            <p>Every agent action is logged, replayable and exportable — built for the reviewers your regulators send.</p>
+            <a href="#">Security overview</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <p class="kick">Research</p>
+        <h2 class="t-card-heading">Latest from Cohere Labs</h2>
+      </div>
+      <div class="research-row">
+        <a class="ttl" href="#">Command A: an open-weights frontier model for enterprise agents</a>
+        <div class="topics"><span class="chip-mono">Models</span><span class="chip-mono">Agents</span></div>
+        <span class="date">Mar 12, 2026</span>
+      </div>
+      <div class="research-row">
+        <a class="ttl" href="#">Permission-aware retrieval at billion-document scale</a>
+        <div class="topics"><span class="chip-mono">Retrieval</span></div>
+        <span class="date">Feb 03, 2026</span>
+      </div>
+      <div class="research-row">
+        <a class="ttl" href="#">Aya Expanse: state-of-the-art multilingual openness</a>
+        <div class="topics"><span class="chip-mono">Multilingual</span></div>
+        <span class="date">Dec 09, 2025</span>
+      </div>
+    </div>
+
+    <div class="blog-band">
+      <div class="section">
+        <div class="section-head">
+          <p class="kick">Blog</p>
+          <h2 class="t-card-heading">Explore by topic</h2>
+        </div>
+        <div class="filter-row">
+          <a class="chip-coral active big" href="#">All</a>
+          <a class="chip-coral big" href="#">Engineering</a>
+          <a class="chip-coral big" href="#">Research</a>
+          <a class="chip-coral big" href="#">Company</a>
+          <a class="chip-coral big" href="#">Open Science</a>
+        </div>
+        <div class="research-row">
+          <a class="ttl" href="#">How North keeps agent actions inside policy</a>
+          <div class="topics"><span class="chip-mono">Engineering</span></div>
+          <span class="date">Apr 02, 2026</span>
+        </div>
+        <div class="research-row">
+          <a class="ttl" href="#">Serving Command A on a single node: an engineering log</a>
+          <div class="topics"><span class="chip-mono">Engineering</span><span class="chip-mono">Models</span></div>
+          <span class="date">Mar 28, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="inner">
+        <div class="newsletter">
+          <div>
+            <p class="coral-label">AI moves fast</p>
+            <h3>Stay ahead of it</h3>
+            <p class="legal">Monthly updates on models, research and product releases. Unsubscribe anytime.</p>
+          </div>
+          <div>
+            <div class="email-row">
+              <input type="email" placeholder="name@company.com" aria-label="Email address">
+              <span class="arr">→</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-grid">
+          <div>
+            <p class="f-logo">Cohere</p>
+            <p class="f-note">Secure, scalable AI for the enterprise — from the pioneers of retrieval-augmented generation.</p>
+          </div>
+          <div>
+            <h5>Products</h5>
+            <ul><li><a href="#">North</a></li><li><a href="#">Command A</a></li><li><a href="#">Embed</a></li><li><a href="#">Rerank</a></li></ul>
+          </div>
+          <div>
+            <h5>Solutions</h5>
+            <ul><li><a href="#">Financial services</a></li><li><a href="#">Healthcare</a></li><li><a href="#">Public sector</a></li><li><a href="#">Manufacturing</a></li></ul>
+          </div>
+          <div>
+            <h5>Research</h5>
+            <ul><li><a href="#">Publications</a></li><li><a href="#">Cohere Labs</a></li><li><a href="#">Open weights</a></li><li><a href="#">Aya</a></li></ul>
+          </div>
+          <div>
+            <h5>Company</h5>
+            <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">News</a></li><li><a href="#">Contact</a></li></ul>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <p>© 2026 Cohere Inc. All rights reserved.</p>
+          <p>Privacy · Terms · Security · Trust Center</p>
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

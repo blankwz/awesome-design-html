@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MongoDB University — Course Catalog</title>
+<style>
+:root{
+  --green:#00ed64; --green-deep:#00b545; --green-pressed:#008c34; --on-green:#001e2b;
+  --green-dark:#00684a; --green-mid:#00a35c; --green-soft:#c3f0d2; --mint:#e3fcef;
+  --teal-deep:#001e2b; --teal:#003d4f; --teal-mid:#00684a;
+  --purple:#7b3ff2; --orange:#fa6e39; --pink:#f06bb8; --blue:#3d4f9f;
+  --warn-bg:#fff8e0; --warn-text:#946f3f;
+  --canvas:#ffffff; --canvas-dark:#001e2b; --surface:#f9fbfa; --surface-soft:#f4f7f6;
+  --hairline:#e1e5e8; --hairline-soft:#eceff1; --hairline-strong:#c1ccd6; --hairline-dark:#1c2d38;
+  --ink:#001e2b; --charcoal:#1c2d38; --slate:#3d4f5b; --steel:#5c6c7a; --stone:#7c8c9a; --muted:#a8b3bc;
+  --on-dark:#ffffff; --on-dark-muted:#a8b3bc;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:20px; --s-xl:24px; --s-xxl:32px; --s-xxxl:40px; --s-sec:64px;
+  --font:'Euclid Circular A',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono:'Source Code Pro','SF Mono',Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--canvas);color:var(--ink);font-size:16px;line-height:1.55}
+a{text-decoration:none;color:inherit}
+button,input{font-family:var(--font)}
+.container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+h1{font-size:44px;font-weight:500;line-height:1.20;letter-spacing:-0.5px}
+h2{font-size:28px;font-weight:500;line-height:1.30}
+h3{font-size:18px;font-weight:600;line-height:1.4}
+code{font-family:var(--mono);font-size:13px}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600;line-height:1.3;border-radius:var(--r-full);cursor:pointer;border:none;padding:10px 22px}
+.btn-green{background:var(--green);color:var(--on-green)}
+.btn-green:active{background:var(--green-pressed)}
+.btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--hairline-strong)}
+.btn-secondary-dark{background:transparent;color:var(--on-dark);border:1px solid var(--hairline-dark)}
+/* promo */
+.promo-banner{background:var(--teal-deep);color:var(--on-dark);font-size:14px;font-weight:500;padding:var(--s-sm) var(--s-md);text-align:center}
+.promo-banner a{color:var(--green);text-decoration:underline;text-underline-offset:3px;margin-left:6px}
+/* nav */
+.topnav{position:sticky;top:0;z-index:50;background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.topnav-inner{display:flex;align-items:center;gap:var(--s-xl);height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500}
+.nav-links{display:flex;gap:var(--s-lg);font-size:14px;font-weight:500;color:var(--slate)}
+.nav-links a.on{color:var(--green-dark)}
+.nav-right{display:flex;align-items:center;gap:var(--s-md);margin-left:auto}
+.search-pill{display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--steel);font-size:14px;border-radius:var(--r-md);height:44px;padding:0 var(--s-md);width:250px;border:1px solid var(--hairline-strong)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-md);border:1px solid var(--hairline-strong);background:var(--canvas);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+.icon-btn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--green);border:2px solid var(--canvas)}
+/* hero dark */
+.hero{background:var(--teal-deep);color:var(--on-dark);padding:var(--s-sec) 0}
+.hero .container{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--s-xxxl);align-items:center}
+.hero p.sub{font-size:18px;color:var(--on-dark-muted);margin-top:var(--s-md);max-width:480px}
+.hero .cta-row{display:flex;gap:var(--s-sm);margin-top:var(--s-xl)}
+.code-card{background:var(--canvas-dark);border:1px solid var(--hairline-dark);border-radius:var(--r-lg);padding:var(--s-lg);font-family:var(--mono);font-size:14px;line-height:1.7}
+.code-card .bar{display:flex;gap:6px;margin-bottom:var(--s-md)}
+.code-card .bar i{width:10px;height:10px;border-radius:50%;background:var(--hairline-dark)}
+.ck{color:var(--green)}.cs{color:#79ffe1}.cc{color:var(--muted)}.cf{color:#00e0a4}
+/* filter chips */
+.pill-tab{font-size:14px;font-weight:500;color:var(--steel);background:transparent;border:1px solid var(--hairline);border-radius:var(--r-full);padding:8px 16px;cursor:pointer}
+.pill-tab.active{background:var(--ink);color:var(--on-dark);border-color:var(--ink)}
+.filter-row{display:flex;gap:var(--s-xs);align-items:center;padding:var(--s-xl) 0 var(--s-md)}
+/* course grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.ccard{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-lg);display:flex;flex-direction:column}
+.ccard .top{border-radius:var(--r-md);aspect-ratio:16/9;position:relative;overflow:hidden;margin-bottom:var(--s-md);display:flex;align-items:center;justify-content:center}
+.tag{position:absolute;top:10px;left:10px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-radius:var(--r-xs);padding:2px 8px;color:var(--on-dark)}
+.t-purple{background:var(--purple)}.t-orange{background:var(--orange)}.t-green{background:var(--green-mid)}.t-blue{background:var(--blue)}.t-pink{background:var(--pink)}
+.ccard h4{font-size:18px;font-weight:600;line-height:1.4}
+.ccard .desc{font-size:14px;color:var(--steel);margin:6px 0 var(--s-md);flex:1}
+.ccard .foot{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--stone)}
+.ccard .len{display:flex;align-items:center;gap:6px}
+.stars{color:var(--orange);font-size:12px;letter-spacing:1px}
+.top-1{background:linear-gradient(150deg,#0b2b3c,var(--teal))}
+.top-2{background:linear-gradient(150deg,#241056,#4b22b8)}
+.top-3{background:linear-gradient(150deg,#3a1408,#b34a1a)}
+.top-4{background:linear-gradient(150deg,#0b3a2a,#0f8a54)}
+.top-5{background:linear-gradient(150deg,#3c1030,#a04a80)}
+.top-6{background:linear-gradient(150deg,#14224f,#3350a8)}
+.top-7{background:linear-gradient(150deg,#0b2b3c,#0f6a80)}
+.top-8{background:linear-gradient(150deg,#241056,#6a3ad0)}
+.top .leaf{width:44px;height:44px}
+/* featured course */
+.featured{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s-xxxl);align-items:start;margin-top:var(--s-lg)}
+.gallery{display:grid;grid-template-columns:80px 1fr;gap:var(--s-md)}
+.thumbs{display:flex;flex-direction:column;gap:var(--s-sm)}
+.thumb{aspect-ratio:1/1;border-radius:var(--r-md);border:1px solid var(--hairline-strong);cursor:pointer}
+.thumb.active{border:2px solid var(--green-dark)}
+.main-top{position:relative;border-radius:var(--r-lg);min-height:420px;background:linear-gradient(150deg,#0b2b3c 0%,var(--teal) 55%,#0f8a54 100%);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.main-top .leaf{width:180px;height:180px}
+.main-top .cap{position:absolute;left:var(--s-lg);bottom:var(--s-lg);color:var(--on-dark);font-family:var(--mono);font-size:13px;background:rgba(0,30,43,.65);border:1px solid var(--hairline-dark);border-radius:var(--r-md);padding:6px 12px}
+/* enrollment rail */
+.buy-rail{position:sticky;top:88px}
+.plan-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-xl);box-shadow:rgba(0,30,43,.08) 0 4px 12px}
+.plan-card h2{font-size:22px}
+.price-line{display:flex;align-items:baseline;gap:10px;margin:var(--s-sm) 0 var(--s-lg)}
+.price-line .now{font-size:28px;font-weight:600}
+.price-line .unit{font-size:14px;color:var(--steel)}
+.opt-label{font-size:14px;font-weight:500;margin:var(--s-lg) 0 var(--s-sm)}
+.opt-label em{font-style:normal;color:var(--steel);font-weight:400;margin-left:6px}
+.sku-row{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-sm)}
+.sku{border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:var(--s-md);cursor:pointer}
+.sku.sel{border:2px solid var(--green-dark)}
+.sku b{display:block;font-size:14px;font-weight:500}
+.sku span{font-size:13px;color:var(--steel)}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin:var(--s-lg) 0}
+.stepper{display:flex;align-items:center;border:1px solid var(--hairline-strong);border-radius:var(--r-full);height:44px}
+.stepper button{width:44px;height:42px;background:none;border:none;font-size:18px;cursor:pointer}
+.stepper span{min-width:34px;text-align:center;font-size:14px;font-weight:500}
+.summary-line{display:flex;justify-content:space-between;font-size:14px;color:var(--slate);padding:6px 0}
+.summary-line.total{border-top:1px solid var(--hairline-soft);margin-top:6px;padding-top:10px;font-weight:600;color:var(--ink)}
+.plan-card .btn-green{width:100%;margin-top:var(--s-sm)}
+.badge-popular{display:inline-block;background:var(--teal-deep);color:var(--green);font-size:13px;font-weight:600;border-radius:var(--r-full);padding:4px 10px}
+.reviews{margin-top:var(--s-lg);border-top:1px solid var(--hairline-soft);padding-top:var(--s-md)}
+.review-quote{font-size:16px;margin-top:var(--s-sm)}
+.review-by{display:flex;align-items:center;gap:10px;margin-top:var(--s-md)}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0f8a54,#00543a);flex-shrink:0}
+.review-by b{font-size:14px;display:block}
+.review-by span{font-size:12px;color:var(--stone)}
+/* footer */
+.footer-region{background:var(--teal-deep);color:var(--on-dark);padding:var(--s-sec) 0;margin-top:var(--s-sec)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--s-xl)}
+.foot-brand p{font-size:14px;color:var(--on-dark-muted);max-width:280px;margin-top:var(--s-md)}
+.newsletter{display:flex;gap:var(--s-sm);margin-top:var(--s-lg)}
+.text-input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--hairline-dark);border-radius:var(--r-md);padding:var(--s-sm) var(--s-md);font-size:14px;height:44px;color:var(--on-dark)}
+.text-input::placeholder{color:var(--on-dark-muted)}
+.foot-col h5{font-size:14px;font-weight:500;margin-bottom:var(--s-md)}
+.foot-col a{display:block;font-size:14px;color:var(--on-dark-muted);padding:4px 0}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--hairline-dark);margin-top:var(--s-xxxl);padding-top:var(--s-xl);font-size:12px;color:var(--on-dark-muted)}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:var(--r-md);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:var(--on-dark)}
+@media (max-width:960px){
+  h1{font-size:32px}.grid{grid-template-columns:repeat(2,1fr)}
+  .hero .container,.featured{grid-template-columns:1fr}.buy-rail{position:static}
+  .nav-links{display:none}.foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="promo-banner">MongoDB.local NYC is coming Nov 12 — register free. <a href="#">Save your seat</a></div>
+<header class="topnav">
+  <div class="container topnav-inner">
+    <a class="logo" href="#">
+      <svg width="22" height="46" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="#00ed64"/><path d="M11 8c-1.5 4-2.5 9-2.5 14 0 7 1.6 13 2.5 16" stroke="#001e2b" stroke-width="1.2" fill="none"/></svg>
+      University
+    </a>
+    <nav class="nav-links"><a class="on" href="#">Courses</a><a href="#">Certifications</a><a href="#">Learning paths</a><a href="#">Instructors</a><a href="#">For teams</a></nav>
+    <div class="nav-right">
+      <div class="search-pill"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#5c6c7a" stroke-width="1.6"/><path d="m11 11 3.5 3.5" stroke="#5c6c7a" stroke-width="1.6" stroke-linecap="round"/></svg> Search courses…</div>
+      <button class="icon-btn" aria-label="Cart"><svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M3.5 5.5h11l-1 9h-9l-1-9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6.5 5.5a2.5 2.5 0 0 1 5 0" stroke="currentColor" stroke-width="1.5"/></svg><span class="dot"></span></button>
+      <a href="#" style="font-size:14px;font-weight:500">Sign in</a>
+      <button class="btn btn-green">Try Free</button>
+    </div>
+  </div>
+</header>
+
+<!-- DARK HERO -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <h1>One data platform.<br>Unlimited skills to build on it.</h1>
+      <p class="sub">Free courses, hands-on labs and certifications for developers, DBAs and data engineers — taught by the team that builds MongoDB.</p>
+      <div class="cta-row">
+        <button class="btn btn-green">Start learning free</button>
+        <button class="btn btn-secondary-dark">Browse certifications</button>
+      </div>
+    </div>
+    <div class="code-card">
+      <div class="bar"><i></i><i></i><i></i></div>
+<span class="cc">// enroll in your first course</span><br>
+<span class="ck">const</span> learner = <span class="ck">await</span> university.<span class="cf">enroll</span>({<br>
+&nbsp;&nbsp;course: <span class="cs">"M121 — Aggregation Framework"</span>,<br>
+&nbsp;&nbsp;track: <span class="cs">"developer"</span>,<br>
+&nbsp;&nbsp;labs: <span class="ck">true</span>,&nbsp;<span class="cc">// free Atlas cluster included</span><br>
+});<br>
+<span class="cc">// → progress saved to your profile</span>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <div class="filter-row">
+    <button class="pill-tab active">All courses</button>
+    <button class="pill-tab">Developer</button>
+    <button class="pill-tab">DBA / Ops</button>
+    <button class="pill-tab">AI</button>
+    <button class="pill-tab">Search</button>
+    <button class="pill-tab">Atlas</button>
+  </div>
+
+  <!-- COURSE GRID -->
+  <section>
+    <div class="grid">
+      <article class="ccard">
+        <div class="top top-1"><span class="tag t-blue">Atlas</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M001: MongoDB Basics</h4><p class="desc">Install, model and query your first database in Atlas.</p>
+        <div class="foot"><span class="len">⏱ 7 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.8)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-2"><span class="tag t-purple">Database</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M121: Aggregation Framework</h4><p class="desc">Pipelines, $group, $lookup and performance tuning.</p>
+        <div class="foot"><span class="len">⏱ 9 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.9)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-3"><span class="tag t-orange">Search</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M220: Atlas Search &amp; Vector Search</h4><p class="desc">Full-text, semantic ranking and hybrid search in production.</p>
+        <div class="foot"><span class="len">⏱ 6 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.7)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-4"><span class="tag t-green">AI</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>A100: Building AI Apps with Atlas</h4><p class="desc">RAG pipelines, embeddings and retrieval with Atlas Vector Search.</p>
+        <div class="foot"><span class="len">⏱ 8 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.8)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-5"><span class="tag t-pink">Ops</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M201: Performance &amp; Indexing</h4><p class="desc">Read the profiler, fix slow queries, design the right indexes.</p>
+        <div class="foot"><span class="len">⏱ 10 chapters</span><span class="stars">★★★★☆ <span style="color:var(--stone)">(4.6)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-6"><span class="tag t-blue">Cloud</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M310: Atlas Administration</h4><p class="desc">Backups, upgrades, multi-region topology and cost control.</p>
+        <div class="foot"><span class="len">⏱ 7 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.7)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-7"><span class="tag t-green">Security</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M240: Security &amp; Access Control</h4><p class="desc">Auth, TLS, encryption at rest, auditing and least privilege.</p>
+        <div class="foot"><span class="len">⏱ 6 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.8)</span></span></div>
+      </article>
+      <article class="ccard">
+        <div class="top top-8"><span class="tag t-purple">Schema</span><svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.9)"/></svg></div>
+        <h4>M320: Data Modeling</h4><p class="desc">Embed vs. reference, workload-driven schema design patterns.</p>
+        <div class="foot"><span class="len">⏱ 9 chapters</span><span class="stars">★★★★★ <span style="color:var(--stone)">(4.9)</span></span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FEATURED COURSE -->
+  <section>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin:var(--s-sec) 0 var(--s-md)">
+      <div><h2 style="display:flex;align-items:center;gap:12px">M121: Aggregation Framework <span class="badge-popular">Most popular</span></h2>
+        <p style="color:var(--steel);font-size:14px;margin-top:6px;max-width:560px">The definitive course on pipelines — free, self-paced, with a dedicated Atlas lab cluster.</p></div>
+      <span style="font-size:14px;color:var(--steel)">★ 4.9 · 61,204 learners</span>
+    </div>
+    <div class="featured">
+      <div class="gallery">
+        <div class="thumbs">
+          <div class="thumb active" style="background:linear-gradient(150deg,#0b2b3c,var(--teal))"><svg style="margin:14px" width="34" height="34" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="#fff"/></svg></div>
+          <div class="thumb" style="background:linear-gradient(150deg,#241056,#4b22b8)"></div>
+          <div class="thumb" style="background:linear-gradient(150deg,#0b3a2a,#0f8a54)"></div>
+          <div class="thumb" style="background:linear-gradient(150deg,#3a1408,#b34a1a)"></div>
+        </div>
+        <div class="main-top">
+          <svg class="leaf" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="rgba(255,255,255,.92)"/></svg>
+          <span class="cap">$match → $group → $sort · chapter 4 lab</span>
+        </div>
+      </div>
+
+      <aside class="buy-rail">
+        <div class="plan-card">
+          <h2>Enroll</h2>
+          <div class="price-line"><span class="now">Free</span><span class="unit">· certification exam sold separately</span></div>
+          <div class="opt-label">Track <em>· shapes labs and examples</em></div>
+          <div class="sku-row">
+            <div class="sku sel"><b>Developer</b><span>Node / Python labs</span></div>
+            <div class="sku"><b>DBA</b><span>mongosh labs</span></div>
+          </div>
+          <div class="opt-label">Lab cluster <em>· provisioned for you</em></div>
+          <div class="sku-row">
+            <div class="sku sel"><b>M0 Free</b><span>Shared, 512MB</span></div>
+            <div class="sku"><b>M10 Dedicated</b><span>$9/mo after trial</span></div>
+          </div>
+          <div class="qty-row">
+            <div class="opt-label" style="margin:0">Team seats</div>
+            <div class="stepper"><button aria-label="decrease">−</button><span>1</span><button aria-label="increase">+</button></div>
+          </div>
+          <div class="summary-line"><span>Course M121</span><span>$0.00</span></div>
+          <div class="summary-line"><span>Lab cluster M0</span><span>$0.00</span></div>
+          <div class="summary-line"><span>Exam voucher (optional)</span><span>$150.00</span></div>
+          <div class="summary-line total"><span>Total due today</span><span>$0.00</span></div>
+          <button class="btn btn-green">Enroll now</button>
+          <div class="reviews">
+            <div class="review-quote">“Chapter 4 paid for itself the same week — we rewrote a 200-line reporting job as a single pipeline and cut it from 9s to 120ms.”</div>
+            <div class="review-by"><span class="avatar"></span><span><b>Daniel Okafor</b><span>Senior Engineer · Freightwise</span></span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="footer-region">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#" style="color:#fff">
+          <svg width="18" height="38" viewBox="0 0 22 46" fill="none"><path d="M11 1S4 10 4 22c0 10 5 17 6.4 20l.6 3 .6-3C13 39 18 32 18 22 18 10 11 1 11 1Z" fill="#00ed64"/></svg>
+          University
+        </a>
+        <p>New courses every quarter. Get launch announcements and free exam-prep guides by email.</p>
+        <form class="newsletter" onsubmit="return false">
+          <input class="text-input" type="email" placeholder="Email address">
+          <button class="btn btn-green" type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="foot-col"><h5>Learn</h5><a href="#">All courses</a><a href="#">Learning paths</a><a href="#">Certifications</a><a href="#">Free labs</a><a href="#">Instructor-led</a></div>
+      <div class="foot-col"><h5>Products</h5><a href="#">Atlas</a><a href="#">Atlas Search</a><a href="#">Vector Search</a><a href="#">Community Edition</a></div>
+      <div class="foot-col"><h5>Company</h5><a href="#">About</a><a href="#">Careers</a><a href="#">Newsroom</a><a href="#">Partners</a><a href="#">Contact</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 MongoDB, Inc. · Terms · Privacy</span>
+      <div class="socials">
+        <a href="#" aria-label="GitHub"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a6.5 6.5 0 0 0-2 12.7c.3 0 .4-.1.4-.3v-1.2c-1.8.4-2.2-.8-2.2-.8-.3-.8-.7-1-.7-1-.6-.4 0-.4 0-.4.7 0 1 .7 1 .7.6 1 1.6.7 2 .5 0-.4.2-.7.4-.9-1.4-.2-2.9-.7-2.9-3.2 0-.7.2-1.3.7-1.7 0-.2-.3-.8 0-1.7 0 0 .6-.2 1.8.7a6 6 0 0 1 3.2 0c1.2-.9 1.8-.7 1.8-.7.3.9 0 1.5 0 1.7.4.4.7 1 .7 1.7 0 2.5-1.5 3-2.9 3.2.2.2.4.6.4 1.2v1.8c0 .2.1.3.4.3A6.5 6.5 0 0 0 8 1.5Z" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="X"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1 1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="17" height="13" viewBox="0 0 18 14" fill="none"><rect x="1" y="1" width="16" height="12" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="m7.5 4.8 4 2.2-4 2.2V4.8Z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

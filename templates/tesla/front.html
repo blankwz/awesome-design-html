@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tesla Shop</title>
+<style>
+:root{
+  --blue:#3E6AE1;
+  --blue-dark:#3157bd;
+  --white:#FFFFFF;
+  --ash:#F4F4F4;
+  --carbon:#171A20;
+  --graphite:#393C41;
+  --pewter:#5C5E62;
+  --fog:#8E8E8E;
+  --cloud:#EEEEEE;
+  --pale:#D0D1D2;
+  --r-btn:4px;
+  --r-card:12px;
+  --t:.33s cubic-bezier(.5,0,0,.75);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Universal Sans Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:14px;font-weight:400;line-height:1.43;color:var(--graphite);
+  background:var(--white);-webkit-font-smoothing:antialiased;
+}
+a{color:var(--pewter);text-decoration:none;transition:color var(--t),box-shadow var(--t)}
+a:hover{color:var(--carbon);text-decoration:underline}
+button{font-family:inherit;cursor:pointer;border:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:500;line-height:1.2;
+  min-height:40px;padding:4px 24px;border-radius:var(--r-btn);
+  border:3px solid transparent;
+  transition:background-color .33s,border-color .33s,color .33s,box-shadow .25s;
+}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-secondary{background:var(--white);color:var(--graphite)}
+.btn-secondary:hover{background:var(--ash)}
+.btn-block{width:220px}
+
+/* ---------- Nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;height:56px;
+  background:var(--white);
+  display:flex;align-items:center;
+  padding:0 32px;gap:32px;
+}
+.wordmark{
+  font-size:17px;font-weight:600;letter-spacing:.5em;color:var(--carbon);
+  text-transform:uppercase;text-decoration:none;
+}
+.wordmark:hover{text-decoration:none}
+.nav-links{display:flex;gap:4px;margin:0 auto}
+.nav-btn{
+  background:transparent;color:var(--carbon);font-size:14px;font-weight:500;
+  padding:4px 16px;min-height:32px;border-radius:var(--r-btn);
+  transition:color .33s,background-color .33s;
+}
+.nav-btn:hover{background:var(--ash)}
+.nav-icons{display:flex;gap:8px;align-items:center}
+.nav-icon{
+  width:36px;height:36px;border-radius:var(--r-btn);display:grid;place-items:center;
+  background:transparent;color:var(--carbon);position:relative;transition:background-color .33s;
+}
+.nav-icon:hover{background:var(--ash)}
+.nav-dot{position:absolute;top:7px;right:7px;min-width:14px;height:14px;border-radius:50%;background:var(--blue);color:#fff;font-size:9px;font-weight:500;display:grid;place-items:center;padding:0 3px}
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;height:78vh;min-height:520px;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:56px;overflow:hidden;
+  /* cinematic dusk lot, CSS-only */
+  background:
+    linear-gradient(180deg, rgba(23,26,32,.25) 0%, rgba(23,26,32,.05) 40%, rgba(23,26,32,.55) 100%),
+    radial-gradient(120% 80% at 50% 0%, #b9c6dd 0%, #8fa3c4 30%, #5d6f96 55%, #3c4763 75%, #232a3d 100%);
+}
+.hero::after{ /* ground */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:26%;
+  background:linear-gradient(180deg, rgba(35,42,61,0) 0%, #1c2130 34%, #141826 100%);
+}
+.hero-sun{position:absolute;top:16%;left:56%;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,#f4e6cf 0%,#e8c9a0 40%,rgba(232,201,160,0) 72%);filter:blur(2px)}
+.hero-car{ /* side profile of a vehicle, CSS-only */
+  position:absolute;bottom:14%;left:50%;transform:translateX(-50%);width:640px;height:150px;
+}
+.hero-car .body{
+  position:absolute;bottom:24px;left:0;right:0;height:58px;
+  background:linear-gradient(180deg,#3d4557 0%,#262c3a 70%,#1b202c 100%);
+  border-radius:26px 40px 12px 12px;
+}
+.hero-car .cabin{
+  position:absolute;bottom:76px;left:120px;width:340px;height:52px;
+  background:linear-gradient(180deg,#4a5468 0%,#2e3545 100%);
+  border-radius:60px 90px 0 0;
+}
+.hero-car .glass{
+  position:absolute;bottom:80px;left:138px;width:300px;height:36px;
+  background:linear-gradient(180deg,#9fb4d8 0%,#5c6f96 100%);
+  border-radius:48px 70px 0 0;opacity:.85;
+}
+.hero-car .wheel{position:absolute;bottom:0;width:64px;height:64px;border-radius:50%;
+  background:radial-gradient(circle,#11141c 38%,#2a3040 40%,#0d1017 70%);}
+.hero-car .w1{left:96px}.hero-car .w2{right:96px}
+.hero-copy{position:relative;text-align:center;color:var(--white);z-index:2}
+.hero-copy .promo{font-size:22px;font-weight:400;line-height:.95;margin-bottom:8px}
+.hero-copy h1{font-family:'Universal Sans Display',-apple-system,'Segoe UI',Arial,sans-serif;font-size:40px;font-weight:500;line-height:1.2;margin-bottom:24px}
+.hero-cta{display:flex;gap:16px;justify-content:center}
+
+/* ---------- Category strip ---------- */
+.cat-strip{border-bottom:1px solid var(--cloud)}
+.cat-inner{display:flex;gap:8px;padding:16px 24px;max-width:1280px;margin:0 auto;overflow-x:auto}
+.chip{
+  white-space:nowrap;font-size:14px;font-weight:500;color:var(--graphite);
+  padding:4px 16px;min-height:36px;display:inline-flex;align-items:center;
+  border-radius:var(--r-btn);background:transparent;transition:background-color .33s,color .33s;
+}
+.chip:hover{background:var(--ash)}
+.chip.active{background:var(--carbon);color:var(--white)}
+.chip-count{margin-left:auto;align-self:center;color:var(--fog);font-size:14px;white-space:nowrap;padding-left:16px}
+
+/* ---------- Grid ---------- */
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:56px 0 24px}
+.section-head h2{font-size:28px;font-weight:500;line-height:1.2;color:var(--carbon)}
+.section-head p{color:var(--pewter);margin-top:6px}
+.section-link{font-size:14px;font-weight:500;color:var(--pewter)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-bottom:24px}
+.card{display:flex;flex-direction:column;background:var(--white);transition:background-color .33s}
+.card:hover .card-name{color:var(--carbon)}
+.card-img{position:relative;aspect-ratio:4/3;border-radius:var(--r-card);overflow:hidden;background:var(--ash)}
+.card-img .art{position:absolute;inset:0}
+.badges{position:absolute;top:12px;left:12px;display:flex;gap:8px}
+.tag{font-size:14px;font-weight:500;color:var(--white);background:rgba(23,26,32,.78);padding:4px 12px;border-radius:var(--r-btn)}
+.tag-blue{background:var(--blue)}
+.card-body{padding:12px 4px 0;display:flex;flex-direction:column;gap:4px}
+.card-name{font-size:17px;font-weight:500;line-height:1.18;color:var(--carbon);transition:color .33s}
+.card-sub{color:var(--pewter);font-size:14px}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.price{font-size:14px;font-weight:500;color:var(--carbon)}
+.rating{font-size:14px;color:var(--pewter)}
+.rating b{color:var(--carbon);font-weight:500}
+.stars{color:var(--blue);letter-spacing:1px}
+
+/* art variants, CSS-only product studies */
+.art-a{background:linear-gradient(160deg,#eef0f4 0%,#dfe3ea 55%,#cdd3de 100%)}
+.art-a::after{content:"";position:absolute;left:18%;right:18%;top:38%;height:24%;
+  background:linear-gradient(180deg,#f5f6f8,#dcdfE5);border-radius:14px 60px 8px 8px;box-shadow:0 14px 0 -4px #b9bfca}
+.art-b{background:linear-gradient(200deg,#f0f1f3 0%,#e2e4e8 60%,#d5d8dd 100%)}
+.art-b::after{content:"";position:absolute;left:30%;top:22%;width:40%;height:52%;border-radius:14px;
+  background:linear-gradient(180deg,#2e3545,#171A20);box-shadow:0 10px 0 -3px #a9afba}
+.art-c{background:radial-gradient(90% 90% at 30% 20%,#f2f3f5 0%,#e0e3e8 70%)}
+.art-c::after{content:"";position:absolute;left:34%;top:30%;width:32%;height:32%;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#4a5468,#171A20 75%);box-shadow:0 12px 0 -4px #a9afba}
+.art-d{background:linear-gradient(140deg,#e9ecef 0%,#dbe0e6 100%)}
+.art-d::after{content:"";position:absolute;left:22%;right:22%;top:34%;height:30%;border-radius:10px;
+  background:repeating-linear-gradient(90deg,#171A20 0 14px,#2e3545 14px 18px);box-shadow:0 12px 0 -4px #b3b9c3}
+.art-e{background:linear-gradient(120deg,#edf0f2 0%,#dde2e7 100%)}
+.art-e::after{content:"";position:absolute;left:26%;right:26%;top:26%;height:44%;border-radius:8px;
+  background:linear-gradient(180deg,#c9d2de,#98a5b8);box-shadow:0 10px 0 -3px #aab1bc}
+.art-f{background:linear-gradient(160deg,#eff1f4 0%,#e0e4e9 100%)}
+.art-f::after{content:"";position:absolute;left:30%;top:28%;width:40%;height:40%;border-radius:6px;
+  background:linear-gradient(180deg,#39404f,#171A20)}
+.art-g{background:radial-gradient(100% 100% at 70% 20%,#f1f2f4 0%,#dee2e7 75%)}
+.art-g::after{content:"";position:absolute;left:24%;right:24%;top:40%;height:18%;border-radius:20px;
+  background:linear-gradient(180deg,#3f4757,#20242f);box-shadow:0 12px 0 -4px #b0b6c0}
+.art-h{background:linear-gradient(200deg,#eef0f3 0%,#dfe3e8 100%)}
+.art-h::after{content:"";position:absolute;left:28%;right:28%;top:30%;height:36%;border-radius:50% 50% 8px 8px;
+  background:linear-gradient(180deg,#5b6678,#2b313e);box-shadow:0 12px 0 -4px #adb3bd}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <a class="wordmark" href="#">TESLA</a>
+  <nav class="nav-links">
+    <button class="nav-btn">Vehicles</button>
+    <button class="nav-btn">Energy</button>
+    <button class="nav-btn">Charging</button>
+    <button class="nav-btn">Discover</button>
+    <button class="nav-btn active" style="background:var(--ash)">Shop</button>
+  </nav>
+  <div class="nav-icons">
+    <button class="nav-icon" aria-label="Help"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></button>
+    <button class="nav-icon" aria-label="Region"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg></button>
+    <button class="nav-icon" aria-label="Cart">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6h15l-1.5 9h-12L5 3H2"/><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg>
+      <span class="nav-dot">3</span>
+    </button>
+    <button class="nav-icon" aria-label="Account"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <span class="hero-sun"></span>
+  <div class="hero-car"><span class="body"></span><span class="cabin"></span><span class="glass"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
+  <div class="hero-copy">
+    <p class="promo">0% APR available on Model Y orders placed this week</p>
+    <h1>Model Y</h1>
+    <div class="hero-cta">
+      <button class="btn btn-primary btn-block">Order Now</button>
+      <button class="btn btn-secondary btn-block" style="width:180px">View Inventory</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORY STRIP ============ -->
+<div class="cat-strip">
+  <div class="cat-inner">
+    <button class="chip active">All</button>
+    <button class="chip">Charging</button>
+    <button class="chip">Vehicle Accessories</button>
+    <button class="chip">Interior</button>
+    <button class="chip">Wheels &amp; Tires</button>
+    <button class="chip">Apparel</button>
+    <button class="chip">Lifestyle</button>
+    <span class="chip-count">268 items</span>
+  </div>
+</div>
+<main class="wrap">
+
+  <!-- ============ PRODUCT GRID ============ -->
+  <section>
+    <div class="section-head">
+      <div>
+        <h2>Best sellers</h2>
+        <p>The accessories owners install first.</p>
+      </div>
+      <a class="section-link" href="#">Shop all</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-img"><div class="art art-a"></div><div class="badges"><span class="tag tag-blue">Best Seller</span></div></div>
+        <div class="card-body">
+          <p class="card-name">Wall Connector</p>
+          <p class="card-sub">Level 2 · up to 44 mi/hr</p>
+          <div class="card-meta"><span class="price">$420</span><span class="rating"><span class="stars">★★★★★</span> <b>4.9</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-b"></div></div>
+        <div class="card-body">
+          <p class="card-name">Mobile Connector</p>
+          <p class="card-sub">120V / 240V adapters included</p>
+          <div class="card-meta"><span class="price">$300</span><span class="rating"><span class="stars">★★★★★</span> <b>4.8</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-c"></div><div class="badges"><span class="tag">New</span></div></div>
+        <div class="card-body">
+          <p class="card-name">Key Fob — Model Y</p>
+          <p class="card-sub">Passive entry · 3-year battery</p>
+          <div class="card-meta"><span class="price">$175</span><span class="rating"><span class="stars">★★★★☆</span> <b>4.6</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-d"></div></div>
+        <div class="card-body">
+          <p class="card-name">All-Weather Interior Liners</p>
+          <p class="card-sub">Model Y · 5-seat · full set</p>
+          <div class="card-meta"><span class="price">$225</span><span class="rating"><span class="stars">★★★★★</span> <b>4.9</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-e"></div><div class="badges"><span class="tag tag-blue">Sale</span></div></div>
+        <div class="card-body">
+          <p class="card-name">Glass Roof Sunshade</p>
+          <p class="card-sub">Blocks 92% of solar load</p>
+          <div class="card-meta"><span class="price"><s style="color:var(--fog);font-weight:400">$135</s> $110</span><span class="rating"><span class="stars">★★★★☆</span> <b>4.7</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-f"></div></div>
+        <div class="card-body">
+          <p class="card-name">Center Console Tray</p>
+          <p class="card-sub">Flocked · Model 3 / Y refresh</p>
+          <div class="card-meta"><span class="price">$48</span><span class="rating"><span class="stars">★★★★★</span> <b>4.8</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-g"></div><div class="badges"><span class="tag">New</span></div></div>
+        <div class="card-body">
+          <p class="card-name">Cyberwhistle</p>
+          <p class="card-sub">Stainless steel · collector series</p>
+          <div class="card-meta"><span class="price">$50</span><span class="rating"><span class="stars">★★★★☆</span> <b>4.5</b></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img"><div class="art art-h"></div></div>
+        <div class="card-body">
+          <p class="card-name">J1772 Adapter</p>
+          <p class="card-sub">Use public stations with NACS</p>
+          <div class="card-meta"><span class="price">$60</span><span class="rating"><span class="stars">★★★★★</span> <b>4.8</b></span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED DETAIL ============ -->
+  <section style="padding-bottom:56px">
+    <div class="section-head" style="padding-top:8px"><div><h2>Wall Connector — Gen 3</h2><p>Fast home charging, tuned for every night.</p></div></div>
+    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start">
+      <div>
+        <div style="position:relative;aspect-ratio:16/10;border-radius:var(--r-card);overflow:hidden;background:linear-gradient(160deg,#eef0f4 0%,#dfe3ea 55%,#cdd3de 100%)">
+          <div style="position:absolute;left:38%;top:18%;width:24%;height:60%;border-radius:12px;background:linear-gradient(180deg,#f7f8fa 0%,#e3e6ec 60%,#d3d7de 100%);box-shadow:0 18px 30px -12px rgba(23,26,32,.35)">
+            <span style="position:absolute;left:20%;right:20%;top:12%;height:14px;border-radius:3px;background:#171A20"></span>
+            <span style="position:absolute;left:20%;right:20%;top:34%;height:38px;border-radius:4px;background:linear-gradient(180deg,#2e3545,#171A20)"></span>
+            <span style="position:absolute;left:32%;bottom:14%;width:14px;height:8px;border-radius:2px;background:var(--blue)"></span>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button style="flex:1;aspect-ratio:4/3;border-radius:var(--r-btn);border:2px solid var(--blue);background:linear-gradient(160deg,#eef0f4,#cdd3de)"></button>
+          <button style="flex:1;aspect-ratio:4/3;border-radius:var(--r-btn);border:1px solid var(--cloud);background:linear-gradient(160deg,#f4f4f4,#dcdfe4)"></button>
+          <button style="flex:1;aspect-ratio:4/3;border-radius:var(--r-btn);border:1px solid var(--cloud);background:linear-gradient(160deg,#e8eaee,#c8cdd6)"></button>
+          <button style="flex:1;aspect-ratio:4/3;border-radius:var(--r-btn);border:1px dashed var(--pale);background:var(--white);color:var(--pewter);font-size:14px">+4</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px">
+            <span style="font-size:28px;font-weight:500;color:var(--carbon)">$420</span>
+            <span style="color:var(--pewter)">or $18/mo with financing</span>
+          </div>
+          <p style="margin-top:10px;color:var(--graphite)">Up to 44 miles of range per hour charged, with Wi-Fi connectivity for remote diagnostics and power sharing across up to six units.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="stars" style="font-size:16px">★★★★★</span>
+          <b style="color:var(--carbon);font-weight:500">4.9</b>
+          <span style="color:var(--pewter)">· 8,214 reviews</span>
+        </div>
+        <div>
+          <p style="font-weight:500;color:var(--carbon);margin-bottom:8px">Cable length</p>
+          <div style="display:flex;gap:8px">
+            <button class="chip active">24 ft</button>
+            <button class="chip">8.5 ft</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-weight:500;color:var(--carbon);margin-bottom:8px">Quantity</p>
+          <div style="display:flex;align-items:center;border:1px solid var(--cloud);border-radius:var(--r-btn);width:132px">
+            <button style="flex:1;min-height:40px;font-size:16px;font-weight:500;color:var(--graphite)">−</button>
+            <span style="flex:1;text-align:center;font-weight:500;color:var(--carbon)">1</span>
+            <button style="flex:1;min-height:40px;font-size:16px;font-weight:500;color:var(--graphite)">+</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px">
+          <button class="btn btn-primary btn-block">Add to Cart</button>
+          <button class="btn btn-secondary" style="width:160px">Schedule Install</button>
+        </div>
+        <div style="border-top:1px solid var(--cloud);padding-top:20px">
+          <p style="color:var(--graphite);line-height:1.6">"Installation took the electrician under two hours and charging overnight covers my whole commute. It just works, every single night."</p>
+          <p style="margin-top:8px;color:var(--pewter)">Marcus T. · Model Y owner, Austin TX · Verified purchase</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CART PANEL ============ -->
+  <section style="padding-bottom:64px">
+    <div class="section-head"><div><h2>Your cart</h2><p>Items are reserved for 60 minutes.</p></div></div>
+    <div style="max-width:440px;margin-left:auto;background:var(--white);border:1px solid var(--cloud);border-radius:var(--r-card);padding:32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <span style="font-size:17px;font-weight:500;color:var(--carbon)">Order summary</span>
+        <span style="color:var(--pewter)">3 items</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;border-bottom:1px solid var(--cloud);padding-bottom:20px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:56px;height:42px;border-radius:var(--r-btn);background:linear-gradient(160deg,#eef0f4,#cdd3de);flex:none"></span>
+          <div style="flex:1"><p style="font-weight:500;color:var(--carbon)">Wall Connector — 24 ft</p><p style="color:var(--pewter)">Qty 1</p></div>
+          <span style="font-weight:500;color:var(--carbon)">$420</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:56px;height:42px;border-radius:var(--r-btn);background:linear-gradient(200deg,#f0f1f3,#d5d8dd);flex:none"></span>
+          <div style="flex:1"><p style="font-weight:500;color:var(--carbon)">Mobile Connector</p><p style="color:var(--pewter)">Qty 1</p></div>
+          <span style="font-weight:500;color:var(--carbon)">$300</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:56px;height:42px;border-radius:var(--r-btn);background:linear-gradient(140deg,#e9ecef,#dbe0e6);flex:none"></span>
+          <div style="flex:1"><p style="font-weight:500;color:var(--carbon)">All-Weather Liners</p><p style="color:var(--pewter)">Qty 1</p></div>
+          <span style="font-weight:500;color:var(--carbon)">$225</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:20px 0;border-bottom:1px solid var(--cloud);color:var(--pewter)">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span style="color:var(--carbon);font-weight:500">$945</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Shipping</span><span style="color:var(--carbon);font-weight:500">Free</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Est. tax (8.25%)</span><span style="color:var(--carbon);font-weight:500">$77.96</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 0 24px">
+        <span style="color:var(--carbon);font-weight:500">Total</span>
+        <span style="font-size:22px;font-weight:500;color:var(--carbon)">$1,022.96</span>
+      </div>
+      <button class="btn btn-primary" style="width:100%">Continue to Payment</button>
+      <p style="text-align:center;color:var(--fog);margin-top:12px">Free shipping on orders over $100</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:var(--ash)">
+  <div class="wrap" style="padding:48px 24px 32px">
+    <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <span class="wordmark" style="font-size:14px">TESLA</span>
+        <p style="color:var(--pewter);margin-top:12px;max-width:280px">Shop charging, accessories, and apparel — engineered by the same team that builds the cars.</p>
+        <div style="display:flex;gap:8px;margin-top:20px;max-width:320px">
+          <input type="email" placeholder="Email address" style="flex:1;min-height:40px;padding:4px 12px;border:1px solid var(--pale);border-radius:var(--r-btn);font-family:inherit;font-size:14px;outline:none;color:var(--carbon)">
+          <button class="btn btn-primary" style="padding:4px 16px">Sign Up</button>
+        </div>
+      </div>
+      <div><p style="font-weight:500;color:var(--carbon);margin-bottom:12px">Shop</p><div style="display:flex;flex-direction:column;gap:10px"><a href="#">Charging</a><a href="#">Vehicle Accessories</a><a href="#">Apparel</a><a href="#">Lifestyle</a></div></div>
+      <div><p style="font-weight:500;color:var(--carbon);margin-bottom:12px">Support</p><div style="display:flex;flex-direction:column;gap:10px"><a href="#">Order Help</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Warranty</a></div></div>
+      <div><p style="font-weight:500;color:var(--carbon);margin-bottom:12px">Company</p><div style="display:flex;flex-direction:column;gap:10px"><a href="#">About</a><a href="#">Careers</a><a href="#">Investor Relations</a><a href="#">News</a></div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:24px;border-top:1px solid var(--pale);color:var(--pewter);font-size:12px">
+      <span>Tesla © 2026 · Privacy &amp; Legal · Sell/Energy Disclosure</span>
+      <div style="display:flex;gap:16px">
+        <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.3 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.5l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.4 3.9H5.5L17.8 20Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nike — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --c-ink:#111111;
+  --c-on-primary:#ffffff;
+  --c-canvas:#ffffff;
+  --c-soft-cloud:#f5f5f5;
+  --c-charcoal:#39393b;
+  --c-ash:#4b4b4d;
+  --c-mute:#707072;
+  --c-stone:#9e9ea0;
+  --c-hairline:#cacacb;
+  --c-hairline-soft:#e5e5e5;
+  --c-sale:#d30005;
+  --c-sale-deep:#780700;
+  --c-success:#007d48;
+  --c-success-bright:#1eaa52;
+  --c-info:#1151ff;
+  --c-info-deep:#0034e3;
+  --c-accent-pink:#ed1aa0;
+  --c-accent-pink-soft:#ffb0dd;
+  --c-accent-purple-soft:#beaffd;
+  --c-accent-purple-pale:#d6d1ff;
+  --c-accent-teal:#0a7281;
+  --c-accent-pink-deep:#4c012d;
+  /* rounded */
+  --r-none:0px;
+  --r-sm:18px;
+  --r-md:24px;
+  --r-lg:30px;
+  --r-full:9999px;
+  /* spacing */
+  --s-xxs:2px; --s-xs:4px; --s-sm:8px; --s-md:12px;
+  --s-lg:18px; --s-xl:24px; --s-xxl:30px; --s-section:48px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  color:var(--c-ink);
+  background:var(--c-canvas);
+  font-size:16px;
+  line-height:1.5;
+}
+/* ───────── banner ───────── */
+.sg-banner{
+  background:var(--c-ink);
+  color:var(--c-on-primary);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 32px;
+}
+.sg-banner .sg-left{display:flex;align-items:baseline;gap:16px;}
+.sg-banner .sg-folder{
+  font-family:'Courier New',monospace;
+  font-size:12px;
+  color:var(--c-stone);
+  letter-spacing:0.5px;
+}
+.sg-banner .sg-brand{
+  font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  font-size:28px;
+  line-height:0.9;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.sg-banner .sg-desc{
+  font-size:12px;
+  font-weight:500;
+  color:var(--c-stone);
+  text-align:right;
+  max-width:560px;
+}
+main{max-width:1440px;margin:0 auto;padding:0 40px;}
+.sg-section-title{
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--c-mute);
+  padding-bottom:var(--s-sm);
+  border-bottom:1px solid var(--c-hairline);
+  margin-bottom:var(--s-section);
+}
+.sg-block{margin-bottom:var(--s-section);}
+.sg-block-label{
+  font-size:14px;
+  font-weight:500;
+  margin-bottom:var(--s-md);
+  color:var(--c-ink);
+}
+/* ───────── color tokens ───────── */
+.swatch-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:var(--s-md);
+}
+.swatch{border:1px solid var(--c-hairline-soft);}
+.swatch .chip{height:72px;}
+.swatch .meta{
+  padding:8px 10px;
+  border-top:1px solid var(--c-hairline-soft);
+}
+.swatch .name{font-size:12px;font-weight:500;}
+.swatch .hex{font-size:11px;color:var(--c-mute);font-family:'Courier New',monospace;}
+/* ───────── typography ───────── */
+.type-spec{border-top:1px solid var(--c-hairline);}
+.type-row{
+  padding:var(--s-lg) 0;
+  border-bottom:1px solid var(--c-hairline);
+  display:flex;
+  align-items:baseline;
+  gap:var(--s-xl);
+  flex-wrap:wrap;
+}
+.type-row .tag{
+  font-size:11px;
+  font-weight:500;
+  color:var(--c-mute);
+  font-family:'Courier New',monospace;
+  min-width:190px;
+}
+.t-display{
+  font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  font-size:96px;line-height:0.9;font-weight:500;text-transform:uppercase;
+}
+.t-h-xl{font-size:32px;font-weight:500;line-height:1.2;}
+.t-h-lg{font-size:24px;font-weight:500;line-height:1.2;}
+.t-h-md{font-size:16px;font-weight:500;line-height:1.75;}
+.t-body{font-size:16px;font-weight:400;line-height:1.5;}
+.t-body-strong{font-size:16px;font-weight:500;line-height:1.5;}
+.t-btn-md{font-size:16px;font-weight:500;line-height:1.5;}
+.t-link{font-size:16px;font-weight:500;line-height:1.75;text-decoration:underline;}
+.t-cap-md{font-size:14px;font-weight:500;line-height:1.5;}
+.t-cap-sm{font-size:12px;font-weight:500;line-height:1.5;}
+.t-utility{font-size:9px;font-weight:500;line-height:1.75;}
+/* ───────── buttons ───────── */
+.btn-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;text-decoration:none;
+  font-family:inherit;
+}
+.btn-primary{
+  background:var(--c-ink);color:var(--c-on-primary);
+  font-size:16px;font-weight:500;
+  padding:12px 32px;height:48px;
+  border-radius:var(--r-lg);
+  transition:transform .15s ease,opacity .15s ease;
+}
+.btn-primary:hover{opacity:.85;}
+.btn-primary:active{transform:scale(.5);opacity:.5;}
+.btn-secondary{
+  background:var(--c-soft-cloud);color:var(--c-ink);
+  font-size:16px;font-weight:500;
+  padding:12px 32px;height:48px;
+  border-radius:var(--r-lg);
+}
+.btn-secondary:hover{background:var(--c-hairline-soft);}
+.btn-on-image{
+  background:var(--c-canvas);color:var(--c-ink);
+  font-size:16px;font-weight:500;
+  padding:8px 24px;height:44px;
+  border-radius:var(--r-lg);
+}
+.btn-on-image:hover{background:var(--c-soft-cloud);}
+.btn-sm{
+  font-size:14px;font-weight:500;
+  padding:8px 20px;height:36px;
+  border-radius:var(--r-lg);
+}
+.btn-lg{
+  font-size:24px;font-weight:500;line-height:1.2;
+  padding:16px 40px;height:64px;
+  border-radius:var(--r-lg);
+}
+.btn-hover-look{outline:2px solid var(--c-ink);outline-offset:3px;}
+.btn-icon{
+  width:40px;height:40px;
+  background:var(--c-soft-cloud);color:var(--c-ink);
+  border-radius:var(--r-full);
+  font-size:18px;line-height:1;
+}
+.btn-icon:hover{background:var(--c-hairline-soft);}
+/* ───────── inputs ───────── */
+.input-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.search-pill{
+  display:inline-flex;align-items:center;gap:var(--s-sm);
+  background:var(--c-soft-cloud);color:var(--c-ink);
+  font-size:16px;
+  padding:8px 16px;height:40px;
+  border-radius:var(--r-md);
+  border:2px solid transparent;
+  width:260px;
+}
+.search-pill input{
+  border:none;background:transparent;outline:none;
+  font:inherit;width:100%;color:var(--c-ink);
+}
+.search-pill input::placeholder{color:var(--c-mute);}
+.search-pill.focus{
+  background:var(--c-canvas);
+  border:2px solid var(--c-ink);
+  box-shadow:0 0 0 12px var(--c-soft-cloud);
+}
+.select-pill{
+  appearance:none;
+  background:var(--c-canvas);color:var(--c-ink);
+  border:1px solid var(--c-hairline);
+  font:inherit;font-size:14px;font-weight:500;
+  padding:8px 36px 8px 16px;height:40px;
+  border-radius:var(--r-full);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path d='M6 9l6 6 6-6' fill='none' stroke='%23111111' stroke-width='2.5'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  cursor:pointer;
+}
+.switch{
+  position:relative;display:inline-block;
+  width:44px;height:24px;vertical-align:middle;
+}
+.switch input{opacity:0;width:0;height:0;}
+.switch .track{
+  position:absolute;inset:0;
+  background:var(--c-hairline);
+  border-radius:var(--r-full);
+  transition:background .15s;
+}
+.switch .track::after{
+  content:"";position:absolute;
+  top:3px;left:3px;width:18px;height:18px;
+  background:var(--c-canvas);border-radius:var(--r-full);
+  transition:transform .15s;
+}
+.switch input:checked + .track{background:var(--c-ink);}
+.switch input:checked + .track::after{transform:translateX(20px);}
+.check{
+  display:inline-flex;align-items:center;gap:var(--s-sm);
+  font-size:14px;font-weight:500;cursor:pointer;
+}
+.check .box{
+  width:20px;height:20px;border:1px solid var(--c-hairline);
+  border-radius:4px;display:inline-flex;align-items:center;justify-content:center;
+  color:transparent;font-size:13px;
+}
+.check.on .box{background:var(--c-ink);border-color:var(--c-ink);color:var(--c-on-primary);}
+.check.disabled{color:var(--c-stone);cursor:not-allowed;}
+.check.disabled .box{background:var(--c-soft-cloud);border-color:var(--c-hairline-soft);}
+.filter-chip{
+  display:inline-flex;align-items:center;
+  background:var(--c-canvas);color:var(--c-ink);
+  border:1px solid var(--c-hairline);
+  font-size:16px;font-weight:500;
+  padding:8px 16px;height:40px;
+  border-radius:var(--r-full);
+  cursor:pointer;
+}
+.filter-chip.active{background:var(--c-ink);color:var(--c-on-primary);border-color:var(--c-ink);}
+/* ───────── cards ───────── */
+.card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md);}
+.product-card{background:var(--c-canvas);padding:0;}
+.product-card .stage{
+  background:var(--c-soft-cloud);
+  aspect-ratio:1/1;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.product-card .meta{padding:var(--s-md) 0 0;}
+.product-card .promo{
+  position:absolute;top:var(--s-md);left:var(--s-md);
+  background:var(--c-canvas);color:var(--c-ink);
+  border:1px solid var(--c-hairline);
+  font-size:12px;font-weight:500;
+  padding:4px 12px;border-radius:var(--r-lg);
+}
+.product-card .name{font-size:16px;font-weight:500;}
+.product-card .sub{font-size:14px;font-weight:500;color:var(--c-mute);margin-top:var(--s-xs);}
+.price-row{font-size:16px;font-weight:500;margin-top:var(--s-xs);display:flex;gap:var(--s-sm);align-items:baseline;}
+.price-sale{color:var(--c-sale);}
+.price-was{color:var(--c-mute);text-decoration:line-through;font-weight:400;}
+.price-off{color:var(--c-sale);font-size:14px;font-weight:500;}
+.swatch-dots{display:flex;gap:var(--s-xs);margin-top:var(--s-sm);}
+.dot{width:12px;height:12px;border-radius:var(--r-full);}
+.dot.ring{box-shadow:0 0 0 1px var(--c-hairline);}
+.dot.sel{box-shadow:0 0 0 2px var(--c-canvas),0 0 0 4px var(--c-ink);}
+.feature-stat-card{
+  background:var(--c-ink);color:var(--c-on-primary);
+  padding:var(--s-xl);
+  display:flex;flex-direction:column;justify-content:space-between;gap:var(--s-xl);
+}
+.feature-stat-card .big{
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:56px;line-height:0.9;text-transform:uppercase;
+}
+.feature-stat-card p{font-size:14px;font-weight:500;color:var(--c-stone);max-width:280px;}
+/* ───────── badges ───────── */
+.badge-row{display:flex;gap:var(--s-sm);flex-wrap:wrap;align-items:center;}
+.badge-promo{
+  display:inline-flex;align-items:center;
+  background:var(--c-canvas);color:var(--c-ink);
+  border:1px solid var(--c-hairline);
+  font-size:12px;font-weight:500;
+  padding:4px 12px;border-radius:var(--r-lg);
+}
+.badge-solid{
+  display:inline-flex;align-items:center;
+  background:var(--c-ink);color:var(--c-on-primary);
+  font-size:12px;font-weight:500;
+  padding:4px 12px;border-radius:var(--r-lg);
+}
+.badge-sale-text{color:var(--c-sale);font-size:14px;font-weight:500;}
+.badge-success{color:var(--c-success);font-size:14px;font-weight:500;}
+/* ───────── navigation ───────── */
+.nav-demo{border:1px solid var(--c-hairline-soft);}
+.utility-bar{
+  background:var(--c-soft-cloud);color:var(--c-ink);
+  font-size:12px;font-weight:500;
+  height:36px;display:flex;align-items:center;justify-content:flex-end;
+  padding:0 var(--s-xl);gap:var(--s-md);
+}
+.utility-bar span{cursor:pointer;}
+.primary-nav{
+  background:var(--c-canvas);
+  height:60px;display:flex;align-items:center;
+  padding:0 var(--s-xl);gap:var(--s-xl);
+  box-shadow:inset 0 -1px 0 var(--c-hairline-soft);
+}
+.swoosh{flex:0 0 auto;}
+.primary-nav .links{display:flex;gap:var(--s-xl);flex:1;justify-content:center;}
+.primary-nav .links a{
+  font-size:16px;font-weight:500;color:var(--c-ink);text-decoration:none;
+  padding:18px 0;position:relative;
+}
+.primary-nav .links a.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--c-ink);
+}
+.primary-nav .right{display:flex;align-items:center;gap:var(--s-md);}
+.icon-btn{
+  width:36px;height:36px;border-radius:var(--r-full);
+  background:transparent;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.icon-btn:hover{background:var(--c-soft-cloud);}
+/* ───────── table / list ───────── */
+.plp-table{width:100%;border-collapse:collapse;font-size:14px;}
+.plp-table th{
+  text-align:left;font-size:12px;font-weight:500;color:var(--c-mute);
+  padding:var(--s-sm) var(--s-md);
+  border-bottom:1px solid var(--c-hairline);
+}
+.plp-table td{
+  padding:var(--s-md);border-bottom:1px solid var(--c-hairline-soft);
+  font-weight:400;color:var(--c-charcoal);
+}
+.plp-table td.strong{font-weight:500;color:var(--c-ink);}
+.disclosure-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:var(--s-xl) 0;
+  border-bottom:1px solid var(--c-hairline);
+  font-size:16px;font-weight:500;
+}
+/* ═════════ PRODUCT ═════════ */
+#product{margin-top:var(--s-section);}
+.hero{
+  position:relative;
+  background:linear-gradient(160deg,#2b2b2d 0%,#111111 55%,#000 100%);
+  color:var(--c-on-primary);
+  min-height:560px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:var(--s-section) var(--s-xxl);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 45% at 75% 30%, rgba(255,176,221,.14), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 20% 70%, rgba(190,175,253,.12), transparent 60%);
+}
+.hero .kicker{font-size:14px;font-weight:500;color:var(--c-stone);position:relative;margin-bottom:var(--s-md);}
+.hero h1{
+  font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  font-size:96px;line-height:0.9;font-weight:500;
+  text-transform:uppercase;position:relative;max-width:900px;
+}
+.hero p{position:relative;font-size:16px;font-weight:500;color:var(--c-stone);margin:var(--s-lg) 0 var(--s-xl);max-width:520px;}
+.hero .cta{position:relative;display:flex;gap:var(--s-md);}
+.logo-strip{
+  display:flex;align-items:center;justify-content:center;gap:var(--s-xxl);
+  padding:var(--s-xl) 0;flex-wrap:wrap;
+  border-bottom:1px solid var(--c-hairline-soft);
+}
+.logo-strip span{
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:22px;letter-spacing:1px;color:var(--c-mute);text-transform:uppercase;
+}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin:var(--s-section) 0 var(--s-lg);
+}
+.section-head h2{font-size:32px;font-weight:500;line-height:1.2;}
+.section-head a{font-size:16px;font-weight:500;color:var(--c-ink);}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-sm);}
+.trend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-sm);}
+.sport-tile{
+  position:relative;
+  aspect-ratio:4/5;
+  overflow:hidden;
+  display:flex;align-items:flex-end;padding:var(--s-lg);
+}
+.sport-tile.run{background:linear-gradient(165deg,#0a7281 0%,#043c45 70%);}
+.sport-tile.bball{background:linear-gradient(165deg,#4c012d 0%,#1d0008 75%);}
+.sport-tile.train{background:linear-gradient(165deg,#39393b 0%,#0d0d0e 75%);}
+.sport-tile.yoga{background:linear-gradient(165deg,#beaffd 0%,#8f7ae8 80%);}
+.sport-tile .tile-title{
+  position:absolute;top:var(--s-lg);left:var(--s-lg);
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:44px;line-height:0.9;text-transform:uppercase;
+  color:var(--c-on-primary);max-width:200px;
+}
+.sport-tile.yoga .tile-title{color:var(--c-ink);}
+.membership{
+  background:var(--c-ink);color:var(--c-on-primary);
+  padding:var(--s-section) var(--s-xxl);
+  margin:var(--s-section) 0;
+  display:grid;grid-template-columns:1.2fr 1fr;gap:var(--s-xxl);align-items:center;
+}
+.membership h2{
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:64px;line-height:0.9;text-transform:uppercase;
+}
+.membership p{color:var(--c-stone);font-size:16px;font-weight:500;margin:var(--s-md) 0 var(--s-xl);}
+.member-perks{display:grid;gap:var(--s-md);}
+.member-perk{
+  border:1px solid var(--c-ash);
+  padding:var(--s-md) var(--s-lg);
+  font-size:14px;font-weight:500;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.member-perk span:last-child{color:var(--c-stone);}
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--c-hairline);
+  border-bottom:1px solid var(--c-hairline);
+  margin:var(--s-section) 0;
+}
+.stat{padding:var(--s-xl);border-right:1px solid var(--c-hairline);}
+.stat:last-child{border-right:none;}
+.stat .num{
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:48px;line-height:0.95;
+}
+.stat .lbl{font-size:14px;font-weight:500;color:var(--c-mute);margin-top:var(--s-xs);}
+.quote{
+  padding:var(--s-section) 0;
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s-xxl);
+  border-bottom:1px solid var(--c-hairline-soft);
+}
+.quote .mark{
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:96px;line-height:0.6;color:var(--c-hairline);
+}
+.quote blockquote{font-size:24px;font-weight:500;line-height:1.35;max-width:760px;}
+.quote cite{
+  display:block;margin-top:var(--s-md);
+  font-style:normal;font-size:14px;font-weight:500;color:var(--c-mute);
+}
+.cta-band{
+  background:var(--c-ink);color:var(--c-on-primary);
+  margin:var(--s-section) 0 0;
+  padding:var(--s-section) var(--s-xxl);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-xl);flex-wrap:wrap;
+}
+.cta-band h2{
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:56px;line-height:0.9;text-transform:uppercase;
+}
+footer.sg-footer{
+  border-top:1px solid var(--c-hairline);
+  margin-top:var(--s-section);
+  padding:var(--s-section) 0 var(--s-lg);
+  display:grid;grid-template-columns:repeat(4,1fr) 1.2fr;gap:var(--s-xl);
+}
+.sg-footer h4{font-size:16px;font-weight:500;margin-bottom:var(--s-md);}
+.sg-footer ul{list-style:none;}
+.sg-footer li{margin-bottom:var(--s-sm);}
+.sg-footer li a{font-size:14px;font-weight:500;color:var(--c-mute);text-decoration:none;}
+.sg-footer li a:hover{color:var(--c-ink);}
+.fine-print{
+  grid-column:1 / -1;
+  border-top:1px solid var(--c-hairline-soft);
+  padding-top:var(--s-md);
+  font-size:9px;font-weight:500;line-height:1.75;color:var(--c-mute);
+  display:flex;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap;
+}
+@media (max-width:900px){
+  .card-row,.feature-grid{grid-template-columns:1fr 1fr;}
+  .trend-grid{grid-template-columns:1fr 1fr;}
+  .membership{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  footer.sg-footer{grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:64px;}
+  .primary-nav .links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-folder">nike</span>
+    <span class="sg-brand">Nike</span>
+  </div>
+  <div class="sg-desc">Photography-first commerce on extreme typographic contrast — towering Futura campaign lockups over quiet pill-shaped retail chrome.</div>
+</header>
+
+<main>
+  <!-- ═══════════ COMPONENTS ═══════════ -->
+  <section id="components" style="padding-top:var(--s-section);">
+    <div class="sg-section-title">Components</div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#111111"></div><div class="meta"><div class="name">Ink</div><div class="hex">#111111</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid #e5e5e5"></div><div class="meta"><div class="name">Canvas</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f5f5f5"></div><div class="meta"><div class="name">Soft Cloud</div><div class="hex">#F5F5F5</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#707072"></div><div class="meta"><div class="name">Mute</div><div class="hex">#707072</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#d30005"></div><div class="meta"><div class="name">Sale</div><div class="hex">#D30005</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#007d48"></div><div class="meta"><div class="name">Success</div><div class="hex">#007D48</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#1151ff"></div><div class="meta"><div class="name">Info</div><div class="hex">#1151FF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ed1aa0"></div><div class="meta"><div class="name">Accent Pink</div><div class="hex">#ED1AA0</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a7281"></div><div class="meta"><div class="name">Accent Teal</div><div class="hex">#0A7281</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#cacacb"></div><div class="meta"><div class="name">Hairline</div><div class="hex">#CACACB</div></div></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="tag">display-campaign · 96/0.9/500</span><span class="t-display">Just Do It</span></div>
+        <div class="type-row"><span class="tag">heading-xl · 32/1.2/500</span><span class="t-h-xl">Featured Footwear</span></div>
+        <div class="type-row"><span class="tag">heading-lg · 24/1.2/500</span><span class="t-h-lg">Nike Zegama Trail</span></div>
+        <div class="type-row"><span class="tag">body-md · 16/1.5/400</span><span class="t-body">Conquer rugged courses in the iconic Shox platform. Cushioned comfort for your every run, on road or trail.</span></div>
+        <div class="type-row"><span class="tag">body-strong · 16/1.5/500</span><span class="t-body-strong">Men's Trail Running Shoes</span></div>
+        <div class="type-row"><span class="tag">link-md · 16/1.75/500 underline</span><span class="t-link">View Product Details</span></div>
+        <div class="type-row"><span class="tag">caption-md · 14/1.5/500</span><span class="t-cap-md">Nike Air Zoom Pegasus 41</span></div>
+        <div class="type-row"><span class="tag">caption-sm · 12/1.5/500</span><span class="t-cap-sm">Just In</span></div>
+        <div class="type-row"><span class="tag">utility-xs · 9/1.75/500</span><span class="t-utility">© 2026 Nike, Inc. All rights reserved</span></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Buy Now</button>
+        <button class="btn btn-secondary">Discover More</button>
+        <button class="btn btn-on-image">Shop</button>
+        <button class="btn btn-primary btn-sm">Notify Me</button>
+        <button class="btn btn-primary btn-lg btn-hover-look">Sign Up</button>
+        <button class="btn btn-icon" aria-label="favorite">&#9825;</button>
+        <button class="btn btn-icon" aria-label="previous">&#8249;</button>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs</div>
+      <div class="input-row" style="margin-bottom:var(--s-md);">
+        <label class="search-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search">
+        </label>
+        <label class="search-pill focus">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" value="Zegama" >
+        </label>
+        <select class="select-pill"><option>Sort By: Featured</option><option>Newest</option><option>Price: High-Low</option></select>
+        <label class="check on"><span class="box">&#10003;</span>Sustainable Materials</label>
+        <label class="check disabled"><span class="box">&#10003;</span>Member Exclusive</label>
+        <span class="switch"><input type="checkbox" checked><span class="track"></span></span>
+      </div>
+      <div class="btn-row">
+        <button class="filter-chip active">Shoes (412)</button>
+        <button class="filter-chip">Clothing (1,208)</button>
+        <button class="filter-chip">Accessories (317)</button>
+        <button class="filter-chip">Sale (96)</button>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Cards</div>
+      <div class="card-row">
+        <div class="product-card">
+          <div class="stage">
+            <span class="promo">Just In</span>
+            <svg width="150" height="90" viewBox="0 0 150 90"><path d="M8 66 L14 44 Q16 38 24 40 L46 46 Q66 50 84 44 L108 36 Q128 30 138 46 Q142 54 138 62 Q134 70 122 70 L22 70 Q10 70 8 62 Z" fill="#111111"/><circle cx="40" cy="70" r="9" fill="#ffffff" stroke="#111111" stroke-width="4"/><circle cx="108" cy="70" r="9" fill="#ffffff" stroke="#111111" stroke-width="4"/><path d="M14 44 L46 46 L44 54 L18 52 Z" fill="#ffffff"/></svg>
+          </div>
+          <div class="meta">
+            <div class="swatch-dots"><span class="dot" style="background:#111111"></span><span class="dot sel" style="background:#ed1aa0"></span><span class="dot ring" style="background:#ffffff"></span><span class="dot" style="background:#0a7281"></span></div>
+            <div class="name" style="margin-top:var(--s-sm);">Nike Shox R4</div>
+            <div class="sub">Men's Shoes</div>
+            <div class="price-row">1,509 &#3647;</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="stage">
+            <span class="promo">Sale</span>
+            <svg width="150" height="90" viewBox="0 0 150 90"><path d="M8 66 L14 44 Q16 38 24 40 L46 46 Q66 50 84 44 L108 36 Q128 30 138 46 Q142 54 138 62 Q134 70 122 70 L22 70 Q10 70 8 62 Z" fill="#0a7281"/><circle cx="40" cy="70" r="9" fill="#ffffff" stroke="#0a7281" stroke-width="4"/><circle cx="108" cy="70" r="9" fill="#ffffff" stroke="#0a7281" stroke-width="4"/><path d="M14 44 L46 46 L44 54 L18 52 Z" fill="#d6d1ff"/></svg>
+          </div>
+          <div class="meta">
+            <div class="swatch-dots"><span class="dot sel" style="background:#0a7281"></span><span class="dot ring" style="background:#ffffff"></span><span class="dot" style="background:#beaffd"></span></div>
+            <div class="name" style="margin-top:var(--s-sm);">Nike Zegama</div>
+            <div class="sub">Men's Trail Running Shoes</div>
+            <div class="price-row"><span class="price-sale">9,636 &#3647;</span><span class="price-was">12,045 &#3647;</span><span class="price-off">20% off</span></div>
+          </div>
+        </div>
+        <div class="feature-stat-card">
+          <div>
+            <div class="big">Member<br>Days</div>
+            <p style="margin-top:var(--s-md);">Free shipping, exclusive colorways and early access — for members only.</p>
+          </div>
+          <button class="btn btn-on-image" style="align-self:flex-start;">Join Us</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Badges &amp; tags</div>
+      <div class="badge-row">
+        <span class="badge-promo">Just In</span>
+        <span class="badge-promo">Coming Soon</span>
+        <span class="badge-promo">Recycled Materials</span>
+        <span class="badge-solid">Member Exclusive</span>
+        <span class="badge-sale-text">20% off</span>
+        <span class="badge-success">In Stock</span>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation</div>
+      <div class="nav-demo">
+        <div class="utility-bar"><span>Find a Store</span><span>|</span><span>Help</span><span>|</span><span>Join Us</span><span>|</span><span>Sign In</span></div>
+        <nav class="primary-nav">
+          <svg class="swoosh" width="56" height="22" viewBox="0 0 56 22"><path d="M54.5 1.2 L15.9 17.3 Q8 20.6 3.8 17.9 Q0.6 15.7 3.4 11.3 Q5.4 8.3 8.7 5.9 Q7 9.6 9.3 11.4 Q11.8 13.2 17.4 11.1 Z" fill="#111111"/></svg>
+          <div class="links">
+            <a href="#">New &amp; Featured</a>
+            <a href="#" class="active">Men</a>
+            <a href="#">Women</a>
+            <a href="#">Kids</a>
+            <a href="#">Jordan</a>
+            <a href="#">Sport</a>
+          </div>
+          <div class="right">
+            <label class="search-pill" style="width:180px;height:36px;font-size:14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="text" placeholder="Search">
+            </label>
+            <button class="icon-btn" aria-label="wishlist">&#9825;</button>
+            <button class="icon-btn" aria-label="bag">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8"><path d="M6 8h12l1 13H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Table &amp; disclosure rows</div>
+      <table class="plp-table">
+        <thead><tr><th>Product</th><th>Category</th><th>Colourway</th><th>Price</th><th>Availability</th></tr></thead>
+        <tbody>
+          <tr><td class="strong">Nike Shox R4</td><td>Men's Shoes</td><td>Black / White</td><td class="strong">1,509 &#3647;</td><td class="strong">In Stock</td></tr>
+          <tr><td class="strong">Nike Zegama</td><td>Trail Running</td><td>Teal / Purple</td><td class="strong" style="color:#d30005;">9,636 &#3647;</td><td class="strong">In Stock</td></tr>
+          <tr><td class="strong">Air Zoom Pegasus 41</td><td>Road Running</td><td>Triple Black</td><td class="strong">4,545 &#3647;</td><td>Coming Soon</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:var(--s-xl);">
+        <div class="disclosure-row"><span>View Product Details</span><span>&#8964;</span></div>
+        <div class="disclosure-row"><span>Shipping &amp; Returns</span><span>&#8964;</span></div>
+        <div class="disclosure-row"><span>Reviews (1,204)</span><span>&#8964;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PRODUCT ═══════════ -->
+  <section id="product">
+    <div class="sg-section-title">Finished Product</div>
+
+    <div class="hero">
+      <div class="kicker">Nike Running — Fall Campaign</div>
+      <h1>Run<br>Farther.<br>Recover<br>Faster.</h1>
+      <p>The new ZoomX foam returns more energy per stride than anything we've ever built. Meet the Pegasus 41 and Zegama Trail.</p>
+      <div class="cta">
+        <button class="btn btn-primary">Shop Running</button>
+        <button class="btn btn-on-image">Explore the Collection</button>
+      </div>
+    </div>
+
+    <div class="logo-strip">
+      <span>NBA</span><span>NFL</span><span>Premier League</span><span>WNBA</span><span>MLB</span><span>Paris SG</span><span>USATF</span>
+    </div>
+
+    <div class="section-head"><h2>Trending Now</h2><a href="#" class="t-link">View All</a></div>
+    <div class="trend-grid">
+      <div class="product-card">
+        <div class="stage"><span class="promo">Just In</span><svg width="130" height="80" viewBox="0 0 150 90"><path d="M8 66 L14 44 Q16 38 24 40 L46 46 Q66 50 84 44 L108 36 Q128 30 138 46 Q142 54 138 62 Q134 70 122 70 L22 70 Q10 70 8 62 Z" fill="#111111"/><circle cx="40" cy="70" r="9" fill="#fff" stroke="#111" stroke-width="4"/><circle cx="108" cy="70" r="9" fill="#fff" stroke="#111" stroke-width="4"/></svg></div>
+        <div class="meta"><div class="name">Nike Shox R4</div><div class="sub">Men's Shoes</div><div class="price-row">1,509 &#3647;</div></div>
+      </div>
+      <div class="product-card">
+        <div class="stage"><svg width="130" height="80" viewBox="0 0 150 90"><path d="M8 66 L14 44 Q16 38 24 40 L46 46 Q66 50 84 44 L108 36 Q128 30 138 46 Q142 54 138 62 Q134 70 122 70 L22 70 Q10 70 8 62 Z" fill="#ed1aa0"/><circle cx="40" cy="70" r="9" fill="#fff" stroke="#ed1aa0" stroke-width="4"/><circle cx="108" cy="70" r="9" fill="#fff" stroke="#ed1aa0" stroke-width="4"/></svg></div>
+        <div class="meta"><div class="name">Air Max SC</div><div class="sub">Women's Shoes</div><div class="price-row">3,090 &#3647;</div></div>
+      </div>
+      <div class="product-card">
+        <div class="stage"><span class="promo">Sale</span><svg width="130" height="80" viewBox="0 0 150 90"><path d="M8 66 L14 44 Q16 38 24 40 L46 46 Q66 50 84 44 L108 36 Q128 30 138 46 Q142 54 138 62 Q134 70 122 70 L22 70 Q10 70 8 62 Z" fill="#0a7281"/><circle cx="40" cy="70" r="9" fill="#fff" stroke="#0a7281" stroke-width="4"/><circle cx="108" cy="70" r="9" fill="#fff" stroke="#0a7281" stroke-width="4"/></svg></div>
+        <div class="meta"><div class="name">Nike Zegama</div><div class="sub">Men's Trail Running Shoes</div><div class="price-row"><span class="price-sale">9,636 &#3647;</span><span class="price-was">12,045 &#3647;</span><span class="price-off">20% off</span></div></div>
+      </div>
+      <div class="product-card">
+        <div class="stage"><svg width="130" height="80" viewBox="0 0 150 90"><path d="M8 66 L14 44 Q16 38 24 40 L46 46 Q66 50 84 44 L108 36 Q128 30 138 46 Q142 54 138 62 Q134 70 122 70 L22 70 Q10 70 8 62 Z" fill="#beaffd"/><circle cx="40" cy="70" r="9" fill="#fff" stroke="#beaffd" stroke-width="4"/><circle cx="108" cy="70" r="9" fill="#fff" stroke="#beaffd" stroke-width="4"/></svg></div>
+        <div class="meta"><div class="name">Jordan Golf</div><div class="sub">Men's Golf Shoes</div><div class="price-row">7,636 &#3647;</div></div>
+      </div>
+    </div>
+
+    <div class="section-head"><h2>Shop by Sport</h2></div>
+    <div class="feature-grid">
+      <div class="sport-tile run"><span class="tile-title">Trail Running</span><button class="btn btn-on-image">Shop</button></div>
+      <div class="sport-tile bball"><span class="tile-title">Basketball</span><button class="btn btn-on-image">Shop</button></div>
+      <div class="sport-tile train"><span class="tile-title">Gym &amp; Training</span><button class="btn btn-on-image">Shop</button></div>
+    </div>
+
+    <div class="membership">
+      <div>
+        <h2>Member<br>Benefits</h2>
+        <p>Become a member for the best of Nike — free shipping, birthday rewards, exclusive products and Member Days pricing.</p>
+        <button class="btn btn-on-image">Join Us</button>
+      </div>
+      <div class="member-perks">
+        <div class="member-perk"><span>Free Standard Shipping</span><span>Included</span></div>
+        <div class="member-perk"><span>Exclusive Products</span><span>Early Access</span></div>
+        <div class="member-perk"><span>Member Days</span><span>4x / Year</span></div>
+        <div class="member-perk"><span>Nike App Unlock</span><span>Instant</span></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="num">50+</div><div class="lbl">Years of innovation</div></div>
+      <div class="stat"><div class="num">190</div><div class="lbl">Countries with Nike stores</div></div>
+      <div class="stat"><div class="num">75%</div><div class="lbl">Of elite runners laced in Nike</div></div>
+      <div class="stat"><div class="num">1B+</div><div class="lbl">Sneakers sold every year</div></div>
+    </div>
+
+    <div class="quote">
+      <div class="mark">&ldquo;</div>
+      <div>
+        <blockquote>The Pegasus carried me through 2,000 kilometres of marathon training. Nothing else comes close on race day.</blockquote>
+        <cite>Eliud K. — Marathon Runner, Nike Member since 2019</cite>
+      </div>
+    </div>
+
+    <div class="cta-band">
+      <h2>Move the World.</h2>
+      <button class="btn btn-on-image">Shop New Arrivals</button>
+    </div>
+
+    <footer class="sg-footer">
+      <div><h4>Resources</h4><ul><li><a href="#">Find A Store</a></li><li><a href="#">Become A Member</a></li><li><a href="#">Running Shoe Finder</a></li><li><a href="#">Product Advice</a></li></ul></div>
+      <div><h4>Help</h4><ul><li><a href="#">Get Help</a></li><li><a href="#">Order Status</a></li><li><a href="#">Delivery</a></li><li><a href="#">Returns</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#">About Nike</a></li><li><a href="#">News</a></li><li><a href="#">Careers</a></li><li><a href="#">Investors</a></li></ul></div>
+      <div><h4>Promotions</h4><ul><li><a href="#">Student Discount</a></li><li><a href="#">Member Days</a></li><li><a href="#">Sale</a></li></ul></div>
+      <div class="fine-print">
+        <span>&copy; 2026 Nike, Inc. All rights reserved</span>
+        <span>Guides &nbsp;&middot;&nbsp; Terms of Sale &nbsp;&middot;&nbsp; Terms of Use &nbsp;&middot;&nbsp; Privacy Policy</span>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

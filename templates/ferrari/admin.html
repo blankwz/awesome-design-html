@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ferrari Retail Console — Order Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#da291c; --primary-active:#b01e0a;
+  --ink:#ffffff; --body:#969696; --body-on-light:#181818;
+  --muted:#666666; --muted-soft:#8f8f8f;
+  --hairline:#303030; --hairline-on-light:#d2d2d2;
+  --canvas:#181818; --canvas-elevated:#303030; --canvas-light:#ffffff;
+  --surface-soft-light:#f7f7f7;
+  --accent-yellow:#f6e500;
+  --semantic-success:#03904a; --semantic-info:#4c98b9; --semantic-danger:#f13a2c;
+  --grad-rosso:linear-gradient(180deg,#a00c01,#da291c 64%);
+  --font:'Inter',-apple-system,system-ui,sans-serif;
+  --sp-xxxs:4px; --sp-xxs:8px; --sp-xs:16px; --sp-sm:24px; --sp-md:32px;
+  --sp-lg:48px; --sp-xl:64px; --sp-xxl:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font);font-size:14px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font)}
+.layout{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+/* ---------- sidebar ---------- */
+.side{background:var(--canvas);border-right:1px solid var(--hairline);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-brand{display:flex;align-items:center;gap:var(--sp-xxs);padding:var(--sp-xs) var(--sp-xs);border-bottom:1px solid var(--hairline);height:64px}
+.side-brand svg{display:block}
+.side-brand span{font-weight:700;letter-spacing:1.4px;font-size:13px;text-transform:uppercase;color:var(--ink)}
+.menu{padding:var(--sp-xs) var(--sp-xxs);display:flex;flex-direction:column;gap:2px;flex:1;overflow:auto}
+.menu-label{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);padding:var(--sp-xxs) var(--sp-xxs) var(--sp-xxxs)}
+.menu a{display:flex;align-items:center;gap:10px;padding:10px var(--sp-xxs);border-radius:0;color:var(--body);font-size:13px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;border-left:2px solid transparent}
+.menu a svg{flex:none;opacity:.75}
+.menu a.on{color:var(--ink);border-left-color:var(--primary);background:var(--canvas-elevated)}
+.menu a.on .cnt{background:var(--primary)}
+.cnt{margin-left:auto;font-size:11px;background:var(--canvas-elevated);color:var(--ink);border-radius:9999px;padding:2px 8px}
+.user-card{margin:var(--sp-xxs);padding:var(--sp-xxs);background:var(--canvas-elevated);display:flex;gap:10px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:9999px;background:var(--grad-rosso);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex:none}
+.user-card b{display:block;color:var(--ink);font-size:13px}
+.user-card small{color:var(--muted-soft);font-size:11px;letter-spacing:.6px;text-transform:uppercase}
+/* ---------- topbar ---------- */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{height:64px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-xs);padding:0 var(--sp-sm);background:var(--canvas);position:sticky;top:0;z-index:40}
+.crumb{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted)}
+.crumb b{color:var(--ink)}
+.top-search{margin-left:auto;height:40px;width:260px;background:var(--canvas);border:1px solid var(--hairline);border-radius:4px;color:var(--ink);padding:0 var(--sp-xs);font-family:var(--font);font-size:13px}
+.icon-btn{position:relative;width:40px;height:40px;border:1px solid var(--hairline);background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border-radius:0}
+.dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:9999px;background:var(--primary)}
+.topbar .avatar{width:36px;height:36px}
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 var(--sp-md);font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;border-radius:0;cursor:pointer;border:none}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-sm{height:36px;padding:0 var(--sp-xs);font-size:11px}
+.btn-ghost{background:transparent;border:1px solid var(--ink);color:var(--ink);height:40px}
+/* ---------- content ---------- */
+.content{padding:var(--sp-sm);display:flex;flex-direction:column;gap:var(--sp-sm)}
+.page-head h1{font-size:36px;font-weight:500;line-height:1.2;letter-spacing:-.36px;color:var(--ink)}
+.page-head p{margin-top:var(--sp-xxxs)}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xs)}
+.kpi{background:var(--canvas-elevated);border-radius:0;padding:var(--sp-xs);display:flex;flex-direction:column;gap:6px;border:1px solid var(--hairline)}
+.kpi .eyebrow{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
+.kpi .val{font-size:36px;font-weight:700;color:var(--ink);line-height:1}
+.kpi .delta{font-size:13px;display:flex;align-items:center;gap:6px}
+.up{color:var(--semantic-success)} .down{color:var(--semantic-danger)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:var(--sp-xxxs)}
+.spark i{flex:1;background:var(--hairline)}
+.spark i.hi{background:var(--primary)}
+/* charts */
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--sp-xs)}
+.panel{background:var(--canvas-elevated);border:1px solid var(--hairline);border-radius:0;padding:var(--sp-xs)}
+.panel h3{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:var(--sp-xxs)}
+.panel .sub{font-size:13px;color:var(--body);margin-bottom:var(--sp-xs)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-xxxs);height:180px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;background:var(--grad-rosso);display:block}
+.bar-col.mute i{background:var(--hairline)}
+.bar-col small{font-size:11px;color:var(--muted-soft)}
+.donut-wrap{display:flex;gap:var(--sp-xs);align-items:center}
+.donut{flex:none}
+.legend{display:flex;flex-direction:column;gap:var(--sp-xxxs);font-size:13px}
+.legend li{display:flex;align-items:center;gap:8px;list-style:none;color:var(--body)}
+.legend i{width:10px;height:10px;flex:none}
+.legend b{margin-left:auto;color:var(--ink)}
+/* table + activity */
+.cols{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--sp-xs);align-items:start}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px var(--sp-xxs);border-bottom:1px solid var(--hairline)}
+td{padding:12px var(--sp-xxs);border-bottom:1px solid var(--hairline);font-size:13px;color:var(--body);vertical-align:middle}
+td b{color:var(--ink);font-weight:600}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--primary)}
+.badge-pill{display:inline-flex;align-items:center;height:22px;padding:0 12px;border-radius:9999px;font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;border:1px solid var(--hairline)}
+.b-success{background:rgba(3,144,74,.14);color:#37c87f;border-color:rgba(3,144,74,.4)}
+.b-warning{background:rgba(246,229,0,.12);color:var(--accent-yellow);border-color:rgba(246,229,0,.35)}
+.b-danger{background:rgba(241,58,44,.12);color:#ff7a70;border-color:rgba(241,58,44,.4)}
+.b-neutral{background:var(--canvas);color:var(--muted-soft)}
+.row-act{display:flex;gap:6px}
+.row-act button{background:transparent;border:1px solid var(--hairline);color:var(--body);height:30px;padding:0 10px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border-radius:0}
+.row-act button:hover{color:var(--ink);border-color:var(--muted-soft)}
+.t-foot{display:flex;align-items:center;justify-content:space-between;padding-top:var(--sp-xxs);font-size:13px}
+.pager{display:flex;gap:4px}
+.pager button{width:32px;height:32px;background:transparent;border:1px solid var(--hairline);color:var(--body);cursor:pointer;border-radius:0}
+.pager button.on{background:var(--primary);border-color:var(--primary);color:#fff}
+/* activity feed */
+.feed{display:flex;flex-direction:column;gap:var(--sp-xs)}
+.feed-item{display:flex;gap:10px}
+.feed-item .avatar{width:32px;height:32px;font-size:11px}
+.feed-item p{font-size:13px;color:var(--body)}
+.feed-item p b{color:var(--ink);font-weight:600}
+.feed-item time{font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.quick{display:flex;flex-direction:column;gap:var(--sp-xxs);margin-top:var(--sp-xxs);border-top:1px solid var(--hairline);padding-top:var(--sp-xxs)}
+.quick label{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted)}
+.quick input,.quick select{height:44px;background:var(--canvas);border:1px solid var(--hairline);border-radius:4px;color:var(--ink);padding:0 var(--sp-xxs);font-family:var(--font);font-size:13px}
+.toggle{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--body)}
+.switch{width:40px;height:22px;border-radius:9999px;background:var(--canvas-elevated);border:1px solid var(--hairline);position:relative;cursor:pointer}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:9999px;background:var(--muted-soft)}
+.switch.on{background:var(--primary);border-color:var(--primary)}
+.switch.on::after{left:auto;right:2px;background:#fff}
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;align-items:center;overflow-x:auto}
+  .menu{flex-direction:row}
+  .kpis,.charts,.cols{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="side">
+    <div class="side-brand">
+      <svg width="28" height="28" viewBox="0 0 30 30"><rect x="1" y="1" width="28" height="28" fill="none" stroke="#da291c" stroke-width="2"/><path d="M15 5l4 6h-2.4l2.6 4.4h-2.6L20 20h-4v5h-2v-5h-4l3-4.6h-2.6L13 11h-2.4z" fill="#da291c"/></svg>
+      <span>Retail Console</span>
+    </div>
+    <nav class="menu">
+      <p class="menu-label">Overview</p>
+      <a href="#" class="on"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/></svg>Dashboard</a>
+      <p class="menu-label">Commerce</p>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 3h2l2 8h7l2-6H5"/><circle cx="7" cy="13.5" r="1"/></svg>Orders<span class="cnt">38</span></a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 5h10v9H3zM5 5V3h6v2"/></svg>Products</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.5"/><path d="M3 14c1-3 3.2-4 5-4s4 1 5 4"/></svg>Customers</a>
+      <p class="menu-label">Insights</p>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 14V8M6 14V3M10 14V6M14 14V9"/></svg>Analytics</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="14" height="10"/><path d="M4 7h4M4 10h6"/></svg>Reports</a>
+      <p class="menu-label">System</p>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M13 3l-1.5 1.5M4.5 11.5L3 13"/></svg>Settings</a>
+    </nav>
+    <div class="user-card">
+      <span class="avatar">GB</span>
+      <div><b>Giulia Bianchi</b><small>Store Manager · Maranello</small></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Commerce / <b>Orders</b></span>
+      <input class="top-search" type="search" placeholder="Search order #, customer, SKU…">
+      <button class="icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a4.5 4.5 0 0 1 4.5 4.5c0 3 .8 4.5 1.5 5.5H3c.7-1 1.5-2.5 1.5-5.5A4.5 4.5 0 0 1 9 2zM7.5 14.5a1.5 1.5 0 0 0 3 0"/></svg><span class="dot"></span></button>
+      <span class="avatar">GB</span>
+    </header>
+
+    <div class="content">
+      <div class="page-head" style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-xs);flex-wrap:wrap">
+        <div>
+          <h1>Orders</h1>
+          <p>Lifestyle collection · Flagship Maranello &amp; online store</p>
+        </div>
+        <div style="display:flex;gap:var(--sp-xxs)">
+          <button class="btn btn-ghost btn-sm">Export CSV</button>
+          <button class="btn btn-primary btn-sm">New Order</button>
+        </div>
+      </div>
+      <section class="kpis">
+        <div class="kpi">
+          <p class="eyebrow">Revenue · MTD</p>
+          <p class="val">€1.28M</p>
+          <p class="delta"><span class="up">↑ 12.4%</span> vs last month</p>
+          <div class="spark"><i style="height:35%"></i><i style="height:50%"></i><i style="height:42%"></i><i style="height:60%"></i><i style="height:55%"></i><i style="height:72%"></i><i style="height:64%"></i><i class="hi" style="height:88%"></i><i style="height:70%"></i><i style="height:78%"></i><i style="height:66%"></i><i style="height:82%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="eyebrow">Orders · MTD</p>
+          <p class="val">3,412</p>
+          <p class="delta"><span class="up">↑ 8.1%</span> vs last month</p>
+          <div class="spark"><i style="height:44%"></i><i style="height:38%"></i><i style="height:52%"></i><i style="height:48%"></i><i class="hi" style="height:76%"></i><i style="height:60%"></i><i style="height:55%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:70%"></i><i style="height:62%"></i><i style="height:74%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="eyebrow">Avg Order Value</p>
+          <p class="val">€375</p>
+          <p class="delta"><span class="up">↑ 3.9%</span> vs last month</p>
+          <div class="spark"><i style="height:50%"></i><i style="height:54%"></i><i style="height:48%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:60%"></i><i class="hi" style="height:70%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:64%"></i><i style="height:68%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="eyebrow">Returns</p>
+          <p class="val">1.8%</p>
+          <p class="delta"><span class="down">↓ 0.4pt</span> vs last month</p>
+          <div class="spark"><i style="height:70%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:64%"></i><i style="height:52%"></i><i style="height:56%"></i><i style="height:48%"></i><i class="hi" style="height:40%"></i><i style="height:44%"></i><i style="height:38%"></i><i style="height:36%"></i></div>
+        </div>
+      </section>
+
+      <section class="charts">
+        <div class="panel">
+          <h3>Revenue by Month</h3>
+          <p class="sub">Fiscal year 2026 · € thousands</p>
+          <div class="bars">
+            <div class="bar-col"><i style="height:52%"></i><small>J</small></div>
+            <div class="bar-col"><i style="height:44%"></i><small>F</small></div>
+            <div class="bar-col"><i style="height:60%"></i><small>M</small></div>
+            <div class="bar-col"><i style="height:48%"></i><small>A</small></div>
+            <div class="bar-col"><i style="height:66%"></i><small>M</small></div>
+            <div class="bar-col"><i style="height:58%"></i><small>J</small></div>
+            <div class="bar-col mute"><i style="height:40%"></i><small>J</small></div>
+            <div class="bar-col mute"><i style="height:34%"></i><small>A</small></div>
+            <div class="bar-col mute"><i style="height:46%"></i><small>S</small></div>
+            <div class="bar-col"><i style="height:72%"></i><small>O</small></div>
+            <div class="bar-col"><i style="height:64%"></i><small>N</small></div>
+            <div class="bar-col"><i style="height:92%"></i><small>D</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Sales by Category</h3>
+          <p class="sub">Share of revenue · last 30 days</p>
+          <div class="donut-wrap">
+            <svg class="donut" width="170" height="170" viewBox="0 0 170 170">
+              <circle cx="85" cy="85" r="66" fill="none" stroke="#1f1f1f" stroke-width="22"/>
+              <circle cx="85" cy="85" r="66" fill="none" stroke="#da291c" stroke-width="22" stroke-dasharray="185.4 414.7" transform="rotate(-90 85 85)"/>
+              <circle cx="85" cy="85" r="66" fill="none" stroke="#f6e500" stroke-width="22" stroke-dasharray="99.5 500.6" stroke-dashoffset="-185.4" transform="rotate(-90 85 85)"/>
+              <circle cx="85" cy="85" r="66" fill="none" stroke="#4c98b9" stroke-width="22" stroke-dasharray="74.6 525.5" stroke-dashoffset="-284.9" transform="rotate(-90 85 85)"/>
+              <circle cx="85" cy="85" r="66" fill="none" stroke="#03904a" stroke-width="22" stroke-dasharray="55.3 544.8" stroke-dashoffset="-359.5" transform="rotate(-90 85 85)"/>
+              <text x="85" y="82" text-anchor="middle" fill="#fff" font-size="26" font-weight="700" font-family="Inter">€1.28M</text>
+              <text x="85" y="102" text-anchor="middle" fill="#969696" font-size="11" letter-spacing="1.1" font-family="Inter">TOTAL MTD</text>
+            </svg>
+            <ul class="legend">
+              <li><i style="background:#da291c"></i>Teamwear<b>45%</b></li>
+              <li><i style="background:#f6e500"></i>Scale Models<b>24%</b></li>
+              <li><i style="background:#4c98b9"></i>Accessories<b>18%</b></li>
+              <li><i style="background:#03904a"></i>Collectibles<b>13%</b></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="cols">
+        <div class="panel">
+          <h3>Recent Orders</h3>
+          <p class="sub">38 orders awaiting action · updated 2 min ago</p>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Order</th><th>Customer</th><th>Category</th><th>Status</th><th>Amount</th><th>Date</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90412</b></td><td>Alessandro Ricci</td><td>Teamwear</td>
+                <td><span class="badge-pill b-success">Shipped</span></td><td><b>€329</b></td><td>Oct 26</td>
+                <td><div class="row-act"><button>View</button><button>Track</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90411</b></td><td>Yuki Tanaka</td><td>Scale Models</td>
+                <td><span class="badge-pill b-warning">Packing</span></td><td><b>€219</b></td><td>Oct 26</td>
+                <td><div class="row-act"><button>View</button><button>Pick</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90408</b></td><td>Sofia Marchetti</td><td>Collectibles</td>
+                <td><span class="badge-pill b-danger">Payment Hold</span></td><td><b>€340</b></td><td>Oct 25</td>
+                <td><div class="row-act"><button>Review</button><button>Contact</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90405</b></td><td>Jonas Weber</td><td>Accessories</td>
+                <td><span class="badge-pill b-success">Delivered</span></td><td><b>€185</b></td><td>Oct 25</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90401</b></td><td>Emma Laurent</td><td>Teamwear</td>
+                <td><span class="badge-pill b-neutral">Returned</span></td><td><b>−€149</b></td><td>Oct 24</td>
+                <td><div class="row-act"><button>View</button><button>Refund</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90399</b></td><td>Diego Alvarez</td><td>Scale Models</td>
+                <td><span class="badge-pill b-warning">Packing</span></td><td><b>€96</b></td><td>Oct 24</td>
+                <td><div class="row-act"><button>View</button><button>Pick</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90395</b></td><td>Nora Haugen</td><td>Teamwear</td>
+                <td><span class="badge-pill b-success">Shipped</span></td><td><b>€594</b></td><td>Oct 23</td>
+                <td><div class="row-act"><button>View</button><button>Track</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90390</b></td><td>Chen Wei</td><td>Accessories</td>
+                <td><span class="badge-pill b-neutral">Delivered</span></td><td><b>€120</b></td><td>Oct 22</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90388</b></td><td>Amara Diallo</td><td>Collectibles</td>
+                <td><span class="badge-pill b-warning">Packing</span></td><td><b>€208</b></td><td>Oct 22</td>
+                <td><div class="row-act"><button>View</button><button>Pick</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#FE-90385</b></td><td>Owen Clarke</td><td>Scale Models</td>
+                <td><span class="badge-pill b-success">Shipped</span></td><td><b>€219</b></td><td>Oct 21</td>
+                <td><div class="row-act"><button>View</button><button>Track</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot">
+            <span>Showing 1–9 of 38</span>
+            <div class="pager">
+              <button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>6</button><button>›</button>
+            </div>
+          </div>
+          <p style="font-size:11px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);margin-top:var(--sp-xxs)">Status: <span class="badge-pill b-success">Shipped / Delivered</span> <span class="badge-pill b-warning">Packing / Hold</span> <span class="badge-pill b-danger">Payment Issue</span> <span class="badge-pill b-neutral">Returned</span></p>
+        </div>
+
+        <div class="panel">
+          <h3>Recent Activity</h3>
+          <p class="sub">Flagship team · today</p>
+          <div class="feed">
+            <div class="feed-item"><span class="avatar" style="background:#4c98b9">LM</span><div><p><b>Luca Moretti</b> moved order #FE-90411 to packing bay 4.</p><time>8 min ago</time></div></div>
+            <div class="feed-item"><span class="avatar">GB</span><div><p><b>Giulia Bianchi</b> approved the SF-24 jacket restock — 240 units.</p><time>26 min ago</time></div></div>
+            <div class="feed-item"><span class="avatar" style="background:#03904a">PC</span><div><p><b>Paolo Conti</b> resolved payment hold on #FE-90408.</p><time>1 hr ago</time></div></div>
+            <div class="feed-item"><span class="avatar" style="background:#f6e500;color:#181818">SR</span><div><p><b>Sara Russo</b> published the Monza GP capsule collection.</p><time>3 hrs ago</time></div></div>
+            <div class="feed-item"><span class="avatar" style="background:#666">SYS</span><div><p><b>System</b> nightly inventory sync completed — 0 conflicts.</p><time>6 hrs ago</time></div></div>
+          </div>
+          <div class="quick">
+            <label>Quick Dispatch Note</label>
+            <input type="text" placeholder="Order # or tracking code">
+            <select><option>Rosso Corsa gift wrap</option><option>Signature required</option><option>Standard</option></select>
+            <div class="toggle"><span>Auto-notify customer</span><span class="switch on"></span></div>
+            <div class="toggle"><span>Priority pit-lane pickup</span><span class="switch"></span></div>
+            <button class="btn btn-primary btn-sm">Save Settings</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volt Console — Agent Ops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#00d992; --primary-soft:#2fd6a1; --primary-deep:#10b981; --on-primary:#101010;
+  --ink:#f2f2f2; --ink-strong:#ffffff; --body:#bdbdbd; --mute:#8b949e;
+  --hairline:#3d3a39; --canvas:#101010; --canvas-soft:#1a1a1a; --canvas-text-soft:#f5f6f7;
+  --success:#00d992; --success-bg:rgba(0,217,146,.12);
+  --warning:#e3b341; --warning-bg:rgba(227,179,65,.12);
+  --danger:#f85149; --danger-bg:rgba(248,81,73,.12);
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-pill:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-2xl:24px; --s-3xl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font)}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:var(--canvas);border-right:1px solid var(--hairline);padding:var(--s-xl) var(--s-md);display:flex;flex-direction:column;gap:var(--s-xl);position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;padding:0 var(--s-md)}
+.bolt{width:26px;height:26px;border-radius:var(--r-sm);background:var(--primary);display:grid;place-items:center;flex:none}
+.side-group{font-size:12px;font-weight:600;letter-spacing:2.52px;text-transform:uppercase;color:var(--mute);padding:var(--s-md) var(--s-md) var(--s-xs)}
+.nav{list-style:none;display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;font-size:14px;padding:10px var(--s-md);border-radius:var(--r-sm);color:var(--body);border-left:3px solid transparent}
+.nav a:hover{background:var(--canvas-soft);color:var(--ink)}
+.nav a.on{background:var(--canvas-soft);color:var(--ink);font-weight:600;border-left-color:var(--primary)}
+.nav .mono-badge{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--mute)}
+.user-card{margin-top:auto;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:var(--s-md);display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:var(--r-pill);background:rgba(0,217,146,.15);color:var(--primary);font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.user-card b{display:block;font-size:14px;font-weight:600}
+.user-card span{font-size:12px;color:var(--mute);font-family:var(--mono)}
+.user-card .out{margin-left:auto;background:none;border:0;cursor:pointer;color:var(--mute);font-size:14px}
+
+/* ---------- topbar ---------- */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--canvas);border-bottom:1px solid var(--hairline);padding:var(--s-md) var(--s-3xl);display:flex;align-items:center;gap:var(--s-xl);position:sticky;top:0;z-index:40}
+.crumbs{font-size:14px;color:var(--mute)}
+.crumbs b{color:var(--ink);font-weight:600}
+.top-spacer{flex:1}
+.top-search{display:flex;align-items:center;gap:8px;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:8px 12px;width:280px}
+.top-search input{border:0;outline:0;background:transparent;font-size:14px;width:100%;color:var(--ink)}
+.top-search input::placeholder{color:var(--mute)}
+.top-search .kbd{font-family:var(--mono);font-size:11px;color:var(--mute);border:1px solid var(--hairline);border-radius:var(--r-xs);padding:1px 5px}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{color:var(--ink)}
+.icon-btn .dot{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--primary);color:var(--on-primary);font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:10px 16px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-soft)}
+.btn-outline{background:var(--canvas);color:var(--ink);border-color:var(--hairline)}
+.btn-outline:hover{border-color:var(--mute)}
+
+.content{padding:var(--s-3xl);display:flex;flex-direction:column;gap:var(--s-3xl)}
+.pagehead h1{font-size:24px;font-weight:700;letter-spacing:-0.6px}
+.pagehead p{font-size:14px;color:var(--mute);font-family:var(--mono);margin-top:4px}
+.live-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--primary);border:1px solid rgba(0,217,146,.4);border-radius:var(--r-pill);padding:3px 10px;margin-left:10px;vertical-align:middle}
+.live-pill i{width:7px;height:7px;border-radius:50%;background:var(--primary)}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.kpi{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-xl)}
+.kpi .k-label{font-size:14px;font-weight:600;color:var(--body)}
+.kpi .k-value{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--ink-strong);margin:8px 0 4px}
+.delta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:var(--r-pill)}
+.delta.up{background:var(--success-bg);color:var(--primary)}
+.delta.down{background:var(--danger-bg);color:var(--danger)}
+.kpi-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:var(--s-md)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:5px;border-radius:2px;background:var(--hairline)}
+.spark i.hot{background:var(--primary)}
+.k-note{font-family:var(--mono);font-size:11px;color:var(--mute)}
+
+/* ---------- cards / charts ---------- */
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-xl)}
+.card h3{font-size:16px;font-weight:600;color:var(--ink-strong)}
+.card .sub{font-size:13px;color:var(--mute);font-family:var(--mono);margin-top:2px}
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-lg)}
+.chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-lg)}
+.legend-tag{font-family:var(--mono);font-size:11px;letter-spacing:2.52px;text-transform:uppercase;color:var(--mute)}
+.bars{display:flex;align-items:flex-end;gap:var(--s-md);height:180px;padding-top:var(--s-md)}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:30px;background:#2a2725;border:1px solid var(--hairline);border-bottom:0;border-radius:var(--r-xs) var(--r-xs) 0 0}
+.bar-col.hot i{background:rgba(0,217,146,.18);border-color:var(--primary)}
+.bar-col span{font-family:var(--mono);font-size:10px;color:var(--mute)}
+.donut-wrap{display:flex;align-items:center;gap:var(--s-xl)}
+.donut{width:150px;height:150px;flex:none}
+.donut circle{fill:none;stroke-width:18;transform:rotate(-90deg);transform-origin:50% 50%}
+.legend{list-style:none;display:flex;flex-direction:column;gap:var(--s-md);font-size:13px;flex:1}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{width:10px;height:10px;border-radius:2px;flex:none}
+.legend b{margin-left:auto;font-family:var(--mono);font-weight:700;color:var(--ink-strong)}
+
+/* ---------- table + panel ---------- */
+.grid-main{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--s-lg);align-items:start}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--canvas-soft);text-align:left;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:2.52px;text-transform:uppercase;color:var(--mute);padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--hairline)}
+tbody td{padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--hairline);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--canvas-soft)}
+td .name b{display:block;font-weight:600;color:var(--ink-strong)}
+td .name span{font-family:var(--mono);font-size:11px;color:var(--mute)}
+td .mono{font-family:var(--mono);font-size:12px;color:var(--body)}
+.check{width:16px;height:16px;accent-color:var(--primary)}
+.status{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:var(--r-pill);border:1px solid transparent}
+.st-success{background:var(--success-bg);color:var(--primary);border-color:rgba(0,217,146,.35)}
+.st-warning{background:var(--warning-bg);color:var(--warning);border-color:rgba(227,179,65,.35)}
+.st-danger{background:var(--danger-bg);color:var(--danger);border-color:rgba(248,81,73,.35)}
+.st-neutral{background:var(--canvas-soft);color:var(--mute);border-color:var(--hairline)}
+.amount{font-family:var(--mono);font-weight:700;white-space:nowrap;color:var(--ink-strong)}
+.actions{display:flex;gap:6px;justify-content:flex-end}
+.icon-sm{width:30px;height:30px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);cursor:pointer;color:var(--body);display:grid;place-items:center}
+.icon-sm:hover{color:var(--ink);border-color:var(--mute)}
+.t-foot{display:flex;align-items:center;justify-content:space-between;padding-top:var(--s-md);font-family:var(--mono);font-size:12px;color:var(--mute)}
+.pager{display:flex;gap:6px}
+.pager button{width:30px;height:30px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--body)}
+.pager button.on{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+
+/* activity */
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed li{display:flex;gap:var(--s-md);padding:var(--s-md) 0;border-bottom:1px solid var(--hairline)}
+.feed li:last-child{border-bottom:0}
+.feed .f-dot{width:32px;height:32px;border-radius:var(--r-pill);flex:none;display:grid;place-items:center;font-size:11px;font-weight:700}
+.f-green{background:var(--success-bg);color:var(--primary)}
+.f-dark{background:var(--canvas-soft);border:1px solid var(--hairline);color:var(--body)}
+.f-red{background:var(--danger-bg);color:var(--danger)}
+.feed p{font-size:13px;color:var(--body)}
+.feed p b{color:var(--ink-strong);font-weight:600}
+.feed time{font-family:var(--mono);font-size:11px;color:var(--mute)}
+.card-btn{display:inline-block;margin-top:var(--s-md);font-size:13px;font-weight:600;color:var(--primary-soft)}
+.card-btn:hover{color:var(--primary)}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.grid-main{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .top-search{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#">
+      <span class="bolt"><svg width="14" height="14" viewBox="0 0 24 24" fill="#101010"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span>
+      volt console
+    </a>
+    <div>
+      <div class="side-group">Overview</div>
+      <ul class="nav">
+        <li><a class="on" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Fleet</div>
+      <ul class="nav">
+        <li><a href="#">Agents <span class="mono-badge">14</span></a></li>
+        <li><a href="#">Deployments</a></li>
+        <li><a href="#">Runs &amp; Traces</a></li>
+        <li><a href="#">Eval Suites</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Marketplace</div>
+      <ul class="nav">
+        <li><a href="#">Installed templates</a></li>
+        <li><a href="#">Tool registry</a></li>
+        <li><a href="#">Billing &amp; seats</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Insight</div>
+      <ul class="nav">
+        <li><a href="#">Usage &amp; cost</a></li>
+        <li><a href="#">Model latency</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Admin</div>
+      <ul class="nav">
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">API keys</a></li>
+      </ul>
+    </div>
+    <div class="user-card">
+      <span class="avatar">KM</span>
+      <div><b>Kenji Mori</b><span>prod · owner</span></div>
+      <button class="out" aria-label="Sign out">↦</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">prod / <b>dashboard</b></div>
+      <div class="top-spacer"></div>
+      <div class="top-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b949e" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" placeholder="Search runs, agents…">
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot">3</span>
+      </button>
+      <span class="avatar">KM</span>
+      <button class="btn btn-primary">Deploy agent</button>
+    </header>
+
+    <main class="content">
+      <div class="pagehead">
+        <h1>Fleet overview<span class="live-pill"><i></i>all systems nominal</span></h1>
+        <p>workspace: acme-ai · region: us-east · updated 30s ago</p>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k-label">Agent runs (24 h)</div>
+          <div class="k-value">128,402</div>
+          <span class="delta up">▲ 12.4%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:34%"></i><i style="height:42%"></i><i style="height:38%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:80%"></i><i class="hot" style="height:100%"></i></div><span class="k-note">vs prev day</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Success rate</div>
+          <div class="k-value">99.21%</div>
+          <span class="delta up">▲ 0.3 pt</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:70%"></i><i style="height:74%"></i><i style="height:72%"></i><i style="height:78%"></i><i style="height:76%"></i><i style="height:82%"></i><i style="height:84%"></i><i style="height:88%"></i><i class="hot" style="height:94%"></i></div><span class="k-note">7-day avg</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">p95 latency</div>
+          <div class="k-value">1.24s</div>
+          <span class="delta down">▼ 0.18s</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:88%"></i><i style="height:82%"></i><i style="height:84%"></i><i style="height:74%"></i><i style="height:70%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:52%"></i><i class="hot" style="height:44%"></i></div><span class="k-note">target &lt; 2.0s</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Spend (month)</div>
+          <div class="k-value">$4,182</div>
+          <span class="delta up">▲ 6.8%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:30%"></i><i style="height:36%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:62%"></i><i style="height:70%"></i><i class="hot" style="height:78%"></i></div><span class="k-note">budget $6.0k</span></div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Runs by month</h3><div class="sub">all agents · successful + retried</div></div>
+            <span class="legend-tag">runs (M)</span>
+          </div>
+          <div class="bars">
+            <div class="bar-col"><i style="height:48%"></i><span>Jan</span></div>
+            <div class="bar-col"><i style="height:56%"></i><span>Feb</span></div>
+            <div class="bar-col"><i style="height:44%"></i><span>Mar</span></div>
+            <div class="bar-col"><i style="height:62%"></i><span>Apr</span></div>
+            <div class="bar-col"><i style="height:58%"></i><span>May</span></div>
+            <div class="bar-col"><i style="height:70%"></i><span>Jun</span></div>
+            <div class="bar-col"><i style="height:66%"></i><span>Jul</span></div>
+            <div class="bar-col"><i style="height:78%"></i><span>Aug</span></div>
+            <div class="bar-col"><i style="height:72%"></i><span>Sep</span></div>
+            <div class="bar-col"><i style="height:86%"></i><span>Oct</span></div>
+            <div class="bar-col hot"><i style="height:100%"></i><span>Nov</span></div>
+            <div class="bar-col"><i style="height:76%"></i><span>Dec</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Run mix</h3><div class="sub">share of runs by agent</div></div>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="46" stroke="#00d992" stroke-dasharray="176.0 289.0"/>
+              <circle cx="60" cy="60" r="46" stroke="#10b981" stroke-dasharray="72.3 289.0" stroke-dashoffset="-176.0"/>
+              <circle cx="60" cy="60" r="46" stroke="#3d3a39" stroke-dasharray="26.0 289.0" stroke-dashoffset="-248.3"/>
+              <circle cx="60" cy="60" r="46" stroke="#8b949e" stroke-dasharray="14.7 289.0" stroke-dashoffset="-274.3"/>
+            </svg>
+            <ul class="legend">
+              <li><i style="background:#00d992"></i>support-triage <b>61%</b></li>
+              <li><i style="background:#10b981"></i>review-bot <b>25%</b></li>
+              <li><i style="background:#3d3a39"></i>rag-agent <b>9%</b></li>
+              <li><i style="background:#8b949e"></i>other <b>5%</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-main">
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="chart-head" style="padding:20px 20px 0">
+            <div><h3>Recent deployments</h3><div class="sub">fleet: 14 agents · prod + staging</div></div>
+            <span class="legend-tag">deploys</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th style="width:36px"><input class="check" type="checkbox" aria-label="Select all"></th><th>Agent</th><th>Model</th><th>Status</th><th>Runs / day</th><th>Deployed</th><th style="text-align:right">Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>support-triage</b><span>agt_7f2a91</span></td>
+                <td class="mono">claude-sonnet-4.5</td>
+                <td><span class="status st-success">live</span></td>
+                <td class="amount">61,240</td>
+                <td class="mono">26 Oct 09:14</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>review-bot</b><span>agt_c1d08e</span></td>
+                <td class="mono">gpt-4.2-mini</td>
+                <td><span class="status st-success">live</span></td>
+                <td class="amount">38,902</td>
+                <td class="mono">25 Oct 17:42</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>rag-agent</b><span>agt_44ba70</span></td>
+                <td class="mono">llama-4-70b</td>
+                <td><span class="status st-warning">degraded</span></td>
+                <td class="amount">18,317</td>
+                <td class="mono">25 Oct 08:03</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>browser-op</b><span>agt_9e3c22</span></td>
+                <td class="mono">claude-sonnet-4.5</td>
+                <td><span class="status st-success">live</span></td>
+                <td class="amount">7,556</td>
+                <td class="mono">24 Oct 21:30</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>voice-desk</b><span>agt_b7f451</span></td>
+                <td class="mono">gpt-realtime-v2</td>
+                <td><span class="status st-danger">failed</span></td>
+                <td class="amount">0</td>
+                <td class="mono">24 Oct 12:11</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>etl-watch</b><span>agt_2c98d4</span></td>
+                <td class="mono">llama-4-70b</td>
+                <td><span class="status st-neutral">paused</span></td>
+                <td class="amount">2,387</td>
+                <td class="mono">22 Oct 06:55</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>scribe</b><span>agt_5ad13f</span></td>
+                <td class="mono">gpt-4.2-mini</td>
+                <td><span class="status st-success">live</span></td>
+                <td class="amount">1,043</td>
+                <td class="mono">20 Oct 15:20</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Traces">◎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot" style="padding:16px 20px">
+            <span>showing 1–7 of 14 agents</span>
+            <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Event stream</h3><div class="sub">last hour</div></div>
+          </div>
+          <ul class="feed">
+            <li>
+              <span class="f-dot f-red">✕</span>
+              <div><p><b>voice-desk</b> deploy failed — realtime socket timeout in us-east.</p><time>09:41</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-green">✓</span>
+              <div><p><b>eval suite triage-v4</b> passed gate at 0.95 (threshold 0.93).</p><time>09:22</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">↻</span>
+              <div><p><b>rag-agent</b> auto-retried 214 runs after vector-store throttling.</p><time>08:58</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-green">＋</span>
+              <div><p><b>Code Reviewer</b> installed from marketplace by kenji@acme.ai.</p><time>08:30</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">$</span>
+              <div><p><b>Budget alert</b> — monthly spend crossed 70% of $6.0k.</p><time>07:12</time></div>
+            </li>
+          </ul>
+          <a class="card-btn" href="#">Open full stream →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figma — Design System Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --primary:#000000; --on-primary:#ffffff;
+  --ink:#000000; --canvas:#ffffff;
+  --inverse-canvas:#000000; --inverse-ink:#ffffff; --on-inverse-soft:#ffffff;
+  --hairline:#e6e6e6; --hairline-soft:#f1f1f1; --surface-soft:#f7f7f5;
+  --block-lime:#dceeb1; --block-lilac:#c5b0f4; --block-cream:#f4ecd6;
+  --block-pink:#efd4d4; --block-mint:#c8e6cd; --block-coral:#f3c9b6; --block-navy:#1f1d3d;
+  --accent-magenta:#ff3d8b;
+  --semantic-success:#1ea64a;
+  --overlay-scrim:#000000;
+
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono','SF Mono',menlo,monospace;
+
+  --r-xs:2px; --r-sm:6px; --r-md:8px; --r-lg:24px; --r-xl:32px; --r-pill:50px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px;
+  --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px; --sp-section:96px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--canvas);color:var(--ink);
+  font-size:18px;font-weight:320;line-height:1.45;letter-spacing:-0.26px;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"kern";
+}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+
+/* type scale (variable weights) */
+.t-display-xl{font-size:86px;font-weight:340;line-height:1.00;letter-spacing:-1.72px}
+.t-display-lg{font-size:64px;font-weight:340;line-height:1.10;letter-spacing:-0.96px}
+.t-headline{font-size:26px;font-weight:540;line-height:1.35;letter-spacing:-0.26px}
+.t-subhead{font-size:26px;font-weight:340;line-height:1.35;letter-spacing:-0.26px}
+.t-card-title{font-size:24px;font-weight:700;line-height:1.45;letter-spacing:0}
+.t-body-lg{font-size:20px;font-weight:330;line-height:1.40;letter-spacing:-0.14px}
+.t-body{font-size:18px;font-weight:320;line-height:1.45;letter-spacing:-0.26px}
+.t-body-sm{font-size:16px;font-weight:330;line-height:1.45;letter-spacing:-0.14px}
+.t-link{font-size:20px;font-weight:480;line-height:1.40;letter-spacing:-0.10px}
+.t-button{font-size:20px;font-weight:480;line-height:1.40;letter-spacing:-0.10px}
+.t-eyebrow{font-family:var(--mono);font-size:18px;font-weight:400;line-height:1.30;letter-spacing:0.54px;text-transform:uppercase}
+.t-caption{font-family:var(--mono);font-size:12px;font-weight:400;line-height:1.00;letter-spacing:0.60px;text-transform:uppercase}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--sp-xxl)}
+
+/* ============ BANNER ============ */
+.sg-banner{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:var(--sp-md) var(--sp-xxl);
+  background:var(--canvas);border-bottom:1px solid var(--hairline);
+  position:sticky;top:0;z-index:50;
+}
+.sg-id{display:flex;align-items:baseline;gap:var(--sp-md)}
+.sg-folder{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#888}
+.sg-brand{font-weight:540;font-size:20px;letter-spacing:-0.26px}
+.sg-desc{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#888}
+
+/* section labels */
+.sg-section{padding:var(--sp-section) 0 0}
+.sg-section-label{display:flex;align-items:center;gap:var(--sp-md);margin-bottom:var(--sp-xxl)}
+.sg-section-label .line{flex:1;height:1px;background:var(--hairline)}
+.sg-section-label .txt{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:var(--ink)}
+.sg-block{margin-bottom:var(--sp-section)}
+.sg-block-label{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999;margin-bottom:var(--sp-md)}
+
+/* ============ 1. COLORS ============ */
+.swatch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.swatch{border-radius:var(--r-md);overflow:hidden}
+.swatch .chip{height:88px;border:1px solid var(--hairline)}
+.swatch .meta{padding:var(--sp-xs) 0 0;font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#666}
+.swatch .meta b{display:block;color:var(--ink);font-weight:400;margin-bottom:2px}
+
+/* ============ 2. TYPE ============ */
+.specimen .row{display:flex;align-items:baseline;gap:var(--sp-xl);padding:var(--sp-md) 0;border-bottom:1px solid var(--hairline-soft)}
+.specimen .tag{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999;width:230px;flex-shrink:0}
+.specimen .val{color:var(--ink)}
+
+/* ============ 3. BUTTONS ============ */
+.btn-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:44px;padding:0 var(--sp-lg);
+  font-size:20px;font-weight:480;letter-spacing:-0.10px;
+  border-radius:var(--r-pill);border:none;cursor:pointer;
+  transition:transform .15s ease,background .15s ease;
+}
+.btn:hover{transform:scale(1.03)}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-secondary{background:var(--canvas);color:var(--ink);padding:0 18px}
+.btn-secondary:hover{background:var(--surface-soft)}
+.btn-tertiary{background:transparent;padding:0 var(--sp-sm)}
+.btn-icon{width:40px;height:40px;padding:0;background:var(--surface-soft);border-radius:var(--r-full)}
+.btn-icon-inverse{background:rgba(255,255,255,0.16);color:#fff}
+.btn-magenta{background:var(--accent-magenta);color:#fff;padding:0 18px}
+.btn-disabled{background:var(--surface-soft);color:#aaa;transform:none;cursor:not-allowed}
+.btn-sm{height:36px;padding:0 var(--sp-md);font-size:16px}
+.btn-lg{height:52px;padding:0 var(--sp-xl);font-size:20px}
+
+/* ============ 4. INPUTS ============ */
+.input-row{display:flex;flex-wrap:wrap;gap:var(--sp-lg);align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:var(--sp-xxs)}
+.field label{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999}
+.ti{
+  height:48px;width:260px;
+  background:var(--canvas);color:var(--ink);
+  font-family:var(--font);font-size:18px;font-weight:320;letter-spacing:-0.26px;
+  border:1px solid var(--hairline);border-radius:var(--r-md);
+  padding:0 14px;outline:none;
+  transition:border-color .15s;
+}
+.ti::placeholder{color:#aaa}
+.ti:focus{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+select.ti{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.ti.disabled{background:var(--surface-soft);color:#aaa;cursor:not-allowed}
+.switch{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;background:var(--hairline);border-radius:var(--r-full);transition:background .2s}
+.switch .track::before{content:"";position:absolute;width:20px;height:20px;background:#fff;border-radius:var(--r-full);top:3px;left:3px;box-shadow:0 1px 3px rgba(0,0,0,0.18);transition:transform .2s}
+.switch input:checked + .track{background:var(--primary)}
+.switch input:checked + .track::before{transform:translateX(18px)}
+.checkbox{width:18px;height:18px;border:1px solid var(--hairline);border-radius:var(--r-xs);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.checkbox.on{background:var(--primary);border-color:var(--primary)}
+.check-row{display:flex;align-items:center;gap:var(--sp-xxs)}
+.check-row .lbl{font-size:16px;font-weight:330;letter-spacing:-0.14px}
+
+/* ============ 5. CARDS ============ */
+.card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg)}
+.pricing-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:24px;padding:24px}
+.pricing-card h4{font-size:24px;font-weight:700;line-height:1.45;letter-spacing:0}
+.pricing-card p{font-size:16px;font-weight:330;letter-spacing:-0.14px;line-height:1.45;margin-top:4px}
+.pricing-card .price{font-size:24px;font-weight:700;margin:var(--sp-md) 0 var(--sp-sm)}
+.pricing-card ul{list-style:none;margin:var(--sp-md) 0}
+.pricing-card li{font-size:16px;font-weight:330;letter-spacing:-0.14px;padding:4px 0;display:flex;gap:8px;align-items:center}
+
+.stat-card{background:var(--surface-soft);border-radius:var(--r-md);padding:var(--sp-lg)}
+.stat-card .big{font-size:48px;font-weight:340;letter-spacing:-0.96px;line-height:1.0}
+.stat-card .lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#777;margin-top:var(--sp-xs)}
+
+.sticky-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-md);margin-top:var(--sp-lg);grid-column:1/-1}
+.sticky{padding:var(--sp-md);border-radius:6px;font-size:16px;font-weight:330;letter-spacing:-0.14px;transform:rotate(-1.2deg)}
+.sticky:nth-child(2){transform:rotate(1deg)}
+.sticky:nth-child(3){transform:rotate(-0.6deg)}
+.sticky-cream{background:var(--block-cream)}
+.sticky-mint{background:var(--block-mint)}
+.sticky-pink{background:var(--block-pink)}
+
+/* ============ 6. BADGES ============ */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r-pill);font-size:16px;font-weight:480;letter-spacing:-0.10px}
+.badge-outline{border:1px solid var(--hairline)}
+.badge-soft{background:var(--surface-soft)}
+.badge-magenta{background:var(--accent-magenta);color:#fff}
+.badge-navy{background:var(--block-navy);color:#fff}
+
+/* ============ 7. NAV ============ */
+.nav-demo{border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.nav-top{display:flex;align-items:center;gap:var(--sp-xl);height:56px;padding:0 var(--sp-lg);background:var(--canvas)}
+.nav-top .logo{font-weight:700;font-size:20px;letter-spacing:-0.26px}
+.nav-top .links{display:flex;gap:var(--sp-xs);flex:1}
+.nav-top .links a{font-size:16px;font-weight:330;letter-spacing:-0.14px;padding:6px 10px;border-radius:2px;transition:background .15s}
+.nav-top .links a:hover{background:var(--surface-soft)}
+.nav-top .cta{display:flex;gap:var(--sp-xxs);align-items:center}
+.marquee{display:flex;align-items:center;height:36px;background:var(--inverse-canvas);color:#fff;padding:0 var(--sp-lg);gap:var(--sp-xl);overflow:hidden;white-space:nowrap}
+.marquee span{font-size:14px;font-weight:400;opacity:.9}
+
+/* ============ 8. TABLE ============ */
+.cmp{width:100%;border-collapse:collapse}
+.cmp td,.cmp th{padding:var(--sp-md) var(--sp-sm);border-bottom:1px solid var(--hairline-soft);text-align:left;font-size:16px;font-weight:330;letter-spacing:-0.14px}
+.cmp th{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999;font-weight:400}
+.cmp .feat{color:var(--ink)}
+.cmp .ok{color:var(--semantic-success);font-weight:480}
+.cmp .no{color:#bbb}
+
+/* ============ PRODUCT ============ */
+.p-hero{padding:var(--sp-xxl) 0 var(--sp-xl)}
+.p-hero h1{font-size:86px;font-weight:340;line-height:1.00;letter-spacing:-1.72px;max-width:900px}
+.p-hero h1 em{font-style:normal;font-weight:540}
+.p-hero p{font-size:20px;font-weight:330;line-height:1.40;letter-spacing:-0.14px;max-width:560px;margin-top:var(--sp-lg)}
+.p-hero .cta{display:flex;gap:var(--sp-md);margin-top:var(--sp-xl)}
+.p-hero .note{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999;margin-top:var(--sp-md)}
+
+.p-marquee{height:36px;background:var(--inverse-canvas);color:#fff;display:flex;align-items:center;overflow:hidden;white-space:nowrap}
+.p-marquee .track{display:flex;gap:var(--sp-xxl);padding:0 var(--sp-lg);animation:scroll 26s linear infinite}
+.p-marquee span{font-size:14px;font-weight:400}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* color blocks */
+.cblock{border-radius:24px;padding:var(--sp-xxl);margin:var(--sp-section) 0}
+.cblock-lime{background:var(--block-lime)}
+.cblock-navy{background:var(--block-navy);color:#fff}
+.cblock-coral{background:var(--block-coral)}
+.cblock h3{font-size:64px;font-weight:340;line-height:1.10;letter-spacing:-0.96px;max-width:760px}
+.cblock h3 em{font-style:normal;font-weight:540}
+.cblock p{font-size:26px;font-weight:340;line-height:1.35;letter-spacing:-0.26px;max-width:560px;margin-top:var(--sp-lg)}
+.cblock .eyebrow{font-family:var(--mono);font-size:18px;letter-spacing:0.54px;text-transform:uppercase;color:rgba(0,0,0,0.5);margin-bottom:var(--sp-md)}
+.cblock-navy .eyebrow{color:rgba(255,255,255,0.55)}
+.cblock .cta{display:flex;gap:var(--sp-md);margin-top:var(--sp-xxl)}
+.cblock-navy .btn-secondary{background:rgba(255,255,255,0.14);color:#fff;padding:0 18px}
+
+.templates{margin:var(--sp-section) 0}
+.templates .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--sp-lg)}
+.templates h2{font-size:64px;font-weight:340;letter-spacing:-0.96px;line-height:1.10}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg)}
+.tpl{background:var(--surface-soft);border-radius:8px;padding:16px}
+.tpl .thumb{height:150px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.tpl .thumb .canvas-mock{width:80%;height:70%;background:#fff;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.tpl h4{font-size:16px;font-weight:480;letter-spacing:-0.10px}
+.tpl span{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999}
+.templates .head .btn{height:40px;font-size:16px;padding:0 var(--sp-md)}
+
+.promo{background:var(--block-lilac);border-radius:8px;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:96px 0;flex-wrap:wrap}
+.promo .txt{font-size:16px;font-weight:330;letter-spacing:-0.14px}
+.promo .txt b{font-weight:540}
+
+.faq{margin-top:var(--sp-xl)}
+.faq .row{padding:16px 0;border-bottom:1px solid rgba(0,0,0,0.12);display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:480;letter-spacing:-0.10px}
+.faq .row span:last-child{font-weight:340}
+
+.cta-band{padding:var(--sp-xxl) 0 var(--sp-section);text-align:center}
+.cta-band h2{font-size:86px;font-weight:340;line-height:1.00;letter-spacing:-1.72px;max-width:820px;margin:0 auto}
+.cta-band h2 em{font-style:normal;font-weight:540}
+.cta-band p{font-size:20px;font-weight:330;letter-spacing:-0.14px;margin:var(--sp-lg) 0 var(--sp-xl)}
+.cta-band .cta{display:flex;gap:var(--sp-md);justify-content:center;flex-wrap:wrap}
+
+footer.sg-footer{padding:var(--sp-section) 0 var(--sp-xl);border-top:1px solid var(--hairline)}
+footer.sg-footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--sp-xl)}
+footer.sg-footer .wordmark{font-weight:700;font-size:32px;letter-spacing:-0.52px}
+footer.sg-footer h5{font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999;margin-bottom:12px;font-weight:400}
+footer.sg-footer a{display:block;font-size:16px;font-weight:330;letter-spacing:-0.14px;padding:4px 0}
+footer.sg-footer a:hover{text-decoration:underline}
+footer.sg-footer .legal{margin-top:var(--sp-xl);padding-top:var(--sp-lg);border-top:1px solid var(--hairline-soft);font-family:var(--mono);font-size:12px;letter-spacing:0.60px;text-transform:uppercase;color:#999;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+@media (max-width:900px){
+  .swatch-grid{grid-template-columns:repeat(2,1fr)}
+  .card-row,.tpl-grid{grid-template-columns:1fr}
+  .sticky-row{grid-template-columns:1fr}
+  .p-hero h1,.cta-band h2{font-size:48px}
+  .cblock h3,.templates h2{font-size:36px}
+  footer.sg-footer .cols{grid-template-columns:repeat(2,1fr)}
+  .btn-row,.input-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">figma/</span>
+    <span class="sg-brand">Figma</span>
+  </div>
+  <span class="sg-desc">Monochrome editorial chrome + oversized pastel color blocks</span>
+</header>
+
+<main>
+
+<!-- ================= COMPONENTS ================= -->
+<section id="components" class="sg-section">
+  <div class="wrap">
+    <div class="sg-section-label"><span class="txt">Components</span><span class="line"></span></div>
+
+    <!-- 1 Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">01 · Color Tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><b>Primary / Ink</b>#000000</div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border:1px solid var(--hairline)"></div><div class="meta"><b>Canvas</b>#ffffff</div></div>
+        <div class="swatch"><div class="chip" style="background:#f7f7f5"></div><div class="meta"><b>Surface Soft</b>#f7f7f5</div></div>
+        <div class="swatch"><div class="chip" style="background:#dceeb1"></div><div class="meta"><b>Block Lime</b>#dceeb1</div></div>
+        <div class="swatch"><div class="chip" style="background:#c5b0f4"></div><div class="meta"><b>Block Lilac</b>#c5b0f4</div></div>
+        <div class="swatch"><div class="chip" style="background:#f4ecd6"></div><div class="meta"><b>Block Cream</b>#f4ecd6</div></div>
+        <div class="swatch"><div class="chip" style="background:#c8e6cd"></div><div class="meta"><b>Block Mint</b>#c8e6cd</div></div>
+        <div class="swatch"><div class="chip" style="background:#efd4d4"></div><div class="meta"><b>Block Pink</b>#efd4d4</div></div>
+        <div class="swatch"><div class="chip" style="background:#f3c9b6"></div><div class="meta"><b>Block Coral</b>#f3c9b6</div></div>
+        <div class="swatch"><div class="chip" style="background:#1f1d3d"></div><div class="meta"><b>Block Navy</b>#1f1d3d</div></div>
+        <div class="swatch"><div class="chip" style="background:#ff3d8b"></div><div class="meta"><b>Accent Magenta</b>#ff3d8b</div></div>
+        <div class="swatch"><div class="chip" style="background:#1ea64a"></div><div class="meta"><b>Success</b>#1ea64a</div></div>
+      </div>
+    </div>
+
+    <!-- 2 Type -->
+    <div class="sg-block">
+      <div class="sg-block-label">02 · Typography Specimen — figmaSans → Inter, figmaMono → JetBrains Mono</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">display-xl · 86/340</span><span class="val t-display-xl">Think bigger.</span></div>
+        <div class="row"><span class="tag">display-lg · 64/340</span><span class="val t-display-lg">Build faster together</span></div>
+        <div class="row"><span class="tag">headline · 26/540</span><span class="val t-headline">One shared canvas for the whole team</span></div>
+        <div class="row"><span class="tag">subhead · 26/340</span><span class="val t-subhead">Design, prototype, and ship from the browser</span></div>
+        <div class="row"><span class="tag">card-title · 24/700</span><span class="val t-card-title">Organization plan</span></div>
+        <div class="row"><span class="tag">body-lg · 20/330</span><span class="val t-body-lg">Figma is where product teams design together in real time.</span></div>
+        <div class="row"><span class="tag">body · 18/320</span><span class="val t-body">Weight carries hierarchy — links at 480 sit beside body at 320.</span></div>
+        <div class="row"><span class="tag">body-sm · 16/330</span><span class="val t-body-sm">Unlimited files, shared libraries, and design system analytics.</span></div>
+        <div class="row"><span class="tag">link · 20/480</span><span class="val t-link" style="text-decoration:underline">See what's new →</span></div>
+        <div class="row"><span class="tag">eyebrow · mono 18</span><span class="val t-eyebrow">Design Systems</span></div>
+        <div class="row"><span class="tag">caption · mono 12</span><span class="val t-caption">Config 2026 · San Francisco</span></div>
+      </div>
+    </div>
+
+    <!-- 3 Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">03 · Buttons — the pill is the only CTA shape</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started for free</button>
+        <button class="btn btn-secondary">Contact sales</button>
+        <button class="btn btn-tertiary">See pricing →</button>
+        <button class="btn btn-magenta">Save your spot</button>
+        <button class="btn btn-icon" aria-label="previous">←</button>
+        <button class="btn btn-icon" style="background:var(--block-navy);color:#fff" aria-label="next">→</button>
+        <button class="btn btn-disabled">Disabled</button>
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+    </div>
+
+    <!-- 4 Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">04 · Inputs — focus shown via ring, not fill change</div>
+      <div class="input-row">
+        <div class="field"><label>Work email</label><input class="ti" type="email" placeholder="you@studio.com"></div>
+        <div class="field"><label>Focus</label><input class="ti" type="text" value="Wireframe kit" style="border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)"></div>
+        <div class="field"><label>Plan</label><select class="ti"><option>Professional</option><option>Organization</option><option>Enterprise</option></select></div>
+        <div class="field"><label>Disabled</label><input class="ti disabled" value="Read-only field" disabled></div>
+      </div>
+      <div class="input-row" style="margin-top:var(--sp-lg)">
+        <div class="check-row">
+          <span class="checkbox on"><svg width="11" height="11" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.8"/></svg></span>
+          <span class="lbl">Email me product updates</span>
+        </div>
+        <div class="check-row">
+          <span class="checkbox"></span>
+          <span class="lbl">Subscribe to Release Notes</span>
+        </div>
+        <div class="check-row" style="gap:var(--sp-sm)">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span class="lbl">Multiplayer cursors</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">05 · Cards — hairline-stroked pricing card + soft tiles</div>
+      <div class="card-row">
+        <div class="pricing-card">
+          <h4>Professional</h4>
+          <p>For designers who ship daily.</p>
+          <div class="price">$12 <span style="font-size:16px;font-weight:330">/ editor / mo</span></div>
+          <ul>
+            <li>Unlimited Figma files</li>
+            <li>Unlimited versions &amp; history</li>
+            <li>Shared team libraries</li>
+          </ul>
+          <button class="btn btn-primary" style="height:40px;font-size:16px;padding:0 18px">Choose Professional</button>
+        </div>
+        <div class="pricing-card">
+          <h4>Organization</h4>
+          <p>Shared libraries, one source of truth.</p>
+          <div class="price">$45 <span style="font-size:16px;font-weight:330">/ editor / mo</span></div>
+          <ul>
+            <li>Shared font licensing</li>
+            <li>Design system analytics</li>
+            <li>Centralized team management</li>
+          </ul>
+          <button class="btn btn-secondary" style="height:40px;font-size:16px;padding:0 18px">Choose Organization</button>
+        </div>
+        <div class="stat-card">
+          <div class="big">4.1M+</div>
+          <div class="lbl">Designers create in Figma weekly</div>
+          <div class="big" style="margin-top:var(--sp-xl)">95%</div>
+          <div class="lbl">Of the Fortune 500 design here</div>
+        </div>
+      </div>
+      <div class="sticky-row">
+        <div class="sticky sticky-cream">Map the journey on one shared canvas</div>
+        <div class="sticky sticky-mint">Vote on ideas without leaving the board</div>
+        <div class="sticky sticky-pink">Turn rough notes into a real spec</div>
+      </div>
+    </div>
+
+    <!-- 6 Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">06 · Badges &amp; Pills</div>
+      <div class="badge-row">
+        <span class="badge badge-outline">New in FigJam</span>
+        <span class="badge badge-soft">Dev Mode</span>
+        <span class="badge badge-magenta">Config 2026</span>
+        <span class="badge badge-navy">Beta</span>
+      </div>
+    </div>
+
+    <!-- 7 Nav -->
+    <div class="sg-block">
+      <div class="sg-block-label">07 · Navigation — 56px bar + black marquee strip</div>
+      <div class="nav-demo">
+        <div class="nav-top">
+          <span class="logo">Figma</span>
+          <div class="links"><a href="#">Design</a><a href="#">FigJam</a><a href="#">Dev Mode</a><a href="#">Slide Decks</a><a href="#">Pricing</a></div>
+          <div class="cta">
+            <span class="t-link" style="padding:8px 12px">Log in</span>
+            <button class="btn btn-secondary" style="height:40px;font-size:16px;padding:0 18px">Contact sales</button>
+            <button class="btn btn-primary" style="height:40px;font-size:16px;padding:0 18px">Get started</button>
+          </div>
+        </div>
+        <div class="marquee">
+          <span>BUZZFEED</span><span>GITHUB</span><span>DELIVEROO</span><span>STRIPE</span><span>THE NEW YORK TIMES</span><span>TWITCH</span><span>HERMÈS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Table -->
+    <div class="sg-block" style="margin-bottom:0">
+      <div class="sg-block-label">08 · Comparison Rows — success-green glyphs on hairline-soft dividers</div>
+      <table class="cmp">
+        <thead><tr><th>Feature</th><th>Starter</th><th>Professional</th><th>Organization</th><th>Enterprise</th></tr></thead>
+        <tbody>
+          <tr><td class="feat">Figma Design files</td><td>3</td><td class="feat">Unlimited</td><td class="feat">Unlimited</td><td class="feat">Unlimited</td></tr>
+          <tr><td class="feat">FigJam boards</td><td>3</td><td class="ok">Unlimited</td><td class="ok">Unlimited</td><td class="ok">Unlimited</td></tr>
+          <tr><td class="feat">Shared libraries</td><td class="no">—</td><td class="no">—</td><td class="ok">Included</td><td class="ok">Included</td></tr>
+          <tr><td class="feat">SSO + SCIM</td><td class="no">—</td><td class="no">—</td><td class="ok">Included</td><td class="ok">Included</td></tr>
+          <tr><td class="feat">Dedicated support</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="ok">Included</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PRODUCT ================= -->
+<section id="product">
+  <!-- marquee -->
+  <div class="p-marquee">
+    <div class="track">
+      <span>GITHUB</span><span>DELIVEROO</span><span>STRIPE</span><span>THE NEW YORK TIMES</span><span>TWITCH</span><span>HERMÈS</span><span>COINBASE</span>
+      <span>GITHUB</span><span>DELIVEROO</span><span>STRIPE</span><span>THE NEW YORK TIMES</span><span>TWITCH</span><span>HERMÈS</span><span>COINBASE</span>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div class="wrap p-hero">
+    <div class="t-eyebrow" style="color:#999">Design · Prototype · Collaborate</div>
+    <h1>Think bigger.<br>Build <em>faster</em>.</h1>
+    <p>Figma is the collaborative canvas where product teams design, prototype, and ship — together, in the browser, in real time.</p>
+    <div class="cta">
+      <button class="btn btn-primary btn-lg">Get started for free</button>
+      <button class="btn btn-secondary btn-lg">Contact sales</button>
+    </div>
+    <div class="note">Free forever on the Starter plan</div>
+  </div>
+
+  <div class="wrap">
+    <!-- lime block -->
+    <div class="cblock cblock-lime">
+      <div class="eyebrow">Design Systems</div>
+      <h3>One source of truth, <em>shared</em> by every hand on the product.</h3>
+      <p>Libraries, variables, and auto layout keep every screen consistent — from first wireframe to release candidate.</p>
+      <div class="cta">
+        <button class="btn btn-primary">Explore design systems</button>
+        <button class="btn btn-secondary">Watch the tour</button>
+      </div>
+    </div>
+
+    <!-- navy block -->
+    <div class="cblock cblock-navy">
+      <div class="eyebrow">Ship Products</div>
+      <h3>From canvas to code <em>without</em> the handoff.</h3>
+      <p>Dev Mode turns every frame into production-ready specs, tokens, and code snippets — the design is the source of truth.</p>
+      <div class="cta">
+        <button class="btn btn-primary" style="background:#fff;color:#000">Open Dev Mode</button>
+        <button class="btn btn-secondary">See how it works</button>
+      </div>
+    </div>
+
+    <!-- coral block -->
+    <div class="cblock cblock-coral">
+      <div class="eyebrow">For Developers</div>
+      <h3>Design that speaks <em>your</em> language.</h3>
+      <p>REST API, plugins, and code connect — Figma is built on the same web platform your product runs on.</p>
+      <div class="cta">
+        <button class="btn btn-primary">Read the docs</button>
+      </div>
+    </div>
+
+    <!-- templates -->
+    <div class="templates">
+      <div class="head">
+        <h2>Explore what people are making</h2>
+        <button class="btn btn-secondary" style="height:40px;font-size:16px;padding:0 18px">Browse templates</button>
+      </div>
+      <div class="tpl-grid">
+        <div class="tpl"><div class="thumb" style="background:var(--block-lime)"><div class="canvas-mock"></div></div><h4>Mobile banking app</h4><span>UI kit · 24 screens</span></div>
+        <div class="tpl"><div class="thumb" style="background:var(--block-lilac)"><div class="canvas-mock"></div></div><h4>Design system starter</h4><span>Library · 180 components</span></div>
+        <div class="tpl"><div class="thumb" style="background:var(--block-mint)"><div class="canvas-mock"></div></div><h4>Brainstorm board</h4><span>FigJam · 12 templates</span></div>
+      </div>
+    </div>
+
+    <!-- promo banner -->
+    <div class="promo">
+      <div class="txt"><b>Release Notes Live</b> — see what shipped this quarter, presented by the product team.</div>
+      <button class="btn btn-magenta">Save your spot</button>
+    </div>
+
+    <!-- faq in lime -->
+    <div class="cblock cblock-lime" style="margin-bottom:var(--sp-section)">
+      <div class="eyebrow">FAQ</div>
+      <div class="faq">
+        <div class="row"><span>Is there a free plan?</span><span>Yes — Starter is free forever</span></div>
+        <div class="row"><span>Can I switch plans mid-cycle?</span><span>Anytime, prorated</span></div>
+        <div class="row"><span>Do you offer education discounts?</span><span>Yes, for students &amp; educators</span></div>
+      </div>
+    </div>
+
+    <!-- cta band -->
+    <div class="cta-band">
+      <h2>Start designing <em>together</em>.</h2>
+      <p>Join millions of designers and developers building in Figma.</p>
+      <div class="cta">
+        <button class="btn btn-primary btn-lg">Get started for free</button>
+        <button class="btn btn-secondary btn-lg">Contact sales</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="sg-footer">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <div class="wordmark">Figma</div>
+          <p style="font-size:16px;font-weight:330;letter-spacing:-0.14px;margin-top:var(--sp-md);max-width:280px">The collaborative interface design tool, built for the web.</p>
+        </div>
+        <div><h5>Use Cases</h5><a href="#">UI design</a><a href="#">UX design</a><a href="#">Prototyping</a><a href="#">Design systems</a></div>
+        <div><h5>Products</h5><a href="#">Figma Design</a><a href="#">FigJam</a><a href="#">Dev Mode</a><a href="#">Slides</a></div>
+        <div><h5>Resources</h5><a href="#">Templates</a><a href="#">Community</a><a href="#">Best practices</a><a href="#">Blog</a></div>
+        <div><h5>Company</h5><a href="#">About</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Legal</a></div>
+      </div>
+      <div class="legal">
+        <span>© 2026 Figma, Inc.</span><span>Privacy · Status · Sitemap</span>
+      </div>
+    </div>
+  </footer>
+</section>
+
+</main>
+</body>
+</html>

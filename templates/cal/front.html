@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cal.com — Template Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#111111; --primary-active:#242424; --primary-disabled:#e5e7eb;
+  --ink:#111111; --body:#374151; --muted:#6b7280; --muted-soft:#898989;
+  --hairline:#e5e7eb; --hairline-soft:#f3f4f6;
+  --canvas:#ffffff; --surface-soft:#f8f9fa; --surface-card:#f5f5f5; --surface-strong:#e5e7eb;
+  --surface-dark:#101010; --surface-dark-elevated:#1a1a1a;
+  --on-primary:#ffffff; --on-dark:#ffffff; --on-dark-soft:#a1a1aa;
+  --accent:#3b82f6; --success:#10b981; --warning:#f59e0b; --error:#ef4444;
+  --badge-orange:#fb923c; --badge-pink:#ec4899; --badge-violet:#8b5cf6; --badge-emerald:#34d399;
+  --font-sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px; --sp-section:96px;
+  --shadow-1:0 1px 2px rgba(0,0,0,0.05); --shadow-2:0 4px 12px rgba(0,0,0,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-sans)}
+h1,h2{letter-spacing:-0.04em;font-weight:600;color:var(--ink)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--sp-lg)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);border-radius:var(--r-md);font-size:14px;font-weight:600}
+.btn:active{background:var(--primary-active)}
+.btn--secondary{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline)}
+.btn--on-dark{background:var(--surface-dark-elevated);color:var(--on-dark);border-color:transparent}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-pill);background:var(--canvas);border:1px solid var(--hairline);color:var(--ink)}
+
+/* ---------- top nav ---------- */
+.topnav{height:64px;display:flex;align-items:center;gap:var(--sp-lg);border-bottom:1px solid var(--hairline-soft)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;color:var(--ink)}
+.logo .dot{width:22px;height:22px;border-radius:var(--r-pill);background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.navlinks{display:flex;gap:var(--sp-lg);font-size:14px;font-weight:500;color:var(--muted)}
+.navlinks a.active{color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.bag{position:relative}
+.bag .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* ---------- pill group ---------- */
+.pill-group{display:inline-flex;background:var(--surface-soft);border-radius:var(--r-pill);padding:6px;gap:4px}
+.pill-group button{border:0;background:transparent;color:var(--muted);font-size:14px;font-weight:500;padding:8px 14px;border-radius:var(--r-md)}
+.pill-group button.active{background:var(--canvas);color:var(--ink);box-shadow:var(--shadow-1)}
+
+/* ---------- hero ---------- */
+.hero{padding:var(--sp-section) 0 var(--sp-xl)}
+.hero-grid{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xl);align-items:center}
+.hero h1{font-size:56px;line-height:1.05;letter-spacing:-0.04em;margin-bottom:var(--sp-md)}
+.hero .sub{font-size:18px;color:var(--muted);max-width:520px;margin-bottom:var(--sp-lg)}
+.hero .cta-row{display:flex;gap:var(--sp-md);align-items:center}
+.mockup{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-xl);box-shadow:var(--shadow-2);padding:var(--sp-lg)}
+.mockup .m-head{display:flex;align-items:center;gap:var(--sp-sm);margin-bottom:var(--sp-md)}
+.mockup .m-head .ava{width:36px;height:36px;border-radius:var(--r-pill);background:var(--badge-violet);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:var(--sp-md)}
+.cal-days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.cal-days span{font-size:11px;font-weight:500;color:var(--muted);text-align:center}
+.cal-days i{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13px;color:var(--ink);border-radius:var(--r-sm)}
+.cal-days i.sel{background:var(--primary);color:#fff}
+.slots{display:flex;flex-direction:column;gap:8px}
+.slot{border:1px solid var(--ink);border-radius:var(--r-md);height:36px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--ink)}
+.slot.primary{background:var(--primary);color:#fff}
+.mockup .confirm{width:100%;margin-top:var(--sp-md)}
+
+/* ---------- marketplace head ---------- */
+.mk-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-lg);padding:var(--sp-lg) 0;border-top:1px solid var(--hairline-soft);flex-wrap:wrap}
+.mk-head h2{font-size:32px}
+
+/* ---------- chips ---------- */
+.chips{display:flex;gap:var(--sp-sm);flex-wrap:wrap;padding:var(--sp-md) 0}
+.chip{font-size:14px;font-weight:500;color:var(--muted);background:transparent;border:1px solid var(--hairline);border-radius:var(--r-md);padding:8px 14px}
+.chip.active{background:var(--canvas);color:var(--ink);border-color:var(--ink)}
+
+/* ---------- product grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg);padding:var(--sp-md) 0 var(--sp-section)}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden;transition:box-shadow .15s}
+.card:hover{box-shadow:var(--shadow-2)}
+.card .ph{position:relative;aspect-ratio:4/3;border-bottom:1px solid var(--hairline-soft)}
+.a1{background:linear-gradient(135deg,#eef2ff 0%,#f5f5f5 100%)}
+.a2{background:linear-gradient(135deg,#fdf2f8 0%,#f5f5f5 100%)}
+.a3{background:linear-gradient(135deg,#f0fdfa 0%,#f5f5f5 100%)}
+.a4{background:linear-gradient(135deg,#fefce8 0%,#f5f5f5 100%)}
+.a5{background:linear-gradient(135deg,#f5f3ff 0%,#f5f5f5 100%)}
+.a6{background:linear-gradient(135deg,#ecfdf5 0%,#f5f5f5 100%)}
+.a7{background:linear-gradient(135deg,#fff7ed 0%,#f5f5f5 100%)}
+.a8{background:linear-gradient(135deg,#f8f9fa 0%,#e5e7eb 100%)}
+.mini-ui{position:absolute;left:16px;right:16px;top:24px;bottom:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:12px;font-size:10px;color:var(--muted)}
+.mini-ui .bar{height:8px;border-radius:4px;background:var(--surface-strong);margin-bottom:6px}
+.mini-ui .row2{display:flex;gap:6px;margin-bottom:6px}
+.mini-ui .pill{border-radius:var(--r-pill);padding:2px 8px;font-size:9px;font-weight:600;color:#fff;background:var(--badge-emerald);width:fit-content}
+.mini-ui .pill.pink{background:var(--badge-pink)}
+.mini-ui .pill.violet{background:var(--badge-violet)}
+.mini-ui .pill.orange{background:var(--badge-orange)}
+.card .body{padding:var(--sp-md)}
+.badge-pill{display:inline-block;font-size:13px;font-weight:500;background:var(--surface-card);color:var(--ink);border-radius:var(--r-pill);padding:4px 12px;margin-bottom:var(--sp-sm)}
+.card h3{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.card .by{font-size:13px;color:var(--muted);margin-bottom:var(--sp-sm)}
+.meta-row{display:flex;align-items:center;justify-content:space-between}
+.stars{font-size:13px;color:var(--badge-orange);letter-spacing:1px}
+.stars b{font-weight:500;color:var(--ink);letter-spacing:0;margin-left:4px}
+.price{font-size:14px;font-weight:600;color:var(--ink)}
+.price.free{color:var(--success)}
+.tag-new{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:4px 12px}
+.tag-pop{position:absolute;top:12px;left:12px;background:var(--badge-pink);color:#fff;font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:4px 12px}
+
+/* ---------- detail row ---------- */
+.detail{background:var(--surface-card);border-radius:var(--r-lg);padding:var(--sp-xl);display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xl);margin-bottom:var(--sp-section)}
+.gal{display:grid;grid-template-columns:1fr 84px;gap:var(--sp-md)}
+.stage{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#eef2ff,#f5f5f5);border-radius:var(--r-lg);border:1px solid var(--hairline)}
+.stage .mini-ui{left:24px;right:24px;top:32px;bottom:32px;font-size:11px}
+.thumbs{display:flex;flex-direction:column;gap:var(--sp-md)}
+.thumb{aspect-ratio:1;border-radius:var(--r-md);border:2px solid transparent;background:linear-gradient(135deg,#fdf2f8,#f5f5f5)}
+.thumb.t2{background:linear-gradient(135deg,#f0fdfa,#f5f5f5)}
+.thumb.t3{background:linear-gradient(135deg,#fefce8,#f5f5f5)}
+.thumb.active{border-color:var(--ink)}
+.d-info h2{font-size:28px;margin-bottom:var(--sp-xxs)}
+.d-info .byline{font-size:14px;color:var(--muted);margin-bottom:var(--sp-md)}
+.d-info .desc{margin-bottom:var(--sp-lg)}
+.opt-label{font-size:13px;font-weight:600;color:var(--ink);margin:var(--sp-md) 0 var(--sp-sm)}
+.opt-row{display:flex;gap:var(--sp-sm);flex-wrap:wrap}
+.opt{border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-md);padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted)}
+.opt.active{border-color:var(--ink);color:var(--ink);box-shadow:var(--shadow-1)}
+.qty{display:inline-flex;align-items:center;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);height:40px}
+.qty button{width:40px;height:100%;background:transparent;border:0;font-size:15px;color:var(--ink)}
+.qty span{width:44px;text-align:center;font-size:14px;font-weight:600;color:var(--ink)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-xl)}
+.buy-row .big{font-size:24px;font-weight:600;letter-spacing:-0.02em;color:var(--ink)}
+.review{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-md);margin-top:var(--sp-sm)}
+.review .top{display:flex;align-items:center;gap:var(--sp-sm);margin-bottom:var(--sp-xxs)}
+.review .ava{width:36px;height:36px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600}
+.review .who{font-size:14px;font-weight:600;color:var(--ink)}
+.review .role{font-size:12px;color:var(--muted)}
+.review p{font-size:14px;color:var(--body)}
+
+/* ---------- cart panel ---------- */
+.cart{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);box-shadow:var(--shadow-2);padding:var(--sp-lg)}
+.cart h3{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:var(--sp-md)}
+.ci{display:flex;gap:var(--sp-md);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline-soft);align-items:center}
+.ci .art{width:56px;height:56px;border-radius:var(--r-md);flex:none}
+.ci .n{font-size:14px;font-weight:600;color:var(--ink)}
+.ci .m{font-size:12px;color:var(--muted)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:600;color:var(--ink)}
+.sum{margin-top:var(--sp-md);font-size:14px;color:var(--body)}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0}
+.sum .r.total{border-top:1px solid var(--hairline);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:600;color:var(--ink)}
+.cart .btn{width:100%;margin-top:var(--sp-md)}
+.cart-note{font-size:12px;color:var(--muted-soft);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* ---------- cta band ---------- */
+.cta-band{background:var(--surface-card);border-radius:var(--r-lg);padding:var(--sp-xxl);text-align:center;margin-bottom:var(--sp-section)}
+.cta-band h2{font-size:28px;margin-bottom:var(--sp-sm)}
+.cta-band p{color:var(--muted);margin-bottom:var(--sp-lg)}
+
+/* ---------- footer ---------- */
+footer{background:var(--surface-dark);color:var(--on-dark-soft);padding:64px 0;margin-top:var(--sp-xxl)}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);padding-bottom:var(--sp-xl);border-bottom:1px solid var(--surface-dark-elevated)}
+.foot-grid h4{color:var(--on-dark);font-size:14px;font-weight:600;margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;padding:6px 0}
+.foot-grid a:hover{color:#fff}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--sp-lg);gap:var(--sp-md);flex-wrap:wrap}
+.legal{font-size:14px;color:var(--on-dark-soft)}
+.newsletter{display:flex;gap:var(--sp-sm)}
+.newsletter input{background:var(--surface-dark-elevated);border:1px solid var(--surface-dark-elevated);border-radius:var(--r-md);height:40px;padding:0 14px;color:#fff;font-size:14px;width:260px;font-family:var(--font-sans)}
+.newsletter input::placeholder{color:var(--on-dark-soft)}
+
+@media (max-width:960px){
+  .hero-grid,.detail,.duo{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:36px}
+  .navlinks{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap topnav">
+  <a class="logo" href="#"><span class="dot">C</span>Cal.com</a>
+  <nav class="navlinks">
+    <a href="#">Product</a><a href="#">Solutions</a><a href="#" class="active">Marketplace</a><a href="#">Pricing</a><a href="#">Enterprise</a>
+  </nav>
+  <div class="nav-right">
+    <a class="btn--secondary btn" href="#">Sign in</a>
+    <button class="icon-btn bag" aria-label="Cart">▤<span class="dot">3</span></button>
+    <div style="width:36px;height:36px;border-radius:9999px;background:var(--badge-orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">SR</div>
+  </div>
+</div>
+
+<section class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1>The faster way to book anything</h1>
+      <p class="sub">Install scheduling templates, round-robin teams, and workflows built by the community — one click into your Cal.com account.</p>
+      <div class="cta-row">
+        <a class="btn" href="#market">Browse templates</a>
+        <div class="pill-group">
+          <button class="active">Personal</button>
+          <button>Teams</button>
+          <button>Enterprise</button>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="m-head">
+        <div class="ava">SR</div>
+        <div><div style="font-size:14px;font-weight:600;color:var(--ink)">Sofia Reyes</div><div style="font-size:12px;color:var(--muted)">30 min · Google Meet</div></div>
+      </div>
+      <div class="cal-grid">
+        <div>
+          <div class="cal-days">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
+            <i>4</i><i>5</i><i class="sel">6</i><i>7</i><i>8</i>
+            <i>11</i><i>12</i><i>13</i><i>14</i><i>15</i>
+            <i>18</i><i>19</i><i>20</i><i>21</i><i>22</i>
+          </div>
+        </div>
+        <div class="slots">
+          <div class="slot">9:00am</div>
+          <div class="slot">10:30am</div>
+          <div class="slot primary">1:00pm</div>
+          <div class="slot">3:30pm</div>
+        </div>
+      </div>
+      <button class="btn confirm">Confirm — Tue, Nov 6 at 1:00pm</button>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="market">
+  <div class="mk-head">
+    <h2>Marketplace</h2>
+    <input type="search" placeholder="Search 240+ templates…" aria-label="Search templates"
+      style="height:40px;border:1px solid var(--hairline);border-radius:var(--r-md);padding:0 14px;font-size:14px;width:320px;font-family:var(--font-sans)">
+  </div>
+  <div class="chips">
+    <button class="chip active">All</button>
+    <button class="chip">Booking pages</button>
+    <button class="chip">Round-robin</button>
+    <button class="chip">Workflows</button>
+    <button class="chip">Integrations</button>
+    <button class="chip">Routing forms</button>
+    <button class="chip">Payments</button>
+  </div>
+
+  <div class="grid">
+    <article class="card">
+      <div class="ph a1"><div class="mini-ui"><div class="bar" style="width:60%"></div><div class="row2"><span class="pill">Confirmed</span><span class="pill violet">Zoom</span></div><div class="bar" style="width:85%"></div><div class="bar" style="width:70%"></div></div><span class="tag-new">New</span></div>
+      <div class="body">
+        <span class="badge-pill">Booking page</span>
+        <h3>Discovery Call — 30 min</h3>
+        <p class="by">by Cal.com team</p>
+        <div class="meta-row"><span class="stars">★★★★★<b>4.9</b></span><span class="price free">Free</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a2"><div class="mini-ui"><div class="row2"><span class="pill pink">Round-robin</span></div><div class="bar" style="width:90%"></div><div class="bar" style="width:55%"></div><div class="bar" style="width:75%"></div></div></div>
+      <div class="body">
+        <span class="badge-pill">Round-robin</span>
+        <h3>Sales Team Router</h3>
+        <p class="by">by RevOps Collective</p>
+        <div class="meta-row"><span class="stars">★★★★★<b>4.8</b></span><span class="price">$29</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a3"><div class="mini-ui"><div class="row2"><span class="pill">Stripe</span></div><div class="bar" style="width:80%"></div><div class="row2"><span class="pill violet">Webhook</span></div><div class="bar" style="width:65%"></div></div><span class="tag-pop">Popular</span></div>
+      <div class="body">
+        <span class="badge-pill">Payments</span>
+        <h3>Paid Consultation Kit</h3>
+        <p class="by">by Studio Meridian</p>
+        <div class="meta-row"><span class="stars">★★★★☆<b>4.6</b></span><span class="price">$49</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a4"><div class="mini-ui"><div class="bar" style="width:50%"></div><div class="bar" style="width:80%"></div><div class="row2"><span class="pill orange">Reminder</span></div><div class="bar" style="width:60%"></div></div></div>
+      <div class="body">
+        <span class="badge-pill">Workflows</span>
+        <h3>No-show Rescue Flow</h3>
+        <p class="by">by Ana Kovács</p>
+        <div class="meta-row"><span class="stars">★★★★★<b>4.9</b></span><span class="price">$19</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a5"><div class="mini-ui"><div class="row2"><span class="pill violet">Slack</span><span class="pill">HubSpot</span></div><div class="bar" style="width:85%"></div><div class="bar" style="width:45%"></div></div></div>
+      <div class="body">
+        <span class="badge-pill">Integrations</span>
+        <h3>CRM Sync Bundle</h3>
+        <p class="by">by GTM Labs</p>
+        <div class="meta-row"><span class="stars">★★★★☆<b>4.5</b></span><span class="price">$39</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a6"><div class="mini-ui"><div class="bar" style="width:70%"></div><div class="row2"><span class="pill">If / then</span></div><div class="bar" style="width:55%"></div><div class="bar" style="width:78%"></div></div></div>
+      <div class="body">
+        <span class="badge-pill">Routing forms</span>
+        <h3>Lead Triage Router</h3>
+        <p class="by">by Northbeam Sales</p>
+        <div class="meta-row"><span class="stars">★★★★★<b>4.7</b></span><span class="price free">Free</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a7"><div class="mini-ui"><div class="row2"><span class="pill orange">Group</span></div><div class="bar" style="width:88%"></div><div class="bar" style="width:62%"></div></div><span class="tag-new">New</span></div>
+      <div class="body">
+        <span class="badge-pill">Booking page</span>
+        <h3>Group Workshop · 20 seats</h3>
+        <p class="by">by Workshopery</p>
+        <div class="meta-row"><span class="stars">★★★★☆<b>4.6</b></span><span class="price">$24</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="ph a8"><div class="mini-ui"><div class="bar" style="width:60%"></div><div class="row2"><span class="pill">Google</span><span class="pill">Outlook</span></div><div class="bar" style="width:72%"></div></div></div>
+      <div class="body">
+        <span class="badge-pill">Integrations</span>
+        <h3>Two-way Calendar Bridge</h3>
+        <p class="by">by Cal.com team</p>
+        <div class="meta-row"><span class="stars">★★★★★<b>4.8</b></span><span class="price free">Free</span></div>
+      </div>
+    </article>
+  </div>
+
+  <div class="duo">
+    <div class="detail">
+      <div class="gal">
+        <div class="stage"><div class="mini-ui"><div class="row2"><span class="pill pink">Round-robin</span><span class="pill violet">Zoom</span></div><div class="bar" style="width:70%"></div><div class="bar" style="width:90%"></div><div class="bar" style="width:50%"></div><div class="row2" style="margin-top:8px"><span class="pill">Assigned · Dana</span></div></div></div>
+        <div class="thumbs">
+          <div class="thumb active"></div>
+          <div class="thumb t2"></div>
+          <div class="thumb t3"></div>
+        </div>
+      </div>
+      <div class="d-info">
+        <h2>Sales Team Router</h2>
+        <div class="byline"><span class="stars">★★★★★<b>4.8</b></span> &nbsp;·&nbsp; 1,284 installs &nbsp;·&nbsp; by RevOps Collective</div>
+        <p class="desc">Distributes inbound meetings across your AE team with availability, fairness weighting, and owner-based calendar checks. Ships with a routing form, Slack notifications, and a post-call handoff workflow.</p>
+        <p class="opt-label">Team size</p>
+        <div class="opt-row">
+          <button class="opt">1–5 seats</button>
+          <button class="opt active">6–20 seats</button>
+          <button class="opt">20+ seats</button>
+        </div>
+        <p class="opt-label">Billing</p>
+        <div class="opt-row">
+          <button class="opt active">Annual · $290/yr</button>
+          <button class="opt">Monthly · $29/mo</button>
+        </div>
+        <div class="buy-row">
+          <div class="qty"><button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button></div>
+          <span class="big">$290</span>
+          <a class="btn" href="#cart">Add to workspace</a>
+        </div>
+        <div class="review">
+          <div class="top"><div class="ava" style="background:var(--badge-emerald)">DK</div><div><div class="who">Dana Kim</div><div class="role">Head of Sales, Fieldstone</div></div><span class="stars" style="margin-left:auto">★★★★★</span></div>
+          <p>"Cut our lead-to-meeting time from 4 hours to 9 minutes. The fairness weighting just works."</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="cart" id="cart">
+      <h3>Your workspace</h3>
+      <div class="ci"><div class="art a2"></div><div><div class="n">Sales Team Router</div><div class="m">Annual · 6–20 seats</div></div><span class="p">$290</span></div>
+      <div class="ci"><div class="art a4"></div><div><div class="n">No-show Rescue Flow</div><div class="m">One-time</div></div><span class="p">$19</span></div>
+      <div class="ci"><div class="art a1"></div><div><div class="n">Discovery Call — 30 min</div><div class="m">Free template</div></div><span class="p">$0</span></div>
+      <div class="sum">
+        <div class="r"><span>Subtotal</span><span>$309</span></div>
+        <div class="r"><span>Tax (8%)</span><span>$24.72</span></div>
+        <div class="r total"><span>Total / year</span><span>$333.72</span></div>
+      </div>
+      <a class="btn" href="#">Install to workspace</a>
+      <p class="cart-note">Cancel anytime · Prorated on seat changes</p>
+    </aside>
+  </div>
+
+  <div class="cta-band">
+    <h2>Smarter, simpler scheduling for your whole org</h2>
+    <p>Every template installs in one click and stays yours to customize.</p>
+    <a class="btn" href="#">Get started free</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Product</h4><a href="#">Scheduling</a><a href="#">Workflows</a><a href="#">Routing</a><a href="#">Payments</a></div>
+      <div><h4>Solutions</h4><a href="#">Sales</a><a href="#">Recruiting</a><a href="#">Customer success</a><a href="#">Education</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Open source</a></div>
+      <div><h4>Resources</h4><a href="#">Docs</a><a href="#">API reference</a><a href="#">Community</a><a href="#">Status</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Cal.com, Inc. All rights reserved.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Work email" aria-label="Work email">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

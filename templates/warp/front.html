@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warp Store — Themes &amp; Workflows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=DM+Mono:wght@400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#f7f5f0; --on-primary:#2b2622;
+  --ink:#f7f5f0; --body-strong:#dad2c1; --body:#c9c0ad; --mute:#aea69c;
+  --canvas:#2b2622; --canvas-soft:#383330; --hairline:#3f3a36;
+  --ok:#8fbf7f; --warn:#d9a53f; --bad:#d96c5f;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --r-sm:3px; --r-md:4px; --r-lg:6px; --r-full:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:10px; --s-lg:16px; --s-xl:24px; --s-2xl:32px; --s-3xl:48px; --s-5xl:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--s-xl)}
+.eyebrow{font-size:14px;font-weight:500;color:var(--mute);letter-spacing:.3px}
+
+/* ---------- nav ---------- */
+.topnav{position:sticky;top:0;z-index:60;background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.topnav .wrap{display:flex;align-items:center;gap:var(--s-lg);height:56px}
+.logo{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:500;letter-spacing:-0.2px}
+.mark{width:26px;height:26px;border-radius:var(--r-sm);background:var(--primary);display:grid;place-items:center;color:var(--on-primary);font-family:var(--mono);font-size:14px}
+.navlinks{display:flex;gap:4px;font-size:14px;font-weight:500}
+.navlinks a{color:var(--ink);padding:6px 10px;border-radius:var(--r-sm)}
+.navlinks a:hover{background:var(--canvas-soft)}
+.navlinks a.on{background:var(--canvas-soft)}
+.top-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:7px 10px;width:220px}
+.nav-search input{border:0;outline:0;background:transparent;font-size:14px;color:var(--ink);width:100%}
+.nav-search input::placeholder{color:var(--mute)}
+.icon-btn{position:relative;width:34px;height:34px;border-radius:var(--r-full);border:0;background:transparent;color:var(--body);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{background:var(--canvas-soft);color:var(--ink)}
+.icon-btn .dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--bad)}
+.avatar{width:30px;height:30px;border-radius:var(--r-full);background:var(--canvas-soft);border:1px solid var(--hairline);color:var(--body-strong);font-size:11px;font-weight:500;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:500;line-height:20px;padding:8px 16px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:#ffffff}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--canvas-soft)}
+.btn-sm{padding:6px 12px}
+
+/* ---------- hero ---------- */
+.hero{padding:var(--s-5xl) 0 var(--s-2xl)}
+.hero .tagline{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--body)}
+.hero h1{font-size:clamp(40px,5.5vw,64px);font-weight:400;line-height:1.1;letter-spacing:-1.6px;margin:var(--s-sm) 0 var(--s-lg);max-width:18ch}
+.hero p{font-size:18px;color:var(--body);max-width:520px}
+.hero-cta{display:flex;gap:var(--s-md);margin-top:var(--s-xl)}
+.hero-stats{display:flex;gap:var(--s-3xl);margin-top:var(--s-3xl)}
+.hero-stats b{display:block;font-family:var(--mono);font-size:13px;color:var(--ink)}
+.hero-stats span{font-size:13px;color:var(--mute)}
+
+/* ---------- mockup split ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-lg);margin-top:var(--s-2xl)}
+.mockup{background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+.mockup-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--hairline)}
+.mockup-bar i{width:8px;height:8px;border-radius:50%;background:var(--hairline)}
+.mockup-bar span{font-family:var(--mono);font-size:11px;color:var(--mute);margin-left:6px}
+.mockup-body{font-family:var(--mono);font-size:13px;line-height:1.9;padding:var(--s-lg);color:var(--body-strong)}
+.mockup-body .p{color:var(--primary)}
+.mockup-body .g{color:var(--ok)}
+.mockup-body .y{color:var(--warn)}
+.mockup-body .dim{color:var(--mute)}
+
+/* ---------- chips / grid ---------- */
+.chips{display:flex;gap:var(--s-sm);flex-wrap:wrap;padding:var(--s-xl) 0}
+.chip{font-size:14px;font-weight:500;padding:6px 12px;border-radius:var(--r-sm);border:0;background:transparent;color:var(--body);cursor:pointer}
+.chip:hover{background:var(--canvas-soft);color:var(--ink)}
+.chip.active{background:var(--canvas-soft);color:var(--ink)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:var(--s-lg);margin:var(--s-md) 0 var(--s-lg)}
+.section-head h2{font-size:32px;font-weight:500;letter-spacing:-0.8px;line-height:1.25}
+.section-head a{font-size:14px;font-weight:500;color:var(--mute)}
+.section-head a:hover{color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);padding-bottom:var(--s-3xl)}
+.card{background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-lg);display:flex;flex-direction:column;gap:6px;transition:border-color .15s}
+.card:hover{border-color:var(--mute)}
+.mini-term{height:92px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);font-family:var(--mono);font-size:11px;line-height:1.9;padding:8px 10px;color:var(--body);overflow:hidden;position:relative}
+.mini-term .dim{color:var(--mute)}
+.mini-term .g{color:var(--ok)}
+.mini-term .y{color:var(--warn)}
+.badge{position:absolute;top:8px;right:8px;font-size:10px;font-weight:500;padding:2px 7px;border-radius:var(--r-sm);background:var(--canvas-soft);border:1px solid var(--hairline);color:var(--body)}
+.badge.hot{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.card-title{font-size:16px;font-weight:500;letter-spacing:-0.2px}
+.card-meta{font-family:var(--mono);font-size:11px;color:var(--mute)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:var(--s-sm)}
+.rating{font-size:12px;color:var(--body)}
+.rating .stars{color:var(--body-strong);letter-spacing:1px}
+.price{font-family:var(--mono);font-size:12px;color:var(--ink)}
+
+/* ---------- featured ---------- */
+.detail{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s-2xl);background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-xl)}
+.detail-info h3{font-size:24px;font-weight:500;letter-spacing:-0.4px;line-height:1.3}
+.detail-info .lead{font-size:16px;color:var(--body);margin:var(--s-xs) 0 var(--s-xl)}
+.opt-label{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:var(--s-sm)}
+.opt-label span{color:var(--mute)}
+.opt-row{display:flex;gap:var(--s-sm);flex-wrap:wrap;margin-bottom:var(--s-xl)}
+.opt{font-family:var(--mono);font-size:12px;padding:8px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);cursor:pointer}
+.opt:hover{color:var(--ink);border-color:var(--mute)}
+.opt.on{border-color:var(--primary);color:var(--primary)}
+.buy-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-sm);background:var(--canvas)}
+.stepper button{width:36px;height:38px;border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:500;cursor:pointer}
+.stepper b{min-width:26px;text-align:center;font-family:var(--mono);font-size:13px}
+.detail-price{font-family:var(--mono);font-size:22px;margin:var(--s-lg) 0 var(--s-md)}
+.detail-price small{font-size:13px;color:var(--mute)}
+.review-box{margin-top:var(--s-xl);border-top:1px solid var(--hairline);padding-top:var(--s-xl)}
+.review{margin-top:var(--s-md);font-size:14px;color:var(--body-strong)}
+.review b{display:block;font-size:12px;font-weight:500;color:var(--mute);margin-top:4px}
+.quote{font-family:var(--serif);font-style:italic}
+
+/* ---------- toolbox / cart ---------- */
+.cart-band{padding:var(--s-3xl) 0 var(--s-5xl)}
+.cart-band h2{font-size:32px;font-weight:500;letter-spacing:-0.8px;margin-bottom:var(--s-xl)}
+.cart{max-width:720px;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-xl)}
+.line{display:flex;align-items:center;gap:var(--s-lg);padding:var(--s-md) 0;border-bottom:1px solid var(--hairline)}
+.line:last-of-type{border-bottom:0}
+.line .ico-sm{width:38px;height:38px;border-radius:var(--r-sm);background:var(--canvas);border:1px solid var(--hairline);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--body-strong);flex:none}
+.line .li-info{flex:1}
+.line .li-info b{font-size:15px;font-weight:500;display:block}
+.line .li-info span{font-family:var(--mono);font-size:11px;color:var(--mute)}
+.line .li-price{font-family:var(--mono);font-size:13px}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--body);padding:4px 0}
+.sum-row.total{font-size:16px;font-weight:500;color:var(--ink);border-top:1px solid var(--hairline);margin-top:var(--s-sm);padding-top:var(--s-md)}
+.sum-row.total b{font-family:var(--mono)}
+.cart .btn-primary{width:100%;margin-top:var(--s-lg)}
+.cart-note{font-size:12px;color:var(--mute);text-align:center;margin-top:var(--s-md)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hairline);padding:var(--s-3xl) 0;color:var(--body);font-size:14px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--s-3xl)}
+.foot-eyebrow{font-size:12px;font-weight:500;letter-spacing:.3px;text-transform:uppercase;color:var(--mute);margin-bottom:var(--s-md)}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:var(--s-sm)}
+footer ul a:hover{color:var(--ink)}
+.news{display:flex;gap:var(--s-md);margin-top:var(--s-md);max-width:360px}
+.news input{flex:1;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-sm);color:var(--ink);font-size:14px;padding:9px 10px;outline:0}
+.news input::placeholder{color:var(--mute)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);border-top:1px solid var(--hairline);margin-top:var(--s-3xl);padding-top:var(--s-xl);color:var(--mute);flex-wrap:wrap}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:32px;height:32px;border-radius:var(--r-full);border:1px solid var(--hairline);display:grid;place-items:center;font-size:11px;font-weight:500;color:var(--body)}
+.socials a:hover{color:var(--ink);border-color:var(--mute)}
+
+@media (max-width:960px){
+  .wrap{padding:0 var(--s-lg)}
+  .navlinks,.nav-search{display:none}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .split,.detail{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .hero{padding-top:var(--s-3xl)}
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#"><span class="mark">▷_</span> warp</a>
+    <nav class="navlinks">
+      <a href="#">Product</a>
+      <a class="on" href="#">Store</a>
+      <a href="#">Docs</a>
+      <a href="#">Pricing</a>
+      <a href="#">Blog</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <div class="nav-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aea69c" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" placeholder="Search themes, workflows…">
+    </div>
+    <button class="icon-btn" aria-label="Toolbox">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l-1.2 12H7.2L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <span class="avatar">SA</span>
+    <a class="btn btn-primary btn-sm" href="#">Download</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="tagline">the terminal, curated —</div>
+    <h1>Themes &amp; workflows for people who live in the shell</h1>
+    <p>Every listing is tested against Warp's agent mode. One click installs the theme, the keybindings and the workflows together.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#featured">Browse the store</a>
+      <a class="btn btn-ghost" href="#toolbox">Open toolbox →</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="dim" style="color:var(--mute)"></span><b>312 themes</b><span>curated &amp; tested</span></div>
+      <div><b>148 workflows</b><span>with agent prompts</span></div>
+      <div><b>2.6M installs</b><span>all time</span></div>
+    </div>
+    <div class="split">
+      <div class="mockup">
+        <div class="mockup-bar"><i></i><i></i><i></i><span>agent mode · deploy.check</span></div>
+        <div class="mockup-body">
+          <div><span class="p">❯</span> warp workflow run deploy.check</div>
+          <div class="dim">→ loading 4 steps from team library…</div>
+          <div><span class="g">✓</span> build: 42s <span class="dim">(cache hit)</span></div>
+          <div><span class="g">✓</span> tests: 218 passed</div>
+          <div><span class="y">⋯</span> agent reviewing infra diff…</div>
+        </div>
+      </div>
+      <div class="mockup">
+        <div class="mockup-bar"><i></i><i></i><i></i><span>theme · oklch-warm</span></div>
+        <div class="mockup-body">
+          <div><span class="dim">$</span> git log --oneline -3</div>
+          <div><span class="g">a91f2c4</span> fix: warm palette drift in blocks</div>
+          <div><span class="y">77b02e1</span> feat: agent-aware prompt segments</div>
+          <div><span class="g">0c44d9e</span> chore: bump wk3 dependencies</div>
+          <div><span class="dim">█</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="chips">
+    <button class="chip active">All</button>
+    <button class="chip">Themes</button>
+    <button class="chip">Workflows</button>
+    <button class="chip">Agent prompts</button>
+    <button class="chip">Team packs</button>
+    <button class="chip">Prompt completion</button>
+    <button class="chip">Free</button>
+  </div>
+  <div class="section-head">
+    <h2>Popular this week</h2>
+    <a href="#">View all 460 listings →</a>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <div class="mini-term"><span class="badge hot">Staff pick</span><div><span class="dim">$</span> warp theme use oklch-warm</div><div><span class="g">✓</span> applied</div><div><span class="dim">█</span></div></div>
+      <h3 class="card-title">Oklch Warm</h3>
+      <div class="card-meta">theme · by warp studio</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9 · 1.8k</span><span class="price">Free</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><span class="badge">Bundle</span><div><span class="dim">$</span> wf run deploy.check</div><div><span class="g">✓</span> 4 steps ok</div></div></div>
+      <h3 class="card-title">Deploy Safety Pack</h3>
+      <div class="card-meta">workflows · by core team</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.8 · 962</span><span class="price">$8</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><div><span class="dim">$</span> agent "review last diff"</div><div><span class="y">⋯</span> reading 12 files</div><div><span class="g">✓</span> 3 notes</div></div></div>
+      <h3 class="card-title">Reviewer Agent Pack</h3>
+      <div class="card-meta">agent prompts · community</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.7 · 611</span><span class="price">$5</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><span class="badge">New</span><div><span class="dim">$</span> theme use scribe-04</div><div><span class="g">✓</span> applied</div></div></div>
+      <h3 class="card-title">Scribe 04</h3>
+      <div class="card-meta">theme · high-contrast</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.6 · 289</span><span class="price">Free</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><div><span class="dim">$</span> wf k8s.tail --prod</div><div><span class="y">⋯</span> streaming pods</div><div><span class="g">✓</span> healthy</div></div></div>
+      <h3 class="card-title">Kubernetes Daily</h3>
+      <div class="card-meta">workflows · by sre-guild</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.8 · 1.1k</span><span class="price">$6</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><div><span class="dim">$</span> wf db.migrate --dry</div><div><span class="g">✓</span> 2 migrations ok</div></div></div>
+      <h3 class="card-title">Postgres Toolkit</h3>
+      <div class="card-meta">workflows · by core team</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.7 · 744</span><span class="price">$6</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><span class="badge">New</span><div><span class="dim">$</span> wf standup.notes</div><div><span class="g">✓</span> posted to slack</div></div></div>
+      <h3 class="card-title">Team Rituals Pack</h3>
+      <div class="card-meta">team pack · 12 workflows</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.5 · 198</span><span class="price">$12</span></div>
+    </article>
+    <article class="card">
+      <div class="mini-term"><div><span class="dim">$</span> theme use dusk-coal</div><div><span class="g">✓</span> applied</div><div><span class="dim">█</span></div></div></div>
+      <h3 class="card-title">Dusk Coal</h3>
+      <div class="card-meta">theme · by warp studio</div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9 · 2.2k</span><span class="price">Free</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="wrap" id="featured" style="padding-bottom:var(--s-3xl)">
+  <div class="section-head"><h2>Inside: Oklch Warm</h2></div>
+  <div class="detail">
+    <div>
+      <div class="mockup">
+        <div class="mockup-bar"><i></i><i></i><i></i><span>oklch-warm · full preview</span></div>
+        <div class="mockup-body">
+          <div><span class="p">❯</span> warp agent "summarize failed CI runs"</div>
+          <div class="dim">→ reading 3 workflows · 128 log lines</div>
+          <div><span class="g">✓</span> 2 failures share root cause: flaky e2e/login.spec</div>
+          <div><span class="y">⋯</span> suggested fix applied to workflow</div>
+          <div><span class="dim">press ⌘⏎ to accept · █</span></div>
+        </div>
+      </div>
+      <div class="chips" style="padding-bottom:0">
+        <button class="opt on">main view</button>
+        <button class="opt">blocks</button>
+        <button class="opt">input editor</button>
+        <button class="opt">split panes</button>
+      </div>
+    </div>
+    <div class="detail-info">
+      <h3>Oklch Warm</h3>
+      <p class="lead">The house theme — warm charcoal canvas, soft sand foreground, four accent hues tuned in OKLCH so blocks and agent diffs stay readable on retina and e-ink alike.</p>
+      <div class="opt-label">Variant <span>— 4 faces included</span></div>
+      <div class="opt-row">
+        <button class="opt on">regular</button>
+        <button class="opt">semi</button>
+        <button class="opt">mono-only</button>
+        <button class="opt">light</button>
+      </div>
+      <div class="opt-label">License <span>— per editor</span></div>
+      <div class="opt-row">
+        <button class="opt on">personal</button>
+        <button class="opt">team (10+)</button>
+      </div>
+      <div class="detail-price">$4<small> · one-time · free updates forever</small></div>
+      <div class="buy-row">
+        <div class="stepper">
+          <button aria-label="Decrease">−</button><b>2</b><button aria-label="Increase">+</button>
+        </div>
+        <a class="btn btn-primary" href="#toolbox">Add to toolbox</a>
+        <a class="btn btn-ghost" href="#">Preview in app ↗</a>
+      </div>
+      <div class="review-box">
+        <span class="rating"><span class="stars">★★★★★</span> 4.9 · 1,804 reviews</span>
+        <p class="review quote">“The only dark theme I've used where 3 a.m. deploys don't feel like staring into a freezer.”<b>Marta Kowalski — Staff SRE, Fathom</b></p>
+        <p class="review quote">“Blocks and agent output read perfectly. Installed it on every machine I touch.”<b>Ibrahim Sesay — Platform Engineer, Ledgerline</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cart-band wrap" id="toolbox">
+  <h2>Your toolbox</h2>
+  <div class="cart">
+    <div class="line">
+      <span class="ico-sm">▤</span>
+      <div class="li-info"><b>Oklch Warm</b><span>theme · personal · ×2 editors</span></div>
+      <div class="li-price">$8.00</div>
+    </div>
+    <div class="line">
+      <span class="ico-sm">▷</span>
+      <div class="li-info"><b>Deploy Safety Pack</b><span>workflows · team license</span></div>
+      <div class="li-price">$8.00</div>
+    </div>
+    <div class="line">
+      <span class="ico-sm">✦</span>
+      <div class="li-info"><b>Reviewer Agent Pack</b><span>agent prompts · personal</span></div>
+      <div class="li-price">$5.00</div>
+    </div>
+    <div class="sum-row" style="margin-top:12px"><span>Subtotal</span><span style="font-family:var(--mono)">$21.00</span></div>
+    <div class="sum-row"><span>Tax (est. 8.9%)</span><span style="font-family:var(--mono)">$1.87</span></div>
+    <div class="sum-row total"><span>Total</span><b>$22.87</b></div>
+    <a class="btn btn-primary" href="#">Sync to my editors</a>
+    <p class="cart-note">Licenses sync to your Warp account · receipts emailed · 14-day refund</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-eyebrow">Store dispatch</div>
+        <p style="max-width:300px">One email a month: new themes, workflow packs and agent prompt drops.</p>
+        <div class="news">
+          <input type="email" placeholder="you@domain.dev">
+          <a class="btn btn-primary btn-sm" href="#">Subscribe</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Store</div>
+        <ul>
+          <li><a href="#">Themes</a></li>
+          <li><a href="#">Workflows</a></li>
+          <li><a href="#">Agent prompts</a></li>
+          <li><a href="#">Team packs</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Resources</div>
+        <ul>
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">Publishing guide</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Company</div>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Warp Labs · Terms · Privacy</span>
+      <div class="socials"><a href="#">GH</a><a href="#">X</a><a href="#">DC</a><a href="#">YT</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

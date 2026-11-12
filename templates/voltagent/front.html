@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volt Agent Hub — Agent &amp; Tool Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#00d992; --primary-soft:#2fd6a1; --primary-deep:#10b981; --on-primary:#101010;
+  --ink:#f2f2f2; --ink-strong:#ffffff; --body:#bdbdbd; --mute:#8b949e;
+  --hairline:#3d3a39; --canvas:#101010; --canvas-soft:#1a1a1a; --canvas-text-soft:#f5f6f7;
+  --danger:#f85149; --warning:#e3b341;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-pill:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-2xl:24px; --s-3xl:32px; --s-5xl:48px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.65}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--s-3xl)}
+.eyebrow{font-size:14px;font-weight:600;letter-spacing:2.52px;text-transform:uppercase;color:var(--primary-soft)}
+
+/* ---------- nav ---------- */
+.topnav{position:sticky;top:0;z-index:60;background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.topnav .wrap{display:flex;align-items:center;gap:var(--s-2xl);height:60px}
+.logo{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;letter-spacing:-0.3px}
+.bolt{width:26px;height:26px;border-radius:var(--r-sm);background:var(--primary);display:grid;place-items:center}
+.navlinks{display:flex;gap:var(--s-xl);font-size:14px;color:var(--body)}
+.navlinks a:hover{color:var(--ink)}
+.navlinks a.on{color:var(--primary-soft);font-weight:600}
+.top-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:7px 12px;width:230px}
+.nav-search input{border:0;outline:0;background:transparent;font-size:14px;color:var(--ink);width:100%}
+.nav-search input::placeholder{color:var(--mute)}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{color:var(--ink);border-color:var(--mute)}
+.icon-btn .dot{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--primary);color:var(--on-primary);font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.avatar{width:32px;height:32px;border-radius:var(--r-pill);background:var(--canvas-soft);border:1px solid var(--hairline);color:var(--ink);font-size:11px;font-weight:600;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:600;line-height:24px;padding:12px 16px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-soft)}
+.btn-outline{background:var(--canvas);color:var(--ink);border-color:var(--hairline)}
+.btn-outline:hover{border-color:var(--mute)}
+.btn-ghost{background:transparent;color:var(--primary-soft)}
+.btn-sm{padding:8px 12px;font-size:14px}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;padding:4px 12px;border-radius:var(--r-pill);border:1px solid var(--hairline);background:var(--canvas);color:var(--ink)}
+.tag.live{color:var(--primary);border-color:rgba(0,217,146,.4)}
+
+/* ---------- hero ---------- */
+.hero{padding:var(--s-5xl) 0 var(--s-3xl)}
+.hero h1{font-size:clamp(36px,4.5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-0.65px;color:var(--ink-strong);max-width:16ch;margin:var(--s-md) 0 var(--s-lg)}
+.hero p{font-size:18px;color:var(--body);max-width:560px}
+.hero-row{display:flex;align-items:center;gap:var(--s-lg);margin-top:var(--s-2xl);flex-wrap:wrap}
+.code-chip{display:inline-flex;align-items:center;gap:10px;background:var(--canvas-soft);color:var(--canvas-text-soft);font-family:var(--mono);font-size:13px;padding:6px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline)}
+.code-chip b{color:var(--primary);font-weight:700}
+.hero-stats{display:flex;gap:var(--s-3xl);margin-top:var(--s-3xl);flex-wrap:wrap}
+.hero-stats b{display:block;font-family:var(--mono);font-size:26px;font-weight:700;color:var(--ink-strong)}
+.hero-stats span{font-size:14px;color:var(--mute)}
+.dashed{border:0;border-top:1px dashed rgba(79,93,117,.4);margin:var(--s-3xl) 0}
+
+/* ---------- chips / grid ---------- */
+.chips{display:flex;gap:var(--s-md);flex-wrap:wrap;padding:var(--s-lg) 0}
+.chip{font-size:14px;font-weight:600;padding:6px 14px;border-radius:var(--r-pill);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);cursor:pointer}
+.chip:hover{color:var(--ink);border-color:var(--mute)}
+.chip.active{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:var(--s-lg);margin:var(--s-xl) 0}
+.section-head h2{font-size:36px;font-weight:400;letter-spacing:-0.9px;line-height:1.1}
+.section-head a{font-size:14px;font-weight:600;color:var(--primary-soft)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);padding-bottom:var(--s-3xl)}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-2xl);display:flex;flex-direction:column;gap:var(--s-sm);transition:box-shadow .15s,border-color .15s}
+.card:hover{border-color:var(--mute);box-shadow:0 0 15px rgba(92,88,85,.2)}
+.card-top{display:flex;align-items:center;justify-content:space-between}
+.card-ico{width:36px;height:36px;border-radius:var(--r-sm);background:var(--canvas-soft);border:1px solid var(--hairline);display:grid;place-items:center;color:var(--primary)}
+.card-title{font-size:20px;font-weight:600;line-height:1.4;color:var(--ink-strong)}
+.card-meta{font-size:14px;color:var(--mute)}
+.card-mono{font-family:var(--mono);font-size:12px;color:var(--body);background:var(--canvas-soft);border-radius:var(--r-xs);padding:2px 8px;align-self:flex-start}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:var(--s-md);border-top:1px solid var(--hairline)}
+.rating{font-size:13px;color:var(--body)}
+.rating .stars{color:var(--primary);letter-spacing:1px}
+.price{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ink-strong)}
+.price small{color:var(--mute);font-weight:400}
+
+/* ---------- featured ---------- */
+.detail{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--s-3xl);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-2xl);background:var(--canvas)}
+.code-win{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+.code-bar{display:flex;align-items:center;gap:8px;padding:10px var(--s-lg);border-bottom:1px solid var(--hairline);background:var(--canvas-soft)}
+.code-bar i{width:9px;height:9px;border-radius:50%;background:var(--hairline)}
+.code-bar span{font-family:var(--mono);font-size:12px;color:var(--mute);margin-left:6px}
+.code-body{font-family:var(--mono);font-size:13px;line-height:1.85;padding:var(--s-xl);color:var(--canvas-text-soft)}
+.code-body .k{color:var(--primary-soft)}
+.code-body .s{color:#e3b341}
+.code-body .c{color:var(--mute)}
+.thumbs{display:flex;gap:var(--s-md);margin-top:var(--s-md);flex-wrap:wrap}
+.thumb{font-family:var(--mono);font-size:12px;padding:6px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);cursor:pointer}
+.thumb.on{border-color:var(--primary);color:var(--primary)}
+.detail-info h3{font-size:24px;font-weight:700;letter-spacing:-0.6px;line-height:1.3}
+.detail-info .lead{font-size:16px;color:var(--body);margin:var(--s-xs) 0 var(--s-xl)}
+.opt-label{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:var(--s-sm)}
+.opt-label span{color:var(--mute);font-weight:400}
+.opt-row{display:flex;gap:var(--s-md);flex-wrap:wrap;margin-bottom:var(--s-xl)}
+.opt{font-size:14px;font-weight:600;padding:8px 14px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);cursor:pointer}
+.opt:hover{color:var(--ink);border-color:var(--mute)}
+.opt.on{border-color:var(--primary);color:var(--primary);background:rgba(0,217,146,.08)}
+.buy-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-sm);background:var(--canvas-soft)}
+.stepper button{width:40px;height:44px;border:0;background:transparent;color:var(--ink);font-size:18px;font-weight:600;cursor:pointer}
+.stepper b{min-width:30px;text-align:center;font-family:var(--mono);font-size:14px}
+.detail-price{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--ink-strong);margin:var(--s-lg) 0 var(--s-md)}
+.detail-price small{font-size:14px;font-weight:400;color:var(--mute)}
+.review-box{margin-top:var(--s-xl);border-top:1px dashed rgba(79,93,117,.4);padding-top:var(--s-xl)}
+.review{margin-top:var(--s-md);font-size:14px;color:var(--body)}
+.review b{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-top:4px}
+
+/* ---------- cart / deploy summary ---------- */
+.cart-band{padding:var(--s-3xl) 0 var(--s-5xl)}
+.cart-band h2{font-size:36px;font-weight:400;letter-spacing:-0.9px;margin-bottom:var(--s-xl)}
+.cart{max-width:760px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-2xl)}
+.line{display:flex;align-items:center;gap:var(--s-lg);padding:var(--s-md) 0;border-bottom:1px solid var(--hairline)}
+.line:last-of-type{border-bottom:0}
+.line .ico-sm{width:40px;height:40px;border-radius:var(--r-sm);background:var(--canvas-soft);border:1px solid var(--hairline);display:grid;place-items:center;color:var(--primary);flex:none}
+.line .li-info{flex:1}
+.line .li-info b{font-size:16px;font-weight:600;display:block}
+.line .li-info span{font-size:13px;font-family:var(--mono);color:var(--mute)}
+.line .li-price{font-family:var(--mono);font-size:14px;font-weight:700}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--body);padding:4px 0}
+.sum-row.total{font-size:18px;font-weight:700;color:var(--ink-strong);border-top:1px solid var(--hairline);margin-top:var(--s-md);padding-top:var(--s-md)}
+.sum-row.total b{font-family:var(--mono)}
+.cart .btn-primary{width:100%;margin-top:var(--s-lg)}
+.cart-note{font-size:13px;color:var(--mute);text-align:center;margin-top:var(--s-md)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hairline);padding:var(--s-3xl) 0;color:var(--body);font-size:14px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--s-3xl)}
+.foot-eyebrow{font-size:12px;font-weight:600;letter-spacing:2.52px;text-transform:uppercase;color:var(--mute);margin-bottom:var(--s-md)}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:var(--s-sm)}
+footer ul a:hover{color:var(--primary-soft)}
+.news{display:flex;gap:var(--s-md);margin-top:var(--s-md);max-width:360px}
+.news input{flex:1;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-sm);color:var(--ink);font-size:14px;padding:10px 12px;outline:0}
+.news input::placeholder{color:var(--mute)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);border-top:1px dashed rgba(79,93,117,.4);margin-top:var(--s-3xl);padding-top:var(--s-xl);flex-wrap:wrap;color:var(--mute)}
+.socials{display:flex;gap:var(--s-md)}
+.socials a{width:34px;height:34px;border-radius:var(--r-pill);border:1px solid var(--hairline);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--body)}
+.socials a:hover{color:var(--primary);border-color:var(--primary)}
+
+@media (max-width:960px){
+  .wrap{padding:0 var(--s-lg)}
+  .navlinks,.nav-search{display:none}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .detail{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <span class="bolt"><svg width="14" height="14" viewBox="0 0 24 24" fill="#101010"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span>
+      voltagent
+    </a>
+    <nav class="navlinks">
+      <a class="on" href="#">Agents</a>
+      <a href="#">Tools</a>
+      <a href="#">Templates</a>
+      <a href="#">Docs</a>
+      <a href="#">Pricing</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <div class="nav-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b949e" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" placeholder="Search agents, tools…">
+    </div>
+    <button class="icon-btn" aria-label="Cart">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l-1.2 12H7.2L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="dot">2</span>
+    </button>
+    <span class="avatar">KM</span>
+    <a class="btn btn-primary btn-sm" href="#">Deploy</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Agent marketplace · production-ready</div>
+    <h1>Ship AI agents from templates, not from scratch</h1>
+    <p>Browse 480+ community and first-party agent templates with tools, memory and evals wired in. Install with one command, deploy in one click.</p>
+    <div class="hero-row">
+      <a class="btn btn-primary" href="#featured">Browse templates</a>
+      <span class="code-chip"><b>$</b> npx voltagent create rag-agent <span style="color:var(--mute)">⧉</span></span>
+    </div>
+    <div class="hero-stats">
+      <div><b>482</b><span>templates</span></div>
+      <div><b>31k</b><span>installs / mo</span></div>
+      <div><b>99.98%</b><span>deploy success</span></div>
+    </div>
+    <hr class="dashed">
+    <div class="chips">
+      <button class="chip active">All</button>
+      <button class="chip">RAG</button>
+      <button class="chip">Browser automation</button>
+      <button class="chip">Customer support</button>
+      <button class="chip">Data pipelines</button>
+      <button class="chip">Voice</button>
+      <button class="chip">Coding agents</button>
+      <button class="chip">Evals</button>
+    </div>
+    <div class="section-head">
+      <h2>Trending this week</h2>
+      <a href="#">View all 482 →</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h7"/></svg></span><span class="tag live">● Trending</span></div>
+        <h3 class="card-title">RAG Knowledge Base</h3>
+        <p class="card-meta">Retrieval agent · pgvector + reranker</p>
+        <span class="card-mono">npx voltagent create rag-agent</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9 · 1.2k</span><span class="price">Free <small>/ OSS</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18"/></svg></span><span class="tag">Beta</span></div>
+        <h3 class="card-title">Browser Operator</h3>
+        <p class="card-meta">Web agent · Playwright toolchain</p>
+        <span class="card-mono">npx voltagent create browser-op</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.7 · 860</span><span class="price">Free <small>/ OSS</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><span class="tag live">● Trending</span></div>
+        <h3 class="card-title">Support Triage</h3>
+        <p class="card-meta">Ticket routing · 14 integrations</p>
+        <span class="card-mono">npx voltagent create triage</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.8 · 2.1k</span><span class="price">$29 <small>/ seat · mo</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span><span class="tag">New</span></div>
+        <h3 class="card-title">ETL Watchdog</h3>
+        <p class="card-meta">Data pipeline · anomaly alerts</p>
+        <span class="card-mono">npx voltagent create etl-watch</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.6 · 402</span><span class="price">$19 <small>/ seat · mo</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg></span><span class="tag">Beta</span></div>
+        <h3 class="card-title">Voice Receptionist</h3>
+        <p class="card-meta">Realtime voice · Twilio + WebRTC</p>
+        <span class="card-mono">npx voltagent create voice-desk</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.5 · 318</span><span class="price">$49 <small>/ seat · mo</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></span><span class="tag live">● Trending</span></div>
+        <h3 class="card-title">Code Reviewer</h3>
+        <p class="card-meta">Repo-aware reviewer · GitHub app</p>
+        <span class="card-mono">npx voltagent create review-bot</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9 · 3.4k</span><span class="price">$15 <small>/ seat · mo</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11"/></svg></span><span class="tag">New</span></div>
+        <h3 class="card-title">Eval Harness</h3>
+        <p class="card-meta">Regression suites · 40+ scorers</p>
+        <span class="card-mono">npx voltagent create evals</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.8 · 571</span><span class="price">Free <small>/ OSS</small></span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="card-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg></span><span class="tag">New</span></div>
+        <h3 class="card-title">Meeting Scribe</h3>
+        <p class="card-meta">Transcribe → action items → CRM</p>
+        <span class="card-mono">npx voltagent create scribe</span>
+        <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.6 · 289</span><span class="price">$12 <small>/ seat · mo</small></span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="featured" style="padding-bottom:var(--s-3xl)">
+  <div class="section-head"><h2>Inside: Support Triage Agent</h2></div>
+  <div class="detail">
+    <div>
+      <div class="code-win">
+        <div class="code-bar"><i></i><i></i><i></i><span>triage/agent.ts</span></div>
+        <pre class="code-body"><span class="c">// routes every inbound ticket in &lt; 800 ms</span>
+<span class="k">import</span> { Agent, tool } <span class="k">from</span> <span class="s">"@voltagent/core"</span>;
+
+<span class="k">export const</span> triage = <span class="k">new</span> Agent({
+  name: <span class="s">"support-triage"</span>,
+  model: <span class="s">"gpt-4.2-mini"</span>,
+  memory: <span class="s">"pgvector"</span>,
+  tools: [
+    tool(<span class="s">"classify"</span>), tool(<span class="s">"lookup-customer"</span>),
+    tool(<span class="s">"draft-reply"</span>), tool(<span class="s">"escalate"</span>),
+  ],
+  evals: { suite: <span class="s">"triage-v4"</span>, gate: 0.93 },
+});</pre>
+      </div>
+      <div class="thumbs">
+        <button class="thumb on">agent.ts</button>
+        <button class="thumb">tools.ts</button>
+        <button class="thumb">evals.yaml</button>
+        <button class="thumb">deploy.toml</button>
+      </div>
+    </div>
+    <div class="detail-info">
+      <h3>Support Triage</h3>
+      <p class="lead">Classifies, enriches and drafts replies for inbound tickets — with a hard eval gate before anything ships. Used by 2,100+ support teams.</p>
+      <div class="opt-label">Model <span>— swap anytime</span></div>
+      <div class="opt-row">
+        <button class="opt">gpt-4.2-mini</button>
+        <button class="opt on">claude-sonnet-4.5</button>
+        <button class="opt">llama-4-70b</button>
+      </div>
+      <div class="opt-label">Memory <span>— vector store</span></div>
+      <div class="opt-row">
+        <button class="opt">pgvector</button>
+        <button class="opt">Qdrant</button>
+        <button class="opt on">Turbopuffer</button>
+      </div>
+      <div class="detail-price">$29<small> / seat / month · billed monthly</small></div>
+      <div class="buy-row">
+        <div class="stepper">
+          <button aria-label="Decrease">−</button><b>5</b><button aria-label="Increase">+</button>
+        </div>
+        <a class="btn btn-primary" href="#cart">Add to workspace</a>
+        <a class="btn btn-ghost" href="#">Deploy to prod ↗</a>
+      </div>
+      <div class="review-box">
+        <span class="rating"><span class="stars">★★★★★</span> 4.8 · 2,141 reviews</span>
+        <p class="review">“Cut our first-response time from 4 h to 9 min. The eval gate is what got it past our compliance team.”<b>Lena Fischer — Head of Support, Framerkit</b></p>
+        <p class="review">“Escalation hand-off is shockingly good. It knows when it doesn't know.”<b>Diego Ramos — CX Lead, Parcelio</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cart-band wrap" id="cart">
+  <h2>Workspace summary</h2>
+  <div class="cart">
+    <div class="line">
+      <span class="ico-sm"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span>
+      <div class="li-info"><b>Support Triage</b><span>5 seats · claude-sonnet-4.5 · turbopuffer</span></div>
+      <div class="li-price">$145.00/mo</div>
+    </div>
+    <div class="line">
+      <span class="ico-sm"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></span>
+      <div class="li-info"><b>Code Reviewer</b><span>3 seats · GitHub app</span></div>
+      <div class="li-price">$45.00/mo</div>
+    </div>
+    <div class="line">
+      <span class="ico-sm"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h7"/></svg></span>
+      <div class="li-info"><b>RAG Knowledge Base</b><span>open source · support plan</span></div>
+      <div class="li-price">$20.00/mo</div>
+    </div>
+    <div class="sum-row" style="margin-top:12px"><span>Monthly subtotal</span><span style="font-family:var(--mono)">$210.00</span></div>
+    <div class="sum-row"><span>Inference credits (incl.)</span><span style="font-family:var(--mono)">$50.00</span></div>
+    <div class="sum-row total"><span>Total due today</span><b>$210.00</b></div>
+    <a class="btn btn-primary" href="#">Confirm subscription</a>
+    <p class="cart-note">Cancel anytime · SOC 2 Type II · usage billed at cost, no markup</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-eyebrow">Changelog, monthly</div>
+        <p>New templates, tool releases and eval benchmarks. No marketing fluff.</p>
+        <div class="news">
+          <input type="email" placeholder="dev@company.com">
+          <a class="btn btn-primary btn-sm" href="#">Subscribe</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Product</div>
+        <ul>
+          <li><a href="#">Agents</a></li>
+          <li><a href="#">Tools</a></li>
+          <li><a href="#">Evals</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Developers</div>
+        <ul>
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">API reference</a></li>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Discord</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Company</div>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Voltagent Labs · Terms · Privacy · SOC 2</span>
+      <div class="socials"><a href="#">GH</a><a href="#">X</a><a href="#">DC</a><a href="#">YT</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

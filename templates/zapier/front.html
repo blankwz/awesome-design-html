@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zap Templates Store — Automate your work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#ff4f00; --on-primary:#fffefb;
+    --ink:#201515; --ink-soft:#2f2a26; --ink-mid:#36342e;
+    --body:#605d52; --body-mid:#939084; --mute:#c5c0b1;
+    --canvas:#fffefb; --canvas-soft:#f8f4f0;
+    --success:#2f7d4f; --warning:#b96a00; --danger:#c8331f; --neutral:#939084;
+    --radius-sm:6px; --radius-md:12px; --radius-pill:9999px;
+    --sp-xxs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px;
+    --sp-xl:24px; --sp-2xl:32px; --sp-3xl:48px; --sp-4xl:64px;
+    --font-body:'Inter',system-ui,-apple-system,sans-serif;
+    --shadow-card:0 1px 2px rgba(32,21,21,.04),0 4px 16px rgba(32,21,21,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--font-body);font-weight:400;color:var(--ink);
+    background:var(--canvas);font-size:18px;line-height:27px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 var(--sp-xl)}
+  .eyebrow{
+    font-family:var(--font-body);font-weight:500;font-size:14px;line-height:14px;
+    letter-spacing:1px;text-transform:uppercase;color:var(--ink);
+  }
+  .caption{font-size:14px;line-height:21px;color:var(--body-mid)}
+
+  /* ── Buttons — 12px radius, never pills ── */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-sm);
+    font-family:var(--font-body);font-weight:600;font-size:18px;line-height:27px;
+    border-radius:var(--radius-md);cursor:pointer;border:1px solid transparent;
+    padding:var(--sp-md) var(--sp-xl);white-space:nowrap;
+  }
+  .btn-primary{background:var(--primary);color:var(--on-primary)}
+  .btn-primary:hover{background:#e64700}
+  .btn-secondary{background:var(--ink);color:var(--on-primary)}
+  .btn-tertiary{background:var(--canvas);color:var(--ink);border-color:var(--ink)}
+  .btn-text{
+    background:none;border:0;font-weight:700;font-size:14.4px;letter-spacing:.144px;
+    color:var(--ink);cursor:pointer;border-radius:var(--radius-md);padding:var(--sp-sm) var(--sp-lg);
+  }
+  .btn-text:hover{background:var(--canvas-soft)}
+  .btn-sm{font-size:14.4px;font-weight:700;letter-spacing:.144px;line-height:1;padding:var(--sp-md) var(--sp-lg)}
+
+  /* ── Nav ── */
+  .nav{background:var(--canvas);border-bottom:1px solid var(--canvas-soft);padding:var(--sp-md) var(--sp-xl)}
+  .nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:var(--sp-2xl)}
+  .logo{display:flex;align-items:center;gap:var(--sp-md);font-weight:700;font-size:22px;letter-spacing:-.5px}
+  .logo svg{display:block}
+  .nav-links{display:flex;gap:var(--sp-lg);flex:1}
+  .nav-link{font-size:16px;line-height:24px;font-weight:500;padding:var(--sp-sm) var(--sp-md);border-radius:var(--radius-md)}
+  .nav-link:hover{background:var(--canvas-soft)}
+  .nav-search{
+    display:flex;align-items:center;gap:var(--sp-sm);
+    border:1px solid var(--ink);border-radius:var(--radius-sm);
+    padding:var(--sp-sm) var(--sp-md);width:280px;background:var(--canvas);
+  }
+  .nav-search input{border:0;outline:none;background:none;font-family:var(--font-body);font-size:16px;color:var(--ink);width:100%}
+  .nav-search input::placeholder{color:var(--body-mid)}
+  .nav-actions{display:flex;align-items:center;gap:var(--sp-md)}
+  .icon-btn{
+    position:relative;width:42px;height:42px;border-radius:var(--radius-md);
+    border:1px solid var(--mute);background:var(--canvas);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon-btn:hover{border-color:var(--ink)}
+  .dot{
+    position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;
+    border-radius:var(--radius-pill);background:var(--primary);color:var(--on-primary);
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .avatar{
+    width:42px;height:42px;border-radius:var(--radius-pill);flex:none;
+    background:linear-gradient(135deg,#ff4f00,#b96a00);
+    color:#fff;font-weight:600;font-size:15px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ── Hero band ── */
+  .hero{padding:var(--sp-4xl) 0 var(--sp-3xl)}
+  .hero h1{
+    font-weight:500;font-size:56px;line-height:56px;letter-spacing:-.5px;
+    max-width:760px;margin:var(--sp-lg) 0 var(--sp-xl);
+  }
+  .hero p{font-size:20px;line-height:30px;letter-spacing:-.2px;color:var(--body);max-width:620px}
+  .hero-stats{display:flex;gap:var(--sp-3xl);margin-top:var(--sp-2xl)}
+  .hero-stats b{display:block;font-weight:500;font-size:32px;line-height:36px;letter-spacing:1px}
+  .hero-stats span{font-size:16px;color:var(--body-mid)}
+
+  /* ── Filter chips ── */
+  .filters{
+    display:flex;align-items:center;gap:var(--sp-sm);flex-wrap:wrap;
+    padding:var(--sp-lg) 0;border-top:1px solid var(--canvas-soft);border-bottom:1px solid var(--canvas-soft);
+  }
+  .chip{
+    font-family:var(--font-body);font-weight:500;font-size:16px;color:var(--ink);
+    background:var(--canvas);border:1px solid var(--mute);border-radius:var(--radius-pill);
+    padding:var(--sp-xs) var(--sp-md);cursor:pointer;
+  }
+  .chip:hover{border-color:var(--ink)}
+  .chip.on{background:var(--ink);color:var(--on-primary);border-color:var(--ink)}
+  .filters .count{margin-left:auto}
+
+  /* ── Product grid ── */
+  .grid-band{padding:var(--sp-3xl) 0}
+  .grid-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--sp-xl)}
+  .grid-head h2{font-weight:500;font-size:32px;line-height:36px;letter-spacing:1px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+  .card{
+    background:var(--canvas);border:1px solid var(--canvas-soft);border-radius:var(--radius-md);
+    box-shadow:var(--shadow-card);display:flex;flex-direction:column;overflow:hidden;
+    transition:transform .15s ease;
+  }
+  .card:hover{transform:translateY(-2px)}
+  .card-art{
+    height:120px;background:var(--canvas-soft);position:relative;
+    display:flex;align-items:center;justify-content:center;gap:var(--sp-sm);
+  }
+  .zap-node{
+    width:44px;height:44px;border-radius:var(--radius-pill);flex:none;
+    display:flex;align-items:center;justify-content:center;color:#fff;
+  }
+  .zap-link{width:26px;height:2px;background:var(--mute);flex:none}
+  .zap-node svg{width:20px;height:20px}
+  .art-a{background:linear-gradient(135deg,#f8f4f0,#ffe6d6)}
+  .art-b{background:linear-gradient(135deg,#f8f4f0,#ffd9c2)}
+  .art-c{background:linear-gradient(135deg,#f8f4f0,#f0e2d2)}
+  .n-orange{background:var(--primary)} .n-coffee{background:var(--ink)} .n-clay{background:#b96a00} .n-sage{background:#2f7d4f} .n-slate{background:#605d52} .n-plum{background:#7a3b52}
+  .card-body{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-sm);flex:1}
+  .card-body h3{font-weight:600;font-size:24px;line-height:30px;letter-spacing:-.6px}
+  .card-body .desc{font-size:16px;line-height:24px;color:var(--body);flex:1}
+  .card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+  .price{font-weight:700;font-size:16px}
+  .price s{color:var(--body-mid);font-weight:400;margin-right:var(--sp-sm)}
+  .stars{color:var(--primary);font-size:14px;letter-spacing:2px}
+  .stars span{color:var(--body-mid);letter-spacing:0;margin-left:var(--sp-xs)}
+  .badge{
+    display:inline-flex;align-items:center;font-weight:700;font-size:14.4px;letter-spacing:.144px;
+    border-radius:var(--radius-pill);padding:var(--sp-xxs) var(--sp-md);
+  }
+  .badge-new{background:#ffe6d6;color:#b33d00}
+  .badge-free{background:#e7efe9;color:var(--success)}
+  .badge-sale{background:#fbe4e0;color:var(--danger)}
+  .badge-pro{background:var(--ink);color:var(--on-primary)}
+</style>
+</head>
+<body>
+
+<!-- ── Top nav ── -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M16.5 2 L6 15.5 H12.5 L11 26 L22 12 H15 Z" fill="#ff4f00"/>
+      </svg>
+      Zapstore
+    </a>
+    <nav class="nav-links">
+      <a class="nav-link" href="#">Templates</a>
+      <a class="nav-link" href="#">Integrations</a>
+      <a class="nav-link" href="#">Solutions</a>
+      <a class="nav-link" href="#">Pricing</a>
+      <a class="nav-link" href="#">Resources</a>
+    </nav>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.7" stroke="#939084" stroke-width="1.6"/><path d="M10.2 10.2 L14 14" stroke="#939084" stroke-width="1.6"/></svg>
+      <input type="text" placeholder="Search 7,000+ templates">
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2 C6.2 2 4.5 4.2 4.5 7 V10.5 L3 13 H15 L13.5 10.5 V7 C13.5 4.2 11.8 2 9 2 Z" stroke="#201515" stroke-width="1.6"/><path d="M7.2 15 C7.6 16 10.4 16 10.8 15" stroke="#201515" stroke-width="1.6"/></svg>
+        <span class="dot">3</span>
+      </button>
+      <button class="icon-btn" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 3 H4 L5.8 11.5 H13.5 L15.5 5.5 H5" stroke="#201515" stroke-width="1.6"/><circle cx="6.5" cy="14.5" r="1.4" fill="#201515"/><circle cx="12.8" cy="14.5" r="1.4" fill="#201515"/></svg>
+        <span class="dot">3</span>
+      </button>
+      <div class="avatar">MR</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Hero band ── -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Zap Templates Store</span>
+    <h1>Automate the busywork your team keeps doing by hand.</h1>
+    <p>Premium zap templates, verified integration packs, and expert-built workflows — installed to your account in two clicks.</p>
+    <div class="hero-stats">
+      <div><b>7,214</b><span>Templates</span></div>
+      <div><b>640+</b><span>App integrations</span></div>
+      <div><b>3.4M</b><span>Zaps running</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- ── Filter chips ── -->
+  <div class="filters">
+    <button class="chip on">All</button>
+    <button class="chip">Sales</button>
+    <button class="chip">Marketing</button>
+    <button class="chip">Support</button>
+    <button class="chip">Finance</button>
+    <button class="chip">AI by Zapier</button>
+    <button class="chip">Premium</button>
+    <span class="caption count">126 templates match</span>
+  </div>
+
+  <!-- ── Product grid ── -->
+  <section class="grid-band">
+    <div class="grid-head">
+      <h2>Most installed this week</h2>
+      <button class="btn-text">Browse all templates →</button>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-art art-a">
+          <span class="zap-node n-orange"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2 V8 M10 12 V18 M2 10 H8 M12 10 H18" stroke="#fff" stroke-width="2"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-coffee"><svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="3" stroke="#fff" stroke-width="2"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">Forms → CRM · 5 steps</span>
+          <h3>Lead capture to CRM</h3>
+          <p class="desc">Route webform leads, enrich with AI scoring, and assign owners automatically.</p>
+          <div class="stars">★★★★★ <span>4.9 · 2,140</span></div>
+          <div class="card-meta">
+            <span class="price">$29 <s>$49</s> one-time</span>
+            <span class="badge badge-sale">40% off</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-b">
+          <span class="zap-node n-plum"><svg viewBox="0 0 20 20" fill="none"><path d="M3 15 L8 9 L12 12 L17 5" stroke="#fff" stroke-width="2"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-orange"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3 L12 8 L17 8.5 L13 12 L14.5 17 L10 14 L5.5 17 L7 12 L3 8.5 L8 8 Z" stroke="#fff" stroke-width="1.6"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">Sheets → Slack · 3 steps</span>
+          <h3>KPI digest to Slack</h3>
+          <p class="desc">Every Monday, compile the week's metrics into a formatted channel post.</p>
+          <div class="stars">★★★★★ <span>4.8 · 1,876</span></div>
+          <div class="card-meta">
+            <span class="price">Free</span>
+            <span class="badge badge-free">Community</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-c">
+          <span class="zap-node n-sage"><svg viewBox="0 0 20 20" fill="none"><path d="M10 18 C4 15 3 9 4 3 C10 4 16 6 16 11 C16 15 13 17 10 18 Z" stroke="#fff" stroke-width="1.6"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-orange"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10 H16 M12 5 L16 10 L12 15" stroke="#fff" stroke-width="2"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">Email → Tasks · 4 steps</span>
+          <h3>Inbox zero triage</h3>
+          <p class="desc">Label, summarize, and convert starred emails into assigned tasks.</p>
+          <div class="stars">★★★★☆ <span>4.7 · 954</span></div>
+          <div class="card-meta">
+            <span class="price">$19 one-time</span>
+            <span class="badge badge-pro">Premium</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-a">
+          <span class="zap-node n-clay"><svg viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="11" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M3 8.5 H17" stroke="#fff" stroke-width="1.8"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-coffee"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="#fff" stroke-width="1.8"/><path d="M10 6.5 V10 L12.5 12" stroke="#fff" stroke-width="1.8"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">Billing → Books · 6 steps</span>
+          <h3>Invoice reconciliation</h3>
+          <p class="desc">Match paid invoices to ledger entries and flag mismatches for review.</p>
+          <div class="stars">★★★★★ <span>4.9 · 613</span></div>
+          <div class="card-meta">
+            <span class="price">$49 one-time</span>
+            <span class="badge badge-new">New</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-b">
+          <span class="zap-node n-orange"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2 C5 2 3 5 3 9 C3 14 6 17 10 18 C14 17 17 14 17 9 C17 5 15 2 10 2 Z M7 9.5 L9 11.5 L13 7.5" stroke="#fff" stroke-width="1.6"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-slate"><svg viewBox="0 0 20 20" fill="none"><path d="M3 4 H17 V13 H10 L6 16.5 V13 H3 Z" stroke="#fff" stroke-width="1.8"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">Social → Digest · 3 steps</span>
+          <h3>Review alerts hub</h3>
+          <p class="desc">New reviews anywhere get scored by sentiment and pinged to #cx.</p>
+          <div class="stars">★★★★☆ <span>4.6 · 1,203</span></div>
+          <div class="card-meta">
+            <span class="price">Free</span>
+            <span class="badge badge-free">Community</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-c">
+          <span class="zap-node n-coffee"><svg viewBox="0 0 20 20" fill="none"><path d="M4 16 L4 8 M10 16 L10 4 M16 16 L16 11" stroke="#fff" stroke-width="2.4"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-orange"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3 L17 16 H3 Z" stroke="#fff" stroke-width="1.8"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">CRM → Forecast · 5 steps</span>
+          <h3>Pipeline burn-down</h3>
+          <p class="desc">Recompute weighted forecast nightly and post deltas to leadership.</p>
+          <div class="stars">★★★★★ <span>4.8 · 442</span></div>
+          <div class="card-meta">
+            <span class="price">$39 one-time</span>
+            <span class="badge badge-pro">Premium</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-a">
+          <span class="zap-node n-plum"><svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.8"/><rect x="11" y="11" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.8"/><path d="M9 6 H11 M6 9 V11 M14 11 V9" stroke="#fff" stroke-width="1.8"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-sage"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10 L8.5 14.5 L16 5.5" stroke="#fff" stroke-width="2.2"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">Project mgmt · 4 steps</span>
+          <h3>Sprint handoff sync</h3>
+          <p class="desc">Mirror ticket status across boards the moment a card changes lane.</p>
+          <div class="stars">★★★★★ <span>4.9 · 788</span></div>
+          <div class="card-meta">
+            <span class="price">$24 <s>$29</s> one-time</span>
+            <span class="badge badge-sale">Save $5</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-b">
+          <span class="zap-node n-orange"><svg viewBox="0 0 20 20" fill="none"><path d="M6 3 H14 M6 17 H14 M7 3 C7 8 13 8 13 12 C13 15 11 17 10 17 C9 17 7 15 7 12 C7 8 13 8 13 3" stroke="#fff" stroke-width="1.5"/></svg></span>
+          <i class="zap-link"></i>
+          <span class="zap-node n-clay"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3 V17 M3 10 H17 M5 5 L15 15 M15 5 L5 15" stroke="#fff" stroke-width="1.4"/></svg></span>
+        </div>
+        <div class="card-body">
+          <span class="caption">AI by Zapier · 2 steps</span>
+          <h3>AI meeting notes</h3>
+          <p class="desc">Transcripts in, action items out — filed to the right project doc.</p>
+          <div class="stars">★★★★★ <span>4.9 · 3,402</span></div>
+          <div class="card-meta">
+            <span class="price">$15/mo</span>
+            <span class="badge badge-new">New</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>
+
+<!-- ── Featured detail row ── -->
+<section style="background:var(--canvas-soft)">
+  <div class="wrap" style="padding-top:var(--sp-3xl);padding-bottom:var(--sp-3xl)">
+    <span class="eyebrow">Featured template</span>
+    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:var(--sp-2xl);margin-top:var(--sp-xl)">
+      <!-- gallery -->
+      <div>
+        <div class="card-art art-b" style="height:320px;border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+          <svg width="420" height="220" viewBox="0 0 420 220" fill="none">
+            <rect x="30" y="70" width="120" height="80" rx="12" fill="#201515"/>
+            <text x="90" y="104" text-anchor="middle" fill="#fffefb" font-family="Inter,sans-serif" font-size="13" font-weight="600">Trigger</text>
+            <text x="90" y="124" text-anchor="middle" fill="#c5c0b1" font-family="Inter,sans-serif" font-size="11">New form entry</text>
+            <rect x="150" y="70" width="120" height="80" rx="12" fill="#ff4f00"/>
+            <text x="210" y="104" text-anchor="middle" fill="#fffefb" font-family="Inter,sans-serif" font-size="13" font-weight="600">AI score</text>
+            <text x="210" y="124" text-anchor="middle" fill="#ffe0d1" font-family="Inter,sans-serif" font-size="11">Lead 0–100 fit</text>
+            <rect x="270" y="70" width="120" height="80" rx="12" fill="#201515"/>
+            <text x="330" y="104" text-anchor="middle" fill="#fffefb" font-family="Inter,sans-serif" font-size="13" font-weight="600">Action</text>
+            <text x="330" y="124" text-anchor="middle" fill="#c5c0b1" font-family="Inter,sans-serif" font-size="11">Create deal + owner</text>
+            <path d="M110 110 H150 M270 110 H270" stroke="#c5c0b1" stroke-width="2"/>
+            <path d="M110 110 L146 110 M146 105 L154 110 L146 115 Z" fill="#c5c0b1"/>
+          </svg>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);margin-top:var(--sp-md)">
+          <div class="card-art art-b" style="height:70px;border-radius:var(--radius-md);border:2px solid var(--primary)"></div>
+          <div class="card-art art-a" style="height:70px;border-radius:var(--radius-md);opacity:.75"></div>
+          <div class="card-art art-c" style="height:70px;border-radius:var(--radius-md);opacity:.75"></div>
+          <div style="height:70px;border-radius:var(--radius-md);background:var(--ink);display:flex;align-items:center;justify-content:center;opacity:.9"><span class="caption" style="color:var(--canvas-soft)">1 / 12</span></div>
+        </div>
+      </div>
+      <!-- detail -->
+      <div style="background:var(--canvas);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:var(--sp-2xl);display:flex;flex-direction:column;gap:var(--sp-lg)">
+        <div>
+          <span class="badge badge-pro" style="margin-bottom:var(--sp-md)">Premium</span>
+          <h2 style="font-weight:500;font-size:32px;line-height:36px;letter-spacing:1px;margin-top:var(--sp-sm)">Lead capture to CRM</h2>
+          <div class="stars" style="margin-top:var(--sp-sm)">★★★★★ <span>4.9 · 2,140 installs · by Zapier Labs</span></div>
+        </div>
+        <p style="color:var(--body)">Every webform entry gets AI-scored for fit, deduped against your CRM, and routed to the right rep with a drafted first-touch email. Installs as a private zap you fully own and can edit.</p>
+        <div>
+          <span class="eyebrow" style="display:block;margin-bottom:var(--sp-sm)">CRM target</span>
+          <div style="display:flex;gap:var(--sp-sm);flex-wrap:wrap">
+            <button class="chip on">HubSpot</button>
+            <button class="chip">Salesforce</button>
+            <button class="chip">Pipedrive</button>
+            <button class="chip">Zoho</button>
+          </div>
+        </div>
+        <div>
+          <span class="eyebrow" style="display:block;margin-bottom:var(--sp-sm)">Seats</span>
+          <div style="display:flex;align-items:center;gap:var(--sp-lg)">
+            <div style="display:flex;align-items:center;border:1px solid var(--ink);border-radius:var(--radius-sm);overflow:hidden">
+              <button class="btn-text" style="border-radius:0">−</button>
+              <span style="min-width:44px;text-align:center;font-weight:700">1</span>
+              <button class="btn-text" style="border-radius:0">+</button>
+            </div>
+            <span class="caption">Per-seat license, reassignable anytime</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--sp-lg);margin-top:var(--sp-sm)">
+          <span style="font-weight:700;font-size:32px;letter-spacing:-.5px">$29</span>
+          <span class="caption" style="text-decoration:line-through">$49</span>
+          <button class="btn btn-primary">Add to cart</button>
+          <button class="btn btn-tertiary">Try a live demo</button>
+        </div>
+        <div style="border-top:1px solid var(--canvas-soft);padding-top:var(--sp-lg);display:grid;gap:var(--sp-md)">
+          <span class="eyebrow">What buyers say</span>
+          <div>
+            <div style="font-weight:600;font-size:16px;line-height:24px">“Cut our speed-to-lead from 4 hours to 90 seconds.”</div>
+            <div class="caption">Dana Whitfield · RevOps, Brightline HVAC</div>
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:16px;line-height:24px">“The dedupe step alone paid for the template in week one.”</div>
+            <div class="caption">Marcus Oyelaran · Sales lead, Kettle &amp; Crane</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Cart / checkout summary ── -->
+<div class="wrap" style="padding-top:var(--sp-3xl);padding-bottom:var(--sp-3xl)">
+  <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:var(--sp-2xl)">
+    <div>
+      <span class="eyebrow">Your cart</span>
+      <div style="margin-top:var(--sp-lg);display:grid;gap:var(--sp-md)">
+        <div style="display:flex;gap:var(--sp-lg);align-items:center;background:var(--canvas);border:1px solid var(--canvas-soft);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:var(--sp-lg) var(--sp-xl)">
+          <span class="zap-node n-orange" style="width:40px;height:40px"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2 V8 M10 12 V18 M2 10 H8 M12 10 H18" stroke="#fff" stroke-width="2"/></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:16px;line-height:24px">Lead capture to CRM <span class="badge badge-sale" style="margin-left:var(--sp-sm)">40% off</span></div>
+            <div class="caption">Premium license · 1 seat</div>
+          </div>
+          <span style="font-weight:700">$29.00</span>
+        </div>
+        <div style="display:flex;gap:var(--sp-lg);align-items:center;background:var(--canvas);border:1px solid var(--canvas-soft);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:var(--sp-lg) var(--sp-xl)">
+          <span class="zap-node n-plum" style="width:40px;height:40px"><svg viewBox="0 0 20 20" fill="none"><path d="M4 16 L4 8 M10 16 L10 4 M16 16 L16 11" stroke="#fff" stroke-width="2.4"/></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:16px;line-height:24px">Pipeline burn-down</div>
+            <div class="caption">Premium license · 1 seat</div>
+          </div>
+          <span style="font-weight:700">$39.00</span>
+        </div>
+        <div style="display:flex;gap:var(--sp-lg);align-items:center;background:var(--canvas);border:1px solid var(--canvas-soft);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:var(--sp-lg) var(--sp-xl)">
+          <span class="zap-node n-coffee" style="width:40px;height:40px"><svg viewBox="0 0 20 20" fill="none"><path d="M6 3 H14 M6 17 H14 M7 3 C7 8 13 8 13 12 C13 15 11 17 10 17 C9 17 7 15 7 12 C7 8 13 8 13 3" stroke="#fff" stroke-width="1.5"/></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:16px;line-height:24px">AI meeting notes</div>
+            <div class="caption">Subscription · billed monthly</div>
+          </div>
+          <span style="font-weight:700">$15.00 / mo</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--canvas);border:1px solid var(--canvas-soft);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:var(--sp-2xl);align-self:start">
+      <span class="eyebrow">Order summary</span>
+      <div style="display:grid;gap:var(--sp-md);margin-top:var(--sp-lg);font-size:16px;line-height:24px;color:var(--body)">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span style="color:var(--ink);font-weight:600">$83.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Promo · AUTUMN40</span><span style="color:var(--success);font-weight:600">−$11.60</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Tax (7.5%)</span><span style="color:var(--ink);font-weight:600">$5.36</span></div>
+        <hr style="border:0;border-top:1px solid var(--canvas-soft);margin:var(--sp-sm) 0">
+        <div style="display:flex;justify-content:space-between;font-size:20px"><span style="color:var(--ink);font-weight:500">Total today</span><span style="color:var(--ink);font-weight:700">$76.76</span></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:var(--sp-xl)">Complete purchase</button>
+      <p class="caption" style="text-align:center;margin-top:var(--sp-md)">30-day guarantee · billed to workspace “Brightline RevOps”</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer style="background:var(--ink);color:var(--canvas-soft);padding:var(--sp-3xl) var(--sp-xl)">
+  <div class="wrap" style="padding:0">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:var(--sp-2xl)">
+      <div>
+        <div class="logo" style="color:var(--canvas-soft);margin-bottom:var(--sp-lg)">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M16.5 2 L6 15.5 H12.5 L11 26 L22 12 H15 Z" fill="#ff4f00"/></svg>
+          Zapstore
+        </div>
+        <p style="font-size:16px;line-height:24px;color:var(--mute);max-width:300px">The template store for Zapier. Built by the community, curated by Zapier Labs.</p>
+        <div style="display:flex;gap:var(--sp-md);margin-top:var(--sp-lg)">
+          <a class="icon-btn" style="border-color:#4a3f3a" href="#" aria-label="X"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2 L14 14 M14 2 L2 14" stroke="#f8f4f0" stroke-width="1.6"/></svg></a>
+          <a class="icon-btn" style="border-color:#4a3f3a" href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4.5" width="14" height="9" rx="2.5" stroke="#f8f4f0" stroke-width="1.6"/><path d="M7.8 7.2 L11 9 L7.8 10.8 Z" fill="#f8f4f0"/></svg></a>
+          <a class="icon-btn" style="border-color:#4a3f3a" href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#f8f4f0" stroke-width="1.6"/><path d="M5 7 V11.5 M5 4.8 V5 M8 11.5 V8.2 C8 6.8 11 6.6 11 8.5 V11.5" stroke="#f8f4f0" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow" style="display:block;margin-bottom:var(--sp-lg)">Templates</span>
+        <div style="display:grid;gap:var(--sp-md);font-size:16px;color:var(--mute)">
+          <a href="#">Sales</a><a href="#">Marketing</a><a href="#">Support</a><a href="#">Finance</a><a href="#">AI by Zapier</a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow" style="display:block;margin-bottom:var(--sp-lg)">Company</span>
+        <div style="display:grid;gap:var(--sp-md);font-size:16px;color:var(--mute)">
+          <a href="#">About</a><a href="#">Careers</a><a href="#">Partner program</a><a href="#">Help center</a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow" style="display:block;margin-bottom:var(--sp-lg)">Fresh templates, monthly</span>
+        <p style="font-size:16px;color:var(--mute);margin-bottom:var(--sp-md)">One email a month. The ten best new workflows, no fluff.</p>
+        <div style="display:flex;gap:var(--sp-sm)">
+          <input type="text" placeholder="you@work.com" style="flex:1;background:var(--canvas-soft);border:1px solid var(--ink-mid);border-radius:var(--radius-sm);padding:var(--sp-md) var(--sp-lg);color:var(--ink);font-family:var(--font-body);font-size:16px;outline:none">
+          <button class="btn btn-primary btn-sm" style="padding:var(--sp-md) var(--sp-lg)">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--ink-mid);margin:var(--sp-2xl) 0 var(--sp-lg)">
+    <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--mute)">
+      <span>© 2026 Zapstore Labs</span>
+      <span>Privacy · Terms · Security · Status</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

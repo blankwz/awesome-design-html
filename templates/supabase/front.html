@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supastore — Templates &amp; Starters Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#3ecf8e; --primary-deep:#24b47e; --primary-soft:#4ade80;
+  --ink:#171717; --ink-secondary:#212121; --ink-mute:#707070; --ink-mute-2:#9a9a9a; --ink-faint:#b2b2b2;
+  --on-primary:#171717; --on-dark:#ffffff;
+  --canvas:#ffffff; --canvas-soft:#fafafa; --night:#1c1c1c; --night-soft:#202020;
+  --hairline:#dfdfdf; --hairline-strong:#c7c7c7; --hairline-cool:#ededed; --hairline-cool-3:#d4d4d4;
+  --accent-purple:#6b01c2; --accent-violet:#644fc1; --accent-yellow:#ffdb13; --accent-indigo:#054cff;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:24px; --s-xxl:32px; --s-huge:64px;
+  --shadow-1:0 1px 3px rgba(0,0,0,0.06);
+  --shadow-2:0 8px 24px rgba(0,0,0,0.08);
+  --font:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+a{color:var(--ink);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:var(--font);cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+
+/* 6px square-ish buttons, dark text on green */
+.btn{border-radius:var(--r-sm);font-weight:500;font-size:14px;padding:8px 16px;display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;transition:background .15s}
+.btn-green{background:var(--primary);color:var(--on-primary)}
+.btn-green:hover{background:var(--primary-deep)}
+.btn-outline{background:var(--canvas);color:var(--ink);border-color:var(--hairline-strong)}
+.btn-outline:hover{background:var(--canvas-soft);text-decoration:none}
+.btn-dark{background:var(--night);color:var(--on-dark)}
+.btn-dark:hover{background:#000}
+.btn-sm{font-size:13px;padding:6px 12px}
+.tag-green{display:inline-block;background:var(--primary);color:var(--on-primary);font-size:12px;font-weight:500;border-radius:var(--r-full);padding:2px 10px}
+.tag-soft{display:inline-block;background:var(--canvas-soft);border:1px solid var(--hairline-cool);color:var(--ink-mute);font-size:12px;border-radius:var(--r-full);padding:2px 10px}
+
+/* ---------- nav ---------- */
+.nav{background:var(--canvas);border-bottom:1px solid var(--hairline-cool);padding:16px 24px;display:flex;align-items:center;gap:28px;max-width:1280px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;font-weight:500;font-size:19px;letter-spacing:-.3px}
+.logo-mark{width:28px;height:28px;border-radius:var(--r-xs);background:var(--night);display:grid;place-items:center;color:var(--primary);font-size:15px;font-weight:600}
+.nav-links{display:flex;gap:22px}
+.nav-links a{color:var(--ink-mute);font-size:15px}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.active{color:var(--ink);font-weight:500}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.nav-right .signin{font-size:14px;font-weight:500;color:var(--ink)}
+.cart-pill{display:inline-flex;align-items:center;gap:8px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:7px 12px;font-size:13px;font-weight:500}
+.cart-pill:hover{text-decoration:none;border-color:var(--hairline-strong)}
+.cart-pill .count{background:var(--primary);color:var(--on-primary);border-radius:var(--r-full);font-size:11px;font-weight:600;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
+.bell{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--hairline-cool);background:#fff;display:grid;place-items:center;color:var(--ink-mute)}
+.bell:hover{color:var(--ink)}
+.bell .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--primary);border:2px solid #fff}
+.avatar{width:34px;height:34px;border-radius:var(--r-full);background:var(--night);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:500}
+
+/* ---------- hero: white canvas + product mockup ---------- */
+.hero{border-bottom:1px solid var(--hairline-cool);background:
+  radial-gradient(600px 300px at 85% 0%,rgba(62,207,142,.08),transparent 70%),var(--canvas)}
+.hero-inner{max-width:1280px;margin:0 auto;padding:72px 24px 64px;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
+.hero h1{font-size:56px;font-weight:500;line-height:1.1;letter-spacing:-1.68px}
+.hero h1 em{font-style:normal;color:var(--ink);position:relative}
+.hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:10px;background:rgba(62,207,142,.35);z-index:-1}
+.hero p{font-size:18px;color:var(--ink-mute);max-width:46ch;margin:18px 0 28px}
+.hero-cta{display:flex;gap:12px;align-items:center}
+.mockup{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);box-shadow:var(--shadow-2);overflow:hidden}
+.mock-bar{display:flex;gap:6px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--hairline-cool);font-family:var(--mono);font-size:11px;color:var(--ink-mute-2)}
+.mock-bar i{width:9px;height:9px;border-radius:50%;background:var(--hairline-cool-3)}
+.sql{background:var(--night);color:var(--on-dark);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:16px 18px}
+.sql .k{color:var(--primary)}.sql .s{color:var(--accent-yellow)}.sql .c{color:#7a7a7a}
+.mock-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}
+.mock-table th{text-align:left;font-weight:500;color:var(--ink-mute);padding:8px 14px;border-bottom:1px solid var(--hairline-cool);background:var(--canvas-soft)}
+.mock-table td{padding:7px 14px;border-bottom:1px solid var(--hairline-cool);color:var(--ink-secondary)}
+.mock-table tr:last-child td{border:none}
+.pill-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-mute)}
+.pill-live i{width:7px;height:7px;border-radius:50%;background:var(--primary)}
+
+/* ---------- chips ---------- */
+.chips{display:flex;gap:10px;align-items:center;padding:28px 0 6px;flex-wrap:wrap}
+.chips-label{font-size:12px;color:var(--ink-mute);margin-right:4px}
+.chip{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-full);padding:6px 14px;font-size:13px;font-weight:400;color:var(--ink-secondary)}
+.chip:hover{border-color:var(--ink);text-decoration:none}
+.chip.on{background:var(--night);border-color:var(--night);color:#fff}
+
+/* ---------- grid ---------- */
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 18px}
+.section-head h2{font-size:28px;font-weight:500;letter-spacing:-.42px}
+.section-head a{font-size:14px;color:var(--ink-mute)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:36px}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow-2)}
+.card-art{height:120px;position:relative;border-bottom:1px solid var(--hairline-cool)}
+.card-body{padding:16px;display:flex;flex-direction:column;gap:5px;flex:1}
+.card-title{font-size:15px;font-weight:500}
+.card-meta{font-size:13px;color:var(--ink-mute)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:10px}
+.downloads{font-size:12px;color:var(--ink-mute-2)}
+.badge{position:absolute;top:10px;left:10px}
+.g1{background:linear-gradient(135deg,#171717,#3ecf8e)}
+.g2{background:linear-gradient(135deg,#1c1c1c,#6b01c2)}
+.g3{background:linear-gradient(135deg,#171717,#054cff)}
+.g4{background:linear-gradient(135deg,#202020,#ffdb13)}
+.g5{background:linear-gradient(135deg,#171717,#644fc1)}
+.g6{background:linear-gradient(135deg,#1c1c1c,#24b47e)}
+.g7{background:linear-gradient(135deg,#171717,#c7007e)}
+.g8{background:linear-gradient(135deg,#202020,#707070)}
+
+/* ---------- featured (dark inverted card + code) ---------- */
+.featured{display:grid;grid-template-columns:1.05fr .95fr;gap:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--hairline);margin-bottom:36px}
+.f-left{background:var(--night);color:var(--on-dark);padding:36px}
+.f-left .tag-green{margin-bottom:14px}
+.f-left h2{font-size:28px;font-weight:500;letter-spacing:-.42px;margin-bottom:10px}
+.f-left p{color:#a8a8a8;font-size:15px;max-width:48ch;margin-bottom:20px}
+.f-left .meta{display:flex;gap:16px;font-size:13px;color:#a8a8a8;margin-bottom:20px}
+.f-left .meta b{color:#fff;font-weight:500}
+.opts{display:flex;gap:10px;margin:10px 0 4px;flex-wrap:wrap}
+.f-left .opts-label{font-size:12px;color:#a8a8a8;margin-top:12px}
+.opt{background:var(--night-soft);border:1px solid #333;color:#fff;border-radius:var(--r-sm);padding:7px 14px;font-size:13px;font-weight:400}
+.opt.on{border-color:var(--primary);color:var(--primary)}
+.buy-row{display:flex;align-items:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:1px solid #333;border-radius:var(--r-sm);background:var(--night-soft)}
+.stepper button{width:34px;height:36px;border:none;background:transparent;color:#fff;font-size:16px}
+.stepper button:hover{background:#2a2a2a}
+.stepper .qty{width:28px;text-align:center;font-weight:500}
+.feat-price{font-size:22px;font-weight:500}
+.f-right{background:var(--canvas);padding:36px;display:flex;flex-direction:column;gap:14px}
+.f-right h3{font-size:15px;font-weight:500}
+.rv{border:1px solid var(--hairline);border-radius:var(--r-md);padding:12px 14px;font-size:14px;color:var(--ink-secondary)}
+.rv b{display:block;color:var(--ink);font-weight:500}
+.rv span{color:var(--ink-mute);font-size:13px}
+
+/* ---------- cart ---------- */
+.cart{display:grid;grid-template-columns:1fr 380px;gap:36px;align-items:start;margin-bottom:56px}
+.ci{display:flex;align-items:center;gap:16px;border:1px solid var(--hairline);border-radius:var(--r-md);padding:13px 16px;margin-bottom:12px}
+.ci-art{width:52px;height:52px;border-radius:var(--r-sm);flex:none}
+.ci-info b{display:block;font-size:14px;font-weight:500}
+.ci-info span{font-size:12.5px;color:var(--ink-mute)}
+.ci-price{margin-left:auto;font-weight:500}
+.ci-remove{background:none;border:none;color:var(--ink-mute);font-size:13px}
+.ci-remove:hover{color:var(--ink);text-decoration:underline}
+.summary{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow-1)}
+.summary h3{font-size:18px;font-weight:500;margin-bottom:12px}
+.sr{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--ink-mute)}
+.sr.total{border-top:1px solid var(--hairline);margin-top:8px;padding-top:14px;color:var(--ink);font-weight:500;font-size:16px}
+.summary .btn-green{width:100%;justify-content:center;margin-top:14px}
+.note{font-size:12px;color:var(--ink-mute-2);text-align:center;margin-top:10px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hairline-cool);background:var(--canvas);padding:56px 24px 32px;color:var(--ink-mute);font-size:13px}
+.f-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:32px}
+.f-grid h4{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:12px}
+.f-grid ul{list-style:none;display:grid;gap:9px}
+.f-grid a{color:var(--ink-mute)}
+.f-grid a:hover{color:var(--ink)}
+.legal{max-width:1280px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--hairline-cool);display:flex;justify-content:space-between;color:var(--ink-mute-2)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:960px){
+  .nav-links{display:none}
+  .hero-inner{grid-template-columns:1fr;padding:48px 24px}
+  .hero h1{font-size:38px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .featured{grid-template-columns:1fr}
+  .cart{grid-template-columns:1fr}
+  .f-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="#"><span class="logo-mark">⚡</span>Supastore</a>
+  <div class="nav-links">
+    <a href="#" class="active">Templates</a>
+    <a href="#">Integrations</a>
+    <a href="#">Docs</a>
+    <a href="#">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <a class="signin" href="#">Sign in</a>
+    <button class="bell" aria-label="Notifications"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+    <a class="cart-pill" href="#cart">Cart <span class="count num">3</span></a>
+    <div class="avatar" title="Rin Takeda">RT</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="tag-green">v2.6 · 128 new starters</span>
+      <h1 style="display:block;margin-top:16px">Ship your next app on a <em>battle-tested</em> stack</h1>
+      <p>Production-ready templates with auth, storage, realtime and row-level security wired in. Clone to your org, deploy in one command.</p>
+      <div class="hero-cta">
+        <a class="btn btn-green" href="#grid">Browse templates</a>
+        <a class="btn btn-outline" href="#featured">View featured starter</a>
+      </div>
+    </div>
+    <div class="mockup" aria-hidden="true">
+      <div class="mock-bar"><i></i><i></i><i></i><span style="margin-left:8px">sql · orders table</span><span class="pill-live" style="margin-left:auto"><i></i>Live</span></div>
+      <div class="sql">
+        <span class="k">select</span> id, status, total_cents,<br>
+        &nbsp;&nbsp;created_at <span class="k">from</span> orders<br>
+        <span class="k">where</span> status = <span class="s">'paid'</span><br>
+        <span class="k">order by</span> created_at <span class="k">desc</span> <span class="k">limit</span> 10; <span class="c">-- 24ms</span>
+      </div>
+      <table class="mock-table">
+        <tr><th>id</th><th>status</th><th>total_cents</th><th>created_at</th></tr>
+        <tr><td>82141</td><td>paid</td><td>12,900</td><td>2026-10-26 09:12</td></tr>
+        <tr><td>82140</td><td>paid</td><td>4,800</td><td>2026-10-26 09:04</td></tr>
+        <tr><td>82139</td><td>paid</td><td>59,000</td><td>2026-10-26 08:57</td></tr>
+      </table>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="chips" id="grid">
+    <span class="chips-label">Filter</span>
+    <a class="chip on" href="#grid">All</a>
+    <a class="chip" href="#grid">SaaS starters</a>
+    <a class="chip" href="#grid">AI apps</a>
+    <a class="chip" href="#grid">Realtime chat</a>
+    <a class="chip" href="#grid">Dashboards</a>
+    <a class="chip" href="#grid">E-commerce</a>
+    <a class="chip" href="#grid">Free</a>
+  </div>
+
+  <div class="section-head">
+    <h2>Trending this week</h2>
+    <a href="#">View all 486 templates →</a>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <div class="card-art g1"><span class="tag-green badge">New</span></div>
+      <div class="card-body">
+        <div class="card-title">SaaS Kit Pro</div>
+        <div class="card-meta">Auth · billing · teams · RLS</div>
+        <div class="card-foot"><span class="downloads">▼ 12,410</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g2"></div>
+      <div class="card-body">
+        <div class="card-title">AI Doc Chat</div>
+        <div class="card-meta">pgvector · streaming · edge fns</div>
+        <div class="card-foot"><span class="downloads">▼ 9,204</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g3"><span class="tag-soft badge">Free</span></div>
+      <div class="card-body">
+        <div class="card-title">Realtime Canvas</div>
+        <div class="card-meta">Broadcast · presence · CRDT</div>
+        <div class="card-foot"><span class="downloads">▼ 7,731</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g4"></div>
+      <div class="card-body">
+        <div class="card-title">Analytics Dashboard</div>
+        <div class="card-meta">Charts · views · materialized</div>
+        <div class="card-foot"><span class="downloads">▼ 6,502</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g5"></div>
+      <div class="card-body">
+        <div class="card-title">Multi-tenant CRM</div>
+        <div class="card-meta">RLS · roles · audit log</div>
+        <div class="card-foot"><span class="downloads">▼ 5,988</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g6"><span class="tag-green badge">New</span></div>
+      <div class="card-body">
+        <div class="card-title">Storefront Starter</div>
+        <div class="card-meta">Checkout · webhooks · storage</div>
+        <div class="card-foot"><span class="downloads">▼ 5,104</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g7"></div>
+      <div class="card-body">
+        <div class="card-title">Waitlist App</div>
+        <div class="card-meta">Edge redirects · cap checks</div>
+        <div class="card-foot"><span class="downloads">▼ 4,388</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art g8"><span class="tag-soft badge">Free</span></div>
+      <div class="card-body">
+        <div class="card-title">Blog + CMS Headless</div>
+        <div class="card-meta">MDX · image CDN · drafts</div>
+        <div class="card-foot"><span class="downloads">▼ 4,017</span><button class="btn btn-outline btn-sm">Use</button></div>
+      </div>
+    </article>
+  </div>
+  <section class="featured" id="featured">
+    <div class="f-left">
+      <span class="tag-green">Featured starter</span>
+      <h2>SaaS Kit Pro — Team plan</h2>
+      <p>Everything a B2B product needs on day one: OAuth + magic-link auth, Stripe-style billing webhooks, team invitations, and row-level security policies already audited.</p>
+      <div class="meta"><span>★ <b>4.9</b> (612)</span><span><b>12,410</b> clones</span><span>Updated <b>Oct 21, 2026</b></span></div>
+      <div class="opts-label">License</div>
+      <div class="opts">
+        <button class="opt on">Solo — $79</button>
+        <button class="opt">Team — $249</button>
+        <button class="opt">Unlimited — $899</button>
+      </div>
+      <div class="opts-label">Support</div>
+      <div class="opts">
+        <button class="opt on">Community</button>
+        <button class="opt">Email — 48h SLA</button>
+      </div>
+      <div class="buy-row">
+        <div class="stepper"><button aria-label="Decrease">−</button><span class="qty">1</span><button aria-label="Increase">+</button></div>
+        <span class="feat-price num">$249.00</span>
+        <button class="btn btn-green">Add to cart</button>
+      </div>
+    </div>
+    <div class="f-right">
+      <h3>What builders say</h3>
+      <div class="rv"><b>“Dropped it in and shipped our MVP in nine days.”</b><span>— Noor Haddad, founder of Shelfline ★★★★★</span></div>
+      <div class="rv"><b>“The RLS policies alone are worth the price.”</b><span>— Tomás Rivera, CTO at Fieldnote ★★★★★</span></div>
+      <div class="rv"><b>“Migrations are clean and versioned.”</b><span>— Amy Kessler, staff engineer at Loopcast ★★★★☆</span></div>
+    </div>
+  </section>
+
+  <section class="cart" id="cart">
+    <div>
+      <div class="section-head" style="margin:0 0 14px"><h2 style="font-size:22px">Your cart</h2><a href="#grid">Keep browsing</a></div>
+      <div class="ci">
+        <span class="ci-art g1"></span>
+        <div class="ci-info"><b>SaaS Kit Pro</b><span>Team license · email support</span></div>
+        <span class="ci-price num">$249.00</span>
+        <button class="ci-remove">Remove</button>
+      </div>
+      <div class="ci">
+        <span class="ci-art g2"></span>
+        <div class="ci-info"><b>AI Doc Chat</b><span>Solo license</span></div>
+        <span class="ci-price num">$79.00</span>
+        <button class="ci-remove">Remove</button>
+      </div>
+      <div class="ci">
+        <span class="ci-art g6"></span>
+        <div class="ci-info"><b>Storefront Starter</b><span>Solo license · launch discount</span></div>
+        <span class="ci-price num">$59.00</span>
+        <button class="ci-remove">Remove</button>
+      </div>
+    </div>
+    <aside class="summary">
+      <h3>Checkout summary</h3>
+      <div class="sr"><span>Subtotal (3 templates)</span><span class="num">$387.00</span></div>
+      <div class="sr"><span>Platform fee</span><span class="num">$11.61</span></div>
+      <div class="sr"><span>Tax (8.25%)</span><span class="num">$32.87</span></div>
+      <div class="sr total"><span>Total due today</span><span class="num">$431.48</span></div>
+      <button class="btn btn-green">Checkout</button>
+      <p class="note">Billed to Loopcast Inc · Visa ···· 8821 · lifetime updates included</p>
+    </aside>
+  </section>
+</div>
+
+<footer>
+  <div class="f-grid">
+    <div>
+      <a class="logo" href="#" style="margin-bottom:10px;display:inline-flex"><span class="logo-mark">⚡</span>Supastore</a>
+      <p style="max-width:30ch">The template gallery for teams building on open-source infrastructure. Every starter is cloned, audited and version-locked.</p>
+    </div>
+    <div><h4>Gallery</h4><ul><li><a href="#">Templates</a></li><li><a href="#">Integrations</a></li><li><a href="#">Changelog</a></li><li><a href="#">Roadmap</a></li></ul></div>
+    <div><h4>Developers</h4><ul><li><a href="#">Docs</a></li><li><a href="#">CLI</a></li><li><a href="#">Schema reference</a></li><li><a href="#">Status</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul></div>
+    <div><h4>Support</h4><ul><li><a href="#">Help center</a></li><li><a href="#">Refunds</a></li><li><a href="#">Licenses</a></li><li><a href="#">Contact</a></li></ul></div>
+  </div>
+  <div class="legal"><span>© 2026 Supastore, Inc.</span><span>Privacy · Terms · Security · SOC 2</span></div>
+</footer>
+</body>
+</html>

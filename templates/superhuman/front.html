@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superhuman — Workflow Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@460;540;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1b1938;
+  --primary-deep:#0e0c1f;
+  --on-primary:#ffffff;
+  --ink:#292827;
+  --ink-mute:#73706d;
+  --ink-faint:#9a9794;
+  --canvas:#ffffff;
+  --canvas-soft:#fafaf8;
+  --violet-soft:#c9b4fa;
+  --teal-deep:#0e3030;
+  --teal-mid:#155555;
+  --hairline:#e8e4dd;
+  --hairline-dark:#3f3a52;
+  --on-dark-mute:#bcbac9;
+  --on-dark-faint:#5a5772;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --sh-1:0 1px 3px rgba(0,0,0,.08);
+  --sh-2:0 8px 24px rgba(0,0,0,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  font-variation-settings:"wght" 460;
+  font-weight:460;
+  color:var(--ink);
+  background:var(--canvas);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+button{font-family:inherit;cursor:pointer;border:none}
+img,svg{display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;line-height:1;border-radius:var(--r-md);padding:12px 20px;transition:background-color .18s ease}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-deep)}
+.btn-outline{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-dark)}
+.btn-outline:hover{background:var(--canvas-soft)}
+.btn-on-teal{background:var(--canvas);color:var(--teal-deep)}
+.btn-on-teal:hover{background:var(--canvas-soft)}
+.btn-pill{border-radius:var(--r-full);background:var(--violet-soft);color:var(--primary)}
+.btn-pill:hover{background:#d8c9fb}
+.btn-sm{font-size:14px;font-weight:600;padding:10px 16px}
+
+/* ---------- Nav (dark over hero) ---------- */
+.nav{background:var(--primary);color:var(--on-primary);position:sticky;top:0;z-index:50}
+.nav-inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--on-primary);font-size:19px;font-weight:600;letter-spacing:-.3px}
+.logo-mark{width:26px;height:26px;border-radius:var(--r-sm);background:radial-gradient(120% 120% at 20% 15%,#c9b4fa 0%,#7f68d9 45%,#1b1938 100%)}
+.nav-links{display:flex;gap:24px;margin:0 auto}
+.nav-links a{color:var(--on-dark-mute);text-decoration:none;font-size:16px;transition:color .18s}
+.nav-links a:hover{color:var(--on-primary)}
+.nav-links a.active{color:var(--on-primary)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-icon{position:relative;width:36px;height:36px;border-radius:var(--r-sm);display:grid;place-items:center;color:var(--on-dark-mute);border:1px solid var(--hairline-dark);background:transparent;transition:color .18s}
+.nav-icon:hover{color:var(--on-primary)}
+.nav-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--violet-soft);border:2px solid var(--primary)}
+.search{
+  display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);
+  border:1px solid var(--hairline-dark);border-radius:var(--r-sm);padding:8px 12px;width:220px;color:var(--on-dark-mute);font-size:14px
+}
+.search input{background:transparent;border:none;outline:none;color:var(--on-primary);font-family:inherit;font-size:14px;width:100%}
+.search input::placeholder{color:var(--on-dark-faint)}
+
+/* ---------- Hero ---------- */
+.hero{background:var(--primary);color:var(--on-primary);position:relative;overflow:hidden}
+.hero-backdrop{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(90% 120% at 78% 18%, rgba(201,180,250,.55) 0%, rgba(120,110,200,.28) 38%, rgba(27,25,56,0) 70%),
+    radial-gradient(60% 90% at 88% 70%, rgba(130,180,240,.35) 0%, rgba(27,25,56,0) 65%),
+    radial-gradient(50% 60% at 12% 90%, rgba(14,12,31,.9) 0%, rgba(27,25,56,0) 70%);
+}
+.hero-inner{position:relative;max-width:1100px;margin:0 auto;padding:96px 24px 104px;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.eyebrow{font-size:12px;font-weight:540;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-mute);display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hairline-dark);border-radius:var(--r-full);padding:6px 14px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--violet-soft)}
+.hero h1{font-size:64px;font-weight:540;line-height:.96;letter-spacing:0;margin:24px 0 20px}
+.hero h1 em{font-style:normal;color:var(--violet-soft)}
+.hero p.lede{font-size:18px;font-weight:540;line-height:1.5;color:var(--on-dark-mute);max-width:460px;margin-bottom:32px}
+.hero-cta-row{display:flex;align-items:center;gap:16px}
+.hero-note{font-size:14px;color:var(--on-dark-faint);margin-top:16px}
+/* half-bleed portrait subject, CSS-only */
+.portrait{
+  position:relative;height:420px;border-radius:var(--r-lg);
+  background:
+    radial-gradient(70% 60% at 50% 26%, #f0e6d8 0%, #d9b9a0 34%, #7a5a52 60%, rgba(27,25,56,0) 61%),
+    linear-gradient(180deg, rgba(201,180,250,.85) 0%, rgba(122,120,196,.5) 42%, rgba(14,12,31,.95) 100%);
+  box-shadow:var(--sh-2);
+}
+.portrait::before{ /* silhouette */
+  content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:220px;height:330px;border-radius:110px 110px 0 0;
+  background:linear-gradient(180deg,#1a1526 0%,#100d20 100%);
+}
+.portrait::after{ /* head */
+  content:"";position:absolute;left:50%;bottom:296px;transform:translateX(-50%);
+  width:110px;height:118px;border-radius:50%;
+  background:linear-gradient(180deg,#241d33 0%,#151024 100%);
+}
+.portrait-tag{position:absolute;left:20px;bottom:20px;background:rgba(14,12,31,.72);border:1px solid var(--hairline-dark);border-radius:var(--r-md);padding:10px 14px;font-size:12px;font-weight:540;color:var(--on-dark-mute);backdrop-filter:blur(4px)}
+.portrait-tag strong{display:block;color:var(--on-primary);font-size:14px;margin-top:2px}
+
+/* ---------- Pill tab strip ---------- */
+.tab-strip{background:var(--canvas);border-bottom:1px solid var(--hairline);position:sticky;top:69px;z-index:40}
+.tab-strip-inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;gap:10px;align-items:center;overflow-x:auto}
+.pill-tab{white-space:nowrap;font-size:14px;font-weight:600;border-radius:var(--r-full);padding:8px 16px;background:var(--canvas);color:var(--ink);border:1px solid var(--hairline);transition:background-color .18s,border-color .18s}
+.pill-tab:hover{border-color:var(--hairline-dark)}
+.pill-tab.active{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.tab-count{margin-left:auto;font-size:12px;font-weight:540;color:var(--ink-faint);white-space:nowrap}
+
+/* ---------- Section headers ---------- */
+.section{padding:64px 0 8px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:32px}
+.section-head h2{font-size:48px;font-weight:460;line-height:.96;letter-spacing:-1.32px}
+.section-head p{font-size:16px;color:var(--ink-mute);margin-top:10px;max-width:520px}
+.section-link{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+
+/* ---------- Product grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-bottom:8px}
+.card{
+  background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);
+  padding:16px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .18s ease,transform .18s ease
+}
+.card:hover{box-shadow:var(--sh-1)}
+.thumb{position:relative;height:130px;border-radius:var(--r-md);overflow:hidden}
+.thumb .art{position:absolute;inset:0}
+.badges{position:absolute;top:10px;left:10px;display:flex;gap:6px}
+.badge{font-size:12px;font-weight:540;border-radius:var(--r-xs);padding:3px 8px;background:var(--canvas);color:var(--ink);border:1px solid var(--hairline)}
+.badge-sale{background:var(--teal-deep);color:var(--on-primary);border-color:var(--teal-deep)}
+.badge-new{background:var(--violet-soft);color:var(--primary);border-color:var(--violet-soft)}
+.card h3{font-size:22px;font-weight:460;line-height:1.1;letter-spacing:-.315px}
+.card .desc{font-size:14px;color:var(--ink-mute);line-height:1.45}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.price{font-size:18px;font-weight:700}
+.price small{font-size:14px;font-weight:460;color:var(--ink-mute)}
+.rating{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:540;color:var(--ink-mute)}
+.stars{display:inline-flex;gap:1px;color:var(--teal-mid)}
+.stars svg{width:13px;height:13px;fill:currentColor}
+
+/* art variants (CSS-only) */
+.art-a{background:radial-gradient(80% 100% at 20% 10%,#c9b4fa 0%,#7f68d9 48%,#1b1938 100%)}
+.art-b{background:linear-gradient(135deg,#0e3030 0%,#155555 55%,#3c8a7a 100%)}
+.art-c{background:conic-gradient(from 210deg at 60% 40%,#c9b4fa,#8a9be0,#1b1938,#c9b4fa)}
+.art-d{background:repeating-linear-gradient(135deg,#fafaf8 0 10px,#e8e4dd 10px 11px),radial-gradient(60% 60% at 70% 30%,#c9b4fa 0%,transparent 70%)}
+.art-e{background:radial-gradient(100% 100% at 80% 90%,#155555 0%,#0e3030 60%)}
+.art-f{background:linear-gradient(180deg,#e8e4dd 0%,#c9b4fa 120%)}
+.art-g{background:radial-gradient(90% 90% at 30% 80%,#7f68d9 0%,#1b1938 70%)}
+.art-h{background:linear-gradient(120deg,#0e0c1f 0%,#3f3a52 60%,#c9b4fa 130%)}
+.art-glyph{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:34px;font-weight:540;letter-spacing:-.5px}
+.art-glyph.dark{color:var(--primary)}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#"><span class="logo-mark"></span>Superhuman</a>
+    <nav class="nav-links">
+      <a href="#" class="active">Library</a>
+      <a href="#">Mail</a>
+      <a href="#">Teams</a>
+      <a href="#">Pricing</a>
+    </nav>
+    <div class="nav-right">
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search workflows…">
+      </label>
+      <button class="nav-icon" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nav-dot"></span></button>
+      <a href="#featured" class="btn btn-pill btn-sm">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-backdrop"></div>
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>The Workflow Library</span>
+      <h1>The fastest way to <em>work</em>, installed in one click.</h1>
+      <p class="lede">Proven workflows from the world's highest-performing teams — triage systems, follow-up cadences, and calendar choreography, ready for your inbox.</p>
+      <div class="hero-cta-row">
+        <a href="#grid" class="btn btn-pill">Browse the library</a>
+        <a href="#featured" class="btn btn-outline" style="color:#fff;border-color:var(--hairline-dark);background:transparent">How it works</a>
+      </div>
+      <p class="hero-note">4.9 average across 12,400 reviews · Free for Superhuman members</p>
+    </div>
+    <div class="portrait" role="img" aria-label="Portrait at twilight">
+      <div class="portrait-tag">Installed this week<strong>Trusted by 8,912 teams</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB STRIP ============ -->
+<div class="tab-strip">
+  <div class="tab-strip-inner">
+    <button class="pill-tab active">All</button>
+    <button class="pill-tab">Triage</button>
+    <button class="pill-tab">Follow-ups</button>
+    <button class="pill-tab">Calendar</button>
+    <button class="pill-tab">Sales</button>
+    <button class="pill-tab">Founder</button>
+    <button class="pill-tab">Teams</button>
+    <span class="tab-count">148 workflows</span>
+  </div>
+</div>
+<!-- ============ GRID ============ -->
+<main class="wrap">
+  <section class="section" id="grid">
+    <div class="section-head">
+      <div>
+        <h2>This week's essentials</h2>
+        <p>Hand-picked workflows that shipped the biggest speed gains across member teams.</p>
+      </div>
+      <a class="section-link" href="#">View all 148</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="thumb"><div class="art art-a"></div><div class="art-glyph">01</div><div class="badges"><span class="badge badge-new">New</span></div></div>
+        <h3>Inbox Zero Sprint</h3>
+        <p class="desc">A 20-minute daily triage loop with auto-splitting and follow-up reminders.</p>
+        <div class="card-meta"><span class="price">$29 <small>one-time</small></span><span class="rating"><span class="stars">★★★★★</span>4.9</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-b"></div><div class="art-glyph">SF</div><div class="badges"><span class="badge badge-sale">Staff Pick</span></div></div>
+        <h3>Sales Follow-up Cadence</h3>
+        <p class="desc">Seven-touch sequence templates tuned for outbound replies in under 48h.</p>
+        <div class="card-meta"><span class="price">$49 <small>per seat</small></span><span class="rating"><span class="stars">★★★★★</span>4.8</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-c"></div><div class="badges"></div></div>
+        <h3>Calendar Choreography</h3>
+        <p class="desc">Theme days, focus blocks, and meeting batching rules for a 40-hour week.</p>
+        <div class="card-meta"><span class="price">$19 <small>one-time</small></span><span class="rating"><span class="stars">★★★★☆</span>4.7</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-d"></div><div class="art-glyph dark">AI</div><div class="badges"><span class="badge badge-new">New</span></div></div>
+        <h3>AI Draft Personalities</h3>
+        <p class="desc">Three trained draft voices — crisp, warm, and exec — with editing macros.</p>
+        <div class="card-meta"><span class="price">$39 <small>per seat</small></span><span class="rating"><span class="stars">★★★★★</span>4.9</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-e"></div><div class="art-glyph">↻</div><div class="badges"></div></div>
+        <h3>Founder Weekly Loop</h3>
+        <p class="desc">Investor updates, board prep, and hiring cadences on one repeatable rhythm.</p>
+        <div class="card-meta"><span class="price">$59 <small>one-time</small></span><span class="rating"><span class="stars">★★★★★</span>4.8</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-f"></div><div class="badges"><span class="badge badge-sale">Sale</span></div></div>
+        <h3>Team Handoff Pack</h3>
+        <p class="desc">Shared snippets and delegation rules so nothing dies in someone's inbox.</p>
+        <div class="card-meta"><span class="price"><s style="color:var(--ink-faint)">$35</s> $24</span><span class="rating"><span class="stars">★★★★☆</span>4.6</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-g"></div><div class="art-glyph">⌘K</div><div class="badges"></div></div>
+        <h3>Shortcut Mastery Deck</h3>
+        <p class="desc">A 14-day drill plan that takes your team from mouse to full keyboard flow.</p>
+        <div class="card-meta"><span class="price">$12 <small>one-time</small></span><span class="rating"><span class="stars">★★★★★</span>4.9</span></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><div class="art art-h"></div><div class="art-glyph">@</div><div class="badges"><span class="badge badge-new">New</span></div></div>
+        <h3>Recruiting Fast-Lane</h3>
+        <p class="desc">Candidate outreach, scheduling scripts, and offer-stage tracking reminders.</p>
+        <div class="card-meta"><span class="price">$44 <small>per seat</small></span><span class="rating"><span class="stars">★★★★☆</span>4.7</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED DETAIL ============ -->
+  <section class="section" id="featured">
+    <div class="section-head">
+      <div>
+        <h2>Featured workflow</h2>
+        <p>The most-installed pack of the quarter, from the team behind Superhuman Sales.</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:32px;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:32px">
+      <div>
+        <div style="position:relative;height:320px;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(135deg,#0e3030 0%,#155555 60%,#2f7d6d 100%)">
+          <div class="art-glyph" style="font-size:56px">Cadence OS</div>
+          <span class="badge badge-sale" style="position:absolute;top:14px;left:14px">Best Seller</span>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button style="flex:1;height:64px;border-radius:var(--r-md);border:2px solid var(--teal-mid);background:linear-gradient(135deg,#0e3030,#155555)"></button>
+          <button style="flex:1;height:64px;border-radius:var(--r-md);border:1px solid var(--hairline);background:conic-gradient(from 200deg at 60% 40%,#c9b4fa,#7f68d9,#1b1938)"></button>
+          <button style="flex:1;height:64px;border-radius:var(--r-md);border:1px solid var(--hairline);background:linear-gradient(135deg,#e8e4dd,#c9b4fa)"></button>
+          <button style="flex:1;height:64px;border-radius:var(--r-md);border:1px dashed var(--hairline-dark);background:var(--canvas);color:var(--ink-mute);font-size:12px;font-weight:540">+3 more</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <span class="badge badge-new">Updated this week</span>
+          <h3 style="font-size:28px;font-weight:540;line-height:1.14;letter-spacing:-.63px;margin-top:12px">Cadence OS — the complete outbound operating system</h3>
+          <p style="color:var(--ink-mute);margin-top:8px">37 sequence templates, 22 snippet macros, and a reply-detection ruleset that books meetings while you sleep.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="stars" style="color:var(--teal-mid)">★★★★★</span>
+          <strong style="font-size:16px">4.9</strong>
+          <span style="color:var(--ink-faint);font-size:14px">· 2,318 reviews · by Field &amp; Frame Studio</span>
+        </div>
+        <div>
+          <p style="font-size:14px;font-weight:540;margin-bottom:8px">Plan</p>
+          <div style="display:flex;gap:8px">
+            <button class="pill-tab active">Solo · $49</button>
+            <button class="pill-tab">Team · $39/seat</button>
+            <button class="pill-tab">Company · Custom</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-md);background:var(--canvas)">
+            <button style="padding:10px 14px;font-size:16px;font-weight:700;background:none">−</button>
+            <span style="padding:0 8px;font-weight:700">4</span>
+            <button style="padding:10px 14px;font-size:16px;font-weight:700;background:none">+</button>
+          </div>
+          <span style="font-size:14px;color:var(--ink-mute)">seats</span>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:4px">
+          <button class="btn btn-primary">Add to workspace — $196</button>
+          <button class="btn btn-outline">Preview workflow</button>
+        </div>
+        <div style="border-top:1px solid var(--hairline);padding-top:16px;margin-top:8px">
+          <p style="font-size:16px;font-weight:540;line-height:1.5;margin-bottom:6px">"We cut first-reply time from 9 hours to 40 minutes in the first week."</p>
+          <span style="font-size:14px;color:var(--ink-faint)">Dana Whitfield · VP Sales, Northbeam Logistics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CART DRAWER ============ -->
+  <section class="section" style="padding-bottom:72px">
+    <div class="section-head"><div><h2>Your workspace order</h2><p>Everything installs together — one checkout, one sync.</p></div></div>
+    <div style="max-width:480px;margin-left:auto;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:32px;box-shadow:var(--sh-2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <strong style="font-size:20px;font-weight:540;letter-spacing:-.4px">Order summary</strong>
+        <span class="badge">3 items</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;border-bottom:1px solid var(--hairline);padding-bottom:20px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-sm);background:linear-gradient(135deg,#0e3030,#155555);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:600">Cadence OS — Team</strong><br><span style="font-size:12px;color:var(--ink-faint)">4 seats</span></div>
+          <span style="font-weight:700">$196.00</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-sm);background:radial-gradient(80% 100% at 20% 10%,#c9b4fa,#1b1938);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:600">Inbox Zero Sprint</strong><br><span style="font-size:12px;color:var(--ink-faint)">1 license</span></div>
+          <span style="font-weight:700">$29.00</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-sm);background:linear-gradient(135deg,#e8e4dd,#c9b4fa);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:600">Shortcut Mastery Deck</strong><br><span style="font-size:12px;color:var(--ink-faint)">1 license</span></div>
+          <span style="font-weight:700">$12.00</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:20px 0;border-bottom:1px solid var(--hairline);font-size:14px;color:var(--ink-mute)">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span style="color:var(--ink);font-weight:540">$237.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Member discount (15%)</span><span style="color:var(--teal-mid);font-weight:540">−$35.55</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Tax (8.875%)</span><span style="color:var(--ink);font-weight:540">$17.88</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 0 24px">
+        <span style="font-size:16px;font-weight:540">Total</span>
+        <span style="font-size:24px;font-weight:700;letter-spacing:-.5px">$219.33</span>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center">Complete install</button>
+      <p style="font-size:12px;color:var(--ink-faint);text-align:center;margin-top:12px">Installs instantly to all 4 connected accounts · 30-day refund</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ TEAL CLOSING BAND ============ -->
+<section style="padding:0 24px 64px">
+  <div class="wrap" style="padding:0">
+    <div style="background:var(--teal-deep);color:var(--on-primary);border-radius:var(--r-lg);padding:96px 64px;text-align:center">
+      <h2 style="font-size:28px;font-weight:540;line-height:1.14;letter-spacing:-.63px;max-width:560px;margin:0 auto 32px">Give your team back five hours a week — starting Monday morning.</h2>
+      <button class="btn btn-on-teal">Start your free trial</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="border-top:1px solid var(--hairline)">
+  <div class="wrap" style="padding:64px 24px 32px">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <a class="logo" href="#" style="color:var(--ink)"><span class="logo-mark"></span>Superhuman</a>
+        <p style="font-size:14px;color:var(--ink-mute);margin-top:12px;max-width:280px">The most productive email experience ever made. Now with a library of workflows from the fastest teams alive.</p>
+        <div style="display:flex;gap:8px;margin-top:20px;max-width:320px">
+          <input type="email" placeholder="you@company.com" style="flex:1;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:10px 12px;font-family:inherit;font-size:14px;outline:none">
+          <button class="btn btn-primary btn-sm">Subscribe</button>
+        </div>
+      </div>
+      <div><p style="font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:12px">Library</p><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink-mute)"><a href="#">All workflows</a><a href="#">New this week</a><a href="#">Staff picks</a><a href="#">Become a creator</a></div></div>
+      <div><p style="font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:12px">Product</p><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink-mute)"><a href="#">Mail</a><a href="#">Teams</a><a href="#">Pricing</a><a href="#">Security</a></div></div>
+      <div><p style="font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:12px">Company</p><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink-mute)"><a href="#">About</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Support</a></div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--hairline);margin-top:48px;padding-top:24px;font-size:14px;color:var(--ink-mute)">
+      <span>© 2026 Superhuman Labs, Inc.</span>
+      <div style="display:flex;gap:16px">
+        <a href="#" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.3 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.5l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.4 3.9H5.5L17.8 20Z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

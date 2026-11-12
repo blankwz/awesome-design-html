@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClickHouse — Ops Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#faff69; --primary-active:#e6eb52;
+  --ink:#ffffff; --body:#cccccc; --body-strong:#e6e6e6; --muted:#888888; --muted-soft:#5a5a5a;
+  --hairline:#2a2a2a; --hairline-strong:#3a3a3a;
+  --canvas:#0a0a0a; --surface-soft:#121212; --surface-card:#1a1a1a; --surface-elevated:#242424;
+  --on-primary:#0a0a0a; --on-dark:#ffffff;
+  --emerald:#22c55e; --rose:#ef4444; --blue:#3b82f6; --warning:#f59e0b;
+  --font-sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --r-md:8px; --r-lg:12px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-sans)}
+h1,h2,h3{color:var(--on-dark);letter-spacing:-0.02em}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* sidebar */
+.side{background:var(--surface-soft);border-right:1px solid var(--hairline);padding:var(--sp-md);display:flex;flex-direction:column;gap:2px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--on-dark);padding:var(--sp-sm) var(--sp-md) var(--sp-lg)}
+.logo .cube{width:20px;height:20px;background:var(--primary);border-radius:4px;transform:rotate(45deg)}
+.m-label{font-size:11px;font-weight:600;color:var(--muted-soft);padding:var(--sp-md) var(--sp-md) var(--sp-xs);text-transform:uppercase;letter-spacing:1.5px}
+.menu a{display:flex;align-items:center;gap:var(--sp-sm);padding:9px var(--sp-md);border-radius:var(--r-md);color:var(--muted);font-weight:500}
+.menu a .ico{width:18px;text-align:center;font-style:normal}
+.menu a:hover{background:var(--surface-card);color:var(--body-strong)}
+.menu a.active{background:var(--surface-card);color:var(--on-dark);font-weight:600}
+.menu a .cnt{margin-left:auto;background:var(--primary);color:var(--on-primary);border-radius:var(--r-pill);font-size:11px;font-weight:600;padding:1px 8px}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm);background:var(--surface-card);border-radius:var(--r-lg)}
+.ava{width:36px;height:36px;border-radius:var(--r-pill);background:var(--surface-elevated);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.user-card .nm{font-weight:600;color:var(--on-dark)}
+.user-card .rl{font-size:12px;color:var(--muted)}
+
+/* topbar */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:64px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-lg)}
+.crumb{font-size:14px;color:var(--muted)}
+.crumb b{color:var(--on-dark);font-weight:600}
+.search{margin-left:auto;position:relative}
+.search input{height:40px;width:280px;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:0 14px 0 36px;font-size:14px;background:var(--surface-card);color:var(--on-dark);font-family:var(--font-mono);font-size:13px}
+.search input::placeholder{color:var(--muted-soft)}
+.search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted-soft)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-pill);background:var(--surface-card);border:1px solid var(--hairline);color:var(--on-dark)}
+.bell{position:relative}
+.bell .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--rose);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* content */
+.content{padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-lg)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-md);flex-wrap:wrap}
+.page-head h1{font-size:28px;font-weight:700}
+.page-head p{color:var(--muted);font-size:13px;font-family:var(--font-mono)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 20px;background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);border-radius:var(--r-md);font-size:14px;font-weight:600}
+.btn--secondary{background:var(--surface-card);color:var(--on-dark);border-color:transparent}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.kpi{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-md)}
+.kpi .lbl{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.kpi .val{font-size:26px;font-weight:700;color:var(--on-dark);letter-spacing:-0.02em}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+.delta{font-size:13px;font-weight:600}
+.up{color:var(--emerald)} .down{color:var(--rose)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:6px;border-radius:3px;background:var(--surface-elevated)}
+.spark i.hot{background:var(--body-strong)}
+.spark i.y{background:var(--primary)}
+
+/* charts */
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-md)}
+.card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.card h3{font-size:16px;font-weight:600;margin-bottom:var(--sp-md)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:190px;border-bottom:1px solid var(--hairline)}
+.bcol{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:60%;background:var(--surface-elevated);border-radius:4px 4px 0 0}
+.bcol.hot .bar{background:var(--primary)}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.donut-wrap{display:flex;gap:var(--sp-lg);align-items:center}
+.donut{position:relative;width:168px;height:168px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-size:22px;font-weight:700;color:var(--on-dark)}
+.donut .center .t{font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px}
+.leg i{width:10px;height:10px;border-radius:3px;flex:none}
+.leg .pct{margin-left:auto;font-weight:600;color:var(--on-dark)}
+
+/* table + panel */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-md);align-items:start}
+.table-card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden}
+.tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline)}
+.tc-head h3{font-size:16px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--muted);text-align:left;padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--hairline);background:var(--surface-soft);text-transform:uppercase;letter-spacing:1.5px}
+td{padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--hairline);vertical-align:middle}
+.cell-name{font-weight:600;color:var(--on-dark)}
+.cell-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+.num{font-family:var(--font-mono);font-size:13px;color:var(--on-dark);white-space:nowrap}
+.badge{display:inline-block;font-size:11px;font-weight:600;border-radius:var(--r-pill);padding:3px 10px;text-transform:uppercase;letter-spacing:1px}
+.badge.success{color:var(--emerald);border:1px solid var(--emerald)}
+.badge.warning{color:var(--warning);border:1px solid var(--warning)}
+.badge.danger{color:var(--rose);border:1px solid var(--rose)}
+.badge.neutral{color:var(--muted);border:1px solid var(--hairline-strong)}
+.badge.yellow{background:var(--primary);color:var(--on-primary);border:1px solid var(--primary)}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--hairline-strong);border-radius:4px;background:var(--surface-soft);vertical-align:middle}
+input[type=checkbox]:checked{background:var(--primary);border-color:var(--primary)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+.row-actions button{border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r-md);font-size:12px;font-weight:500;color:var(--muted);padding:5px 10px}
+.row-actions button:hover{color:var(--on-dark);border-color:var(--muted)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg)}
+.pager .info{font-size:13px;color:var(--muted);font-family:var(--font-mono)}
+.pg{display:flex;gap:6px}
+.pg button{min-width:32px;height:32px;border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r-md);font-size:13px;color:var(--muted)}
+.pg button.cur{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+
+/* activity */
+.feed-item{display:flex;gap:var(--sp-sm);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline)}
+.feed-item:last-child{border-bottom:0}
+.fdot{width:30px;height:30px;border-radius:var(--r-pill);border:1px solid var(--hairline-strong);display:flex;align-items:center;justify-content:center;font-size:12px;flex:none;color:var(--on-dark)}
+.fdot.ok{border-color:var(--emerald);color:var(--emerald)}
+.fdot.bad{border-color:var(--rose);color:var(--rose)}
+.fdot.warn{border-color:var(--warning);color:var(--warning)}
+.feed-item p{font-size:13px}
+.feed-item p b{color:var(--on-dark);font-weight:600}
+.feed-item .time{font-size:11px;color:var(--muted-soft);margin-top:2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:1px}
+.quick{margin-top:var(--sp-md);padding-top:var(--sp-md);border-top:1px solid var(--hairline)}
+.quick label{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 0}
+.toggle{appearance:none;width:36px;height:20px;border-radius:var(--r-pill);background:var(--surface-elevated);position:relative}
+.toggle:checked{background:var(--primary)}
+.quick .btn{width:100%;margin-top:var(--sp-sm)}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .search input{width:160px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#"><span class="cube"></span>ClickHouse</a>
+    <nav class="menu">
+      <p class="m-label">Cluster</p>
+      <a href="#" class="active"><span class="ico">◈</span>Overview</a>
+      <a href="#"><span class="ico">▤</span>Query packs<span class="cnt">2</span></a>
+      <a href="#"><span class="ico">▦</span>Tables &amp; views</a>
+      <a href="#"><span class="ico">▣</span>Running queries</a>
+      <p class="m-label">Data</p>
+      <a href="#"><span class="ico">◍</span>Ingest pipelines</a>
+      <a href="#"><span class="ico">◎</span>Integrations</a>
+      <p class="m-label">Insight</p>
+      <a href="#"><span class="ico">▥</span>Usage &amp; spend</a>
+      <a href="#"><span class="ico">⚙</span>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="ava">KV</div>
+      <div><div class="nm">Kai Vogel</div><div class="rl">Platform admin</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Ops console / <b>Overview</b></span>
+      <div class="search"><input type="search" placeholder="search tables, queries…" aria-label="Search"></div>
+      <button class="icon-btn bell" aria-label="Notifications">◔<span class="dot">3</span></button>
+      <div class="ava">KV</div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Cluster overview</h1>
+          <p>prod-analytics · 6 nodes · region eu-central</p>
+        </div>
+        <div style="display:flex;gap:var(--sp-sm)">
+          <button class="btn--secondary btn">Export metrics</button>
+          <button class="btn">New query pack</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <p class="lbl">Queries / sec</p>
+          <div class="val">18.4k</div>
+          <div class="row"><span class="delta up">▲ 7.2%</span>
+            <div class="spark"><i style="height:35%"></i><i style="height:50%"></i><i class="hot" style="height:60%"></i><i style="height:48%"></i><i style="height:70%"></i><i class="y" style="height:92%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">P50 latency</p>
+          <div class="val">23 ms</div>
+          <div class="row"><span class="delta up">▲ 4.1%</span>
+            <div class="spark"><i style="height:60%"></i><i style="height:55%"></i><i class="hot" style="height:50%"></i><i style="height:45%"></i><i style="height:40%"></i><i class="y" style="height:35%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Rows / day</p>
+          <div class="val">8.2B</div>
+          <div class="row"><span class="delta up">▲ 11.8%</span>
+            <div class="spark"><i style="height:30%"></i><i style="height:45%"></i><i class="hot" style="height:55%"></i><i style="height:60%"></i><i style="height:75%"></i><i class="y" style="height:90%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Storage used</p>
+          <div class="val">41.6 TB</div>
+          <div class="row"><span class="delta down">▼ 2.3%</span>
+            <div class="spark"><i style="height:80%"></i><i style="height:78%"></i><i class="hot" style="height:75%"></i><i style="height:70%"></i><i style="height:65%"></i><i class="y" style="height:60%"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3>Queries per month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:38%"></div></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div></div>
+            <div class="bcol"><div class="bar" style="height:44%"></div></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div></div>
+            <div class="bcol"><div class="bar" style="height:52%"></div></div>
+            <div class="bcol"><div class="bar" style="height:64%"></div></div>
+            <div class="bcol"><div class="bar" style="height:56%"></div></div>
+            <div class="bcol"><div class="bar" style="height:72%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:84%"></div></div>
+            <div class="bcol"><div class="bar" style="height:62%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:96%"></div></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div></div>
+          </div>
+          <div class="blabels"><span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span></div>
+        </div>
+        <div class="card">
+          <h3>Load by workload</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="168" height="168" viewBox="0 0 168 168">
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#2a2a2a" stroke-width="15"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#faff69" stroke-width="15" stroke-dasharray="138 269" stroke-dashoffset="0"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#3b82f6" stroke-width="15" stroke-dasharray="79 328" stroke-dashoffset="-143"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#22c55e" stroke-width="15" stroke-dasharray="52 355" stroke-dashoffset="-227"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#888888" stroke-width="15" stroke-dasharray="38 369" stroke-dashoffset="-284"/>
+              </svg>
+              <div class="center"><span class="v">18.4k</span><span class="t">qps</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#faff69"></i>Product analytics<span class="pct">41%</span></div>
+              <div class="leg"><i style="background:#3b82f6"></i>Observability<span class="pct">24%</span></div>
+              <div class="leg"><i style="background:#22c55e"></i>Session replay<span class="pct">16%</span></div>
+              <div class="leg"><i style="background:#888888"></i>Ad-hoc<span class="pct">11%</span></div>
+              <div class="leg"><i style="background:#2a2a2a"></i>Internal<span class="pct">8%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head"><h3>Recent jobs &amp; installs</h3><button class="btn--secondary btn" style="height:36px;padding:0 16px;font-size:13px">View all</button></div>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Job</th><th>Workload</th><th>Owner</th><th>Status</th><th>Duration</th><th>Finished</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Funnel pack nightly bench</div><div class="cell-sub">funnel_events · 90d</div></td>
+                <td>Product analytics</td><td>pack-scheduler</td>
+                <td><span class="badge yellow">Running</span></td>
+                <td class="num">00:04:12</td><td class="num">—</td>
+                <td><div class="row-actions"><button>Open</button><button>Stop</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Rollup refresh · hourly</div><div class="cell-sub">mv_retention_w4</div></td>
+                <td>Product analytics</td><td>mv-refresh</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">00:00:38</td><td class="num">14:00 today</td>
+                <td><div class="row-actions"><button>Open</button><button>Logs</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Kafka backlog drain</div><div class="cell-sub">events_raw · 42M msgs</div></td>
+                <td>Observability</td><td>ingest-03</td>
+                <td><span class="badge warning">Lagging</span></td>
+                <td class="num">01:12:44</td><td class="num">13:52 today</td>
+                <td><div class="row-actions"><button>Inspect</button><button>Scale</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Query Log Sentinel sweep</div><div class="cell-sub">query_log · slow &gt; 5s</div></td>
+                <td>Ad-hoc</td><td>sentinel</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">00:02:07</td><td class="num">12:30 today</td>
+                <td><div class="row-actions"><button>Open</button><button>Report</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Grafana dash pack install</div><div class="cell-sub">v2.6.1 → prod</div></td>
+                <td>Observability</td><td>K. Vogel</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">00:00:19</td><td class="num">11:04 today</td>
+                <td><div class="row-actions"><button>Open</button><button>Uninstall</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Merge Tree dedup</div><div class="cell-sub">sessions · OPTIMIZE</div></td>
+                <td>Internal</td><td>task-runner</td>
+                <td><span class="badge danger">Failed</span></td>
+                <td class="num">00:26:31</td><td class="num">09:40 today</td>
+                <td><div class="row-actions"><button>Inspect</button><button>Retry</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Postgres → CH migration</div><div class="cell-sub">customers · final chunk</div></td>
+                <td>Ad-hoc</td><td>P. Nair</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">02:41:08</td><td class="num">08:15 today</td>
+                <td><div class="row-actions"><button>Open</button><button>Verify</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span class="info">showing 1–7 of 14,204 jobs</span>
+            <div class="pg"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recent activity</h3>
+          <div class="feed-item"><div class="fdot ok">✓</div><div><p><b>Rollup refresh</b> completed in 38s — mv_retention_w4 up to date.</p><p class="time">14:02 today</p></div></div>
+          <div class="feed-item"><div class="fdot warn">!</div><div><p><b>Kafka backlog</b> crossed 42M messages — ingest-03 scaled to 6 shards.</p><p class="time">13:55 today</p></div></div>
+          <div class="feed-item"><div class="fdot bad">✕</div><div><p><b>Merge Tree dedup</b> failed on shard-4: disk quota exceeded.</p><p class="time">10:06 today</p></div></div>
+          <div class="feed-item"><div class="fdot">KV</div><div><p><b>Kai Vogel</b> installed <b>Grafana Dash Pack v2.6.1</b>.</p><p class="time">11:04 today</p></div></div>
+          <div class="quick">
+            <p style="font-size:13px;font-weight:600;color:var(--on-dark);margin-bottom:6px">Quick settings</p>
+            <label>Slow-query alerts <input type="checkbox" class="toggle" checked></label>
+            <label>Auto-scale ingest <input type="checkbox" class="toggle" checked></label>
+            <label>Weekly spend report <input type="checkbox" class="toggle"></label>
+            <button class="btn">Save preferences</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

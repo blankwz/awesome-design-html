@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replicate — Model Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ea2804; --primary-deep:#c01f00; --on-primary:#ffffff;
+  --ink:#202020; --body:#3a3a3a; --charcoal:#575757; --mute:#646464; --ash:#8d8d8d; --stone:#bbbbbb;
+  --on-dark:#fcfcfc; --on-dark-mute:rgba(252,252,252,0.72);
+  --canvas:#f9f7f3; --surface-bone:#f3f0e8; --surface-card:#ffffff; --surface-dark:#202020; --surface-deep:#000000;
+  --hairline:rgba(32,32,32,0.12); --hairline-strong:#202020; --divider-dark:rgba(255,255,255,0.2);
+  --badge-success:#2b9a66; --link:#ea2804;
+  --hero-glow:#ff6a3d; --hero-pink:#f4a8a0;
+  --ring-focus:rgba(59,130,246,0.5); --github-dark:#24292e;
+  --font-display:"Bricolage Grotesque","Inter Tight",sans-serif;
+  --font-body:"Inter","Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-full:9999px;
+  --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:24px; --sp-xxl:32px; --sp-xxxl:48px; --sp-section:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-body);border:0}
+h1,h2,h3{color:var(--ink);font-family:var(--font-display)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--font-mono)}
+
+/* ---------- buttons ---------- */
+.btn-orange{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:12px 24px;background:var(--primary);color:var(--on-primary);border-radius:var(--r-full);font-size:16px;font-weight:600}
+.btn-orange:active{background:var(--primary-deep)}
+.btn-dark{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:12px 24px;background:var(--surface-dark);color:var(--on-dark);border-radius:var(--r-full);font-size:16px;font-weight:600}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:11px 23px;background:var(--surface-card);color:var(--ink);border:1px solid var(--hairline-strong);border-radius:var(--r-full);font-size:16px;font-weight:600}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;height:36px;padding:8px 16px;background:var(--canvas);color:var(--ink);border-radius:var(--r-full);font-size:16px;font-weight:600}
+.pill-tab{background:var(--surface-card);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r-full);padding:6px 14px;font-size:14px;font-weight:600}
+.pill-tab.active{background:var(--ink);color:var(--on-dark);border-color:var(--ink)}
+.badge-status{display:inline-flex;align-items:center;gap:6px;background:var(--badge-success);color:var(--on-dark);border-radius:var(--r-full);padding:4px 10px;font-size:12px}
+.badge-status i{width:6px;height:6px;border-radius:var(--r-full);background:#fff;display:inline-block}
+.badge-tag{display:inline-block;background:var(--canvas);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r-full);padding:4px 10px;font-size:12px}
+
+/* ---------- nav ---------- */
+.nav{background:var(--canvas);height:60px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-xl)}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink);font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:-0.5px}
+.logo .mark{width:26px;height:26px;border-radius:var(--r-full);background:conic-gradient(from 200deg,var(--primary),var(--hero-glow),var(--hero-pink),var(--primary))}
+.navlinks{display:flex;gap:var(--sp-xl);font-size:14px;font-weight:600;color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.gh{width:36px;height:36px;border-radius:var(--r-full);background:var(--github-dark);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:15px}
+.bag{position:relative;width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-card);border:1px solid var(--hairline);display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+.bag .dot{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:var(--r-full);background:var(--primary);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-dark);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+
+/* ---------- hero band ---------- */
+.hero{position:relative;padding:120px 0;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse at 20% 20%,rgba(234,40,4,.85) 0%,transparent 55%),
+  radial-gradient(ellipse at 70% 40%,rgba(255,106,61,.75) 0%,transparent 55%),
+  radial-gradient(ellipse at 50% 95%,rgba(244,168,160,.9) 0%,transparent 55%),
+  var(--primary)}
+.hero .wrap{position:relative}
+.hero h1{font-size:72px;font-weight:700;line-height:1.0;letter-spacing:-1.8px;color:var(--on-dark);margin-bottom:var(--sp-lg)}
+.hero p{font-size:18px;font-weight:600;line-height:1.56;color:rgba(252,252,252,0.9);max-width:520px;margin-bottom:var(--sp-xl)}
+.hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
+.btn-white{display:inline-flex;align-items:center;height:44px;padding:12px 24px;background:var(--surface-card);color:var(--ink);border-radius:var(--r-full);font-size:16px;font-weight:600}
+
+/* ---------- collection browse ---------- */
+.browse{padding:var(--sp-section) 0 var(--sp-xl)}
+.browse h2{font-size:48px;font-weight:700;line-height:1.0;letter-spacing:-1px;margin-bottom:var(--sp-md)}
+.browse .lead{font-size:18px;color:var(--charcoal);max-width:560px;margin-bottom:var(--sp-xl)}
+.pills{display:flex;gap:var(--sp-sm);flex-wrap:wrap;margin-bottom:var(--sp-xl)}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+.mcard{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-sm);text-align:left}
+.mcard .thumb{aspect-ratio:1;border-radius:var(--r-sm);position:relative;overflow:hidden}
+.t1{background:radial-gradient(circle at 30% 30%,#ffd9a8 0 25%,transparent 26%),radial-gradient(circle at 70% 70%,#f4a8a0 0 30%,transparent 31%),linear-gradient(140deg,#fde8d8,#f3c8b4)}
+.t2{background:radial-gradient(circle at 65% 30%,#b8d8e8 0 28%,transparent 29%),radial-gradient(circle at 30% 75%,#6aa8c8 0 25%,transparent 26%),linear-gradient(140deg,#d8ecf5,#a8ccdd)}
+.t3{background:radial-gradient(circle at 40% 60%,#c9e0b8 0 30%,transparent 31%),radial-gradient(circle at 75% 25%,#8fbf78 0 22%,transparent 23%),linear-gradient(140deg,#e4f0d8,#bfd8ac)}
+.t4{background:radial-gradient(circle at 60% 40%,#e0c9e8 0 28%,transparent 29%),radial-gradient(circle at 25% 70%,#a678b8 0 24%,transparent 25%),linear-gradient(140deg,#f0e0f5,#cfaed9)}
+.t5{background:radial-gradient(circle at 35% 35%,#f5d876 0 26%,transparent 27%),radial-gradient(circle at 70% 75%,#d8a83f 0 22%,transparent 23%),linear-gradient(140deg,#faeec5,#e8cf8a)}
+.t6{background:radial-gradient(circle at 50% 30%,#c8c8d8 0 25%,transparent 26%),radial-gradient(circle at 30% 75%,#8888a0 0 22%,transparent 23%),linear-gradient(140deg,#e2e2ec,#b0b0c4)}
+.t7{background:radial-gradient(circle at 60% 60%,#f5b8a8 0 26%,transparent 27%),radial-gradient(circle at 30% 30%,#e88a6a 0 22%,transparent 23%),linear-gradient(140deg,#fadcd0,#eaae93)}
+.t8{background:radial-gradient(circle at 40% 55%,#a8d8d0 0 27%,transparent 28%),radial-gradient(circle at 70% 25%,#6ab8ab 0 22%,transparent 23%),linear-gradient(140deg,#d8efe9,#a3d6ca)}
+.mcard .meta{display:flex;align-items:center;justify-content:space-between}
+.mcard .owner{font-family:var(--font-mono);font-size:12px;color:var(--charcoal)}
+.mcard h3{font-size:20px;font-weight:600;line-height:1.4;letter-spacing:-0.3px}
+.mcard .ds{font-size:14px;color:var(--charcoal);flex:1}
+.mcard .foot{display:flex;align-items:center;justify-content:space-between}
+.runs{font-size:12px;color:var(--ash)}
+
+/* ---------- featured model row ---------- */
+.detail{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-xxl);display:grid;grid-template-columns:6fr 6fr;gap:var(--sp-xxl);margin-bottom:var(--sp-section)}
+.gal{display:grid;grid-template-columns:1fr 96px;gap:var(--sp-lg)}
+.stage{position:relative;border-radius:var(--r-md);height:400px;overflow:hidden;background:
+  radial-gradient(circle at 30% 30%,#ffd9a8 0 22%,transparent 23%),
+  radial-gradient(circle at 70% 75%,#e88a6a 0 28%,transparent 29%),
+  linear-gradient(140deg,#fde8d8,#eeb89e)}
+.stage .badge-status{position:absolute;top:16px;left:16px}
+.thumbs{display:flex;flex-direction:column;gap:var(--sp-lg)}
+.thumb{flex:1;border-radius:var(--r-md);border:2px solid transparent;background:linear-gradient(140deg,#d8ecf5,#a8ccdd)}
+.thumb.t2{background:linear-gradient(140deg,#e4f0d8,#bfd8ac)}
+.thumb.t3{background:linear-gradient(140deg,#f0e0f5,#cfaed9)}
+.thumb.active{border-color:var(--ink)}
+.d-info h2{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:-0.5px;margin-bottom:var(--sp-xs)}
+.d-info .byline{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--charcoal);margin-bottom:var(--sp-lg)}
+.cava{width:28px;height:28px;border-radius:var(--r-full);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;background:var(--badge-success)}
+.d-info .desc{font-size:18px;line-height:1.56;margin-bottom:var(--sp-xl)}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--sp-xl)}
+.opt-label{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.35px;margin:0 0 var(--sp-sm)}
+.opt-row{display:flex;gap:var(--sp-sm);flex-wrap:wrap;margin-bottom:var(--sp-lg)}
+.opt{background:var(--surface-card);border:1px solid var(--hairline-strong);color:var(--ink);border-radius:var(--r-full);padding:9px 18px;font-size:16px;font-weight:600}
+.opt.active{background:var(--ink);color:var(--on-dark)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-lg);flex-wrap:wrap}
+.code-well{background:var(--surface-dark);border-radius:var(--r-md);padding:var(--sp-xl);color:var(--on-dark);font-family:var(--font-mono);font-size:14px;line-height:1.43}
+.ctabs{display:flex;gap:6px;margin-bottom:var(--sp-lg)}
+.ctab{background:var(--surface-deep);color:var(--on-dark-mute);border-radius:var(--r-xs);padding:6px 12px;font-size:11px;font-family:var(--font-mono)}
+.ctab.active{color:var(--on-dark);box-shadow:inset 0 -2px 0 var(--primary)}
+.code-well .cm{color:var(--on-dark-mute)} .code-well .kw{color:#ff9e6d} .code-well .str{color:#a8d8b0}
+.review{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-lg);margin-top:var(--sp-xl)}
+.review .top{display:flex;align-items:center;gap:10px;margin-bottom:var(--sp-xs)}
+.review .ava{width:36px;height:36px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;background:var(--surface-dark)}
+.review .who{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.35px}
+.review .role{font-size:12px;color:var(--mute)}
+.review p{font-size:14px}
+
+/* ---------- cart panel ---------- */
+.cart{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-xxl)}
+.cart h3{font-size:24px;font-weight:600;letter-spacing:-0.35px;margin-bottom:var(--sp-lg)}
+.ci{display:flex;gap:var(--sp-md);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline);align-items:center}
+.ci .art{width:44px;height:44px;border-radius:var(--r-sm);flex:none}
+.ci .n{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--ink)}
+.ci .m{font-size:12px;color:var(--mute)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap}
+.sum{margin-top:var(--sp-lg);font-size:14px;color:var(--body)}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0}
+.sum .r.total{border-top:1px solid var(--hairline-strong);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:600;color:var(--ink)}
+.cart .btn-orange{width:100%;margin-top:var(--sp-lg)}
+.cart-note{font-size:12px;color:var(--mute);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* ---------- dark code band + footer ---------- */
+.dark-band{background:var(--surface-dark);padding:var(--sp-section) 0;margin-bottom:var(--sp-section)}
+.db-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-xxl);flex-wrap:wrap}
+.dark-band h2{font-size:72px;font-weight:700;line-height:1.0;letter-spacing:-1.8px;color:var(--on-dark)}
+.dark-band p{font-size:18px;color:var(--on-dark-mute);margin-top:var(--sp-md);max-width:520px}
+footer{background:var(--surface-deep);color:var(--on-dark);padding:64px 0}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg);padding-bottom:var(--sp-xxl);border-bottom:1px solid var(--divider-dark)}
+.foot-grid h4{font-size:20px;font-weight:600;color:var(--on-dark);letter-spacing:-0.3px;margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;color:var(--on-dark-mute);padding:6px 0}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--sp-lg);gap:var(--sp-md);flex-wrap:wrap}
+.legal{font-size:12px;color:var(--on-dark-mute)}
+.newsletter{display:flex;gap:8px}
+.newsletter input{background:var(--surface-dark);border:1px solid var(--divider-dark);border-radius:var(--r-full);height:44px;padding:0 20px;color:var(--on-dark);font-size:16px;width:220px;font-family:var(--font-body)}
+.newsletter input::placeholder{color:var(--on-dark-mute)}
+
+@media (max-width:960px){
+  .hero h1,.dark-band h2{font-size:48px}
+  .browse h2{font-size:32px}
+  .hero-grid,.detail,.duo{grid-template-columns:1fr}
+  .mgrid{grid-template-columns:repeat(2,1fr)}
+  .navlinks{display:none}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap nav">
+  <a class="logo" href="#"><span class="mark"></span>replicate</a>
+  <nav class="navlinks">
+    <a href="#browse">Explore</a><a href="#">Docs</a><a href="#">Pricing</a><a href="#">Blog</a>
+  </nav>
+  <div class="nav-right">
+    <button class="gh" aria-label="GitHub">⌥</button>
+    <a href="#" style="font-size:14px;font-weight:600;color:var(--ink)">Sign in</a>
+    <button class="bag" aria-label="Running models">▤<span class="dot">2</span></button>
+    <a class="btn-orange" href="#cart">Try a model</a>
+    <div class="avatar">JR</div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Run AI<br>with an API</h1>
+    <p>Thousands of open-source models — image, video, audio, text — one line of code from your app. Pay only per second of compute.</p>
+    <div class="cta-row">
+      <a class="btn-white" href="#browse">Explore models</a>
+      <a class="btn-dark" href="#" style="border:1px solid var(--divider-dark)">Read the docs</a>
+    </div>
+  </div>
+</section>
+
+<section class="browse wrap" id="browse">
+  <h2>Explore the collection</h2>
+  <p class="lead">Community models with official versions, transparent pricing, and versioned APIs that never break underneath you.</p>
+  <div class="pills">
+    <button class="pill-tab active">All</button>
+    <button class="pill-tab">Image generation</button>
+    <button class="pill-tab">Video</button>
+    <button class="pill-tab">Audio</button>
+    <button class="pill-tab">Language</button>
+    <button class="pill-tab">Restoration</button>
+  </div>
+
+  <div class="mgrid">
+    <button class="mcard"><span class="thumb t1"></span><span class="meta"><span class="owner">stability-ai/</span><span class="badge-status"><i></i>Running</span></span><h3>sdxl</h3><p class="ds">Text-to-image diffusion tuned for prompt adherence and fine typography.</p><span class="foot"><span class="badge-tag">text-to-image</span><span class="runs">48.2M runs</span></span></button>
+    <button class="mcard"><span class="thumb t2"></span><span class="meta"><span class="owner">luma/</span><span class="badge-status"><i></i>Running</span></span><h3>dream-machine</h3><p class="ds">Cinematic 5-second video from a single frame and a prompt.</p><span class="foot"><span class="badge-tag">video</span><span class="runs">12.7M runs</span></span></button>
+    <button class="mcard"><span class="thumb t3"></span><span class="meta"><span class="owner">cjwbw/</span><span class="badge-status"><i></i>Running</span></span><h3>musicgen</h3><p class="ds">Generate instrumental tracks up to 30s from a text description.</p><span class="foot"><span class="badge-tag">audio</span><span class="runs">9.1M runs</span></span></button>
+    <button class="mcard"><span class="thumb t4"></span><span class="meta"><span class="owner">mistralai/</span><span class="badge-status"><i></i>Running</span></span><h3>mixtral-8x7b</h3><p class="ds">Sparse mixture-of-experts chat model, fast and cheap per token.</p><span class="foot"><span class="badge-tag">language</span><span class="runs">31.4M runs</span></span></button>
+    <button class="mcard"><span class="thumb t5"></span><span class="meta"><span class="owner">sczhou/</span><span class="badge-status"><i></i>Running</span></span><h3>codesformer</h3><p class="ds">Face restoration for old, compressed, and low-light photos.</p><span class="foot"><span class="badge-tag">restoration</span><span class="runs">22.8M runs</span></span></button>
+    <button class="mcard"><span class="thumb t6"></span><span class="meta"><span class="owner">black-forest-labs/</span><span class="badge-status"><i></i>Running</span></span><h3>flux-schnell</h3><p class="ds">4-step fast image generation with excellent composition.</p><span class="foot"><span class="badge-tag">text-to-image</span><span class="runs">56.0M runs</span></span></button>
+    <button class="mcard"><span class="thumb t7"></span><span class="meta"><span class="owner">minimax/</span><span class="badge-status"><i></i>Running</span></span><h3>speech-02-turbo</h3><p class="ds">Multilingual TTS with cloning from a 10-second reference.</p><span class="foot"><span class="badge-tag">audio</span><span class="runs">6.3M runs</span></span></button>
+    <button class="mcard"><span class="thumb t8"></span><span class="meta"><span class="owner">fofr/</span><span class="badge-status"><i></i>Running</span></span><h3>face-to-many</h3><p class="ds">Turn a portrait into 3D, emoji, claymation, or video-game styles.</p><span class="foot"><span class="badge-tag">image-to-image</span><span class="runs">14.9M runs</span></span></button>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="duo">
+    <div class="detail">
+      <div class="gal">
+        <div class="stage"><span class="badge-status"><i></i>Running</span></div>
+        <div class="thumbs"><div class="thumb active"></div><div class="thumb t2"></div><div class="thumb t3"></div></div>
+      </div>
+      <div class="d-info">
+        <h2>flux-schnell</h2>
+        <div class="byline"><span class="cava">BF</span><span class="mono">black-forest-labs / flux-schnell</span>&nbsp;·&nbsp;★ 4.9 · 56.0M runs</div>
+        <p class="desc">The fastest image model in the collection. Four denoising steps, sub-second generation on an A100, Apache-2.0 licensed weights.</p>
+        <div class="tags"><span class="badge-tag">text-to-image</span><span class="badge-tag">fast</span><span class="badge-tag">commercial-ok</span></div>
+        <p class="opt-label">Aspect ratio</p>
+        <div class="opt-row">
+          <button class="opt">1:1</button>
+          <button class="opt active">16:9</button>
+          <button class="opt">4:3</button>
+          <button class="opt">9:16</button>
+        </div>
+        <p class="opt-label">Output quality</p>
+        <div class="opt-row">
+          <button class="opt active">Standard · $0.003/img</button>
+          <button class="opt">HD · $0.006/img</button>
+        </div>
+        <div class="buy-row">
+          <a class="btn-orange" href="#cart">Create API token</a>
+          <a class="btn-outline" href="#">Open playground</a>
+        </div>
+        <div class="review">
+          <div class="top"><div class="ava">SO</div><div><div class="who">Sara Osei</div><div class="role">Ships product imagery daily · Verified creator</div></div></div>
+          <p>“We generate 40k product frames a month with this. The versioned API means our pipeline never broke once.”</p>
+        </div>
+      </div>
+    </div>
+
+    <aside style="display:flex;flex-direction:column;gap:24px">
+      <div class="code-well">
+        <div class="ctabs"><span class="ctab active">Python</span><span class="ctab">Node.js</span><span class="ctab">cURL</span><span class="ctab">HTTP</span></div>
+        <div><span class="kw">import</span> replicate
+<span class="cm"># 4 steps, ~1s on A100</span>
+replicate.run(
+  <span class="str">"black-forest-labs/flux-schnell"</span>,
+  input={
+    <span class="str">"prompt"</span>: <span class="str">"a cabin at dusk, film grain"</span>,
+    <span class="str">"aspect_ratio"</span>: <span class="str">"16:9"</span>,
+    <span class="str">"num_outputs"</span>: <span class="str">4</span>
+  }
+)</div>
+      </div>
+      <aside class="cart" id="cart">
+        <h3>Your workspace</h3>
+        <div class="ci"><span class="art t6"></span><div><div class="n">flux-schnell</div><div class="m">web · $0.003 / image</div></div><span class="p">Active</span></div>
+        <div class="ci"><span class="art t4"></span><div><div class="n">mixtral-8x7b</div><div class="m">api · $0.0004 / 1k tok</div></div><span class="p">Active</span></div>
+        <div class="ci"><span class="art t1"></span><div><div class="n">sdxl</div><div class="m">web · $0.009 / image</div></div><span class="p">Paused</span></div>
+        <div class="sum">
+          <div class="r"><span>Usage this month</span><span>$41.80</span></div>
+          <div class="r"><span>Included credit</span><span>−$10.00</span></div>
+          <div class="r total"><span>Estimated bill</span><span>$31.80</span></div>
+        </div>
+        <a class="btn-orange" href="#">Add credit</a>
+        <p class="cart-note">Billed per second of hardware time · No minimums</p>
+      </aside>
+    </aside>
+  </div>
+</section>
+
+<section class="dark-band">
+  <div class="wrap db-inner">
+    <div>
+      <h2>Scale on Replicate</h2>
+      <p>Autoscaling from zero to thousands of GPUs. Cog packages any model into a production container with one config file.</p>
+    </div>
+    <a class="btn-orange" href="#">Deploy your first model</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Explore</h4><a href="#">Collections</a><a href="#">Featured models</a><a href="#">Topics</a><a href="#">Leaderboard</a></div>
+      <div><h4>Build</h4><a href="#">Docs</a><a href="#">Cog</a><a href="#">Playground</a><a href="#">Pricing</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Brand</a></div>
+      <div><h4>Community</h4><a href="#">GitHub</a><a href="#">Discord</a><a href="#">X</a><a href="#">Status</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Replicate Inc. · Model weights remain under their original licenses.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Email address" aria-label="Email address">
+        <button class="btn-orange" type="submit" style="height:44px;padding:0 24px">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

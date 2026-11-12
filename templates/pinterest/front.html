@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinterest — Shop the Look</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#e60023; --primary-pressed:#cc001f; --on-primary:#ffffff;
+  --ink:#000000; --ink-soft:#211922; --body:#33332e; --charcoal:#262622; --mute:#62625b; --ash:#91918c; --stone:#c8c8c1;
+  --hairline:#dadad3; --hairline-soft:#e5e5e0;
+  --canvas:#ffffff; --surface-soft:#fbfbf9; --surface-card:#f6f6f3; --secondary-bg:#e5e5e0; --secondary-pressed:#c8c8c1;
+  --on-dark:#ffffff; --surface-dark:#262622;
+  --focus-outer:#435ee5; --accent-purple:#7e238b; --success-pale:#c7f0da; --success-deep:#103c25; --error:#9e0a0a;
+  --font-sans:"Inter",-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --r-sm:8px; --r-md:16px; --r-lg:32px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:6px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:24px; --sp-xxl:32px; --sp-section:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--surface-soft);color:var(--body);font-family:var(--font-sans);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+a{color:var(--ink-soft);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-sans);border:0}
+h1,h2,h3{color:var(--ink);letter-spacing:-1.2px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.stars{font-size:13px;color:#c98a00;letter-spacing:1px}
+.stars b{font-weight:700;color:var(--ink);letter-spacing:0;margin-left:4px}
+
+/* ---------- buttons ---------- */
+.btn-red{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:6px 14px;background:var(--primary);color:var(--on-primary);border-radius:var(--r-md);font-size:14px;font-weight:700}
+.btn-red:active{background:var(--primary-pressed)}
+.btn-gray{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:6px 14px;background:var(--secondary-bg);color:var(--ink);border-radius:var(--r-md);font-size:14px;font-weight:700}
+.btn-gray:active{background:var(--secondary-pressed)}
+.btn-ghost{display:inline-flex;align-items:center;gap:4px;background:transparent;color:var(--ink);border-radius:var(--r-md);font-size:14px;font-weight:700;padding:8px 12px}
+.icon-circle{width:40px;height:40px;border-radius:var(--r-full);background:var(--surface-card);display:inline-flex;align-items:center;justify-content:center;color:var(--ink);font-size:16px}
+.overlay-pill{position:absolute;background:var(--canvas);color:var(--ink);font-size:12px;font-weight:700;border-radius:var(--r-full);padding:6px 12px}
+
+/* ---------- primary nav ---------- */
+.topnav{position:sticky;top:0;z-index:50;background:var(--canvas);height:64px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--hairline-soft)}
+.logo{display:flex;align-items:center;gap:8px;color:var(--primary);font-weight:700;font-size:22px;letter-spacing:-1.2px}
+.logo .p{width:32px;height:32px;border-radius:var(--r-full);background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;letter-spacing:0}
+.navlink{font-size:16px;font-weight:600;color:var(--ink)}
+.searchbar{flex:1;max-width:520px;height:48px;background:var(--surface-card);border:1px solid transparent;border-radius:var(--r-full);display:flex;align-items:center;gap:10px;padding:11px 15px;color:var(--mute)}
+.searchbar input{border:0;background:transparent;outline:0;flex:1;font-size:16px;font-family:var(--font-sans);color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.bag{position:relative}
+.bag .dot{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:var(--r-full);background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--accent-purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+
+/* ---------- hero band ---------- */
+.hero{padding:var(--sp-section) 0 var(--sp-xl)}
+.hero-inner{background:var(--surface-card);border-radius:var(--r-lg);padding:var(--sp-xxl);display:grid;grid-template-columns:6fr 5fr;gap:var(--sp-xxl);align-items:center}
+.hero h1{font-size:70px;font-weight:600;line-height:1.1;margin-bottom:var(--sp-lg)}
+.hero p{font-size:16px;color:var(--body);max-width:440px;margin-bottom:var(--sp-xl)}
+.hero-art{position:relative;border-radius:var(--r-lg);height:340px;overflow:hidden;background:
+  radial-gradient(circle at 20% 25%,#f4d0c4 0 22%,transparent 23%),
+  radial-gradient(circle at 68% 18%,#cfe0d8 0 26%,transparent 27%),
+  radial-gradient(circle at 45% 72%,#e9d7ee 0 30%,transparent 31%),
+  radial-gradient(circle at 85% 70%,#f3e3b8 0 20%,transparent 21%),
+  var(--surface-card)}
+.hero-art .overlay-pill{bottom:16px;left:16px}
+
+/* ---------- filter chips ---------- */
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding:var(--sp-xl) 0}
+.chip{background:var(--surface-card);color:var(--ink);font-size:14px;font-weight:700;border-radius:var(--r-full);padding:8px 16px}
+.chip.active{background:var(--ink);color:var(--on-dark)}
+
+/* ---------- masonry pin grid ---------- */
+.masonry{columns:4;column-gap:8px;padding-bottom:var(--sp-section)}
+.pin{position:relative;display:block;width:100%;margin:0 0 8px;break-inside:avoid;border:0;background:var(--surface-card);border-radius:var(--r-md);overflow:hidden;text-align:left}
+.pin.tall{height:340px}.pin.mid{height:260px}.pin.sq{height:220px}
+.p1{background:linear-gradient(160deg,#e8b8a8 0%,#c98873 60%,#8f5544 100%)}
+.p2{background:linear-gradient(160deg,#bfd8cc 0%,#7fa893 55%,#4e6f5e 100%)}
+.p3{background:linear-gradient(160deg,#efe0c9 0%,#d9b98a 55%,#a97e4d 100%)}
+.p4{background:linear-gradient(160deg,#d9cfe8 0%,#a391c4 55%,#6a5590 100%)}
+.p5{background:linear-gradient(160deg,#f0c8c0 0%,#d1837a 55%,#9c4f48 100%)}
+.p6{background:linear-gradient(160deg,#c9d8ea 0%,#8aa6c6 55%,#527096 100%)}
+.p7{background:linear-gradient(160deg,#e6e0cf 0%,#c2b78e 55%,#8a7d54 100%)}
+.p8{background:linear-gradient(160deg,#f2ddd3 0%,#dca88f 55%,#a86c50 100%)}
+.pin .meta{position:absolute;left:12px;bottom:12px;right:12px;display:flex;align-items:center;gap:8px}
+.pin .ava{width:32px;height:32px;border-radius:var(--r-full);flex:none;background:var(--canvas);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink)}
+.pin .nm{color:var(--canvas);font-size:14px;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.45)}
+.pin .price-pill{position:absolute;right:12px;top:12px;background:var(--canvas);border-radius:var(--r-full);padding:6px 12px;font-size:12px;font-weight:700;color:var(--ink)}
+.pin .save{position:absolute;left:12px;top:12px;background:var(--primary);color:#fff;border-radius:var(--r-full);padding:8px 14px;font-size:12px;font-weight:700}
+
+/* ---------- featured detail row ---------- */
+.detail{background:var(--canvas);border-radius:var(--r-lg);padding:var(--sp-xxl);display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xxl);margin-bottom:var(--sp-section)}
+.gal{display:grid;grid-template-columns:1fr 88px;gap:12px}
+.stage{position:relative;border-radius:var(--r-lg);height:420px;background:linear-gradient(160deg,#e8b8a8 0%,#c98873 55%,#8f5544 100%)}
+.stage .overlay-pill{top:16px;left:16px;bottom:auto}
+.thumbs{display:flex;flex-direction:column;gap:12px}
+.thumb{height:127px;border-radius:var(--r-md);border:2px solid transparent;background:linear-gradient(160deg,#bfd8cc,#4e6f5e)}
+.thumb.t2{background:linear-gradient(160deg,#d9cfe8,#6a5590)}
+.thumb.t3{background:linear-gradient(160deg,#efe0c9,#a97e4d)}
+.thumb.active{border-color:var(--ink)}
+.d-info h2{font-size:28px;font-weight:700;line-height:1.2;margin-bottom:var(--sp-xs)}
+.d-info .byline{font-size:14px;color:var(--mute);margin-bottom:var(--sp-lg)}
+.d-info .desc{margin-bottom:var(--sp-xl)}
+.opt-label{font-size:16px;font-weight:600;color:var(--ink);margin:0 0 var(--sp-sm)}
+.opt-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--sp-lg)}
+.opt{background:var(--surface-card);border-radius:var(--r-md);padding:10px 16px;font-size:14px;font-weight:700;color:var(--ink)}
+.opt.active{background:var(--ink);color:var(--on-dark)}
+.qty{display:inline-flex;align-items:center;background:var(--surface-card);border-radius:var(--r-md);height:44px}
+.qty button{width:44px;height:100%;background:transparent;font-size:16px;color:var(--ink);border-radius:var(--r-md)}
+.qty span{width:40px;text-align:center;font-size:14px;font-weight:700;color:var(--ink)}
+.buy-row{display:flex;align-items:center;gap:12px;margin-top:var(--sp-xl)}
+.buy-row .big{font-size:22px;font-weight:700;color:var(--ink);letter-spacing:0}
+.review{background:var(--surface-card);border-radius:var(--r-md);padding:var(--sp-lg);margin-top:var(--sp-xl)}
+.review .top{display:flex;align-items:center;gap:12px;margin-bottom:var(--sp-xxs)}
+.review .ava{width:40px;height:40px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;background:#4e6f5e}
+.review .who{font-size:14px;font-weight:700;color:var(--ink)}
+.review .role{font-size:12px;color:var(--mute)}
+.review p{font-size:14px;color:var(--body)}
+
+/* ---------- cart / board panel ---------- */
+.cart{background:var(--canvas);border-radius:var(--r-lg);padding:var(--sp-xl);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.cart h3{font-size:22px;font-weight:600;letter-spacing:0;margin-bottom:var(--sp-lg)}
+.ci{display:flex;gap:12px;padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline-soft);align-items:center}
+.ci .art{width:56px;height:56px;border-radius:var(--r-md);flex:none}
+.ci .n{font-size:14px;font-weight:700;color:var(--ink)}
+.ci .m{font-size:12px;color:var(--mute)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:700;color:var(--ink)}
+.sum{margin-top:var(--sp-lg);font-size:14px;color:var(--body)}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0}
+.sum .r.total{border-top:1px solid var(--hairline);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:700;color:var(--ink)}
+.cart .btn-red{width:100%;margin-top:var(--sp-lg)}
+.cart-note{font-size:12px;color:var(--ash);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* ---------- cta strip ---------- */
+.cta-strip{background:var(--surface-dark);color:var(--on-dark);border-radius:var(--r-lg);padding:var(--sp-xxl);display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:var(--sp-section);flex-wrap:wrap}
+.cta-strip h2{color:var(--on-dark);font-size:28px;font-weight:700;line-height:1.2}
+
+/* ---------- footer ---------- */
+footer{background:var(--canvas);border-top:1px solid var(--hairline);padding:var(--sp-xxl) 0}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+.foot-grid h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;color:var(--mute);padding:6px 0}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--sp-xl);margin-top:var(--sp-lg);border-top:1px solid var(--hairline);gap:16px;flex-wrap:wrap}
+.legal{font-size:12px;color:var(--mute)}
+.newsletter{display:flex;gap:8px}
+.newsletter input{background:var(--canvas);border:1px solid var(--ash);border-radius:var(--r-md);height:44px;padding:0 15px;font-size:16px;width:240px;font-family:var(--font-sans)}
+.newsletter input::placeholder{color:var(--ash)}
+
+@media (max-width:960px){
+  .masonry{columns:2}
+  .hero-inner,.detail,.duo{grid-template-columns:1fr}
+  .hero h1{font-size:44px}
+  .navlink,.searchbar{display:none}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap topnav">
+  <a class="logo" href="#"><span class="p">P</span>Pinterest</a>
+  <a class="navlink" href="#">Explore</a>
+  <div class="searchbar">⌕<input type="search" placeholder="Search for ideas, home decor, fashion…"></div>
+  <div class="nav-right">
+    <a class="btn-ghost" href="#">Log in</a>
+    <a class="btn-red" href="#">Sign up</a>
+    <button class="icon-circle bag" aria-label="Bag">♡<span class="dot">3</span></button>
+    <div class="avatar">MR</div>
+  </div>
+</div>
+
+<section class="wrap hero">
+  <div class="hero-inner">
+    <div>
+      <h1>Shop the looks you save</h1>
+      <p>Every pin you love now links to real products. Browse curated drops from independent makers — saved straight to your boards, shipped to your door.</p>
+      <a class="btn-red" href="#shop">Start shopping</a>
+    </div>
+    <div class="hero-art">
+      <span class="overlay-pill">Cherry red</span>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="shop">
+  <div class="chips">
+    <button class="chip active">All picks</button>
+    <button class="chip">Home decor</button>
+    <button class="chip">Fashion</button>
+    <button class="chip">Kitchen</button>
+    <button class="chip">Plant corner</button>
+    <button class="chip">Art prints</button>
+    <button class="chip">Under $50</button>
+  </div>
+
+  <div class="masonry">
+    <button class="pin tall p1"><span class="save">Save</span><span class="price-pill">$48</span><span class="meta"><span class="ava">TC</span><span class="nm">Terra Ceramics</span></span></button>
+    <button class="pin sq p2"><span class="price-pill">$32</span><span class="meta"><span class="ava">FM</span><span class="nm">Fern &amp; Moss</span></span></button>
+    <button class="pin mid p3"><span class="save">Save</span><span class="price-pill">$76</span><span class="meta"><span class="ava">OK</span><span class="nm">Oak Knoll Studio</span></span></button>
+    <button class="pin tall p4"><span class="price-pill">$24</span><span class="meta"><span class="ava">LP</span><span class="nm">Lila Press</span></span></button>
+    <button class="pin mid p5"><span class="save">Save</span><span class="price-pill">$59</span><span class="meta"><span class="ava">RS</span><span class="nm">Rue Soleil</span></span></button>
+    <button class="pin sq p6"><span class="price-pill">$41</span><span class="meta"><span class="ava">HD</span><span class="nm">Harbor Depot</span></span></button>
+    <button class="pin mid p7"><span class="save">Save</span><span class="price-pill">$18</span><span class="meta"><span class="ava">WT</span><span class="nm">Woven Theory</span></span></button>
+    <button class="pin tall p8"><span class="price-pill">$88</span><span class="meta"><span class="ava">GC</span><span class="nm">Grove &amp; Clay</span></span></button>
+    <button class="pin sq p3"><span class="save">Save</span><span class="price-pill">$27</span><span class="meta"><span class="ava">TC</span><span class="nm">Terra Ceramics</span></span></button>
+    <button class="pin mid p1"><span class="price-pill">$64</span><span class="meta"><span class="ava">RS</span><span class="nm">Rue Soleil</span></span></button>
+    <button class="pin tall p2"><span class="save">Save</span><span class="price-pill">$35</span><span class="meta"><span class="ava">FM</span><span class="nm">Fern &amp; Moss</span></span></button>
+    <button class="pin sq p4"><span class="price-pill">$52</span><span class="meta"><span class="ava">LP</span><span class="nm">Lila Press</span></span></button>
+  </div>
+
+  <div class="duo">
+    <div class="detail">
+      <div class="gal">
+        <div class="stage"><span class="overlay-pill">Earthy kitchen inspo</span></div>
+        <div class="thumbs">
+          <div class="thumb active"></div>
+          <div class="thumb t2"></div>
+          <div class="thumb t3"></div>
+        </div>
+      </div>
+      <div class="d-info">
+        <h2>Handthrown Speckled Mixing Bowl Set</h2>
+        <div class="byline"><span class="stars">★★★★★<b>4.9</b></span> &nbsp;·&nbsp; 2.4k saves &nbsp;·&nbsp; by Terra Ceramics</div>
+        <p class="desc">A four-piece stoneware set thrown in small batches — speckled sand glaze, unglazed foot, oven-safe to 240°C. Each bowl varies slightly in speckle pattern because it should.</p>
+        <p class="opt-label">Glaze</p>
+        <div class="opt-row">
+          <button class="opt active">Speckled sand</button>
+          <button class="opt">Sea foam</button>
+          <button class="opt">Clay rose</button>
+        </div>
+        <p class="opt-label">Set size</p>
+        <div class="opt-row">
+          <button class="opt">2 pieces · $38</button>
+          <button class="opt active">4 pieces · $76</button>
+          <button class="opt">6 pieces · $108</button>
+        </div>
+        <div class="buy-row">
+          <div class="qty"><button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button></div>
+          <span class="big">$76</span>
+          <a class="btn-red" href="#cart">Add to bag</a>
+          <button class="icon-circle" aria-label="Save pin">♡</button>
+        </div>
+        <div class="review">
+          <div class="top"><div class="ava">JW</div><div><div class="who">June Watanabe</div><div class="role">Saved to “Kitchen reno” · Verified buyer</div></div><span class="stars" style="margin-left:auto">★★★★★</span></div>
+          <p>“Exactly like the pin, down to the speckles. The medium bowl lives on my counter and has replaced three plastic ones.”</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="cart" id="cart">
+      <h3>Your bag</h3>
+      <div class="ci"><div class="art p1"></div><div><div class="n">Speckled Bowl Set</div><div class="m">4 pieces · Speckled sand</div></div><span class="p">$76</span></div>
+      <div class="ci"><div class="art p7"></div><div><div class="n">Handloom Linen Runner</div><div class="m">One size</div></div><span class="p">$18</span></div>
+      <div class="ci"><div class="art p2"></div><div><div class="n">Brass Watering Can</div><div class="m">0.9 L</div></div><span class="p">$32</span></div>
+      <div class="sum">
+        <div class="r"><span>Subtotal</span><span>$126</span></div>
+        <div class="r"><span>Shipping</span><span>$8</span></div>
+        <div class="r"><span>Tax (8%)</span><span>$10.08</span></div>
+        <div class="r total"><span>Total</span><span>$144.08</span></div>
+      </div>
+      <a class="btn-red" href="#">Checkout</a>
+      <p class="cart-note">Free returns within 30 days · Ships from independent makers</p>
+    </aside>
+  </div>
+
+  <div class="cta-strip">
+    <h2>Turn your boards into a wishlist that actually ships</h2>
+    <a class="btn-red" href="#">Join Pinterest free</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Get the app</h4><a href="#">iOS</a><a href="#">Android</a></div>
+      <div><h4>Quick links</h4><a href="#">Explore</a><a href="#">Shop</a><a href="#">Collections</a><a href="#">Shopping</a></div>
+      <div><h4>Pinterest for</h4><a href="#">Creators</a><a href="#">Businesses</a><a href="#">Advertisers</a></div>
+      <div><h4>About</h4><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Help Center</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Pinterest · Made for people who save things</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Email address" aria-label="Email address">
+        <button class="btn-gray" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

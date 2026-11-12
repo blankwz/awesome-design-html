@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ollama — Model Library</title>
+<style>
+:root{
+  --primary:#000000; --on-primary:#ffffff; --ink:#000000; --ink-deep:#090909;
+  --charcoal:#525252; --body:#737373; --mute:#a3a3a3;
+  --canvas:#ffffff; --surface-soft:#fafafa; --surface-dark:#171717;
+  --hairline:#e5e5e5; --hairline-strong:#d4d4d4;
+  --on-dark:#ffffff; --on-dark-mute:rgba(255,255,255,.7);
+  --t-red:#ff5f56; --t-yellow:#ffbd2e; --t-green:#27c93f;
+  --font-head:'Nunito','SF Pro Rounded',-apple-system,system-ui,sans-serif;
+  --font-ui:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-ui);color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+a.quiet{color:var(--body)}
+ul{list-style:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+.narrow{max-width:720px}
+
+/* pill buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:9999px;height:36px;padding:0 20px;font-size:14px;font-weight:500;line-height:1}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--ink-deep)}
+.btn-secondary{background:var(--canvas);border:1px solid var(--hairline-strong);color:var(--ink)}
+
+/* nav */
+.nav{background:var(--canvas);border-bottom:1px solid var(--hairline);position:sticky;top:0;z-index:10}
+.nav .wrap{display:flex;align-items:center;height:56px;gap:20px}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--font-head);font-weight:600;font-size:17px}
+.logo svg{width:26px;height:26px}
+.nav-links{display:flex;gap:16px}
+.nav-links a{font-size:14px;font-weight:500;text-decoration:none}
+.nav-search{margin:0 auto;display:flex;align-items:center;gap:8px;background:var(--surface-soft);border-radius:9999px;height:36px;padding:0 16px;width:320px;color:var(--mute);font-size:14px}
+.nav-search input{border:none;background:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:14px}
+
+/* hero */
+.hero{padding:88px 0 0;text-align:center}
+.hero .llama{width:96px;height:96px;margin:0 auto 20px}
+.hero h1{font-family:var(--font-head);font-size:36px;font-weight:500;line-height:1.11;max-width:640px;margin:0 auto}
+.hero .sub{color:var(--body);margin-top:12px;font-size:16px}
+.install{margin:28px auto 0;display:flex;align-items:center;gap:12px;background:var(--surface-soft);border-radius:9999px;height:48px;padding:0 20px;width:fit-content;max-width:100%}
+.install code{font-family:var(--font-mono);font-size:16px;color:var(--ink);white-space:nowrap}
+.install .copy{color:var(--mute);font-size:13px;font-family:var(--font-mono)}
+.hero-cta{display:flex;gap:10px;justify-content:center;margin-top:20px}
+.hero .btn-secondary{height:36px}
+
+/* section rhythm 88px */
+.section{margin-top:88px}
+.sec-head{text-align:center}
+.sec-head h2{font-family:var(--font-head);font-size:30px;font-weight:500;line-height:1.2}
+.sec-head p{color:var(--body);margin-top:8px}
+
+/* chips */
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.chip{border:1px solid var(--hairline);border-radius:9999px;padding:8px 16px;font-size:14px;font-weight:500;background:var(--canvas);color:var(--ink)}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* model grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+.model{border:1px solid var(--hairline);border-radius:12px;padding:20px;background:var(--canvas);display:flex;flex-direction:column}
+.model .m-ico{width:36px;height:36px;margin-bottom:12px}
+.model h3{font-family:var(--font-head);font-size:20px;font-weight:500}
+.model .m-desc{font-size:14px;color:var(--body);margin-top:4px;flex:1}
+.model .m-meta{font-size:12px;color:var(--mute);margin-top:12px}
+.model .cmd{margin-top:12px;display:flex;align-items:center;gap:8px;background:var(--surface-soft);border-radius:9999px;padding:6px 12px;font-family:var(--font-mono);font-size:14px}
+.model .cmd span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.model .cmd i{font-style:normal;margin-left:auto;color:var(--mute)}
+
+/* terminal card (featured model) */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.term{border:1px solid var(--hairline);border-radius:12px;padding:16px;background:var(--canvas)}
+.term .lights{display:flex;gap:6px;margin-bottom:12px}
+.term .lights span{width:12px;height:12px;border-radius:9999px}
+.term pre{font-family:var(--font-mono);font-size:14px;line-height:1.6;overflow:hidden;white-space:pre-wrap}
+.term .cm{color:var(--mute)}
+.term .ok{color:var(--t-green)}
+.opt-lbl{font-family:var(--font-head);font-size:20px;font-weight:500;margin-top:20px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag{border:1px solid var(--hairline-strong);border-radius:9999px;padding:8px 16px;font-family:var(--font-mono);font-size:14px;background:var(--canvas)}
+.tag.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tag.dis{color:var(--mute);background:var(--surface-soft);border-color:var(--surface-soft);text-decoration:line-through}
+.f-cta{display:flex;align-items:center;gap:10px;margin-top:24px}
+.f-cta .cmd-tag{background:var(--surface-soft);border-radius:9999px;padding:10px 18px;font-family:var(--font-mono);font-size:16px;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.community{margin-top:28px;border-top:1px solid var(--hairline);padding-top:20px}
+.community .q{font-size:18px;font-weight:500}
+.community .stars{letter-spacing:2px;font-size:14px;margin-top:6px}
+.community .stars span{color:var(--hairline-strong)}
+.community blockquote{font-size:16px;color:var(--body);margin-top:10px;line-height:1.5}
+.community .who{font-size:14px;color:var(--mute);margin-top:8px}
+
+/* cloud plan summary (checkout card) */
+.plan-sec{margin-top:88px}
+.plan-card{border:1px solid var(--hairline);border-radius:12px;padding:32px;display:grid;grid-template-columns:1fr 360px;gap:40px}
+.plan-lines .h{font-family:var(--font-head);font-size:24px;font-weight:600;margin-bottom:16px}
+.p-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--hairline);font-size:16px}
+.p-row .n{font-weight:500}
+.p-row .s{font-size:14px;color:var(--body)}
+.p-row .amt{font-family:var(--font-mono);font-size:14px}
+.sum{background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;padding:24px;height:fit-content}
+.sum h4{font-family:var(--font-head);font-size:20px;font-weight:600;margin-bottom:14px}
+.s-line{display:flex;justify-content:space-between;font-size:14px;color:var(--body);margin-bottom:10px}
+.s-line.total{color:var(--ink);font-weight:500;border-top:1px solid var(--hairline);padding-top:12px;font-size:16px}
+.sum .btn-primary{width:100%;margin-top:14px}
+.sum .note{font-size:12px;color:var(--mute);margin-top:12px;text-align:center}
+
+/* dark strip */
+.dark-cta{margin-top:88px;background:var(--surface-dark);color:var(--on-dark);border-radius:12px;padding:40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.dark-cta h2{font-family:var(--font-head);font-size:24px;font-weight:600;max-width:560px}
+.dark-cta p{color:var(--on-dark-mute);margin-top:6px;max-width:560px}
+.btn-pill-on-dark{background:#fff;color:var(--ink);border-radius:9999px;height:40px;padding:0 24px;font-size:14px;font-weight:500;display:inline-flex;align-items:center}
+
+/* footer */
+footer{border-top:1px solid var(--hairline);margin-top:88px;padding:32px 0}
+.f-row{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--body)}
+.f-row a{text-decoration:none}
+.f-row a:hover{text-decoration:underline}
+.copy{color:var(--mute)}
+
+@media (max-width:1023px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .split,.plan-card{grid-template-columns:1fr}
+  .nav-search{width:auto;flex:1}
+  .hero h1{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#" style="text-decoration:none">
+    <svg viewBox="0 0 26 26" aria-hidden="true">
+      <ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.8"/>
+      <circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.8"/>
+      <circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/>
+      <path d="M9 24.5v-4M17 24.5v-4" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4.5 15.5 2 13m19.5 2.5L24 13" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    Ollama
+  </a>
+  <nav class="nav-links">
+    <a href="#">Models</a><a href="#">Docs</a><a href="#">Pricing</a>
+  </nav>
+  <label class="nav-search">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#a3a3a3" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/></svg>
+    <input type="search" placeholder="Search models" aria-label="Search models">
+  </label>
+  <div class="nav-right">
+    <a class="btn btn-secondary" href="#" style="text-decoration:none">Sign in</a>
+    <a class="btn btn-primary" href="#" style="text-decoration:none">Download</a>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <!-- hero -->
+  <section class="hero">
+    <svg class="llama" viewBox="0 0 26 26" aria-hidden="true">
+      <ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.1"/>
+      <circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.1"/>
+      <circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/>
+      <path d="M9 24.5v-4M17 24.5v-4" stroke="#000" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M4.5 15.5 2 13m19.5 2.5L24 13" stroke="#000" stroke-width="1.1" stroke-linecap="round"/>
+    </svg>
+    <h1>The easiest way to run open models on your own machine</h1>
+    <p class="sub">Browse the library, pull a model, and start building — your data never leaves your device.</p>
+    <div class="install">
+      <code>curl -fsSL https://ollama.com/install.sh | sh</code>
+      <span class="copy">copy</span>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#" style="text-decoration:none">Download for macOS</a>
+      <a class="btn btn-secondary" href="#" style="text-decoration:none">All downloads</a>
+    </div>
+  </section>
+
+  <!-- model library -->
+  <section class="section">
+    <div class="sec-head">
+      <h2>Model library</h2>
+      <p>One command to run any of 10,000+ community and official models.</p>
+    </div>
+    <div class="chips" role="tablist">
+      <button class="chip active">All</button>
+      <button class="chip">Tools</button>
+      <button class="chip">Vision</button>
+      <button class="chip">Embedding</button>
+      <button class="chip">Cloud</button>
+      <button class="chip">Smallest</button>
+      <button class="chip">Newest</button>
+    </div>
+    <div class="grid">
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>llama3.2</h3>
+        <p class="m-desc">Meta's latest multilingual model, tuned for tool calling and on-device use.</p>
+        <p class="m-meta">3B · 8B · 70B · text · tools</p>
+        <div class="cmd"><span>ollama run llama3.2</span><i>2.1M pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>qwen3</h3>
+        <p class="m-desc">Alibaba's flagship open model with hybrid thinking modes and 119 languages.</p>
+        <p class="m-meta">0.6B · 8B · 32B · text · tools</p>
+        <div class="cmd"><span>ollama run qwen3</span><i>1.4M pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>deepseek-r1</h3>
+        <p class="m-desc">Reasoning-first model that shows its work — strong on math and code.</p>
+        <p class="m-meta">7B · 8B · 70B · text · tools</p>
+        <div class="cmd"><span>ollama run deepseek-r1</span><i>3.8M pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>gemma3</h3>
+        <p class="m-desc">Google's lightweight multimodal family with a 128K context window.</p>
+        <p class="m-meta">1B · 4B · 12B · vision</p>
+        <div class="cmd"><span>ollama run gemma3</span><i>2.7M pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>llava</h3>
+        <p class="m-desc">Large language and vision assistant — describe, read, and reason over images.</p>
+        <p class="m-meta">7B · 13B · vision</p>
+        <div class="cmd"><span>ollama run llava</span><i>980K pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>nomic-embed-text</h3>
+        <p class="m-desc">High-performing open embedding model for retrieval and RAG pipelines.</p>
+        <p class="m-meta">137M · embedding</p>
+        <div class="cmd"><span>ollama pull nomic-embed-text</span><i>5.2M pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/></svg>
+        <h3>mistral-small3.2</h3>
+        <p class="m-desc">Efficient European frontier model — 24B with vision and tool use.</p>
+        <p class="m-meta">24B · vision · tools</p>
+        <div class="cmd"><span>ollama run mistral-small3.2</span><i>740K pulls</i></div>
+      </article>
+      <article class="model">
+        <svg class="m-ico" viewBox="0 0 26 26"><ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="13" cy="8" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="11.4" cy="7.6" r="0.9" fill="currentColor"/><circle cx="14.6" cy="7.6" r="0.9" fill="currentColor"/></svg>
+        <h3>gpt-oss:20b</h3>
+        <p class="m-desc">OpenAI's open-weight model, configurable reasoning effort, MXFP4.</p>
+        <p class="m-meta">20B · 120B · text · tools</p>
+        <div class="cmd"><span>ollama run gpt-oss</span><i>4.1M pulls</i></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- featured model detail -->
+  <section class="section">
+    <div class="sec-head" style="margin-bottom:32px">
+      <h2>Featured: llama3.2-vision</h2>
+      <p>Image understanding that runs entirely on your laptop.</p>
+    </div>
+    <div class="split">
+      <div class="term" role="img" aria-label="Terminal showing ollama run output">
+        <div class="lights"><span style="background:var(--t-red)"></span><span style="background:var(--t-yellow)"></span><span style="background:var(--t-green)"></span></div>
+        <pre><span class="cm"># pull the 11B vision model (~7.9 GB)</span>
+$ ollama run llama3.2-vision:11b
+<span class="ok">success</span> · you can now talk to it
+
+<span class="cm"># ask about an image</span>
+&gt;&gt;&gt What's in this screenshot?
+ This is a settings page showing
+ a dark mode toggle in the ON
+ position and three model tags
+ selected below it.
+
+<span class="cm"># stats</span>
+tokens per second   41.2
+context window      8192
+quantization        Q4_K_M</pre>
+      </div>
+      <div>
+        <p style="font-size:16px;color:var(--body)">State-of-the-art image reasoning in an 11B package. Feed it screenshots, diagrams, or receipts and ask questions in plain language — weights stay on disk, requests stay offline.</p>
+        <p class="opt-lbl">Parameters</p>
+        <div class="tags">
+          <button class="tag on">11B · 7.9 GB</button>
+          <button class="tag">90B · 55 GB</button>
+        </div>
+        <p class="opt-lbl">Quantization</p>
+        <div class="tags">
+          <button class="tag on">Q4_K_M</button>
+          <button class="tag">Q8_0</button>
+          <button class="tag dis">FP16</button>
+        </div>
+        <div class="f-cta">
+          <span class="cmd-tag">ollama run llama3.2-vision:11b</span>
+          <button class="btn btn-primary">Copy</button>
+        </div>
+        <div class="community">
+          <p class="q">Community rating</p>
+          <p class="stars">★★★★★<span>★</span> <b>4.8</b> · 1,204 reviews</p>
+          <blockquote>"Runs on my 16 GB MacBook and reads receipts better than cloud OCR ever did."</blockquote>
+          <p class="who">— Sana M. · Pro plan member</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- cloud plan / checkout summary -->
+  <section class="plan-sec">
+    <div class="plan-card">
+      <div class="plan-lines">
+        <p class="h">Ollama Cloud — this month</p>
+        <div class="p-row"><div><p class="n">Pro subscription</p><p class="s">Data-center models · 1 seat</p></div><p class="amt">$20.00</p></div>
+        <div class="p-row"><div><p class="n">Token usage</p><p class="s">gpt-oss:120b · 3.4M tokens</p></div><p class="amt">$8.40</p></div>
+        <div class="p-row"><div><p class="n">Token usage</p><p class="s">qwen3:235b · 1.1M tokens</p></div><p class="amt">$4.10</p></div>
+        <div class="p-row" style="border-bottom:none"><div><p class="n">Overage credit</p><p class="s">Applied automatically</p></div><p class="amt">−$2.50</p></div>
+      </div>
+      <aside class="sum">
+        <h4>Invoice summary</h4>
+        <div class="s-line"><span>Subtotal</span><span>$30.00</span></div>
+        <div class="s-line"><span>Credits</span><span>−$2.50</span></div>
+        <div class="s-line"><span>Tax (est.)</span><span>$2.34</span></div>
+        <div class="s-line total"><span>Total due Nov 1</span><span>$29.84</span></div>
+        <a class="btn btn-primary" href="#" style="text-decoration:none">Pay invoice</a>
+        <p class="note">Cancel anytime · usage stays private</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- dark strip -->
+  <section class="dark-cta">
+    <div>
+      <h2>Your data stays yours.</h2>
+      <p>Every model in the library runs locally by default. Cloud calls are encrypted, never logged, and never used for training.</p>
+    </div>
+    <a class="btn-pill-on-dark" href="#">Read the privacy policy</a>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap f-row">
+    <a href="#">Download</a><a href="#">Blog</a><a href="#">Docs</a><a href="#">GitHub</a><a href="#">Discord</a><a href="#">X</a><a href="#">Contact</a><a href="#">Privacy</a><a href="#">Terms</a>
+    <span class="copy">© 2026 Ollama</span>
+  </div>
+</footer>
+</body>
+</html>

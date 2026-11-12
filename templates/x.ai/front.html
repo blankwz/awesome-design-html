@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grok Compute Marketplace — xAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#ffffff; --on-primary:#0a0a0a;
+    --ink:#ffffff; --ink-hover:#fafaf7; --body:#dadbdf; --body-mid:#7d8187; --mute:#7d8187;
+    --hairline:#212327; --canvas:#0a0a0a; --canvas-soft:#1a1c20; --canvas-card:#191919; --canvas-mid:#363a3f;
+    --accent-sunset:#ff7a17; --accent-sunset-soft:#ffc285; --accent-dusk:#7c3aed;
+    --accent-twilight:#c4b5fd; --accent-breeze:#a0c3ec; --accent-midnight:#0d1726;
+    --radius-sm:8px; --radius-pill:9999px;
+    --sp-xxs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px;
+    --sp-xl:24px; --sp-2xl:32px; --sp-3xl:48px; --sp-4xl:64px;
+    --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+    --font-mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--canvas)}
+  body{
+    font-family:var(--font-sans);font-weight:400;color:var(--ink);
+    background:var(--canvas);font-size:16px;line-height:24px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 var(--sp-xl)}
+  .eyebrow{
+    font-family:var(--font-mono);font-size:14px;line-height:20px;letter-spacing:1.4px;
+    text-transform:uppercase;color:var(--ink);
+  }
+  .eyebrow-sm{
+    font-family:var(--font-mono);font-size:12px;line-height:16px;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--body-mid);
+  }
+  .hairline{border:0;border-top:1px solid var(--hairline)}
+
+  /* ── Buttons: the pill is the brand ── */
+  .btn{
+    display:inline-flex;align-items:center;gap:var(--sp-sm);
+    font-family:var(--font-sans);font-weight:400;font-size:14px;line-height:20px;
+    border-radius:var(--radius-pill);cursor:pointer;white-space:nowrap;
+    transition:background .15s ease,border-color .15s ease;
+  }
+  .btn-primary{background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);padding:var(--sp-xs) var(--sp-md)}
+  .btn-outline{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.25);padding:var(--sp-sm) var(--sp-lg)}
+  .btn-outline:hover{border-color:rgba(255,255,255,.5)}
+  .btn-outline-sm{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.25);padding:var(--sp-xs) var(--sp-md)}
+
+  /* ── Nav ── */
+  .nav{
+    position:sticky;top:0;z-index:50;background:var(--canvas);
+    border-bottom:1px solid var(--hairline);
+    padding:var(--sp-md) var(--sp-xl);
+  }
+  .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:var(--sp-2xl)}
+  .logo{display:flex;align-items:center;gap:var(--sp-md)}
+  .logo-mark{width:26px;height:26px;display:block}
+  .logo-word{
+    font-size:20px;line-height:28px;letter-spacing:-.4px;color:var(--ink);
+  }
+  .nav-links{display:flex;gap:var(--sp-xl);flex:1}
+  .nav-link{font-size:14px;line-height:20px;color:var(--ink)}
+  .nav-link:hover{color:var(--body-mid)}
+  .nav-search{
+    display:flex;align-items:center;gap:var(--sp-sm);
+    background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--radius-pill);
+    padding:var(--sp-xs) var(--sp-md);width:240px;
+  }
+  .nav-search input{
+    background:none;border:0;outline:none;color:var(--ink);
+    font-family:var(--font-sans);font-size:14px;width:100%;
+  }
+  .nav-search input::placeholder{color:var(--body-mid)}
+  .nav-actions{display:flex;align-items:center;gap:var(--sp-lg)}
+  .icon-btn{
+    position:relative;width:36px;height:36px;border-radius:var(--radius-pill);
+    border:1px solid rgba(255,255,255,.25);background:transparent;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .icon-btn:hover{border-color:rgba(255,255,255,.5)}
+  .dot{
+    position:absolute;top:-2px;right:-2px;width:10px;height:10px;border-radius:9999px;
+    background:var(--accent-sunset);border:2px solid var(--canvas);
+  }
+  .avatar{
+    width:36px;height:36px;border-radius:9999px;border:1px solid var(--hairline);
+    background:linear-gradient(135deg,var(--accent-dusk),var(--accent-midnight));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;color:var(--accent-twilight);
+  }
+
+  /* ── Hero band ── */
+  .hero{padding:var(--sp-4xl) var(--sp-xl) var(--sp-3xl)}
+  .hero-inner{max-width:1200px;margin:0 auto}
+  .hero h1{
+    font-family:var(--font-sans);font-weight:400;
+    font-size:clamp(48px,7vw,72px);line-height:1.04;letter-spacing:-1.8px;
+    color:var(--ink);margin:var(--sp-lg) 0 var(--sp-xl);max-width:900px;
+  }
+  .hero p{font-size:18px;line-height:28px;color:var(--body);max-width:640px}
+  .hero-meta{display:flex;gap:var(--sp-2xl);margin-top:var(--sp-2xl)}
+  .hero-meta div{font-family:var(--font-mono);font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--body-mid)}
+  .hero-meta strong{display:block;font-family:var(--font-sans);font-size:24px;letter-spacing:-.6px;color:var(--ink);margin-bottom:var(--sp-xxs)}
+
+  /* ── Filter chips ── */
+  .filters{
+    display:flex;align-items:center;gap:var(--sp-sm);flex-wrap:wrap;
+    padding:var(--sp-lg) 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+  }
+  .chip{
+    font-family:var(--font-sans);font-size:14px;color:var(--ink);
+    background:transparent;border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-pill);
+    padding:var(--sp-xs) var(--sp-md);cursor:pointer;
+  }
+  .chip.on{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+  .chip:not(.on):hover{border-color:rgba(255,255,255,.5)}
+  .filters .count{margin-left:auto}
+
+  /* ── Product grid ── */
+  .grid-band{padding:var(--sp-3xl) 0}
+  .grid-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--sp-xl)}
+  .grid-head h2{font-weight:400;font-size:32px;line-height:36px;letter-spacing:-.6px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+  .card{
+    background:var(--canvas-card);border:1px solid var(--hairline);border-radius:var(--radius-sm);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .card-art{height:130px;position:relative;overflow:hidden}
+  .card-body{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-sm);flex:1}
+  .card-body h3{font-weight:400;font-size:20px;line-height:28px}
+  .card-body .desc{font-size:14px;line-height:20px;color:var(--body-mid);flex:1}
+  .card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+  .price{font-family:var(--font-mono);font-size:14px;letter-spacing:.8px;color:var(--ink)}
+  .price s{color:var(--body-mid);margin-right:var(--sp-sm);font-size:12px}
+  .badge{
+    display:inline-flex;align-items:center;
+    font-family:var(--font-mono);font-size:12px;letter-spacing:1.2px;text-transform:uppercase;
+    border-radius:var(--radius-pill);padding:var(--sp-xxs) var(--sp-sm);
+    border:1px solid var(--hairline);color:var(--body);
+  }
+  .badge-new{color:var(--accent-twilight);border-color:rgba(196,181,253,.35)}
+  .badge-sale{color:var(--accent-sunset-soft);border-color:rgba(255,194,133,.35)}
+  .stars{color:var(--accent-sunset-soft);font-size:12px;letter-spacing:2px}
+  .stars span{color:var(--body-mid);letter-spacing:0;margin-left:var(--sp-xs);font-size:12px}
+
+  /* art gradients — sunset / dusk / breeze / midnight moods */
+  .art-sunset{background:linear-gradient(135deg,#0d1726 0%,#7c3aed 55%,#ff7a17 100%)}
+  .art-dusk{background:radial-gradient(120% 140% at 20% 100%,#ff7a17 0%,#7c3aed 45%,#0d1726 100%)}
+  .art-breeze{background:linear-gradient(160deg,#0d1726 10%,#363a3f 50%,#a0c3ec 120%)}
+  .art-twilight{background:radial-gradient(100% 120% at 80% 0%,#c4b5fd 0%,#7c3aed 40%,#0a0a0a 100%)}
+  .art-ember{background:linear-gradient(200deg,#ffc285 0%,#ff7a17 35%,#0d1726 100%)}
+  .art-night{background:linear-gradient(135deg,#0a0a0a 30%,#0d1726 70%,#363a3f 100%)}
+  .art-glow{background:radial-gradient(90% 120% at 50% 110%,#a0c3ec 0%,#7c3aed 50%,#0a0a0a 100%)}
+  .art-flare{background:conic-gradient(from 210deg at 70% 30%,#ff7a17,#7c3aed,#0d1726 70%)}
+  .card-art svg{position:absolute;inset:0;width:100%;height:100%;opacity:.85}
+</style>
+</head>
+<body>
+
+<!-- ── Top nav ── -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <svg class="logo-mark" viewBox="0 0 26 26" fill="none">
+        <path d="M2 24 L13 2 L15.5 7.2 L9.6 19 L24 19 L24 24 Z" fill="#ffffff"/>
+        <path d="M16.4 2 H24 V9.8 Z" fill="#ffffff"/>
+      </svg>
+      <span class="logo-word">Grok&nbsp;Compute</span>
+    </a>
+    <nav class="nav-links">
+      <a class="nav-link" href="#">Models</a>
+      <a class="nav-link" href="#">Agent Kits</a>
+      <a class="nav-link" href="#">API Credits</a>
+      <a class="nav-link" href="#">Docs</a>
+      <a class="nav-link" href="#">Pricing</a>
+    </nav>
+    <div class="nav-search">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#7d8187"/><path d="M9.5 9.5 L13 13" stroke="#7d8187"/></svg>
+      <input type="text" placeholder="Search models, kits…">
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5 C4.5 1.5 3 3.5 3 6 V9 L1.8 11 H12.2 L11 9 V6 C11 3.5 9.5 1.5 7 1.5 Z" stroke="#fff"/><path d="M5.5 12.5 C5.8 13.2 8.2 13.2 8.5 12.5" stroke="#fff"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="btn-outline-sm btn">Cart · 3</button>
+      <div class="avatar">EK</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Hero band ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">01 — Compute Marketplace</span>
+    <h1>Frontier intelligence, metered by the token.</h1>
+    <p>Reserve GPU-seconds on Grok-4 class clusters, deploy agent kits into production, and top up API credits — all from one ledger.</p>
+    <div class="hero-meta">
+      <div><strong>12</strong>Model endpoints</div>
+      <div><strong>48</strong>Agent kits</div>
+      <div><strong>99.97%</strong>Cluster uptime</div>
+      <div><strong>$0.98M</strong>Credits settled / mo</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- ── Filter chips ── -->
+  <div class="filters">
+    <button class="chip on">All</button>
+    <button class="chip">Reasoning</button>
+    <button class="chip">Vision</button>
+    <button class="chip">Code</button>
+    <button class="chip">Voice</button>
+    <button class="chip">Agent Kits</button>
+    <button class="chip">Reserved GPUs</button>
+    <span class="eyebrow-sm count">24 results</span>
+  </div>
+
+  <!-- ── Product grid ── -->
+  <section class="grid-band">
+    <div class="grid-head">
+      <h2>Model endpoints</h2>
+      <a class="eyebrow-sm" href="#" style="color:var(--ink)">View all →</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-art art-sunset">
+          <svg viewBox="0 0 200 130" fill="none"><circle cx="150" cy="30" r="46" stroke="#ffc285" stroke-opacity=".5"/><circle cx="150" cy="30" r="26" stroke="#fff" stroke-opacity=".7"/><circle cx="150" cy="30" r="8" fill="#ff7a17"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">grok-4 · 256k ctx</span>
+          <h3>Grok-4 Heavy Tier</h3>
+          <p class="desc">Frontier reasoning endpoint with tool-use chains and 256k context.</p>
+          <div class="stars">★★★★★ <span>4.9 · 1,204</span></div>
+          <div class="card-meta">
+            <span class="price">$18.00 / M tok</span>
+            <span class="badge badge-new">New</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-dusk">
+          <svg viewBox="0 0 200 130" fill="none"><path d="M30 100 L70 40 L100 78 L130 30 L170 90" stroke="#fff" stroke-opacity=".65" stroke-width="1.5"/><circle cx="130" cy="30" r="4" fill="#ffc285"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">grok-4-vision</span>
+          <h3>Vision Multimodal</h3>
+          <p class="desc">Image + video frames grounded to text with spatial reasoning.</p>
+          <div class="stars">★★★★★ <span>4.8 · 862</span></div>
+          <div class="card-meta">
+            <span class="price">$9.50 / M tok</span>
+            <span class="badge">Popular</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-breeze">
+          <svg viewBox="0 0 200 130" fill="none"><rect x="40" y="35" width="120" height="60" rx="4" stroke="#a0c3ec" stroke-opacity=".7"/><path d="M52 78 L72 58 L88 70 L112 48 L148 70" stroke="#fff" stroke-opacity=".8"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">grok-code-fast</span>
+          <h3>Code Fast-1</h3>
+          <p class="desc">Latency-tuned completion endpoint for IDE agents and CI review.</p>
+          <div class="stars">★★★★☆ <span>4.7 · 2,310</span></div>
+          <div class="card-meta">
+            <span class="price"><s>$4.20</s> $2.90 / M tok</span>
+            <span class="badge badge-sale">Sale</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-twilight">
+          <svg viewBox="0 0 200 130" fill="none"><circle cx="100" cy="65" r="34" stroke="#c4b5fd" stroke-opacity=".8"/><path d="M100 31 V21 M100 109 V99 M66 65 H56 M144 65 H134" stroke="#c4b5fd" stroke-opacity=".8"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">grok-voice</span>
+          <h3>Conversational Voice</h3>
+          <p class="desc">Realtime speech-to-speech with custom persona cloning slots.</p>
+          <div class="stars">★★★★★ <span>4.9 · 540</span></div>
+          <div class="card-meta">
+            <span class="price">$0.04 / min</span>
+            <span class="badge">Beta</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-ember">
+          <svg viewBox="0 0 200 130" fill="none"><path d="M40 90 H160 M55 90 V60 M85 90 V45 M115 90 V70 M145 90 V35" stroke="#0d1726" stroke-opacity=".55" stroke-width="2"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">agent kit · 12 tools</span>
+          <h3>Research Agent Kit</h3>
+          <p class="desc">Browse, cite, synthesize. Ships with eval harness and guardrails.</p>
+          <div class="stars">★★★★★ <span>4.8 · 411</span></div>
+          <div class="card-meta">
+            <span class="price">$149 / seat · yr</span>
+            <span class="badge">Kit</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-night">
+          <svg viewBox="0 0 200 130" fill="none"><path d="M100 20 V110 M60 42 L140 88 M140 42 L60 88" stroke="#a0c3ec" stroke-opacity=".5"/><circle cx="100" cy="65" r="12" stroke="#fff" stroke-opacity=".8"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">reserved · 8×h100</span>
+          <h3>Dedicated Cluster — Week</h3>
+          <p class="desc">A full H100 node, yours for 168 hours. Priority queue included.</p>
+          <div class="stars">★★★★★ <span>5.0 · 96</span></div>
+          <div class="card-meta">
+            <span class="price">$6,400 / wk</span>
+            <span class="badge">Limited</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-glow">
+          <svg viewBox="0 0 200 130" fill="none"><path d="M50 95 Q100 15 150 95" stroke="#c4b5fd" stroke-opacity=".8"/><path d="M65 95 Q100 35 135 95" stroke="#fff" stroke-opacity=".5"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">agent kit · fine-tune</span>
+          <h3>Domain Tuner Kit</h3>
+          <p class="desc">Upload corpora, spin LoRA runs, A/B against base checkpoints.</p>
+          <div class="stars">★★★★☆ <span>4.6 · 188</span></div>
+          <div class="card-meta">
+            <span class="price">$299 / mo</span>
+            <span class="badge badge-new">New</span>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art art-flare">
+          <svg viewBox="0 0 200 130" fill="none"><circle cx="70" cy="50" r="18" stroke="#fff" stroke-opacity=".8"/><circle cx="130" cy="80" r="18" stroke="#0d1726" stroke-opacity=".6"/><path d="M86 58 L114 72" stroke="#fff" stroke-opacity=".8"/></svg>
+        </div>
+        <div class="card-body">
+          <span class="eyebrow-sm">api · prepay</span>
+          <h3>API Credits — $500 Pack</h3>
+          <p class="desc">Prepaid inference balance. Never expires, usable across endpoints.</p>
+          <div class="stars">★★★★★ <span>4.9 · 3,077</span></div>
+          <div class="card-meta">
+            <span class="price">$500.00</span>
+            <span class="badge">Credits</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>
+
+<!-- ── Featured detail row ── -->
+<section style="border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)">
+  <div class="wrap" style="padding-top:var(--sp-3xl);padding-bottom:var(--sp-3xl)">
+    <span class="eyebrow">02 — Featured</span>
+    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:var(--sp-2xl);margin-top:var(--sp-xl)">
+      <!-- gallery -->
+      <div>
+        <div class="card-art art-sunset" style="height:320px;border:1px solid var(--hairline);border-radius:var(--radius-sm)">
+          <svg viewBox="0 0 600 320" fill="none">
+            <circle cx="470" cy="90" r="120" stroke="#ffc285" stroke-opacity=".45"/>
+            <circle cx="470" cy="90" r="70" stroke="#fff" stroke-opacity=".6"/>
+            <circle cx="470" cy="90" r="22" fill="#ff7a17"/>
+            <path d="M60 260 H340 M90 260 V210 M150 260 V180 M210 260 V225 M270 260 V160 M330 260 V195" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-sm);margin-top:var(--sp-sm)">
+          <div class="card-art art-sunset" style="height:70px;border:1px solid rgba(255,255,255,.5);border-radius:var(--radius-sm)"></div>
+          <div class="card-art art-dusk" style="height:70px;border:1px solid var(--hairline);border-radius:var(--radius-sm);opacity:.7"></div>
+          <div class="card-art art-twilight" style="height:70px;border:1px solid var(--hairline);border-radius:var(--radius-sm);opacity:.7"></div>
+          <div class="card-art art-night" style="height:70px;border:1px solid var(--hairline);border-radius:var(--radius-sm);opacity:.7"></div>
+        </div>
+      </div>
+      <!-- detail -->
+      <div style="background:var(--canvas-card);border:1px solid var(--hairline);border-radius:var(--radius-sm);padding:var(--sp-2xl);display:flex;flex-direction:column;gap:var(--sp-lg)">
+        <div>
+          <span class="eyebrow-sm">grok-4 · sku gx4-heavy-01</span>
+          <h2 style="font-weight:400;font-size:32px;line-height:36px;letter-spacing:-.6px;margin-top:var(--sp-sm)">Grok-4 Heavy Tier</h2>
+          <div class="stars" style="margin-top:var(--sp-sm)">★★★★★ <span>4.9 · 1,204 reviews</span></div>
+        </div>
+        <p style="font-size:16px;line-height:24px;color:var(--body)">Our deepest reasoning stack: parallel CoT experts, verified tool chains, and a 256k window that holds whole codebases. Batch pricing drops to $12.80 / M tokens above 2B monthly tokens.</p>
+        <div>
+          <span class="eyebrow-sm">Context window</span>
+          <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)">
+            <button class="chip">32k</button>
+            <button class="chip on">128k</button>
+            <button class="chip">256k</button>
+          </div>
+        </div>
+        <div>
+          <span class="eyebrow-sm">Throughput class</span>
+          <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)">
+            <button class="chip">Standard</button>
+            <button class="chip on">Priority</button>
+            <button class="chip">Dedicated</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--sp-lg)">
+          <div style="display:flex;align-items:center;border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-pill)">
+            <button class="btn-outline-sm btn" style="border:0">−</button>
+            <span style="font-family:var(--font-mono);font-size:14px;min-width:32px;text-align:center">1</span>
+            <button class="btn-outline-sm btn" style="border:0">+</button>
+          </div>
+          <span style="font-size:14px;color:var(--body-mid)">× 1M token blocks</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--sp-lg);margin-top:var(--sp-sm)">
+          <span style="font-family:var(--font-mono);font-size:24px;letter-spacing:.5px">$18.00</span>
+          <button class="btn btn-primary" style="padding:var(--sp-sm) var(--sp-xl)">Add to cart</button>
+          <button class="btn btn-outline">Book a demo</button>
+        </div>
+        <!-- reviews snippet -->
+        <div style="border-top:1px solid var(--hairline);padding-top:var(--sp-lg);display:grid;gap:var(--sp-md)">
+          <span class="eyebrow-sm">Recent reviews</span>
+          <div>
+            <div style="font-size:14px;color:var(--ink)">“Cut our eval loop from 9 hours to 40 minutes.”</div>
+            <div class="eyebrow-sm" style="margin-top:var(--sp-xxs)">M. Okafor · Infra lead, Vantage Labs</div>
+          </div>
+          <div>
+            <div style="font-size:14px;color:var(--ink)">“The 256k window holds our entire monorepo. No RAG hacks.”</div>
+            <div class="eyebrow-sm" style="margin-top:var(--sp-xxs)">S. Lindqvist · Staff engineer, Fjord AI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Cart / checkout summary ── -->
+<div class="wrap" style="padding-top:var(--sp-3xl);padding-bottom:var(--sp-3xl)">
+  <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:var(--sp-2xl)">
+    <div>
+      <span class="eyebrow">03 — Cart</span>
+      <div style="margin-top:var(--sp-lg);border:1px solid var(--hairline);border-radius:var(--radius-sm)">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:var(--sp-lg);padding:var(--sp-xl);border-bottom:1px solid var(--hairline)">
+          <div>
+            <div style="font-size:16px">Grok-4 Heavy Tier <span class="eyebrow-sm" style="margin-left:var(--sp-sm)">256k · priority</span></div>
+            <div class="eyebrow-sm" style="margin-top:var(--sp-xxs)">1 × 1M token blocks</div>
+          </div>
+          <span class="price">$18.00</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:var(--sp-lg);padding:var(--sp-xl);border-bottom:1px solid var(--hairline)">
+          <div>
+            <div style="font-size:16px">Code Fast-1 <span class="badge badge-sale" style="margin-left:var(--sp-sm)">Sale</span></div>
+            <div class="eyebrow-sm" style="margin-top:var(--sp-xxs)">4 × 250M token blocks</div>
+          </div>
+          <span class="price">$11.60</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:var(--sp-lg);padding:var(--sp-xl)">
+          <div>
+            <div style="font-size:16px">API Credits</div>
+            <div class="eyebrow-sm" style="margin-top:var(--sp-xxs)">1 × $500 prepaid pack</div>
+          </div>
+          <span class="price">$500.00</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--canvas-card);border:1px solid var(--hairline);border-radius:var(--radius-sm);padding:var(--sp-2xl);align-self:start">
+      <span class="eyebrow-sm">Order summary</span>
+      <div style="display:grid;gap:var(--sp-md);margin-top:var(--sp-lg);font-size:14px;color:var(--body)">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span style="color:var(--ink)">$529.60</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Volume discount</span><span style="color:var(--accent-sunset-soft)">−$26.48</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Tax (8.25%)</span><span style="color:var(--ink)">$41.43</span></div>
+        <hr class="hairline" style="margin:var(--sp-sm) 0">
+        <div style="display:flex;justify-content:space-between;font-size:18px"><span style="color:var(--ink)">Total due</span><span style="font-family:var(--font-mono);letter-spacing:.5px">$544.55</span></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:var(--sp-sm) 0;margin-top:var(--sp-xl)">Checkout securely</button>
+      <p class="eyebrow-sm" style="margin-top:var(--sp-md);text-align:center">Billed to account · xai-7f2c-prod</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer style="border-top:1px solid var(--hairline);padding:var(--sp-3xl) var(--sp-xl)">
+  <div class="wrap" style="padding:0">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--sp-2xl)">
+      <div>
+        <div class="logo" style="margin-bottom:var(--sp-lg)">
+          <svg class="logo-mark" viewBox="0 0 26 26" fill="none"><path d="M2 24 L13 2 L15.5 7.2 L9.6 19 L24 19 L24 24 Z" fill="#fff"/><path d="M16.4 2 H24 V9.8 Z" fill="#fff"/></svg>
+          <span class="logo-word">Grok Compute</span>
+        </div>
+        <p style="font-size:14px;color:var(--body-mid);max-width:280px">Frontier compute, metered honestly. A marketplace operated by xAI.</p>
+        <div style="display:flex;gap:var(--sp-md);margin-top:var(--sp-lg)">
+          <a class="icon-btn" href="#" aria-label="X"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1 L12 12 M12 1 L1 12" stroke="#fff"/></svg></a>
+          <a class="icon-btn" href="#" aria-label="GitHub"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#fff"/><circle cx="6.5" cy="5" r="1.4" fill="#fff"/><path d="M4.6 11 C4.6 8.6 8.4 8.6 8.4 11" stroke="#fff"/></svg></a>
+          <a class="icon-btn" href="#" aria-label="Docs"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2 H11 V11 H2 Z M4.5 4.5 H8.5 M4.5 6.5 H8.5 M4.5 8.5 H7" stroke="#fff"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow-sm">Marketplace</span>
+        <div style="display:grid;gap:var(--sp-md);margin-top:var(--sp-lg);font-size:14px;color:var(--body)">
+          <a href="#">Model endpoints</a><a href="#">Agent kits</a><a href="#">Reserved GPUs</a><a href="#">API credits</a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow-sm">Company</span>
+        <div style="display:grid;gap:var(--sp-md);margin-top:var(--sp-lg);font-size:14px;color:var(--body)">
+          <a href="#">Research</a><a href="#">Careers</a><a href="#">Safety</a><a href="#">Press</a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow-sm">Dispatches</span>
+        <p style="font-size:14px;color:var(--body-mid);margin:var(--sp-lg) 0 var(--sp-md)">Monthly release notes. No marketing.</p>
+        <div style="display:flex;gap:var(--sp-sm)">
+          <input type="text" placeholder="you@company.com" style="flex:1;background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--radius-sm);padding:var(--sp-md) var(--sp-lg);color:var(--ink);font-family:var(--font-sans);font-size:14px;outline:none">
+          <button class="btn btn-outline-sm btn" style="padding:var(--sp-md) var(--sp-lg)">Join</button>
+        </div>
+      </div>
+    </div>
+    <hr class="hairline" style="margin:var(--sp-2xl) 0 var(--sp-lg)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--body-mid)">
+      <span class="eyebrow-sm" style="letter-spacing:1.2px">© 2026 XAI CORP</span>
+      <span class="eyebrow-sm" style="letter-spacing:1.2px">PRIVACY · TERMS · STATUS: ALL SYSTEMS NOMINAL</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

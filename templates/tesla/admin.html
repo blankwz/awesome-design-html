@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tesla Shop — Admin</title>
+<style>
+:root{
+  --blue:#3E6AE1;
+  --blue-dark:#3157bd;
+  --white:#FFFFFF;
+  --ash:#F4F4F4;
+  --carbon:#171A20;
+  --graphite:#393C41;
+  --pewter:#5C5E62;
+  --fog:#8E8E8E;
+  --cloud:#EEEEEE;
+  --pale:#D0D1D2;
+  --r-btn:4px;
+  --r-card:12px;
+  --t:.33s cubic-bezier(.5,0,0,.75);
+  --ok-bg:#e4efea; --ok-tx:#2e6b52;
+  --warn-bg:#f5eede; --warn-tx:#9a6f1f;
+  --bad-bg:#f6e4e2; --bad-tx:#a34138;
+  --neu-bg:#F4F4F4; --neu-tx:#5C5E62;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Universal Sans Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:14px;font-weight:400;line-height:1.43;color:var(--graphite);
+  background:var(--white);-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;transition:color var(--t)}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+svg{display:block}
+
+/* ---------- Shell ---------- */
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+
+/* ---------- Sidebar ---------- */
+.sidebar{border-right:1px solid var(--cloud);background:var(--white);position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.side-brand{padding:18px 24px;border-bottom:1px solid var(--cloud)}
+.wordmark{font-size:14px;font-weight:600;letter-spacing:.5em;color:var(--carbon);text-transform:uppercase}
+.wordmark small{display:block;letter-spacing:.14em;font-size:10px;font-weight:500;color:var(--pewter);margin-top:4px}
+.side-group{padding:20px 12px 4px}
+.side-label{font-size:12px;font-weight:500;color:var(--fog);padding:0 12px;margin-bottom:6px;text-transform:none}
+.side-item{
+  display:flex;align-items:center;gap:10px;padding:8px 12px;min-height:36px;
+  border-radius:var(--r-btn);font-size:14px;font-weight:500;color:var(--graphite);
+  transition:background-color .33s,color .33s;
+}
+.side-item:hover{background:var(--ash)}
+.side-item.active{background:var(--carbon);color:var(--white)}
+.side-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;flex:none}
+.side-item .count{margin-left:auto;font-size:12px;color:inherit;opacity:.7}
+.side-user{margin-top:auto;padding:16px;border-top:1px solid var(--cloud);display:flex;gap:12px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:var(--r-btn);flex:none;display:grid;place-items:center;font-size:13px;font-weight:500;background:var(--carbon);color:var(--white)}
+.side-user strong{display:block;font-size:14px;font-weight:500;color:var(--carbon)}
+.side-user span{font-size:12px;color:var(--pewter)}
+
+/* ---------- Topbar ---------- */
+.topbar{border-bottom:1px solid var(--cloud);padding:12px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;background:var(--white);z-index:40}
+.crumbs{color:var(--pewter)}
+.crumbs strong{color:var(--carbon);font-weight:500}
+.crumbs span{margin:0 8px}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--cloud);border-radius:var(--r-btn);padding:0 12px;height:36px;width:300px;margin-left:auto;color:var(--fog);transition:border-color var(--t)}
+.search:focus-within{border-color:var(--pale)}
+.search input{border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--carbon);background:transparent}
+.search input::placeholder{color:var(--fog)}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-btn);display:grid;place-items:center;color:var(--graphite);transition:background-color .33s}
+.icon-btn:hover{background:var(--ash)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;min-width:15px;height:15px;border-radius:50%;background:var(--blue);color:#fff;font-size:9px;font-weight:500;display:grid;place-items:center;padding:0 3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;line-height:1.2;min-height:40px;padding:4px 24px;border-radius:var(--r-btn);border:3px solid transparent;transition:background-color .33s,color .33s}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-secondary{background:var(--white);color:var(--graphite)}
+.btn-secondary:hover{background:var(--ash)}
+.btn-sm{min-height:36px;padding:4px 16px}
+
+/* ---------- Content ---------- */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px;background:var(--white)}
+.page-head{display:flex;align-items:end;justify-content:space-between;gap:24px}
+.page-head h1{font-size:28px;font-weight:500;line-height:1.2;color:var(--carbon)}
+.page-head p{color:var(--pewter);margin-top:4px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border:1px solid var(--cloud);border-radius:var(--r-card);padding:24px;transition:background-color .33s}
+.kpi .label{font-size:14px;color:var(--pewter)}
+.kpi .value{font-size:28px;font-weight:500;color:var(--carbon);margin:8px 0 4px}
+.kpi .delta{font-size:14px;font-weight:500}
+.delta.up{color:var(--ok-tx)}
+.delta.down{color:var(--bad-tx)}
+.kpi .sub{font-size:14px;color:var(--fog);margin-top:2px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:16px}
+.spark i{flex:1;background:var(--pale);border-radius:1px}
+.spark i.hi{background:var(--blue)}
+
+/* ---------- Charts ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{border:1px solid var(--cloud);border-radius:var(--r-card);padding:24px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.panel-head h3{font-size:17px;font-weight:500;color:var(--carbon)}
+.panel-head .hint{font-size:14px;color:var(--fog)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:36px;border-radius:2px;background:var(--pale)}
+.bar-col.hi i{background:var(--blue)}
+.bar-col .v{font-size:12px;color:var(--pewter)}
+.bar-col .m{font-size:12px;color:var(--fog)}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:18}
+.donut .c1{stroke:var(--carbon);stroke-dasharray:255 660}
+.donut .c2{stroke:var(--blue);stroke-dasharray:172 660;stroke-dashoffset:-255}
+.donut .c3{stroke:var(--pale);stroke-dasharray:137 660;stroke-dashoffset:-427}
+.donut .c4{stroke:var(--cloud);stroke-dasharray:96 660;stroke-dashoffset:-564}
+.donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut-center strong{display:block;font-size:22px;font-weight:500;color:var(--carbon)}
+.donut-center span{font-size:12px;color:var(--fog)}
+.legend{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--pewter)}
+.legend .sw{width:10px;height:10px;border-radius:2px;flex:none}
+.legend b{margin-left:auto;color:var(--carbon);font-weight:500}
+
+/* ---------- Table ---------- */
+.badge{display:inline-block;font-size:12px;font-weight:500;border-radius:var(--r-btn);padding:3px 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:14px;font-weight:500;color:var(--pewter);background:var(--ash);padding:12px 16px}
+td{padding:12px 16px;border-bottom:1px solid var(--cloud);color:var(--graphite)}
+td.strong{color:var(--carbon);font-weight:500}
+.row-act{font-size:14px;font-weight:500;color:var(--pewter);min-height:32px;padding:4px 12px;border-radius:var(--r-btn);transition:background-color .33s,color .33s}
+.row-act:hover{background:var(--ash);color:var(--carbon)}
+
+/* ---------- Feed + settings ---------- */
+.feed-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--cloud)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:32px;height:32px;border-radius:var(--r-btn);flex:none;display:grid;place-items:center;font-size:12px;font-weight:500;background:var(--ash);color:var(--graphite)}
+.feed-item p{font-size:14px;color:var(--pewter)}
+.feed-item strong{color:var(--carbon);font-weight:500}
+.feed-item em{font-style:normal;display:block;font-size:12px;color:var(--fog);margin-top:2px}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500;color:var(--carbon)}
+.field input,.field select{border:1px solid var(--cloud);border-radius:var(--r-btn);min-height:40px;padding:4px 12px;font-family:inherit;font-size:14px;font-weight:400;color:var(--carbon);outline:none;background:var(--white);transition:border-color var(--t)}
+.field input:focus,.field select:focus{border-color:var(--blue)}
+.toggle{width:40px;height:22px;border-radius:11px;background:var(--pale);position:relative;flex:none;transition:background-color .33s}
+.toggle i{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--white);transition:left .33s}
+.toggle.on{background:var(--carbon)}
+.toggle.on i{left:21px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--cloud)}
+.setting-row:last-of-type{border-bottom:none}
+.setting-row .t{font-size:14px;font-weight:500;color:var(--carbon)}
+.setting-row .d{font-size:12px;color:var(--fog)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="side-brand"><span class="wordmark">TESLA<small>Shop Admin</small></span></div>
+    <nav class="side-group">
+      <p class="side-label">Overview</p>
+      <a class="side-item active" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12L5 3H2"/><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg>Orders<span class="count">41</span></a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M21 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2M3 8h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/><path d="M9 13h6"/></svg>Products</a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Operations</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M19 8v6M22 11h-6"/></svg>Customers</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 5-6"/></svg>Analytics</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>Fulfillment<span class="count">9</span></a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Settings</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>Store settings</a>
+    </nav>
+    <div class="side-user">
+      <span class="avatar">RV</span>
+      <div><strong>Riley Vaughn</strong><span>Shop Operations</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div>
+    <header class="topbar">
+      <div class="crumbs">Shop <span>/</span> <strong>Dashboard</strong></div>
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search orders, products, customers">
+      </label>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot">6</span>
+      </button>
+      <button class="icon-btn" aria-label="Help"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></button>
+      <span class="avatar" style="width:32px;height:32px;font-size:11px;border-radius:50%">RV</span>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Shop overview</h1>
+          <p>Order flow, inventory, and fulfillment — Tuesday, 26 Oct 2026.</p>
+        </div>
+        <div style="display:flex;gap:16px">
+          <button class="btn btn-secondary btn-sm">Export report</button>
+          <button class="btn btn-primary btn-sm">Restock request</button>
+        </div>
+      </div>
+      <!-- ============ KPI ROW ============ -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="label">Orders this week</p>
+          <p class="value">2,318</p>
+          <p class="delta up">↑ 9.2% vs last week</p>
+          <p class="sub">184 contain charging</p>
+          <div class="spark"><i style="height:30%"></i><i style="height:44%"></i><i style="height:38%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:70%"></i><i class="hi" style="height:100%"></i><i style="height:66%"></i><i style="height:76%"></i><i style="height:84%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Revenue</p>
+          <p class="value">$612,440</p>
+          <p class="delta up">↑ 6.8% vs last week</p>
+          <p class="sub">Accessories 71% of mix</p>
+          <div class="spark"><i style="height:36%"></i><i style="height:40%"></i><i style="height:50%"></i><i class="hi" style="height:96%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:72%"></i><i style="height:68%"></i><i style="height:78%"></i><i style="height:86%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Avg. fulfillment</p>
+          <p class="value">2.4 days</p>
+          <p class="delta up">↓ 0.3 days faster</p>
+          <p class="sub">West coast 1.9 days</p>
+          <div class="spark"><i style="height:88%"></i><i style="height:82%"></i><i style="height:84%"></i><i style="height:74%"></i><i style="height:76%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:54%"></i><i style="height:46%"></i><i class="hi" style="height:30%"></i><i style="height:38%"></i><i style="height:34%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Returns</p>
+          <p class="value">23</p>
+          <p class="delta down">↑ 5 vs last week</p>
+          <p class="sub">1.0% of orders</p>
+          <div class="spark"><i style="height:24%"></i><i style="height:30%"></i><i style="height:28%"></i><i style="height:42%"></i><i style="height:36%"></i><i style="height:48%"></i><i class="hi" style="height:94%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:38%"></i></div>
+        </div>
+      </section>
+
+      <!-- ============ CHARTS ============ -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head"><h3>Orders by month</h3><span class="hint">2026 · all accessories</span></div>
+          <div class="bars">
+            <div class="bar-col"><span class="v">1.6k</span><i style="height:32%"></i><span class="m">Nov</span></div>
+            <div class="bar-col"><span class="v">2.2k</span><i style="height:44%"></i><span class="m">Dec</span></div>
+            <div class="bar-col"><span class="v">1.4k</span><i style="height:28%"></i><span class="m">Jan</span></div>
+            <div class="bar-col"><span class="v">1.7k</span><i style="height:34%"></i><span class="m">Feb</span></div>
+            <div class="bar-col"><span class="v">1.9k</span><i style="height:38%"></i><span class="m">Mar</span></div>
+            <div class="bar-col"><span class="v">2.1k</span><i style="height:42%"></i><span class="m">Apr</span></div>
+            <div class="bar-col"><span class="v">2.6k</span><i style="height:52%"></i><span class="m">May</span></div>
+            <div class="bar-col"><span class="v">2.4k</span><i style="height:48%"></i><span class="m">Jun</span></div>
+            <div class="bar-col"><span class="v">3.0k</span><i style="height:60%"></i><span class="m">Jul</span></div>
+            <div class="bar-col"><span class="v">3.4k</span><i style="height:68%"></i><span class="m">Aug</span></div>
+            <div class="bar-col"><span class="v">3.1k</span><i style="height:62%"></i><span class="m">Sep</span></div>
+            <div class="bar-col hi"><span class="v">4.2k</span><i style="height:92%"></i><span class="m">Oct</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Revenue mix</h3><span class="hint">by category</span></div>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="105" stroke="var(--ash)" stroke-width="18"></circle>
+                <circle class="c1" cx="110" cy="110" r="105"></circle>
+                <circle class="c2" cx="110" cy="110" r="105"></circle>
+                <circle class="c3" cx="110" cy="110" r="105"></circle>
+                <circle class="c4" cx="110" cy="110" r="105"></circle>
+              </svg>
+              <div class="donut-center"><div><strong>$8.6M</strong><span>YTD revenue</span></div></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:var(--carbon)"></span>Charging<b>39%</b></div>
+              <div class="row"><span class="sw" style="background:var(--blue)"></span>Interior &amp; liners<b>26%</b></div>
+              <div class="row"><span class="sw" style="background:var(--pale)"></span>Wheels &amp; keys<b>21%</b></div>
+              <div class="row"><span class="sw" style="background:var(--cloud)"></span>Apparel &amp; lifestyle<b>14%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TABLE + SIDE PANELS ============ -->
+      <section style="display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start">
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="panel-head" style="padding:24px 24px 16px;margin-bottom:0">
+            <h3>Recent orders</h3>
+            <span class="hint">Showing 8 of 2,318</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px"><input type="checkbox" style="accent-color:var(--blue)"></th>
+                <th>Order</th>
+                <th>Items</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102944</td><td>Wall Connector ×1</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Delivered</span></td><td class="strong">$420.00</td><td>Oct 26</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102943</td><td>All-Weather Liners ×2</td><td><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">In fulfillment</span></td><td class="strong">$450.00</td><td>Oct 26</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102941</td><td>Key Fob ×1, Console Tray ×1</td><td><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx)">Processing</span></td><td class="strong">$223.00</td><td>Oct 25</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102938</td><td>Mobile Connector ×1</td><td><span class="badge" style="background:var(--bad-bg);color:var(--bad-tx)">Refund issued</span></td><td class="strong">−$300.00</td><td>Oct 25</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102935</td><td>Sunshade ×1</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Delivered</span></td><td class="strong">$110.00</td><td>Oct 24</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102931</td><td>J1772 Adapter ×3</td><td><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">In fulfillment</span></td><td class="strong">$180.00</td><td>Oct 24</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102927</td><td>Cyberwhistle ×1</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Delivered</span></td><td class="strong">$50.00</td><td>Oct 23</td><td style="text-align:right"><button class="row-act">View</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--blue)"></td><td class="strong">#102924</td><td>Wall Connector ×4</td><td><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx)">Awaiting payment</span></td><td class="strong">$1,680.00</td><td>Oct 23</td><td style="text-align:right"><button class="row-act">Review</button></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--cloud);color:var(--pewter)">
+            <span>Page 1 of 290</span>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-secondary btn-sm" disabled style="opacity:.45;cursor:default">Previous</button>
+              <button class="btn btn-secondary btn-sm">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Activity feed -->
+          <div class="panel">
+            <div class="panel-head"><h3>Activity</h3><span class="hint">live</span></div>
+            <div class="feed-item" style="padding-top:0">
+              <span class="feed-dot" style="background:var(--carbon);color:#fff">SW</span>
+              <p><strong>Sam Whitaker</strong> ordered Wall Connector with installation <em>4 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot">FY</span>
+              <p>Fulfillment batch <strong>#FR-118</strong> shipped from Lathrop — 214 units <em>22 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot" style="background:var(--ash)">IN</span>
+              <p>Inventory alert: <strong>Cyberwhistle</strong> down to 38 units <em>1 hr ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot">PD</span>
+              <p>Refund of <strong>$300.00</strong> processed for order #102938 <em>2 hrs ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot">PR</span>
+              <p>Price update published — <strong>Glass Roof Sunshade</strong> to $110 <em>5 hrs ago</em></p>
+            </div>
+          </div>
+
+          <!-- Quick settings -->
+          <div class="panel">
+            <div class="panel-head"><h3>Quick settings</h3></div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:8px">
+              <label class="field">Storefront banner
+                <input type="text" value="0% APR available on Model Y orders placed this week">
+              </label>
+              <label class="field">Default shipping region
+                <select><option>United States</option><option>Canada</option><option>Europe</option><option>Asia-Pacific</option></select>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Free shipping over $100</p><p class="d">US domestic only</p></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Install scheduling</p><p class="d">Show "Schedule Install" CTA</p></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Low-stock alerts</p><p class="d">Notify below 50 units</p></div>
+              <span class="toggle"><i></i></span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:20px">Save changes</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

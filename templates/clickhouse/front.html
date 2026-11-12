@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClickHouse — Query Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#faff69; --primary-active:#e6eb52; --primary-disabled:#3a3a1f;
+  --ink:#ffffff; --body:#cccccc; --body-strong:#e6e6e6; --muted:#888888; --muted-soft:#5a5a5a;
+  --hairline:#2a2a2a; --hairline-strong:#3a3a3a;
+  --canvas:#0a0a0a; --surface-soft:#121212; --surface-card:#1a1a1a; --surface-elevated:#242424;
+  --on-primary:#0a0a0a; --on-dark:#ffffff;
+  --emerald:#22c55e; --rose:#ef4444; --blue:#3b82f6;
+  --font-sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --r-md:8px; --r-lg:12px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px; --sp-section:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-sans)}
+h1,h2{font-weight:700;color:var(--on-dark);letter-spacing:-0.035em}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--sp-lg)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);border-radius:var(--r-md);font-size:14px;font-weight:600}
+.btn:active{background:var(--primary-active);border-color:var(--primary-active)}
+.btn--secondary{background:var(--surface-card);color:var(--on-dark);border-color:transparent}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-pill);background:var(--surface-card);border:1px solid var(--hairline);color:var(--on-dark)}
+.text-link{color:var(--primary);text-decoration:underline;text-underline-offset:3px;font-weight:500}
+
+/* nav */
+.topnav{height:64px;display:flex;align-items:center;gap:var(--sp-lg)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--on-dark);letter-spacing:-0.02em}
+.logo .cube{width:22px;height:22px;background:var(--primary);border-radius:4px;transform:rotate(45deg);transform-origin:center}
+.navlinks{display:flex;gap:var(--sp-md)}
+.navlinks a{font-size:14px;font-weight:500;color:var(--muted);padding:8px 14px;border-radius:var(--r-md)}
+.navlinks a.active{background:var(--surface-card);color:var(--on-dark)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.bag{position:relative}
+.bag .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--primary);color:var(--on-primary);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* hero */
+.hero{padding:var(--sp-section) 0 var(--sp-xl)}
+.hero-grid{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xl);align-items:center}
+.hero h1{font-size:64px;line-height:1.05;margin-bottom:var(--sp-md)}
+.hero .sub{font-size:18px;color:var(--body);max-width:520px;margin-bottom:var(--sp-lg)}
+.hero .cta-row{display:flex;align-items:center;gap:var(--sp-lg)}
+.stats-inline{display:flex;gap:var(--sp-xl);margin-top:var(--sp-xl)}
+.stat .v{font-size:44px;font-weight:700;letter-spacing:-0.03em;color:var(--primary);line-height:1}
+.stat .t{font-size:13px;color:var(--muted);margin-top:6px}
+.code-card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.code-card .bar{display:flex;align-items:center;gap:6px;margin-bottom:var(--sp-md)}
+.code-card .bar i{width:10px;height:10px;border-radius:50%;background:var(--surface-elevated);font-style:normal}
+.code-card .bar i.y{background:var(--primary)}
+.code-card .sql{font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--body);white-space:pre;overflow-x:auto}
+.code-card .sql .k{color:var(--blue)} .code-card .sql .f{color:var(--primary)} .code-card .sql .c{color:var(--muted-soft)}
+.code-card .result{margin-top:var(--sp-md);padding-top:var(--sp-md);border-top:1px solid var(--hairline);display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.code-card .result .ms{color:var(--primary)}
+
+/* marketplace */
+.mk-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-md);padding:var(--sp-lg) 0;border-top:1px solid var(--hairline)}
+.mk-head h2{font-size:40px}
+.chips{display:flex;gap:var(--sp-sm);flex-wrap:wrap;padding-bottom:var(--sp-lg)}
+.chip{font-size:13px;font-weight:500;color:var(--muted);background:transparent;border:1px solid var(--hairline);border-radius:var(--r-md);padding:8px 14px}
+.chip.active{background:var(--surface-card);color:var(--on-dark)}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);padding-bottom:var(--sp-section)}
+.qcard{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-sm)}
+.qcard.feature{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.qcard.feature h3,.qcard.feature .price,.qcard.feature .stars b{color:var(--on-primary)}
+.qcard.feature .stars{color:rgba(10,10,10,.7)}
+.qcard .cat{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.qcard.feature .cat{color:rgba(10,10,10,.6)}
+.qcard h3{font-size:16px;font-weight:600;color:var(--on-dark);letter-spacing:-0.01em}
+.qcard .by{font-size:13px;color:var(--muted)}
+.qcard .price{font-size:14px;font-weight:600;color:var(--on-dark)}
+.meta-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;font-size:13px}
+.stars{color:var(--primary);letter-spacing:1px}
+.stars b{color:var(--on-dark);font-weight:500;letter-spacing:0;margin-left:4px}
+.qcard.feature .stars b{letter-spacing:0}
+.badge-y{display:inline-block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:var(--primary);color:var(--on-primary);border-radius:var(--r-pill);padding:4px 12px;width:fit-content}
+.badge-pill{display:inline-block;font-size:12px;font-weight:500;background:var(--surface-elevated);color:var(--on-dark);border-radius:var(--r-pill);padding:4px 12px;width:fit-content}
+
+/* detail row */
+.detail{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xl);margin-bottom:var(--sp-section)}
+.stage{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.stage .sql{font-family:var(--font-mono);font-size:13px;line-height:1.65;color:var(--body);white-space:pre;overflow-x:auto;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-md)}
+.stage .sql .k{color:var(--blue)} .stage .sql .f{color:var(--primary)} .stage .sql .c{color:var(--muted-soft)}
+.stage .bench{display:flex;gap:var(--sp-md);margin-top:var(--sp-md)}
+.bench-card{flex:1;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-sm) var(--sp-md)}
+.bench-card .v{font-size:20px;font-weight:700;color:var(--primary);letter-spacing:-0.02em}
+.bench-card .t{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.d-info h2{font-size:40px;margin-bottom:var(--sp-xxs)}
+.d-info .byline{font-size:14px;color:var(--muted);margin-bottom:var(--sp-md)}
+.d-info .desc{margin-bottom:var(--sp-lg)}
+.opt-label{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:var(--sp-md) 0 var(--sp-sm)}
+.opt-row{display:flex;gap:var(--sp-sm);flex-wrap:wrap}
+.opt{border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r-md);padding:8px 14px;font-size:13px;font-weight:500;color:var(--body)}
+.opt.active{border-color:var(--primary);color:var(--on-dark);background:var(--surface-card)}
+.qty{display:inline-flex;align-items:center;background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-md);height:40px}
+.qty button{width:40px;height:100%;background:transparent;border:0;font-size:15px;color:var(--on-dark)}
+.qty span{width:44px;text-align:center;font-size:14px;font-weight:600;color:var(--on-dark)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-xl);flex-wrap:wrap}
+.buy-row .big{font-size:28px;font-weight:700;color:var(--primary);letter-spacing:-0.02em}
+.review{background:var(--surface-card);border-radius:var(--r-lg);padding:var(--sp-md);margin-top:var(--sp-sm)}
+.review .top{display:flex;align-items:center;gap:var(--sp-sm);margin-bottom:var(--sp-xxs)}
+.review .ava{width:36px;height:36px;border-radius:var(--r-pill);background:var(--surface-elevated);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.review .who{font-size:14px;font-weight:600;color:var(--on-dark)}
+.review .role{font-size:12px;color:var(--muted)}
+.review p{font-size:14px}
+
+/* cart */
+.cart{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.cart h3{font-size:20px;margin-bottom:var(--sp-md)}
+.ci{display:flex;gap:var(--sp-sm);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline);align-items:center}
+.ci .art{width:48px;height:48px;border-radius:var(--r-md);background:var(--surface-elevated);border:1px solid var(--hairline-strong);flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+.ci .n{font-size:14px;font-weight:600;color:var(--on-dark)}
+.ci .m{font-size:12px;color:var(--muted)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:600;color:var(--on-dark)}
+.sum{margin-top:var(--sp-md);font-size:14px}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0}
+.sum .r.total{border-top:1px solid var(--hairline-strong);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:600;color:var(--on-dark)}
+.cart .btn{width:100%;margin-top:var(--sp-md)}
+.cart-note{font-size:12px;color:var(--muted-soft);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* yellow cta band */
+.cta-band{background:var(--primary);color:var(--on-primary);border-radius:var(--r-lg);padding:64px;display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:center;margin-bottom:var(--sp-section)}
+.cta-band h2{color:var(--on-primary);font-size:40px;margin-bottom:var(--sp-sm)}
+.cta-band p{color:rgba(10,10,10,.75);margin-bottom:var(--sp-lg)}
+.cta-band .btn{background:var(--canvas);color:var(--on-primary);border-color:var(--canvas)}
+.sql-mini{font-family:var(--font-mono);font-size:13px;line-height:1.6;background:var(--canvas);color:var(--body);border-radius:var(--r-md);padding:var(--sp-md);white-space:pre;overflow-x:auto}
+.sql-mini .f{color:var(--primary)}
+
+/* footer */
+footer{background:var(--canvas);color:var(--muted);padding:64px 0;border-top:1px solid var(--hairline)}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);padding-bottom:var(--sp-xl)}
+.foot-grid h4{color:var(--on-dark);font-size:14px;font-weight:600;margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;padding:6px 0}
+.foot-grid a:hover{color:var(--body-strong)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--sp-lg);border-top:1px solid var(--hairline);gap:var(--sp-md);flex-wrap:wrap}
+.legal{font-size:14px}
+.newsletter{display:flex;gap:var(--sp-sm)}
+.newsletter input{background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-md);height:40px;padding:0 14px;color:var(--on-dark);font-size:14px;width:260px;font-family:var(--font-sans)}
+.newsletter input::placeholder{color:var(--muted-soft)}
+
+@media (max-width:960px){
+  .hero-grid,.detail,.duo,.cta-band{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:36px}
+  .navlinks{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap topnav">
+  <a class="logo" href="#"><span class="cube"></span>ClickHouse</a>
+  <nav class="navlinks">
+    <a href="#">Product</a><a href="#">Use cases</a><a href="#" class="active">Marketplace</a><a href="#">Pricing</a><a href="#">Resources</a>
+  </nav>
+  <div class="nav-right">
+    <a class="btn--secondary btn" href="#">Sign in</a>
+    <button class="icon-btn bag" aria-label="Cart">▤<span class="dot">2</span></button>
+    <div style="width:36px;height:36px;border-radius:9999px;background:var(--surface-elevated);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">KV</div>
+  </div>
+</div>
+
+<section class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1>The fastest queries, packaged</h1>
+      <p class="sub">Install production-grade query packs, materialized-view blueprints, and integrations — benchmarked on real ClickHouse clusters.</p>
+      <div class="cta-row">
+        <a class="btn" href="#market">Browse the marketplace</a>
+        <a class="text-link" href="#featured">See the featured pack →</a>
+      </div>
+      <div class="stats-inline">
+        <div class="stat"><div class="v">2.8k+</div><div class="t">Query packs</div></div>
+        <div class="stat"><div class="v">74k+</div><div class="t">Installs</div></div>
+        <div class="stat"><div class="v">99.99%</div><div class="t">Uptime SLA</div></div>
+      </div>
+    </div>
+    <div class="code-card">
+      <div class="bar"><i class="y"></i><i></i><i></i></div>
+      <div class="sql"><span class="c">-- funnel analysis, 90-day window</span>
+<span class="k">SELECT</span> step, <span class="f">count</span>() AS users
+<span class="k">FROM</span> events
+<span class="k">WHERE</span> event_date ≥ today() - 90
+<span class="k">GROUP BY</span> step
+<span class="k">ORDER BY</span> users <span class="k">DESC</span></div>
+      <div class="result">✓ 5 rows in set · <span class="ms">0.018 sec</span> · 8.2M rows scanned</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="market">
+  <div class="mk-head">
+    <h2>Marketplace</h2>
+    <input type="search" placeholder="Search packs, integrations…" aria-label="Search"
+      style="height:40px;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:0 14px;font-size:14px;width:300px;background:var(--surface-card);color:var(--on-dark);font-family:var(--font-sans)">
+  </div>
+  <div class="chips">
+    <button class="chip active">All</button>
+    <button class="chip">Query packs</button>
+    <button class="chip">Materialized views</button>
+    <button class="chip">Integrations</button>
+    <button class="chip">Monitoring</button>
+    <button class="chip">Migration</button>
+  </div>
+
+  <div class="grid">
+    <article class="qcard feature">
+      <span class="badge-y" style="background:var(--canvas);color:var(--on-primary)">Featured</span>
+      <p class="cat">Query packs</p>
+      <h3>Funnel Analytics Pro</h3>
+      <p class="by">by ClickHouse team</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.9</b></span><span class="price">$29/mo</span></div>
+    </article>
+    <article class="qcard">
+      <span class="badge-y">New</span>
+      <p class="cat">Materialized views</p>
+      <h3>Rollup Blueprints</h3>
+      <p class="by">by Altinity workshop</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.8</b></span><span class="price">$19/mo</span></div>
+    </article>
+    <article class="qcard">
+      <p class="cat">Integrations</p>
+      <h3>Kafka Ingest Kit</h3>
+      <p class="by">by Streamline Ops</p>
+      <div class="meta-row"><span class="stars">★★★★☆<b>4.7</b></span><span class="price">Free</span></div>
+    </article>
+    <article class="qcard">
+      <p class="cat">Monitoring</p>
+      <h3>Query Log Sentinel</h3>
+      <p class="by">by Periscope Data</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.8</b></span><span class="price">$24/mo</span></div>
+    </article>
+    <article class="qcard">
+      <span class="badge-y">New</span>
+      <p class="cat">Migration</p>
+      <h3>Postgres → CH Mover</h3>
+      <p class="by">by Datafold crew</p>
+      <div class="meta-row"><span class="stars">★★★★☆<b>4.6</b></span><span class="price">$39/mo</span></div>
+    </article>
+    <article class="qcard">
+      <p class="cat">Query packs</p>
+      <h3>Session Replay SQL</h3>
+      <p class="by">by ClickHouse team</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.9</b></span><span class="price">$15/mo</span></div>
+    </article>
+    <article class="qcard">
+      <p class="cat">Monitoring</p>
+      <h3>Merge Tree Doctor</h3>
+      <p class="by">by Altinity workshop</p>
+      <div class="meta-row"><span class="stars">★★★★☆<b>4.5</b></span><span class="price">Free</span></div>
+    </article>
+    <article class="qcard">
+      <p class="cat">Integrations</p>
+      <h3>Grafana Dash Pack</h3>
+      <p class="by">by Observa Group</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.7</b></span><span class="price">$12/mo</span></div>
+    </article>
+  </div>
+
+  <div class="duo" id="featured">
+    <div class="detail">
+      <div>
+        <div class="stage">
+          <div class="sql"><span class="c">-- Funnel Analytics Pro · retention cohort</span>
+<span class="k">WITH</span> first_seen <span class="k">AS</span> (...)
+<span class="k">SELECT</span> cohort_week,
+       <span class="f">countIf</span>(days_later = 7)  / users AS w1,
+       <span class="f">countIf</span>(days_later = 30) / users AS w4
+<span class="k">FROM</span> activity
+<span class="k">GROUP BY</span> cohort_week</div>
+          <div class="bench">
+            <div class="bench-card"><div class="v">0.04s</div><div class="t">P50 latency</div></div>
+            <div class="bench-card"><div class="v">31x</div><div class="t">vs. warehouse</div></div>
+            <div class="bench-card"><div class="v">42</div><div class="t">Queries inside</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="d-info">
+        <h2>Funnel Analytics Pro</h2>
+        <div class="byline"><span class="stars">★★★★★<b>4.9</b></span> &nbsp;·&nbsp; 9,431 installs &nbsp;·&nbsp; by ClickHouse team</div>
+        <p class="desc">Forty-two production-tuned queries covering funnels, retention cohorts, path analysis, and sessionization — each with a materialized-view blueprint and a benchmark harness against your own schema.</p>
+        <p class="opt-label">Cluster size</p>
+        <div class="opt-row">
+          <button class="opt">Single node</button>
+          <button class="opt active">Cluster · 3+ nodes</button>
+          <button class="opt">Cloud dedicated</button>
+        </div>
+        <p class="opt-label">Billing</p>
+        <div class="opt-row">
+          <button class="opt active">Annual · $290/yr</button>
+          <button class="opt">Monthly · $29/mo</button>
+        </div>
+        <div class="buy-row">
+          <div class="qty"><button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button></div>
+          <span class="big">$290 / yr</span>
+          <a class="btn" href="#cart">Add to org</a>
+        </div>
+        <div class="review">
+          <div class="top"><div class="ava">PN</div><div><div class="who">Priya Nair</div><div class="role">Staff engineer, Loomstate</div></div><span class="stars" style="margin-left:auto">★★★★★</span></div>
+          <p>"Our retention dashboard went from 40-second queries to 40 milliseconds."</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="cart" id="cart">
+      <h3>Your org</h3>
+      <div class="ci"><div class="art">SQL</div><div><div class="n">Funnel Analytics Pro</div><div class="m">Annual · cluster</div></div><span class="p">$290</span></div>
+      <div class="ci"><div class="art">MV</div><div><div class="n">Rollup Blueprints</div><div class="m">Monthly</div></div><span class="p">$19</span></div>
+      <div class="ci"><div class="art">KG</div><div><div class="n">Kafka Ingest Kit</div><div class="m">Free pack</div></div><span class="p">$0</span></div>
+      <div class="sum">
+        <div class="r"><span>Subtotal</span><span>$309</span></div>
+        <div class="r"><span>Tax (8%)</span><span>$24.72</span></div>
+        <div class="r total"><span>Total / year</span><span>$333.72</span></div>
+      </div>
+      <a class="btn" href="#">Install to org</a>
+      <p class="cart-note">Billed annually · Cancel anytime</p>
+    </aside>
+  </div>
+
+  <div class="cta-band">
+    <div>
+      <h2>Deploy your queries at full speed</h2>
+      <p>Every pack ships with benchmarks, schemas, and versioned updates.</p>
+      <a class="btn" href="#market">Get started free</a>
+    </div>
+    <div class="sql-mini"><span class="f">SELECT</span> speed
+<span class="k">FROM</span> clickhouse
+<span class="k">WHERE</span> scale = <span class="f">'any'</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Product</h4><a href="#">ClickHouse Cloud</a><a href="#">Marketplace</a><a href="#">Integrations</a><a href="#">Benchmarks</a></div>
+      <div><h4>Use cases</h4><a href="#">Real-time analytics</a><a href="#">Observability</a><a href="#">Vector search</a><a href="#">Gaming</a></div>
+      <div><h4>Resources</h4><a href="#">Docs</a><a href="#">Blog</a><a href="#">Community</a><a href="#">Support</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">News</a><a href="#">Contact</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 ClickHouse, Inc. All rights reserved.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Work email" aria-label="Work email">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

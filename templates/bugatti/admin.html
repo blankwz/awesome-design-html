@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUGATTI — Atelier Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400&family=EB+Garamond&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#ffffff; --body:#cccccc; --body-strong:#e6e6e6; --muted:#999999; --muted-soft:#666666;
+  --hairline:#262626; --hairline-strong:#3a3a3a;
+  --canvas:#000000; --surface-soft:#0d0d0d; --surface-card:#141414; --surface-elevated:#1f1f1f;
+  --on-dark:#ffffff; --link:#c3d9f3; --warning:#d4a017; --success:#5fa657; --danger:#c0554d;
+  --font-display:"Saira Condensed",-apple-system,"Segoe UI",sans-serif;
+  --font-text:"EB Garamond",Garamond,"Times New Roman",serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",monospace;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:40px; --sp-xxl:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-mono)}
+.caption{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.display-sm{font-family:var(--font-display);font-size:24px;font-weight:400;letter-spacing:1.5px;color:var(--on-dark);text-transform:uppercase}
+.wordmark{font-family:var(--font-display);font-size:14px;font-weight:400;letter-spacing:6px;color:var(--on-dark);text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 28px;background:transparent;border:1px solid var(--on-dark);border-radius:9999px;color:var(--on-dark);font-family:var(--font-mono);font-size:13px;letter-spacing:2.5px;text-transform:uppercase}
+.btn--solid{background:var(--on-dark);color:var(--canvas)}
+.btn--sm{height:36px;padding:0 20px;font-size:12px}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.side{border-right:1px solid var(--hairline);background:var(--surface-soft);padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-xl)}
+.side .wordmark{display:block;text-align:center;padding:var(--sp-sm) 0 var(--sp-lg);border-bottom:1px solid var(--hairline)}
+.menu-label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted-soft);text-transform:uppercase;margin:var(--sp-lg) 0 var(--sp-sm)}
+.menu a{display:flex;align-items:center;gap:var(--sp-md);padding:11px var(--sp-md);color:var(--muted);font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;border-left:1px solid transparent}
+.menu a .ico{width:16px;text-align:center;font-style:normal}
+.menu a:hover{color:var(--body-strong)}
+.menu a.active{color:var(--on-dark);border-left:1px solid var(--on-dark);background:var(--surface-card)}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-md);background:var(--surface-card);border:1px solid var(--hairline)}
+.avatar{width:40px;height:40px;border-radius:9999px;background:var(--surface-elevated);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;letter-spacing:1px;flex:none;border:1px solid var(--hairline-strong)}
+.user-card .nm{font-family:var(--font-display);font-size:16px;letter-spacing:1px;color:var(--on-dark);text-transform:uppercase}
+.user-card .rl{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
+
+/* ---------- topbar ---------- */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{height:56px;display:flex;align-items:center;gap:var(--sp-lg);padding:0 var(--sp-xl);border-bottom:1px solid var(--hairline)}
+.crumb{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.crumb b{color:var(--on-dark);font-weight:400}
+.search{margin-left:auto;display:flex;align-items:center;gap:var(--sp-sm)}
+.search input{background:transparent;border:0;border-bottom:1px solid var(--hairline-strong);height:36px;width:260px;color:var(--on-dark);font-family:var(--font-mono);font-size:12px;letter-spacing:1px}
+.search input::placeholder{color:var(--muted-soft)}
+.search input:focus{outline:none;border-bottom:1px solid var(--on-dark)}
+.bell{position:relative;width:40px;height:40px;border-radius:9999px;border:1px solid var(--hairline-strong);background:transparent;color:var(--on-dark);display:flex;align-items:center;justify-content:center}
+.bell .dot{position:absolute;top:6px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--on-dark)}
+
+/* ---------- content ---------- */
+.content{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-xl)}
+.page-head h1{margin-bottom:var(--sp-xxs)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+.kpi{background:var(--surface-card);border:1px solid var(--hairline);padding:var(--sp-lg)}
+.kpi .lbl{margin-bottom:var(--sp-sm)}
+.kpi .val{font-family:var(--font-display);font-size:32px;letter-spacing:2px;color:var(--on-dark);text-transform:uppercase}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-md)}
+.delta{font-family:var(--font-mono);font-size:12px;letter-spacing:1px}
+.up{color:var(--success)} .down{color:var(--danger)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:28px}
+.spark i{width:6px;background:var(--hairline-strong)}
+.spark i.hot{background:var(--body-strong)}
+.spark i.y{background:var(--on-dark)}
+
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-lg)}
+.card{background:var(--surface-card);border:1px solid var(--hairline);padding:var(--sp-lg)}
+.card h3{margin-bottom:var(--sp-lg)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:200px;border-bottom:1px solid var(--hairline);padding-bottom:0}
+.bcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;height:100%}
+.bcol .bar{background:var(--surface-elevated);border-top:1px solid var(--hairline-strong)}
+.bcol.hot .bar{background:var(--body-strong);border-top:1px solid var(--on-dark)}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.donut-wrap{display:flex;gap:var(--sp-xl);align-items:center}
+.donut{position:relative;width:180px;height:180px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-family:var(--font-display);font-size:24px;letter-spacing:1px;color:var(--on-dark)}
+.legend{display:flex;flex-direction:column;gap:var(--sp-sm);flex:1}
+.leg{display:flex;align-items:center;gap:var(--sp-sm);font-size:14px;color:var(--body)}
+.leg i{width:10px;height:10px;flex:none}
+.leg .pct{margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+
+/* ---------- table ---------- */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-lg);align-items:start}
+.table-card{background:var(--surface-card);border:1px solid var(--hairline)}
+.table-card .tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-lg);border-bottom:1px solid var(--hairline)}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;font-weight:400;text-align:left;padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline)}
+td{padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline);font-size:14px;color:var(--body);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td .nm{font-family:var(--font-display);font-size:16px;letter-spacing:1px;color:var(--on-dark);text-transform:uppercase}
+td .sub{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+td.num{font-family:var(--font-mono);font-size:13px;color:var(--on-dark);white-space:nowrap}
+.badge{display:inline-block;font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;border-radius:9999px;padding:5px 14px;border:1px solid}
+.badge.success{color:var(--success);border-color:var(--success)}
+.badge.warning{color:var(--warning);border-color:var(--warning)}
+.badge.danger{color:var(--danger);border-color:var(--danger)}
+.badge.neutral{color:var(--muted);border-color:var(--hairline-strong)}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--hairline-strong);background:transparent;vertical-align:middle}
+input[type=checkbox]:checked{background:var(--on-dark);border-color:var(--on-dark)}
+.row-actions{display:flex;gap:var(--sp-sm);justify-content:flex-end}
+.row-actions button{background:transparent;border:1px solid var(--hairline-strong);color:var(--muted);border-radius:9999px;font-size:11px;letter-spacing:1.5px;padding:6px 14px;text-transform:uppercase}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg)}
+.pager .pg{display:flex;gap:var(--sp-xxs)}
+.pager button{width:36px;height:36px;border-radius:9999px;border:1px solid var(--hairline-strong);background:transparent;color:var(--muted);font-size:12px}
+.pager button.cur{border-color:var(--on-dark);color:var(--on-dark)}
+
+/* ---------- activity ---------- */
+.feed{display:flex;flex-direction:column}
+.feed-item{display:flex;gap:var(--sp-md);padding:var(--sp-md) 0;border-bottom:1px solid var(--hairline)}
+.feed-item:last-child{border-bottom:0;padding-bottom:0}
+.fdot{width:36px;height:36px;border-radius:9999px;flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;letter-spacing:1px;border:1px solid var(--hairline-strong);color:var(--on-dark)}
+.fdot.ok{border-color:var(--success);color:var(--success)}
+.fdot.warn{border-color:var(--warning);color:var(--warning)}
+.feed-item p{font-size:14px;color:var(--body)}
+.feed-item p b{color:var(--on-dark);font-weight:400}
+.feed-item .time{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;color:var(--muted-soft);text-transform:uppercase;margin-top:4px}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .search input{width:140px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <span class="wordmark">Bugatti</span>
+    <nav class="menu">
+      <p class="menu-label">Operations</p>
+      <a href="#" class="active"><span class="ico">◈</span>Dashboard</a>
+      <a href="#"><span class="ico">▤</span>Boutique orders</a>
+      <a href="#"><span class="ico">▣</span>Atelier builds</a>
+      <p class="menu-label">Relationships</p>
+      <a href="#"><span class="ico">◇</span>Collectors</a>
+      <a href="#"><span class="ico">◎</span>Dealer network</a>
+      <p class="menu-label">Insight</p>
+      <a href="#"><span class="ico">▥</span>Analytics</a>
+      <p class="menu-label">System</p>
+      <a href="#"><span class="ico">⚙</span>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="avatar">EM</div>
+      <div><div class="nm">É. Moreau</div><div class="rl">Atelier director</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Console / <b>Boutique overview</b></span>
+      <div class="search">
+        <input type="search" placeholder="Search orders, collectors…" aria-label="Search">
+        <button class="bell" aria-label="Notifications">◇<span class="dot"></span></button>
+        <div class="avatar">EM</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <h1 class="display-sm">Boutique Overview</h1>
+        <p class="caption">Molsheim · Fiscal week 43 · 2026</p>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <p class="caption lbl">Orders this month</p>
+          <div class="val">412</div>
+          <div class="row"><span class="delta up">▲ 8.4%</span>
+            <div class="spark"><i style="height:30%"></i><i style="height:45%"></i><i class="hot" style="height:60%"></i><i style="height:40%"></i><i style="height:70%"></i><i class="y" style="height:100%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="caption lbl">Boutique revenue</p>
+          <div class="val">€ 486k</div>
+          <div class="row"><span class="delta up">▲ 12.1%</span>
+            <div class="spark"><i style="height:40%"></i><i style="height:35%"></i><i style="height:55%"></i><i class="hot" style="height:65%"></i><i style="height:80%"></i><i class="y" style="height:95%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="caption lbl">Atelier backlog</p>
+          <div class="val">37</div>
+          <div class="row"><span class="delta down">▼ 5.2%</span>
+            <div class="spark"><i style="height:90%"></i><i class="hot" style="height:75%"></i><i style="height:60%"></i><i style="height:50%"></i><i style="height:45%"></i><i class="y" style="height:35%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="caption lbl">Avg. build time</p>
+          <div class="val">11.4 h</div>
+          <div class="row"><span class="delta up">▲ 1.8%</span>
+            <div class="spark"><i style="height:55%"></i><i style="height:50%"></i><i class="hot" style="height:60%"></i><i style="height:45%"></i><i style="height:40%"></i><i class="y" style="height:42%"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3 class="display-sm" style="font-size:20px">Orders by month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:38%"></div></div>
+            <div class="bcol"><div class="bar" style="height:52%"></div></div>
+            <div class="bcol"><div class="bar" style="height:44%"></div></div>
+            <div class="bcol"><div class="bar" style="height:60%"></div></div>
+            <div class="bcol"><div class="bar" style="height:48%"></div></div>
+            <div class="bcol"><div class="bar" style="height:66%"></div></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div></div>
+            <div class="bcol"><div class="bar" style="height:72%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:88%"></div></div>
+            <div class="bcol"><div class="bar" style="height:64%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:96%"></div></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div></div>
+          </div>
+          <div class="blabels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+        </div>
+        <div class="card">
+          <h3 class="display-sm" style="font-size:20px">Collection mix</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="180" height="180" viewBox="0 0 180 180">
+                <circle cx="90" cy="90" r="70" fill="none" stroke="#262626" stroke-width="16"/>
+                <circle cx="90" cy="90" r="70" fill="none" stroke="#e6e6e6" stroke-width="16" stroke-dasharray="158 281" stroke-dashoffset="0"/>
+                <circle cx="90" cy="90" r="70" fill="none" stroke="#8a8a8a" stroke-width="16" stroke-dasharray="87 352" stroke-dashoffset="-163"/>
+                <circle cx="90" cy="90" r="70" fill="none" stroke="#4a4a4a" stroke-width="16" stroke-dasharray="65 374" stroke-dashoffset="-255"/>
+                <circle cx="90" cy="90" r="70" fill="none" stroke="#333333" stroke-width="16" stroke-dasharray="48 391" stroke-dashoffset="-325"/>
+              </svg>
+              <div class="center"><span class="v">412</span><span class="caption">orders</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#e6e6e6"></i>Scale models<span class="pct">42%</span></div>
+              <div class="leg"><i style="background:#8a8a8a"></i>Lifestyle<span class="pct">23%</span></div>
+              <div class="leg"><i style="background:#4a4a4a"></i>Accessories<span class="pct">17%</span></div>
+              <div class="leg"><i style="background:#333333"></i>Originals<span class="pct">12%</span></div>
+              <div class="leg"><i style="background:#262626"></i>Heritage<span class="pct">6%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head">
+            <h3 class="display-sm" style="font-size:20px">Recent orders</h3>
+            <button class="btn btn--sm">Export</button>
+          </div>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Object</th><th>Series</th><th>Status</th><th>Amount</th><th>Date</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">Tourbillon 1:18</div><div class="sub">Ref. TB-118-0042</div></td>
+                <td>Scale models</td>
+                <td><span class="badge success">Delivered</span></td>
+                <td class="num">€ 2 300</td><td class="num">24.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Invoice</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">Macao Leather Folio</div><div class="sub">Azure interior</div></td>
+                <td>Lifestyle</td>
+                <td><span class="badge warning">In atelier</span></td>
+                <td class="num">€ 640</td><td class="num">23.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Invoice</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">Chiron Sculpture</div><div class="sub">Hand-finished</div></td>
+                <td>Originals</td>
+                <td><span class="badge success">Delivered</span></td>
+                <td class="num">€ 1 450</td><td class="num">22.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Invoice</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">Bolide Desk Model</div><div class="sub">Nocturne · 1:18</div></td>
+                <td>Scale models</td>
+                <td><span class="badge neutral">Awaiting payment</span></td>
+                <td class="num">€ 2 300</td><td class="num">21.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Remind</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">Macaron Cufflinks</div><div class="sub">Silver · Enamel</div></td>
+                <td>Accessories</td>
+                <td><span class="badge success">Delivered</span></td>
+                <td class="num">€ 320</td><td class="num">20.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Invoice</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">EB Le Mans Watch Roll</div><div class="sub">Italian hide</div></td>
+                <td>Lifestyle</td>
+                <td><span class="badge danger">Returned</span></td>
+                <td class="num">€ 480</td><td class="num">18.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Resolve</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="nm">Divo Silhouette Print</div><div class="sub">Giclée · 70×50</div></td>
+                <td>Originals</td>
+                <td><span class="badge success">Delivered</span></td>
+                <td class="num">€ 260</td><td class="num">17.10.2026</td>
+                <td><div class="row-actions"><button>View</button><button>Invoice</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span class="caption">Showing 1–7 of 412 orders</span>
+            <div class="pg"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="display-sm" style="font-size:20px">Atelier activity</h3>
+          <div class="feed">
+            <div class="feed-item">
+              <div class="fdot ok">✓</div>
+              <div><p><b>Tourbillon 1:18</b> cleared final inspection — series plate affixed.</p><p class="time">14 minutes ago</p></div>
+            </div>
+            <div class="feed-item">
+              <div class="fdot">EM</div>
+              <div><p><b>É. Moreau</b> approved the Rohner Blue lacquer batch for order 0842.</p><p class="time">1 hour ago</p></div>
+            </div>
+            <div class="feed-item">
+              <div class="fdot warn">!</div>
+              <div><p>Leather hide for <b>Macao Folio</b> batch delayed from Milan — new ETA 28.10.</p><p class="time">3 hours ago</p></div>
+            </div>
+            <div class="feed-item">
+              <div class="fdot">HB</div>
+              <div><p><b>H. Brandt</b> logged 6.5 assembly hours on the Bolide run.</p><p class="time">Yesterday, 17:42</p></div>
+            </div>
+            <div class="feed-item">
+              <div class="fdot ok">✓</div>
+              <div><p><b>Chiron Sculpture</b> no. 118 dispatched to the Geneva dealer.</p><p class="time">Yesterday, 09:15</p></div>
+            </div>
+          </div>
+          <div style="margin-top:var(--sp-lg);padding-top:var(--sp-lg);border-top:1px solid var(--hairline)">
+            <p class="caption" style="margin-bottom:var(--sp-sm)">Quick setting</p>
+            <label style="display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--body);padding:var(--sp-xxs) 0">
+              Weekly collector digest
+              <input type="checkbox" checked style="appearance:none;width:34px;height:18px;border-radius:9999px;border:1px solid var(--hairline-strong);background:var(--on-dark);position:relative">
+            </label>
+            <label style="display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--body);padding:var(--sp-xxs) 0">
+              Low-stock alerts
+              <input type="checkbox" style="appearance:none;width:34px;height:18px;border-radius:9999px;border:1px solid var(--hairline-strong);background:transparent">
+            </label>
+            <button class="btn btn--solid btn--sm" style="width:100%;margin-top:var(--sp-md)">Save preferences</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

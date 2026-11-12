@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coinbase — Explore Assets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0052ff; --primary-active:#003ecc; --primary-disabled:#a8b8cc;
+  --ink:#0a0b0d; --body:#5b616e; --body-strong:#0a0b0d; --muted:#7c828a; --muted-soft:#a8acb3;
+  --hairline:#dee1e6; --hairline-soft:#eef0f3;
+  --canvas:#ffffff; --surface-soft:#f7f7f7; --surface-card:#ffffff; --surface-strong:#eef0f3;
+  --surface-dark:#0a0b0d; --surface-dark-elevated:#16181c;
+  --on-primary:#ffffff; --on-dark:#ffffff; --on-dark-soft:#a8acb3;
+  --up:#05b169; --down:#cf202f; --accent-yellow:#f4b000;
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:100px; --r-full:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-base:16px; --s-md:20px; --s-lg:24px; --s-xl:32px; --s-xxl:48px; --s-section:96px;
+  --shadow-soft:0 4px 12px rgba(0,0,0,.04);
+  --font-sans:'Inter',-apple-system,system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:'JetBrains Mono','Inter',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);color:var(--body-strong);background:var(--canvas);font-size:16px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--s-lg)}
+.mono{font-family:var(--font-mono);font-weight:500}
+/* ── Top nav ── */
+.topnav{height:64px;display:flex;align-items:center;background:var(--canvas);border-bottom:1px solid var(--hairline-soft);position:sticky;top:0;z-index:50}
+.topnav .wrap{display:flex;align-items:center;gap:var(--s-xl);width:100%}
+.wordmark{display:flex;align-items:center;gap:10px;font-weight:600;font-size:18px;color:var(--ink)}
+.wordmark .glyph{width:28px;height:28px;border-radius:var(--r-full);background:var(--primary);position:relative;flex:none}
+.wordmark .glyph::after{content:"";position:absolute;left:8px;top:8px;width:12px;height:12px;border-radius:var(--r-full);background:var(--canvas)}
+.nav-menu{display:flex;gap:var(--s-lg);list-style:none}
+.nav-menu a{font-size:14px;font-weight:500;color:var(--ink);padding:8px 4px}
+.nav-menu a.active{color:var(--primary)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--s-base)}
+.search-pill{display:flex;align-items:center;gap:8px;background:var(--surface-strong);border:none;border-radius:var(--r-pill);height:44px;padding:12px 20px;width:220px;font-size:14px;color:var(--muted)}
+.search-pill input{border:none;background:transparent;outline:none;font:inherit;width:100%;color:var(--ink)}
+.icon-dot{position:relative;width:40px;height:40px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;background:transparent;cursor:pointer}
+.icon-dot svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.6}
+.icon-dot .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:var(--r-full);background:var(--primary)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-sans);font-size:16px;font-weight:600;border:none;cursor:pointer;border-radius:var(--r-pill);height:44px;padding:12px 20px}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--primary-active)}
+.btn-secondary{background:var(--surface-strong);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--ink);height:44px;padding:12px 8px}
+.btn-cta{height:56px;padding:16px 32px}
+.btn-sm{height:40px;font-size:14px;padding:10px 18px}
+/* ── Hero band (dark editorial) ── */
+.hero{background:var(--surface-dark);color:var(--on-dark);padding:64px 0}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s-xxl);align-items:center}
+.eyebrow{display:inline-block;background:var(--surface-dark-elevated);color:var(--on-dark-soft);font-size:12px;font-weight:600;letter-spacing:.04em;border-radius:var(--r-pill);padding:4px 12px;margin-bottom:var(--s-lg)}
+.hero h1{font-size:52px;font-weight:400;line-height:1.05;letter-spacing:-1.3px;color:var(--on-dark)}
+.hero p.sub{margin:var(--s-lg) 0 var(--s-xl);font-size:16px;color:var(--on-dark-soft);max-width:44ch}
+.hero-actions{display:flex;gap:var(--s-base);align-items:center}
+.hero-actions .btn-outline{background:transparent;color:var(--on-dark);border:1px solid rgba(255,255,255,.35)}
+/* layered product-UI mockup cards */
+.mock-stack{position:relative;height:340px}
+.mock-card{position:absolute;background:var(--surface-dark-elevated);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-xl);padding:var(--s-xl);width:340px}
+.mock-card.mc-main{top:24px;left:0;z-index:2}
+.mock-card.mc-sec{top:0;right:0;transform:rotate(4deg);width:280px;z-index:1;opacity:.9}
+.mock-card h4{font-size:14px;font-weight:600;color:var(--on-dark);margin-bottom:var(--s-base)}
+.mock-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;color:var(--on-dark-soft)}
+.mock-row:last-child{border-bottom:none}
+.mock-asset{display:flex;align-items:center;gap:10px}
+.mock-coin{width:32px;height:32px;border-radius:var(--r-full);background:var(--surface-strong);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink)}
+.mc-num{font-family:var(--font-mono);color:var(--on-dark)}
+.up{color:var(--up)} .down{color:var(--down)}
+/* ── Market strip ── */
+.market-strip{background:var(--surface-soft);border-bottom:1px solid var(--hairline-soft)}
+.market-strip .wrap{display:flex;gap:var(--s-xl);overflow-x:auto;padding:14px var(--s-lg)}
+.tick{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:13px;color:var(--muted)}
+.tick b{color:var(--ink);font-weight:600}
+.tick .mono{font-size:13px}
+/* ── Chips row ── */
+.chips{padding:var(--s-xl) 0 0}
+.chips .wrap{display:flex;gap:var(--s-sm);flex-wrap:wrap}
+.chip{border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-pill);height:40px;padding:8px 18px;font-size:14px;font-weight:500;color:var(--body-strong);cursor:pointer}
+.chip.on{background:var(--surface-dark);color:var(--on-dark);border-color:var(--surface-dark)}
+/* ── Asset grid ── */
+.section{padding:var(--s-xxl) 0}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-lg)}
+.section-head h2{font-size:32px;font-weight:400;letter-spacing:-.4px;color:var(--ink)}
+.section-head a{font-size:14px;font-weight:600;color:var(--primary)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.asset-card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-sm);transition:box-shadow .15s}
+.asset-card:hover{box-shadow:var(--shadow-soft)}
+.asset-card .top{display:flex;align-items:center;justify-content:space-between}
+.coin-lg{width:44px;height:44px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+.badge{font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:4px 12px;background:var(--surface-strong);color:var(--ink)}
+.badge-new{background:var(--surface-dark);color:var(--on-dark)}
+.asset-card h3{font-size:18px;font-weight:600;color:var(--ink)}
+.asset-card .ticker{font-size:13px;color:var(--muted);margin-top:-8px}
+.price-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:var(--s-xs)}
+.price{font-family:var(--font-mono);font-size:18px;color:var(--ink)}
+.chg{font-family:var(--font-mono);font-size:14px}
+.spark{margin-top:var(--s-sm);height:32px}
+.spark svg{width:100%;height:32px;display:block}
+/* ── Featured detail ── */
+.featured{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--s-lg);align-items:stretch}
+.feature-panel{background:var(--surface-dark);border-radius:var(--r-xl);padding:var(--s-xxl);color:var(--on-dark);display:grid;grid-template-columns:1fr 96px;gap:var(--s-lg)}
+.feature-main h3{font-size:32px;font-weight:400;letter-spacing:-.4px;color:var(--on-dark)}
+.feature-main .tickerline{color:var(--on-dark-soft);font-size:14px;margin:4px 0 var(--s-lg)}
+.feature-price{font-family:var(--font-mono);font-size:44px;color:var(--on-dark)}
+.feature-delta{font-family:var(--font-mono);font-size:16px;margin-top:4px;display:block}
+.feature-chart{margin:var(--s-lg) 0;height:120px}
+.feature-chart svg{width:100%;height:120px}
+.gal-thumbs{display:flex;flex-direction:column;gap:var(--s-sm)}
+.thumb{width:96px;height:64px;border-radius:var(--r-md);background:var(--surface-dark-elevated);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--on-dark-soft);cursor:pointer}
+.thumb.on{border-color:var(--primary)}
+.thumb .mono{font-size:12px;color:var(--on-dark)}
+/* buy form */
+.buy-panel{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-base)}
+.buy-panel h3{font-size:18px;font-weight:600;color:var(--ink)}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.text-input{width:100%;height:48px;border:1px solid var(--hairline);border-radius:var(--r-md);padding:14px 16px;font:inherit;color:var(--ink);background:var(--canvas);outline:none}
+.text-input:focus{border:2px solid var(--primary);padding:13px 15px}
+.stepper{display:flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-md);height:48px;width:100%}
+.stepper button{width:48px;height:100%;border:none;background:transparent;font-size:18px;color:var(--ink);cursor:pointer}
+.stepper span{flex:1;text-align:center;font-family:var(--font-mono);color:var(--ink)}
+.opt-row{display:flex;gap:var(--s-sm)}
+.opt{flex:1;border:1px solid var(--hairline);border-radius:var(--r-md);padding:10px;font-size:13px;font-weight:600;color:var(--ink);text-align:center;cursor:pointer;background:var(--canvas)}
+.opt.on{border-color:var(--primary);color:var(--primary);background:#f0f4ff}
+.review-snip{border-top:1px solid var(--hairline-soft);padding-top:var(--s-base)}
+.review-snip .stars{color:var(--accent-yellow);font-size:14px;letter-spacing:2px}
+.review-snip p{font-size:14px;color:var(--body);margin-top:6px}
+.review-snip .who{font-size:12px;color:var(--muted);margin-top:6px}
+/* ── Order summary ── */
+.summary-band{background:var(--surface-soft);padding:var(--s-xxl) 0}
+.summary-grid{display:grid;grid-template-columns:1fr 420px;gap:var(--s-lg);align-items:start}
+.cart-items{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-lg) var(--s-xl)}
+.cart-row{display:flex;align-items:center;gap:var(--s-base);padding:var(--s-base) 0;border-bottom:1px solid var(--hairline-soft)}
+.cart-row:last-child{border-bottom:none}
+.cart-row .coin-lg{width:36px;height:36px;font-size:12px}
+.cart-row .info{flex:1}
+.cart-row .info b{display:block;font-size:16px;font-weight:600;color:var(--ink)}
+.cart-row .info span{font-size:13px;color:var(--muted)}
+.cart-row .amt{font-family:var(--font-mono);font-size:16px;color:var(--ink)}
+.cart-row .rm{font-size:13px;color:var(--primary);background:none;border:none;cursor:pointer;font-weight:600}
+.summary-card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-xl);position:sticky;top:88px}
+.summary-card h3{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:var(--s-base)}
+.line{display:flex;justify-content:space-between;font-size:14px;color:var(--body);padding:6px 0}
+.line .mono{color:var(--ink)}
+.line.total{border-top:1px solid var(--hairline);margin-top:var(--s-sm);padding-top:var(--s-base);font-size:18px;font-weight:600;color:var(--ink)}
+.summary-card .btn{width:100%;margin-top:var(--s-base)}
+.fineprint{font-size:13px;color:var(--muted);margin-top:var(--s-sm);text-align:center}
+/* ── Footer ── */
+footer{border-top:1px solid var(--hairline-soft);padding:64px 0 0}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--s-xl);padding-bottom:var(--s-xxl)}
+.foot-brand p{font-size:14px;color:var(--body);max-width:32ch;margin:var(--s-base) 0}
+.news{display:flex;gap:var(--s-sm)}
+.news input{flex:1;height:44px;border:1px solid var(--hairline);border-radius:var(--r-pill);padding:12px 20px;font:inherit;font-size:14px;outline:none}
+.news input:focus{border:2px solid var(--primary)}
+.foot-grid h5{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:var(--s-base)}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot-grid ul a{font-size:14px;color:var(--body)}
+.legal{border-top:1px solid var(--hairline-soft);padding:var(--s-base) 0;display:flex;align-items:center;justify-content:space-between;gap:var(--s-base);flex-wrap:wrap}
+.legal span,.legal a{font-size:13px;color:var(--muted)}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-strong);display:flex;align-items:center;justify-content:center}
+.socials svg{width:16px;height:16px;fill:var(--ink)}
+@media (max-width:960px){
+  .hero .wrap,.featured,.summary-grid{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .nav-menu{display:none}
+  .mock-stack{height:300px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .gal-thumbs{flex-direction:row}
+  .feature-panel{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Top nav -->
+<header class="topnav">
+  <div class="wrap">
+    <a class="wordmark" href="#"><span class="glyph"></span>coinbase</a>
+    <ul class="nav-menu">
+      <li><a href="#" class="active">Assets</a></li>
+      <li><a href="#">Portfolios</a></li>
+      <li><a href="#">Earn</a></li>
+      <li><a href="#">Institutions</a></li>
+      <li><a href="#">Developers</a></li>
+    </ul>
+    <div class="nav-right">
+      <label class="search-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c828a" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="text" placeholder="Search assets">
+      </label>
+      <button class="icon-dot" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="icon-dot" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9H8L6 3H3"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+        <span class="dot"></span>
+      </button>
+      <a class="btn btn-ghost" href="#">Sign in</a>
+      <a class="btn btn-primary" href="#">Get started</a>
+    </div>
+  </div>
+</header>
+
+<!-- Dark hero band with layered product-UI mockups -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">MARKETS OPEN · 24/7</span>
+      <h1>Buy, hold and move<br>digital assets with<br>quiet confidence.</h1>
+      <p class="sub">Explore 240+ assets with institutional-grade custody, transparent fees, and one-tap recurring buys.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-cta" href="#marketplace">Explore assets</a>
+        <a class="btn btn-outline" href="#">View portfolio</a>
+      </div>
+    </div>
+    <div class="mock-stack">
+      <div class="mock-card mc-sec">
+        <h4>Recurring buy</h4>
+        <div class="mock-row"><span>Schedule</span><span class="mc-num">Weekly · Fri</span></div>
+        <div class="mock-row"><span>Amount</span><span class="mc-num">$100.00</span></div>
+        <div class="mock-row"><span>Next run</span><span class="mc-num">Oct 31</span></div>
+      </div>
+      <div class="mock-card mc-main">
+        <h4>Your watchlist</h4>
+        <div class="mock-row">
+          <span class="mock-asset"><span class="mock-coin" style="background:#f4b000">₿</span>BTC · Bitcoin</span>
+          <span><span class="mc-num">$68,204</span> <b class="mc-num up">+2.4%</b></span>
+        </div>
+        <div class="mock-row">
+          <span class="mock-asset"><span class="mock-coin" style="background:#627eea">Ξ</span>ETH · Ethereum</span>
+          <span><span class="mc-num">$3,418</span> <b class="mc-num up">+1.1%</b></span>
+        </div>
+        <div class="mock-row">
+          <span class="mock-asset"><span class="mock-coin" style="background:#0052ff">S</span>SOL · Solana</span>
+          <span><span class="mc-num">$158.42</span> <b class="mc-num down">−0.8%</b></span>
+        </div>
+        <div class="mock-row">
+          <span class="mock-asset"><span class="mock-coin" style="background:#23292f">A</span>AVAX · Avalanche</span>
+          <span><span class="mc-num">$31.06</span> <b class="mc-num up">+4.6%</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Market ticker strip -->
+<div class="market-strip">
+  <div class="wrap">
+    <span class="tick"><b>BTC</b> <span class="mono">$68,204</span> <span class="mono up">+2.41%</span></span>
+    <span class="tick"><b>ETH</b> <span class="mono">$3,418</span> <span class="mono up">+1.12%</span></span>
+    <span class="tick"><b>SOL</b> <span class="mono">$158.42</span> <span class="mono down">−0.83%</span></span>
+    <span class="tick"><b>USDC</b> <span class="mono">$1.00</span> <span class="mono">0.00%</span></span>
+    <span class="tick"><b>LINK</b> <span class="mono">$16.88</span> <span class="mono up">+3.02%</span></span>
+    <span class="tick"><b>DOT</b> <span class="mono">$7.14</span> <span class="mono down">−1.24%</span></span>
+    <span class="tick"><b>AVAX</b> <span class="mono">$31.06</span> <span class="mono up">+4.60%</span></span>
+    <span class="tick"><b>MATIC</b> <span class="mono">$0.72</span> <span class="mono up">+0.94%</span></span>
+  </div>
+</div>
+
+<!-- Filter chips -->
+<div class="chips">
+  <div class="wrap">
+    <button class="chip on">All assets</button>
+    <button class="chip">Trending</button>
+    <button class="chip">New listings</button>
+    <button class="chip">Layer 2</button>
+    <button class="chip">DeFi</button>
+    <button class="chip">Stablecoins</button>
+    <button class="chip">Staking available</button>
+  </div>
+</div>
+
+<!-- Asset grid -->
+<section class="section" id="marketplace">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Explore assets</h2>
+      <a href="#">View all 240+ →</a>
+    </div>
+    <div class="grid">
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#f4b000">₿</span><span class="badge badge-new">Trending</span></div>
+        <h3>Bitcoin</h3><span class="ticker">BTC</span>
+        <div class="price-row"><span class="price">$68,204.10</span><span class="chg up">+2.41%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 26 L10 24 L20 27 L30 20 L40 22 L50 15 L60 18 L70 12 L80 14 L90 8 L100 6" fill="none" stroke="#05b169" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#627eea">Ξ</span><span class="badge">Staking</span></div>
+        <h3>Ethereum</h3><span class="ticker">ETH</span>
+        <div class="price-row"><span class="price">$3,418.55</span><span class="chg up">+1.12%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 20 L12 22 L24 16 L36 18 L48 12 L60 15 L72 10 L84 13 L100 9" fill="none" stroke="#05b169" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#0052ff">S</span><span class="badge">New</span></div>
+        <h3>Solana</h3><span class="ticker">SOL</span>
+        <div class="price-row"><span class="price">$158.42</span><span class="chg down">−0.83%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 8 L12 12 L24 10 L36 16 L48 14 L60 20 L72 18 L84 24 L100 22" fill="none" stroke="#cf202f" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#2a5ada">L</span><span class="badge">Staking</span></div>
+        <h3>Chainlink</h3><span class="ticker">LINK</span>
+        <div class="price-row"><span class="price">$16.88</span><span class="chg up">+3.02%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 24 L14 20 L28 23 L42 16 L56 19 L70 12 L84 14 L100 8" fill="none" stroke="#05b169" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#e6007a">P</span><span class="badge">DeFi</span></div>
+        <h3>Polygon</h3><span class="ticker">MATIC</span>
+        <div class="price-row"><span class="price">$0.7234</span><span class="chg up">+0.94%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 18 L14 19 L28 15 L42 17 L56 13 L70 16 L84 12 L100 13" fill="none" stroke="#05b169" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#e84142">A</span><span class="badge">New</span></div>
+        <h3>Avalanche</h3><span class="ticker">AVAX</span>
+        <div class="price-row"><span class="price">$31.06</span><span class="chg up">+4.60%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 28 L14 24 L28 26 L42 18 L56 20 L70 12 L84 10 L100 5" fill="none" stroke="#05b169" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#e6007a">D</span><span class="badge">Layer 2</span></div>
+        <h3>Polkadot</h3><span class="ticker">DOT</span>
+        <div class="price-row"><span class="price">$7.14</span><span class="chg down">−1.24%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 12 L14 14 L28 11 L42 16 L56 14 L70 20 L84 18 L100 23" fill="none" stroke="#cf202f" stroke-width="2"/></svg></div>
+      </article>
+      <article class="asset-card">
+        <div class="top"><span class="coin-lg" style="background:#2775ca">U</span><span class="badge">Stablecoin</span></div>
+        <h3>USD Coin</h3><span class="ticker">USDC</span>
+        <div class="price-row"><span class="price">$1.0001</span><span class="chg">0.00%</span></div>
+        <div class="spark"><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="M0 16 L100 16" fill="none" stroke="#a8acb3" stroke-width="2"/></svg></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Featured detail + buy panel -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="featured">
+      <div class="feature-panel">
+        <div class="feature-main">
+          <h3>Ethereum</h3>
+          <div class="tickerline">ETH · Asset #2 by market cap · Staking available</div>
+          <span class="feature-price">$3,418.55</span>
+          <span class="feature-delta up">▲ +1.12% past 24h</span>
+          <div class="feature-chart">
+            <svg viewBox="0 0 400 120" preserveAspectRatio="none">
+              <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0052ff" stop-opacity=".35"/><stop offset="1" stop-color="#0052ff" stop-opacity="0"/>
+              </linearGradient></defs>
+              <path d="M0 90 L40 84 L80 88 L120 72 L160 76 L200 60 L240 66 L280 48 L320 54 L360 38 L400 30 L400 120 L0 120 Z" fill="url(#g)"/>
+              <path d="M0 90 L40 84 L80 88 L120 72 L160 76 L200 60 L240 66 L280 48 L320 54 L360 38 L400 30" fill="none" stroke="#0052ff" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div style="display:flex;gap:32px;font-size:13px;color:var(--on-dark-soft)">
+            <span>Market cap <b class="mono" style="color:#fff">$410.2B</b></span>
+            <span>Volume 24h <b class="mono" style="color:#fff">$18.4B</b></span>
+            <span>Supply <b class="mono" style="color:#fff">120.1M ETH</b></span>
+          </div>
+        </div>
+        <div class="gal-thumbs">
+          <div class="thumb on"><span>1D</span><span class="mono up">+1.1%</span></div>
+          <div class="thumb"><span>1W</span><span class="mono up">+4.8%</span></div>
+          <div class="thumb"><span>1M</span><span class="mono down">−2.3%</span></div>
+          <div class="thumb"><span>1Y</span><span class="mono up">+46.2%</span></div>
+        </div>
+      </div>
+
+      <aside class="buy-panel">
+        <h3>Buy Ethereum</h3>
+        <div class="field">
+          <label>AMOUNT (USD)</label>
+          <input class="text-input mono" type="text" value="500.00">
+        </div>
+        <div class="field">
+          <label>QUANTITY (ETH)</label>
+          <div class="stepper">
+            <button aria-label="Decrease">−</button>
+            <span>0.1463 ETH</span>
+            <button aria-label="Increase">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>PAY WITH</label>
+          <div class="opt-row">
+            <div class="opt on">USDC</div>
+            <div class="opt">Bank</div>
+            <div class="opt">Card</div>
+          </div>
+        </div>
+        <button class="btn btn-primary">Preview buy</button>
+        <div class="review-snip">
+          <div class="stars">★★★★★ <span style="color:var(--muted);font-size:13px">4.8 · 128,402 reviews</span></div>
+          <p>“Recurring buys just work. Fees are clear before I confirm — that’s why I moved my whole portfolio here.”</p>
+          <div class="who">— Dana M., verified customer since 2021</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Order summary -->
+<section class="summary-band">
+  <div class="wrap summary-grid">
+    <div class="cart-items">
+      <div class="section-head" style="margin-bottom:var(--s-sm)"><h2 style="font-size:24px">Your order</h2><a href="#">Edit</a></div>
+      <div class="cart-row">
+        <span class="coin-lg" style="background:#627eea">Ξ</span>
+        <div class="info"><b>Ethereum</b><span>0.1463 ETH · market order</span></div>
+        <span class="amt">$500.00</span>
+        <button class="rm">Remove</button>
+      </div>
+      <div class="cart-row">
+        <span class="coin-lg" style="background:#f4b000">₿</span>
+        <div class="info"><b>Bitcoin</b><span>0.00110 BTC · market order</span></div>
+        <span class="amt">$75.00</span>
+        <button class="rm">Remove</button>
+      </div>
+      <div class="cart-row">
+        <span class="coin-lg" style="background:#e84142">A</span>
+        <div class="info"><b>Avalanche</b><span>0.8052 AVAX · limit $31.00</span></div>
+        <span class="amt">$25.00</span>
+        <button class="rm">Remove</button>
+      </div>
+    </div>
+    <aside class="summary-card">
+      <h3>Checkout summary</h3>
+      <div class="line"><span>Order total</span><span class="mono">$600.00</span></div>
+      <div class="line"><span>Trading fee (0.60%)</span><span class="mono">$3.60</span></div>
+      <div class="line"><span>Network fee (est.)</span><span class="mono">$0.84</span></div>
+      <div class="line"><span>Payment method</span><span>USDC balance</span></div>
+      <div class="line total"><span>Total due</span><span class="mono">$604.44</span></div>
+      <button class="btn btn-primary">Confirm purchase</button>
+      <p class="fineprint">Prices update every 15 seconds at confirmation.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="wordmark" href="#"><span class="glyph"></span>coinbase</a>
+        <p>Weekly market briefing — the five numbers that matter, in your inbox every Friday.</p>
+        <form class="news" onsubmit="return false">
+          <input type="email" placeholder="you@email.com">
+          <button class="btn btn-primary btn-sm">Subscribe</button>
+        </form>
+      </div>
+      <div><h5>Assets</h5><ul><li><a href="#">Prices</a></li><li><a href="#">Learn</a></li><li><a href="#">Earn</a></li><li><a href="#">Staking</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Blog</a></li></ul></div>
+      <div><h5>Support</h5><ul><li><a href="#">Help center</a></li><li><a href="#">Status</a></li><li><a href="#">Contact</a></li><li><a href="#">Fees</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Disclosures</a></li><li><a href="#">Licenses</a></li></ul></div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Coinbase Market Exchange, Inc. · FDIC-insured USD balances · NMLS #1787124</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.2l7.3-8.3L1 2h6.4l4.4 5.9L18.9 2zm-1.1 18h1.7L7.3 3.8H5.5L17.8 20z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 7.5s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C16.6 4 12 4 12 4s-4.6 0-7.8.2c-.4.1-1.4.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 9.4.8 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.6 0 7.8-.2c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 15.3V8.7l6.3 3.3-6.3 3.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

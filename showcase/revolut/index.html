@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revolut — Banking &amp; Beyond</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --primary:#494fdf; --primary-bright:#4f55f1; --primary-deep:#3a40c4; --on-primary:#ffffff;
+  --ink:#191c1f; --body:#1f2226; --charcoal:#3a3d40; --mute:#505a63; --ash:#5c5e60;
+  --stone:#8d969e; --faint:#c9c9cd;
+  --on-dark:#ffffff; --on-dark-mute:rgba(255,255,255,0.72);
+  --canvas-light:#ffffff; --canvas-dark:#000000;
+  --surface-soft:#f4f4f4; --surface-card:#ffffff; --surface-deep:#0a0a0a; --surface-elevated:#16181a;
+  --hairline-light:#e2e2e7; --hairline-dark:rgba(255,255,255,0.12); --hairline-strong:#191c1f; --divider-soft:rgba(255,255,255,0.06);
+  --accent-teal:#00a87e; --link:#376cd5; --accent-light-blue:#007bc2; --accent-light-green:#428619;
+  --accent-green-text:#006400; --accent-yellow:#b09000; --accent-warning:#ec7e00; --accent-pink:#e61e49;
+  --accent-danger:#e23b4a; --accent-deep-red:#8b0000; --accent-brown:#936d62;
+  /* type */
+  --display:'Inter Tight','Inter Display','Helvetica Neue',Arial,sans-serif; /* Aeonik Pro stand-in */
+  --ui:'Inter',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  /* radii */
+  --r-sm:8px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+  /* spacing */
+  --sp-xxs:4px; --sp-xs:6px; --sp-sm:8px; --sp-md:14px; --sp-lg:16px; --sp-xl:24px;
+  --sp-xxl:32px; --sp-xxxl:48px; --sp-block:80px; --sp-section:88px; --sp-band:120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas-dark);color:var(--on-dark);font-family:var(--ui);font-size:16px;line-height:1.5;letter-spacing:0.24px;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.display{font-family:var(--display);font-weight:500;letter-spacing:-0.03em}
+
+/* ============ Banner ============ */
+.sg-banner{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:24px;height:52px;padding:0 24px;background:var(--canvas-dark);border-bottom:1px solid var(--divider-soft)}
+.sg-banner .sg-id{display:flex;align-items:center;gap:14px}
+.sg-banner .sg-folder{font-family:var(--ui);font-size:11px;font-weight:600;letter-spacing:0.12em;color:var(--stone);text-transform:uppercase}
+.sg-banner .sg-name{font-family:var(--display);font-size:18px;font-weight:500;letter-spacing:-0.2px;color:var(--on-dark)}
+.sg-banner .sg-name i{font-style:normal;color:var(--primary-bright)}
+.sg-banner .sg-desc{font-size:13px;font-weight:400;letter-spacing:0.16px;color:var(--on-dark-mute)}
+@media(max-width:900px){.sg-banner .sg-desc{display:none}}
+
+/* ============ Section scaffolding ============ */
+.sg-label{display:block;font-family:var(--ui);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin-bottom:var(--sp-xxl)}
+
+/* ============ 1. Color tokens ============ */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--sp-md)}
+.swatch{border-radius:var(--r-lg);overflow:hidden;background:var(--surface-elevated)}
+.swatch .chip{height:64px;border-bottom:1px solid var(--divider-soft)}
+.swatch .meta{padding:10px 12px}
+.swatch .meta .n{font-size:13px;font-weight:400;color:var(--on-dark);display:block;margin-bottom:2px}
+.swatch .meta .h{font-size:12px;color:var(--stone);letter-spacing:0.16px}
+@media(max-width:900px){.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ============ 2. Typography specimen ============ */
+.specimen{border:1px solid var(--hairline-dark);border-radius:var(--r-lg);background:var(--surface-deep);overflow:hidden}
+.spec-row{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:baseline;padding:22px 28px;border-bottom:1px solid var(--divider-soft)}
+.spec-row:last-child{border-bottom:none}
+.spec-row .t-name{font-size:12px;font-weight:400;color:var(--stone);letter-spacing:0.1em;text-transform:uppercase}
+.spec-row .t-name b{display:block;color:var(--ash);font-weight:400;margin-top:4px;text-transform:none;letter-spacing:0.16px}
+.t-display-xxl{font-family:var(--display);font-size:88px;font-weight:500;line-height:1.0;letter-spacing:-2.5px;color:var(--on-dark)}
+.t-display-lg{font-family:var(--display);font-size:44px;font-weight:500;line-height:1.21;letter-spacing:-0.48px;color:var(--on-dark)}
+.t-heading-lg{font-family:var(--display);font-size:28px;font-weight:500;line-height:1.19;letter-spacing:-0.32px;color:var(--on-dark)}
+.t-heading-md{font-family:var(--display);font-size:22px;font-weight:500;line-height:1.33;color:var(--on-dark)}
+.t-body-lg{font-size:18px;font-weight:400;line-height:1.56;letter-spacing:-0.09px;color:var(--on-dark-mute)}
+.t-body-md{font-size:15px;font-weight:400;line-height:1.5;letter-spacing:0.24px;color:var(--on-dark-mute)}
+.t-button-md{font-size:15px;font-weight:600;letter-spacing:0.24px;color:var(--on-dark)}
+.t-link-emph{font-size:15px;font-weight:700;letter-spacing:0.24px;color:var(--on-dark)}
+.t-caption{font-size:13px;font-weight:400;line-height:1.4;color:var(--stone)}
+@media(max-width:900px){.spec-row{grid-template-columns:1fr;gap:8px}}
+
+/* ============ 3. Buttons ============ */
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-lg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--ui);font-size:16px;font-weight:600;line-height:1.5;letter-spacing:0.24px;height:48px;padding:14px 28px;border-radius:var(--r-full);border:1px solid transparent;cursor:pointer;transition:background-color .15s ease,color .15s ease,border-color .15s ease}
+.btn-primary{background:var(--canvas-light);color:var(--canvas-dark)}
+.btn-primary:hover{background:var(--faint)}
+.btn-primary.btn-pressed{background:var(--faint);box-shadow:inset 0 2px 4px rgba(0,0,0,0.25)}
+.btn-primary.sm{height:36px;padding:8px 16px;font-size:14px;font-weight:600;line-height:1.43;letter-spacing:0}
+.btn-dark{background:var(--canvas-dark);color:var(--on-dark)}
+.btn-dark:hover{background:#2a2a2a}
+.btn-soft{background:var(--surface-soft);color:var(--ink)}
+.btn-soft:hover{background:var(--faint)}
+.btn-outline-light{background:var(--canvas-light);color:var(--ink);border-color:var(--hairline-strong)}
+.btn-outline-light:hover{background:var(--surface-soft)}
+.btn-outline-dark{background:var(--canvas-dark);color:var(--on-dark);border-color:var(--on-dark)}
+.btn-outline-dark:hover{background:#16181a}
+.btn-cobalt{background:var(--primary);color:var(--on-primary)}
+.btn-cobalt:hover{background:var(--primary-deep)}
+
+/* ============ 4. Inputs ============ */
+.input-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--sp-xl);max-width:760px}
+.field label{display:block;font-size:14px;font-weight:600;color:var(--on-dark);margin-bottom:8px}
+.input{width:100%;height:56px;padding:14px 16px;background:var(--canvas-light);color:var(--ink);font-family:var(--ui);font-size:16px;letter-spacing:0.24px;border:1px solid var(--hairline-light);border-radius:var(--r-md);outline:none;transition:border-color .15s ease}
+.input::placeholder{color:var(--stone)}
+.input:focus{border-color:var(--primary-bright);box-shadow:0 0 0 2px rgba(73,79,223,0.25)}
+select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23505a63' stroke-width='1.4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.input:disabled{background:var(--surface-soft);color:var(--stone);border-color:var(--hairline-light);cursor:not-allowed}
+.switch-row{display:inline-flex;align-items:center;gap:12px}
+.switch{position:relative;width:44px;height:26px;border-radius:var(--r-full);background:var(--surface-deep);border:1px solid var(--hairline-dark);transition:background .15s ease}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--stone);transition:transform .15s ease,background .15s ease}
+.switch.on{background:var(--primary);border-color:var(--primary)}
+.switch.on::after{transform:translateX(18px);background:#ffffff}
+.switch-label{font-size:14px;font-weight:400;color:var(--on-dark-mute)}
+@media(max-width:900px){.input-grid{grid-template-columns:1fr}}
+
+/* ============ 5. Cards ============ */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-lg)}
+.feature-card{background:var(--surface-elevated);border-radius:var(--r-lg);padding:var(--sp-xxl);transition:transform .2s ease}
+.feature-card h4{font-family:var(--display);font-size:22px;font-weight:500;line-height:1.33;color:var(--on-dark);margin:18px 0 10px}
+.feature-card p{font-size:15px;color:var(--on-dark-mute)}
+.stat-card{background:var(--surface-elevated);border-radius:var(--r-lg);padding:var(--sp-xxl);display:flex;flex-direction:column;justify-content:space-between}
+.stat-card .stat{font-family:var(--display);font-size:56px;font-weight:500;line-height:1.0;letter-spacing:-0.56px;color:var(--on-dark)}
+.stat-card .stat i{font-style:normal;color:var(--accent-teal)}
+.stat-card .stat-label{font-size:14px;color:var(--on-dark-mute);margin-top:10px}
+.icon-chip{width:40px;height:40px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center}
+.icon-chip svg{width:20px;height:20px}
+@media(max-width:900px){.card-grid{grid-template-columns:1fr}}
+
+/* ============ 6. Badges ============ */
+.badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-md)}
+.badge-tag{display:inline-flex;align-items:center;gap:6px;background:var(--surface-elevated);color:var(--on-dark);font-size:13px;line-height:1.4;border-radius:var(--r-full);padding:4px 12px}
+.badge-feature{background:var(--primary);color:var(--on-primary)}
+.badge-soft{background:var(--surface-soft);color:var(--ink)}
+.badge-teal{background:rgba(0,168,126,0.16);color:#4ed0aa}
+.badge-pill-sm{font-size:14px;font-weight:600;color:var(--ink);background:var(--surface-soft);border-radius:var(--r-full);padding:8px 16px}
+
+/* ============ 7. Navigation ============ */
+.nav-demo{border:1px solid var(--divider-soft);border-radius:var(--r-lg);overflow:hidden;background:var(--canvas-dark)}
+.nav-bar{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nav-wordmark{font-family:var(--display);font-size:21px;font-weight:500;letter-spacing:-0.3px;color:var(--on-dark)}
+.nav-wordmark i{font-style:normal;color:var(--primary-bright)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:15px;font-weight:600;letter-spacing:0.24px;color:var(--on-dark-mute);transition:color .15s ease}
+.nav-links a:hover,.nav-links a.active{color:var(--on-dark)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-right .login{font-size:15px;font-weight:600;letter-spacing:0.24px;color:var(--on-dark)}
+.subnav{display:flex;gap:8px;padding:14px 24px;border-top:1px solid var(--divider-soft)}
+.sub-nav-pill{font-size:14px;font-weight:600;color:var(--on-dark);background:var(--surface-elevated);border-radius:var(--r-full);padding:8px 16px;border:none;cursor:pointer;transition:background .15s ease}
+.sub-nav-pill:hover{background:#232629}
+.sub-nav-pill.active{background:var(--on-dark);color:var(--canvas-dark)}
+
+/* ============ 8. Table ============ */
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table th{font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);text-align:left;padding:14px 20px;border-bottom:1px solid var(--hairline-dark)}
+.cmp-table td{padding:16px 20px;border-bottom:1px solid var(--divider-soft);font-size:15px;color:var(--on-dark-mute);vertical-align:middle}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:first-child{color:var(--on-dark);font-weight:600}
+.cmp-table .tick{color:var(--accent-teal);font-weight:700}
+.cmp-table .cross{color:var(--stone)}
+.tbl-wrap{border:1px solid var(--divider-soft);border-radius:var(--r-lg);background:var(--surface-deep);overflow:hidden}
+
+/* ============ Product ============ */
+#product{padding-top:0}
+.band-dark{background:var(--canvas-dark);padding:var(--sp-band) 0}
+.band-light{background:var(--canvas-light);color:var(--ink);padding:var(--sp-section) 0}
+.band-light .sg-label{color:var(--stone)}
+.band-soft{background:var(--surface-soft);color:var(--ink);padding:var(--sp-section) 0}
+
+.p-hero h1{font-family:var(--display);font-size:120px;font-weight:500;line-height:1.0;letter-spacing:-2.72px;color:var(--on-dark);max-width:1000px}
+.p-hero .hero-sub{font-size:18px;line-height:1.56;color:var(--on-dark-mute);max-width:520px;margin:32px 0 36px}
+.p-hero .hero-cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+@media(max-width:900px){.p-hero h1{font-size:64px;letter-spacing:-1.3px}}
+
+/* phone mockup */
+.mock-band{display:flex;justify-content:center;padding:64px 0 0}
+.phone{
+  width:290px;aspect-ratio:9/19;border-radius:44px;background:linear-gradient(160deg,#1b1f3a 0%,#0a0a12 55%,#16104a 100%);
+  border:1px solid var(--hairline-dark);padding:14px;position:relative;
+  box-shadow:0 0 80px rgba(73,79,223,0.28);
+}
+.phone .screen{width:100%;height:100%;border-radius:32px;background:#101116;padding:22px 18px;display:flex;flex-direction:column;overflow:hidden}
+.phone .notch{width:84px;height:22px;border-radius:12px;background:#000;margin:0 auto 18px}
+.phone .bal-label{font-size:12px;color:var(--stone);letter-spacing:0.16px}
+.phone .bal{font-family:var(--display);font-size:38px;font-weight:500;color:var(--on-dark);margin:4px 0 2px}
+.phone .bal small{font-size:16px;color:var(--stone);font-weight:400}
+.phone .bal-delta{font-size:12px;font-weight:600;color:#4ed0aa;margin-bottom:22px}
+.txn{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.txn:last-child{border-bottom:none}
+.txn .ic{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+.txn .t{font-size:13px;font-weight:600;color:var(--on-dark)}
+.txn .s{font-size:11px;color:var(--stone)}
+.txn .amt{margin-left:auto;font-size:13px;font-weight:600;color:var(--on-dark)}
+.txn .amt.pos{color:#4ed0aa}
+
+/* feature grid */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg)}
+@media(max-width:900px){.feat-grid{grid-template-columns:1fr}}
+.feature-card-light{background:var(--surface-card);border:1px solid var(--hairline-light);border-radius:var(--r-lg);padding:var(--sp-xxl);transition:transform .2s ease}
+.feature-card-light:hover{transform:translateY(-4px)}
+.feature-card-light h4{font-family:var(--display);font-size:22px;font-weight:500;line-height:1.33;color:var(--ink);margin:18px 0 10px}
+.feature-card-light p{font-size:15px;color:var(--mute)}
+
+/* plans */
+.plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg);align-items:stretch}
+@media(max-width:1024px){.plan-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.plan-grid{grid-template-columns:1fr}}
+.plan{background:var(--surface-elevated);border-radius:var(--r-lg);padding:var(--sp-xxl);display:flex;flex-direction:column;position:relative}
+.plan.featured{background:var(--primary)}
+.plan h4{font-family:var(--display);font-size:28px;font-weight:500;line-height:1.19;letter-spacing:-0.32px;color:var(--on-dark)}
+.plan.featured h4{color:var(--on-primary)}
+.plan .price{font-family:var(--display);font-size:40px;font-weight:500;line-height:1.2;color:var(--on-dark);margin:14px 0 2px}
+.plan.featured .price{color:var(--on-primary)}
+.plan .per{font-size:13px;color:var(--stone);margin-bottom:22px}
+.plan.featured .per{color:rgba(255,255,255,0.72)}
+.plan ul{list-style:none;margin:0 0 26px;flex:1}
+.plan li{font-size:14px;color:var(--on-dark-mute);padding:7px 0;display:flex;gap:10px;align-items:baseline}
+.plan.featured li{color:rgba(255,255,255,0.92)}
+.plan li::before{content:"✓";font-weight:700;font-size:12px;color:var(--accent-teal)}
+.plan.featured li::before{color:#c8caff}
+.plan .badge-feature{position:absolute;top:-12px;right:20px}
+
+/* testimonial */
+.quote-band{padding:var(--sp-section) 0}
+.quote{max-width:780px}
+.quote p{font-family:var(--display);font-size:34px;font-weight:500;line-height:1.21;letter-spacing:-0.48px;color:var(--on-dark)}
+.quote .who{display:flex;align-items:center;gap:14px;margin-top:28px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--surface-elevated);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--on-dark-mute)}
+.quote .who .nm{font-size:15px;font-weight:600;color:var(--on-dark)}
+.quote .who .nm small{display:block;font-weight:400;font-size:13px;color:var(--stone)}
+
+/* stats band */
+.stats-band{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xl)}
+@media(max-width:900px){.stats-band{grid-template-columns:repeat(2,1fr)}}
+.stat-item .v{font-family:var(--display);font-size:48px;font-weight:500;line-height:1.0;letter-spacing:-0.48px;color:var(--ink)}
+.stat-item .v i{font-style:normal;color:var(--primary-bright)}
+.stat-item .l{font-size:14px;color:var(--mute);margin-top:8px}
+
+/* download tiles */
+.dl-row{display:flex;gap:var(--sp-md);flex-wrap:wrap}
+.download-tile{display:inline-flex;align-items:center;gap:12px;background:var(--surface-soft);color:var(--ink);border:none;border-radius:var(--r-md);height:56px;padding:12px 20px;font-family:var(--ui);cursor:pointer;transition:background .15s ease}
+.download-tile:hover{background:var(--faint)}
+.download-tile svg{width:22px;height:22px}
+.download-tile .tt{text-align:left}
+.download-tile .tt small{display:block;font-size:11px;color:var(--mute);letter-spacing:0.16px}
+.download-tile .tt b{font-size:15px;font-weight:600}
+
+/* footer */
+footer{background:var(--canvas-dark);padding:80px 24px 40px;border-top:1px solid var(--divider-soft)}
+.foot-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px}
+.foot-grid h5{font-size:14px;font-weight:600;color:var(--on-dark);margin-bottom:16px}
+.foot-grid a{display:block;font-size:14px;color:var(--on-dark-mute);padding:5px 0;transition:color .15s ease}
+.foot-grid a:hover{color:var(--on-dark)}
+.foot-brand p{font-size:14px;color:var(--on-dark-mute);max-width:250px;margin-top:14px;line-height:1.43}
+.foot-legal{max-width:1200px;margin:56px auto 0;padding-top:24px;border-top:1px solid var(--divider-soft);font-size:13px;line-height:1.4;color:var(--stone)}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">revolut</span>
+    <span class="sg-name">Revolut<i>.</i></span>
+  </div>
+  <span class="sg-desc">Fintech two-mode canvas — black storytelling bands slam against white catalogue pages, cobalt-violet reserved for the featured tier.</span>
+</header>
+
+<main>
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components" style="padding:var(--sp-section) 0">
+    <div class="container">
+
+      <span class="sg-label">01 / Color tokens <em>— two canvases, one brand stamp</em></span>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><span class="n">Canvas Dark</span><span class="h">#000000</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="meta"><span class="n">Canvas Light</span><span class="h">#FFFFFF</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#494fdf"></div><div class="meta"><span class="n">Cobalt Violet</span><span class="h">#494FDF</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#16181a"></div><div class="meta"><span class="n">Surface Elevated</span><span class="h">#16181A</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#f4f4f4"></div><div class="meta"><span class="n">Surface Soft</span><span class="h">#F4F4F4</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#00a87e"></div><div class="meta"><span class="n">Accent Teal</span><span class="h">#00A87E</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#e61e49"></div><div class="meta"><span class="n">Accent Pink</span><span class="h">#E61E49</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#428619"></div><div class="meta"><span class="n">Accent Lt Green</span><span class="h">#428619</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#ec7e00"></div><div class="meta"><span class="n">Accent Warning</span><span class="h">#EC7E00</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#936d62"></div><div class="meta"><span class="n">Accent Brown</span><span class="h">#936D62</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#376cd5"></div><div class="meta"><span class="n">Link</span><span class="h">#376CD5</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#16181a;border-bottom:2px solid rgba(255,255,255,0.12)"></div><div class="meta"><span class="n">Hairline Dark</span><span class="h">rgba(255,255,255,.12)</span></div></div>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">02 / Typography specimen <em>— Aeonik-style display at 500, Inter UI with positive tracking</em></span>
+      <div class="specimen">
+        <div class="spec-row"><div class="t-name">display-xxl<b>Display 500 · 136px · lh 1.0 · -2.72px</b></div><div class="t-display-xxl" style="font-size:80px">Beyond banking</div></div>
+        <div class="spec-row"><div class="t-name">display-lg<b>Display 500 · 48px · lh 1.21 · -0.48px</b></div><div class="t-display-lg">Join the 70+ million</div></div>
+        <div class="spec-row"><div class="t-name">heading-lg<b>Display 500 · 32px · lh 1.19 · -0.32px</b></div><div class="t-heading-lg">One app. Every currency.</div></div>
+        <div class="spec-row"><div class="t-name">heading-md<b>Display 500 · 24px · lh 1.33</b></div><div class="t-heading-md">Instant transfers, zero fees</div></div>
+        <div class="spec-row"><div class="t-name">body-lg / body-md<b>Inter 400 · 18 / 16px · 0.24px</b></div><div style="max-width:640px"><p class="t-body-lg" style="margin-bottom:10px">Hold, exchange and send 36 currencies from a single account, with interbank rates.</p><p class="t-body-md">Default UI copy runs at 400 weight with positive tracking — fintech precision.</p></div></div>
+        <div class="spec-row"><div class="t-name">button-md / link-emph<b>Inter 600 / 700 · 16px</b></div><div style="display:flex;gap:28px;align-items:baseline"><span class="t-button-md">Get started</span><span class="t-link-emph">See how it works →</span></div></div>
+        <div class="spec-row"><div class="t-name">caption<b>Inter 400 · 13px</b></div><div class="t-caption">Revolut Ltd is registered with the Financial Conduct Authority. Capital at risk.</div></div>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">03 / Buttons <em>— every action is a pill, on either canvas</em></span>
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started</button>
+        <button class="btn btn-primary btn-pressed">Choose plan (pressed)</button>
+        <button class="btn btn-cobalt">Upgrade to Ultra</button>
+        <button class="btn btn-dark">Open account</button>
+        <button class="btn btn-outline-dark">Learn more</button>
+        <button class="btn btn-pill-sm" style="height:36px;padding:8px 16px;font-size:14px">Personal</button>
+      </div>
+      <div class="btn-row" style="margin-top:24px;background:var(--canvas-light);border-radius:var(--r-lg);padding:24px">
+        <button class="btn btn-dark">Start free trial</button>
+        <button class="btn btn-outline-light">View FAQs</button>
+        <button class="btn btn-soft">Download the app</button>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">04 / Inputs <em>— 56px fintech-grade fields</em></span>
+      <div class="input-grid" style="background:var(--canvas-light);border-radius:var(--r-lg);padding:32px">
+        <div class="field"><label style="color:var(--ink)">Full legal name</label><input class="input" placeholder="e.g. Maria Kowalski"></div>
+        <div class="field"><label style="color:var(--ink)">Email — focused</label><input class="input" value="maria@company.com" style="border-color:var(--primary-bright);box-shadow:0 0 0 2px rgba(73,79,223,0.25)"></div>
+        <div class="field"><label style="color:var(--ink)">Country of residence</label><select class="input"><option>United Kingdom</option><option>Poland</option><option>Singapore</option><option>United States</option></select></div>
+        <div class="field"><label style="color:var(--ink)">Promo code</label><input class="input" value="WELCOME10" disabled></div>
+        <div class="field" style="grid-column:1/-1"><label style="color:var(--ink)">Security</label>
+          <div style="display:flex;gap:32px;flex-wrap:wrap">
+            <span class="switch-row"><span class="switch on"></span><span class="switch-label" style="color:var(--mute)">Face ID sign-in</span></span>
+            <span class="switch-row"><span class="switch"></span><span class="switch-label" style="color:var(--mute)">Location-based security</span></span>
+          </div>
+        </div>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">05 / Cards <em>— 20px containers, luminance-only elevation</em></span>
+      <div class="card-grid">
+        <div class="feature-card">
+          <div class="icon-chip" style="background:rgba(0,168,126,0.16)"><svg viewBox="0 0 24 24" fill="none" stroke="#4ed0aa" stroke-width="1.8"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+          <h4>Instant everything</h4>
+          <p>Transfers arrive in seconds to 160+ countries. Split bills, request money, and settle group expenses without a single IBAN.</p>
+        </div>
+        <div class="stat-card">
+          <div>
+            <div class="stat"><i>$</i>38B</div>
+            <div class="stat-label">Processed every month across 36 currencies</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:24px">
+            <span class="badge-tag badge-teal">+14% YoY</span><span class="badge-tag">70M customers</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">06 / Badges &amp; pills</span>
+      <div class="badge-row">
+        <span class="badge-tag badge-feature">Most popular</span>
+        <span class="badge-tag badge-soft">New</span>
+        <span class="badge-tag">FX at interbank rate</span>
+        <span class="badge-tag badge-teal">Savings at 4.75% AER</span>
+        <span class="badge-pill-sm">Metal</span>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">07 / Navigation <em>— black bar, pill sub-nav</em></span>
+      <div class="nav-demo">
+        <div class="nav-bar">
+          <span class="nav-wordmark">Revolut<i>.</i></span>
+          <nav class="nav-links"><a class="active" href="#">Personal</a><a href="#">Business</a><a href="#">Company</a></nav>
+          <div class="nav-right">
+            <span class="login">EN</span>
+            <a class="login" href="#">Log in</a>
+            <button class="btn btn-primary sm">Get the app</button>
+          </div>
+        </div>
+        <div class="subnav">
+          <button class="sub-nav-pill active">Accounts</button>
+          <button class="sub-nav-pill">Cards</button>
+          <button class="sub-nav-pill">Invest</button>
+          <button class="sub-nav-pill">Crypto</button>
+          <button class="sub-nav-pill">Savings</button>
+        </div>
+      </div>
+
+      <span class="sg-label" style="margin-top:96px">08 / Table <em>— plan comparison on the dark catalogue surface</em></span>
+      <div class="tbl-wrap">
+        <table class="cmp-table">
+          <thead><tr><th>Feature</th><th>Standard</th><th>Premium</th><th>Metal</th></tr></thead>
+          <tbody>
+            <tr><td>Fee-free FX allowance</td><td>$1,000 / mo</td><td>Unlimited</td><td>Unlimited</td></tr>
+            <tr><td>Interbank exchange rates</td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+            <tr><td>Global travel insurance</td><td><span class="cross">—</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+            <tr><td>Delivery of a physical card</td><td><span class="cross">—</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓ &nbsp;plated steel</span></td></tr>
+            <tr><td>Airport lounges</td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="tick">✓ &nbsp;1,200+ lounges</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PRODUCT ================= -->
+  <!-- Dark storytelling hero -->
+  <section id="product">
+    <div class="band-dark p-hero" style="padding:var(--sp-band) 0 0">
+      <div class="container">
+        <h1>Banking &amp;<br>Beyond</h1>
+        <p class="hero-sub">Join the 70+ million using Revolut to spend, save and invest — one app for all your money, everywhere.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary">Choose your subscription</button>
+          <button class="btn btn-outline-dark">Compare plans</button>
+        </div>
+        <div class="mock-band">
+          <div class="phone">
+            <div class="screen">
+              <div class="notch"></div>
+              <div class="bal-label">Main account · USD</div>
+              <div class="bal">$12,480<small>.92</small></div>
+              <div class="bal-delta">▲ $842 this month</div>
+              <div class="txn"><span class="ic" style="background:#00a87e">N</span><div><div class="t">Netflix</div><div class="s">Subscriptions</div></div><span class="amt">−$15.49</span></div>
+              <div class="txn"><span class="ic" style="background:#494fdf">↓</span><div><div class="t">From Kenji</div><div class="s">Dinner split</div></div><span class="amt pos">+$34.00</span></div>
+              <div class="txn"><span class="ic" style="background:#e61e49">M</span><div><div class="t">Metro Card</div><div class="s">Transport</div></div><span class="amt">−$2.90</span></div>
+              <div class="txn"><span class="ic" style="background:#936d62">V</span><div><div class="t">Vault: Kyoto</div><div class="s">Round-ups</div></div><span class="amt pos">+$18.20</span></div>
+              <div class="txn"><span class="ic" style="background:#ec7e00">A</span><div><div class="t">Apple Store</div><div class="s">Electronics</div></div><span class="amt">−$129.00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social proof strip -->
+    <div class="band-dark" style="padding:48px 0;border-bottom:1px solid var(--divider-soft)">
+      <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:32px">
+        <span style="font-size:13px;color:var(--stone)">As featured in</span>
+        <span style="font-family:var(--display);font-size:17px;font-weight:500;color:var(--stone);opacity:.8">FINANCIAL&nbsp;TIMES</span>
+        <span style="font-family:var(--display);font-size:17px;font-weight:500;color:var(--stone);opacity:.8">Bloomberg</span>
+        <span style="font-family:var(--display);font-size:17px;font-weight:500;color:var(--stone);opacity:.8">WIRED</span>
+        <span style="font-family:var(--display);font-size:17px;font-weight:500;color:var(--stone);opacity:.8">Forbes</span>
+        <span style="font-family:var(--display);font-size:17px;font-weight:500;color:var(--stone);opacity:.8">TechCrunch</span>
+      </div>
+    </div>
+
+    <!-- White catalogue band -->
+    <div class="band-light">
+      <div class="container">
+        <span class="sg-label">Why Revolut</span>
+        <h2 class="display" style="font-size:48px;line-height:1.21;letter-spacing:-0.48px;color:var(--ink);max-width:720px;margin-bottom:48px">Everything your money should have been doing already.</h2>
+        <div class="feat-grid">
+          <div class="feature-card-light">
+            <div class="icon-chip" style="background:rgba(0,168,126,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="#00a87e" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg></div>
+            <h4>Instant transfers</h4>
+            <p>Send money to 160+ countries in seconds at interbank rates. No hidden margins, no correspondent-bank limbo.</p>
+          </div>
+          <div class="feature-card-light">
+            <div class="icon-chip" style="background:rgba(73,79,223,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="#4f55f1" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/></svg></div>
+            <h4>Cards for every style</h4>
+            <p>Disposable virtual cards, plated steel physical cards, and one-tap freeze — security that fits in your wallet.</p>
+          </div>
+          <div class="feature-card-light">
+            <div class="icon-chip" style="background:rgba(230,30,73,0.10)"><svg viewBox="0 0 24 24" fill="none" stroke="#e61e49" stroke-width="1.8"><path d="M4 19V9l8-5 8 5v10"/><path d="M9 19v-6h6v6"/></svg></div>
+            <h4>Savings that compound</h4>
+            <p>Flexible accounts paying up to 4.75% AER, paid daily. Round up every purchase into a Vault for your next trip.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark planning band with plans -->
+    <div class="band-dark">
+      <div class="container">
+        <span class="sg-label" style="color:var(--stone)">Plans</span>
+        <h2 class="display" style="font-size:56px;line-height:1.21;letter-spacing:-0.48px;color:var(--on-dark);margin-bottom:56px">Pick the plan that fits your life</h2>
+        <div class="plan-grid">
+          <div class="plan">
+            <h4>Standard</h4>
+            <div class="price">$0</div>
+            <div class="per">forever</div>
+            <ul><li>Fee-free FX to $1,000/mo</li><li>Virtual cards</li><li>Budget analytics</li></ul>
+            <button class="btn btn-outline-dark" style="height:44px">Get started</button>
+          </div>
+          <div class="plan">
+            <h4>Premium</h4>
+            <div class="price">$9.99</div>
+            <div class="per">per month</div>
+            <ul><li>Unlimited FX</li><li>Global travel insurance</li><li>Priority support</li></ul>
+            <button class="btn btn-outline-dark" style="height:44px">Choose Premium</button>
+          </div>
+          <div class="plan featured">
+            <span class="badge-feature">Most popular</span>
+            <h4>Metal</h4>
+            <div class="price">$16.99</div>
+            <div class="per">per month</div>
+            <ul><li>Plated steel card</li><li>1,200+ airport lounges</li><li>5% cashback</li><li>Higher savings rate</li></ul>
+            <button class="btn btn-primary" style="height:44px">Choose Metal</button>
+          </div>
+          <div class="plan">
+            <h4>Ultra</h4>
+            <div class="price">$45</div>
+            <div class="per">per month</div>
+            <ul><li>Everything in Metal</li><li>24/7 concierge</li><li>Dedicated partner</li></ul>
+            <button class="btn btn-outline-dark" style="height:44px">Go Ultra</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light stats band -->
+    <div class="band-soft">
+      <div class="container">
+        <div class="stats-band">
+          <div class="stat-item"><div class="v">70<i>M+</i></div><div class="l">Retail customers worldwide</div></div>
+          <div class="stat-item"><div class="v">500<i>K</i></div><div class="l">Businesses banking with us</div></div>
+          <div class="stat-item"><div class="v">36</div><div class="l">Currencies held at interbank rates</div></div>
+          <div class="stat-item"><div class="v">160<i>+</i></div><div class="l">Countries receiving instant transfers</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark testimonial -->
+    <div class="band-dark quote-band">
+      <div class="container">
+        <div class="quote">
+          <span class="sg-label">Customer story</span>
+          <p>“I closed my legacy bank account the week I moved to Revolut. Six currencies, two Vault goals, and one card that just works from Lisbon to Kyoto.”</p>
+          <div class="who">
+            <span class="avatar">MK</span>
+            <span class="nm">Maria Kowalski<small>Metal member since 2021</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light download band -->
+    <div class="band-light" style="padding:var(--sp-section) 0">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
+          <h2 class="display" style="font-size:40px;line-height:1.2;letter-spacing:-0.4px;color:var(--ink);max-width:520px">Get the app.<br>Be beyond in 3 minutes.</h2>
+          <div class="dl-row">
+            <button class="download-tile"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-2-.9-3.2-.9-1.7 0-3.2 1-4 2.5-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.5-1-2.5-3.9zM14 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.9-1 3 1 .1 2.1-.6 2.8-1.4z"/></svg><span class="tt"><small>Download on the</small><b>App Store</b></span></button>
+            <button class="download-tile"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3.5v17c0 .4.5.7.8.4l9.6-8.5c.2-.2.2-.5 0-.7L4.8 3.1c-.3-.3-.8 0-.8.4zM16 10l2.8 1.7c.5.3.5 1 0 1.3L16 14.7l-2.2-2.3L16 10z"/></svg><span class="tt"><small>Get it on</small><b>Google Play</b></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA band -->
+    <div class="band-dark" style="text-align:center;padding:var(--sp-band) 0">
+      <div class="container">
+        <h2 class="display" style="font-size:72px;line-height:1.0;letter-spacing:-0.8px;color:var(--on-dark)">Your money,<br>unlocked.</h2>
+        <p style="font-size:18px;color:var(--on-dark-mute);margin:28px auto 36px;max-width:460px">Open a free account today. No credit checks, no monthly minimums, no waiting rooms.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary">Get started</button>
+          <button class="btn btn-outline-dark">Talk to sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <span class="nav-wordmark">Revolut<i>.</i></span>
+      <p>Alternative banking, in one app. Held and moved by 70 million people.</p>
+    </div>
+    <div><h5>Personal</h5><a href="#">Accounts</a><a href="#">Cards</a><a href="#">Transfers</a><a href="#">Savings</a></div>
+    <div><h5>Business</h5><a href="#">Business account</a><a href="#">Expense cards</a><a href="#">Payroll</a><a href="#">API</a></div>
+    <div><h5>Company</h5><a href="#">About</a><a href="#">Newsroom</a><a href="#">Careers</a><a href="#">Contact</a></div>
+    <div><h5>Legal</h5><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Licences</a><a href="#">Complaints</a></div>
+  </div>
+  <div class="foot-legal">© 2026 Revolut Ltd · Registered with the Financial Conduct Authority · Capital at risk. Deposit protection varies by region and plan.</div>
+</footer>
+
+</body>
+</html>

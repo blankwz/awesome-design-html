@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXIOM SHOP — Official Mission Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#000000; --night-soft:#0a0a0a; --light:#ffffff; --cool:#f0f0fa;
+  --hair-dark:#3a3a3f; --hair-light:#e0e0e8; --ink:#000000; --ink-mute:#5a5a5f; --on-dark:#ffffff;
+  --r-xs:4px; --r-sm:8px; --r-md:16px; --r-pill:32px; --r-full:9999px;
+  --s-xs:8px; --s-sm:12px; --s-md:16px; --s-xl:24px; --s-xxl:32px; --s-huge:48px;
+  --font:'Inter',Arial,Verdana,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--night);color:var(--on-dark);font-size:16px;line-height:1.5;letter-spacing:.32px}
+a{color:inherit}
+button{font-family:var(--font);cursor:pointer}
+
+/* ghost pill: the only CTA style */
+.btn-ghost{background:transparent;border:1px solid var(--on-dark);color:var(--on-dark);border-radius:var(--r-pill);padding:16px 24px;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase;transition:all .2s}
+.btn-ghost:hover{background:var(--on-dark);color:var(--ink)}
+.btn-ghost-dark{background:transparent;border:1px solid var(--ink);color:var(--ink);border-radius:var(--r-pill);padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase}
+.btn-ghost-dark:hover{background:var(--ink);color:#fff}
+.btn-fill{background:var(--cool);border:1px solid var(--cool);color:var(--ink);border-radius:var(--r-pill);padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase}
+.btn-fill:hover{background:#fff}
+.caps{font-size:12px;font-weight:400;letter-spacing:.96px;text-transform:uppercase;line-height:2}
+.mono-num{font-variant-numeric:tabular-nums}
+
+/* ---------- Fixed overlay nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:26px;padding:24px 32px;color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,0))}
+.logo{font-size:20px;font-weight:800;letter-spacing:3.2px;text-transform:uppercase;text-decoration:none}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;text-decoration:none;opacity:.88}
+.nav-links a:hover,.nav-links a.active{opacity:1;border-bottom:1px solid #fff;padding-bottom:3px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:20px}
+.nav-right a{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;text-decoration:none}
+.nav-right a:hover{text-decoration:underline}
+.bell{position:relative;background:none;border:none;color:#fff}
+.bell .alert-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;background:#fff;border:2px solid #000;border-radius:50%}
+.bag{position:relative}
+.bag .count{position:absolute;top:-7px;right:-9px;background:#fff;color:#000;border-radius:var(--r-full);font-size:10px;font-weight:800;min-width:17px;height:17px;display:grid;place-items:center;letter-spacing:0}
+
+/* ---------- Full-bleed graded photo band ---------- */
+.hero{height:84vh;min-height:560px;position:relative;overflow:hidden;background:#000}
+.hero .sky{position:absolute;inset:0;
+  background:
+   radial-gradient(1.5px 1.5px at 14% 18%,rgba(255,255,255,.9),transparent 100%),
+   radial-gradient(1.5px 1.5px at 30% 10%,rgba(255,255,255,.7),transparent 100%),
+   radial-gradient(2px 2px at 47% 22%,rgba(255,255,255,.85),transparent 100%),
+   radial-gradient(1.5px 1.5px at 66% 8%,rgba(255,255,255,.75),transparent 100%),
+   radial-gradient(2px 2px at 84% 16%,rgba(255,255,255,.8),transparent 100%),
+   radial-gradient(1.5px 1.5px at 74% 32%,rgba(255,255,255,.6),transparent 100%),
+   linear-gradient(180deg,#000 0%,#05070d 34%,#0d1626 55%,#26150e 74%,#000 100%)}
+.hero .exhaust{position:absolute;left:50%;bottom:-6%;width:340px;height:52%;transform:translateX(-50%);
+  background:radial-gradient(60px 190px at 50% 62%,rgba(255,236,200,.95),rgba(255,180,90,.55) 55%,transparent 78%),
+             radial-gradient(120px 260px at 50% 60%,rgba(255,205,140,.45),transparent 75%)}
+.hero .booster{position:absolute;left:50%;bottom:34%;transform:translateX(-50%);width:34px;height:44%;
+  background:linear-gradient(90deg,#5a5a5f,#f0f0fa 42%,#c9c9d4 58%,#4a4a4f);border-radius:17px 17px 4px 4px;
+  box-shadow:0 0 40px rgba(255,210,150,.35)}
+.hero .booster::before{content:"";position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  border-left:17px solid transparent;border-right:17px solid transparent;border-bottom:24px solid #e6e6ee}
+.hero .grade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),transparent 30%,transparent 70%,rgba(0,0,0,.55))}
+.hero-copy{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);width:min(1200px,92%);text-align:center;z-index:2}
+.hero-copy .caps{opacity:.85}
+.hero-copy h1{font-size:76px;font-weight:700;letter-spacing:1.6px;line-height:.95;text-transform:uppercase;margin:10px 0 26px}
+
+/* ---------- Category strip ---------- */
+.strip{background:var(--night);border-bottom:1px solid var(--hair-dark);padding:18px 32px;display:flex;gap:26px;justify-content:center;flex-wrap:wrap}
+.strip a{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;text-decoration:none;opacity:.75;padding:6px 2px}
+.strip a:hover,.strip a.on{opacity:1;border-bottom:1px solid #fff;padding-bottom:4px}
+
+/* ---------- Shop section (light canvas) ---------- */
+.shop{background:var(--light);color:var(--ink)}
+.shop-inner{max-width:1280px;margin:0 auto;padding:56px 32px 64px}
+.shop-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px}
+.shop-head h2{font-size:38px;font-weight:700;letter-spacing:.96px;text-transform:uppercase}
+.shop-head span{font-size:13px;color:var(--ink-mute)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:var(--light);border:1px solid var(--hair-light);border-radius:var(--r-sm);padding:16px;display:flex;flex-direction:column;transition:border-color .15s}
+.card:hover{border-color:var(--ink)}
+.card-art{height:160px;border-radius:var(--r-xs);position:relative;margin-bottom:14px}
+.flag{position:absolute;top:10px;left:10px;background:#000;color:#fff;font-size:11px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;padding:4px 10px;border-radius:3px}
+.flag.soon{background:transparent;border:1px solid #000;color:#000}
+.card-name{font-size:16px;font-weight:700;letter-spacing:.32px;text-transform:uppercase}
+.card-cat{font-size:13px;color:var(--ink-mute);margin:4px 0 12px}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:10px}
+.price{font-weight:700;letter-spacing:.32px}
+.card-foot .btn-fill,.card-foot .btn-ghost-dark{padding:10px 16px;font-size:11px;flex:none}
+
+/* ---------- Featured detail ---------- */
+.featured{background:var(--night-soft);border-top:1px solid var(--hair-dark);border-bottom:1px solid var(--hair-dark)}
+.feat-inner{max-width:1280px;margin:0 auto;padding:64px 32px;display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.g-main{height:360px;border-radius:var(--r-xs);position:relative;
+  background:radial-gradient(300px 200px at 70% 20%,rgba(70,90,140,.55),transparent 70%),
+             radial-gradient(360px 240px at 25% 80%,rgba(140,60,30,.45),transparent 70%),
+             linear-gradient(160deg,#0b0d14,#141824 60%,#0a0a0a)}
+.g-main .mars{position:absolute;left:0;right:0;bottom:0;height:34%;border-radius:0 0 var(--r-xs) var(--r-xs);
+  background:linear-gradient(180deg,rgba(150,70,40,.55),rgba(60,25,15,.8))}
+.g-thumbs{display:flex;gap:12px;margin-top:14px}
+.thumb{width:78px;height:56px;border-radius:var(--r-xs);border:1px solid transparent;cursor:pointer;background:#0a0a0a}
+.thumb.on{border-color:#fff}
+.t1{background:linear-gradient(160deg,#141a2c,#05070d)}
+.t2{background:linear-gradient(160deg,#2a140c,#05070d)}
+.t3{background:linear-gradient(160deg,#1a2a1e,#05070d)}
+.t4{background:linear-gradient(160deg,#241a2c,#05070d)}
+.feat-info h2{font-size:44px;font-weight:700;letter-spacing:1.2px;line-height:1.05;text-transform:uppercase;margin:8px 0 14px}
+.feat-info .lead{color:var(--on-dark-mute);opacity:.85;margin-bottom:22px;max-width:52ch}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;border-top:1px solid var(--hair-dark);border-bottom:1px solid var(--hair-dark);padding:16px 0;margin-bottom:22px}
+.spec b{display:block;font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--on-dark-mute);opacity:.7}
+.spec span{font-size:15px;font-weight:700}
+.sizes{display:flex;gap:10px;margin:16px 0 6px;flex-wrap:wrap}
+.size{border:1px solid var(--hair-dark);background:transparent;color:#fff;border-radius:var(--r-pill);padding:10px 20px;font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase}
+.size.on{background:#fff;color:#000;border-color:#fff}
+.buy-row{display:flex;align-items:center;gap:16px;margin-top:24px;flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--hair-dark);border-radius:var(--r-pill)}
+.stepper button{width:44px;height:48px;background:transparent;border:none;color:#fff;font-size:18px}
+.stepper button:hover{background:#161616}
+.stepper .qty{width:38px;text-align:center;font-weight:700}
+.feat-price{font-size:26px;font-weight:700;letter-spacing:1.2px}
+.rating-line{margin-top:22px;border-top:1px solid var(--hair-dark);padding-top:18px;display:grid;gap:12px}
+.rv{display:flex;gap:12px;font-size:14px}
+.rv .st{color:#fff;letter-spacing:2px}
+.rv span{opacity:.75}
+
+/* ---------- Cart band ---------- */
+.cart{background:var(--light);color:var(--ink)}
+.cart-inner{max-width:1280px;margin:0 auto;padding:56px 32px 64px;display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start}
+.cart h2{font-size:34px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;margin-bottom:24px}
+.ci{display:flex;align-items:center;gap:16px;border:1px solid var(--hair-light);border-radius:var(--r-xs);padding:14px 16px;margin-bottom:12px}
+.ci-art{width:66px;height:66px;border-radius:var(--r-xs);flex:none}
+.ci-info b{display:block;font-size:14px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.ci-info span{font-size:13px;color:var(--ink-mute)}
+.ci-price{margin-left:auto;font-weight:700}
+.ci-remove{background:none;border:none;font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;text-decoration:underline;color:var(--ink)}
+.summary{border:1px solid var(--hair-light);border-radius:var(--r-xs);padding:28px}
+.summary h3{font-size:20px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;margin-bottom:18px}
+.sr{display:flex;justify-content:space-between;font-size:15px;padding:8px 0;color:var(--ink-mute)}
+.sr.total{border-top:1px solid var(--hair-light);margin-top:10px;padding-top:16px;color:var(--ink);font-weight:700;font-size:18px}
+.summary .btn-fill{width:100%;justify-content:center;display:flex;margin-top:18px}
+.summary .note{font-size:12.5px;color:var(--ink-mute);margin-top:12px;text-align:center;letter-spacing:.4px}
+
+/* ---------- Footer ---------- */
+footer{background:var(--night);padding:48px 32px 32px}
+.foot-inner{max-width:1280px;margin:0 auto}
+.f-cols{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:32px}
+.f-cols h4{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;margin-bottom:14px;opacity:.6}
+.f-cols ul{list-style:none;display:grid;gap:10px}
+.f-cols a{font-size:13px;letter-spacing:.32px;text-decoration:underline;text-underline-offset:3px;opacity:.85}
+.f-cols a:hover{opacity:1}
+.f-brand p{font-size:13px;opacity:.65;margin-top:12px;max-width:30ch}
+.legal{border-top:1px solid var(--hair-dark);margin-top:40px;padding-top:20px;display:flex;justify-content:space-between;font-size:12.5px;letter-spacing:.4px;opacity:.65}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:960px){
+  .nav-links{display:none}
+  .hero-copy h1{font-size:52px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .feat-inner{grid-template-columns:1fr;gap:32px}
+  .cart-inner{grid-template-columns:1fr}
+  .f-cols{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="#">AXIOM</a>
+  <div class="nav-links">
+    <a href="#" class="active">Shop</a>
+    <a href="#">Missions</a>
+    <a href="#">Human Spaceflight</a>
+    <a href="#">Rideshare</a>
+  </div>
+  <div class="nav-right">
+    <a href="#cart">Sign In</a>
+    <button class="bell" aria-label="Notifications">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      <span class="alert-dot"></span>
+    </button>
+    <a class="bag" href="#cart" aria-label="Bag">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l1 14H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="count">3</span>
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="sky"></div>
+  <div class="exhaust"></div>
+  <div class="booster"></div>
+  <div class="grade"></div>
+  <div class="hero-copy">
+    <div class="caps">Flight 12 · Official launch merchandise</div>
+    <h1>Mission Gear</h1>
+    <a class="btn-ghost" href="#shop">Shop the collection</a>
+  </div>
+</header>
+
+<div class="strip">
+  <a class="on" href="#shop">All</a>
+  <a href="#shop">Apparel</a>
+  <a href="#shop">Mission Patches</a>
+  <a href="#shop">Scale Models</a>
+  <a href="#shop">Posters</a>
+  <a href="#shop">Collector</a>
+  <a href="#shop">Last Chance</a>
+</div>
+
+<section class="shop" id="shop">
+  <div class="shop-inner">
+    <div class="shop-head">
+      <h2>Featured Products</h2>
+      <span>128 ITEMS · SHIPS WORLDWIDE</span>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#0b0d14,#233042 60%,#0a0a0a)"><span class="flag">New</span></div>
+        <div class="card-name">Flight 12 Crew Tee</div>
+        <div class="card-cat">Apparel · Unisex</div>
+        <div class="card-foot"><span class="price">$32</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#1c1006,#3d2a12 55%,#0a0a0a)"></div>
+        <div class="card-name">Falcon Patch Set</div>
+        <div class="card-cat">Patches · Set of 4</div>
+        <div class="card-foot"><span class="price">$28</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#0d0d0f,#2c2c34 60%,#0a0a0a)"></div>
+        <div class="card-name">Booster Model 1:200</div>
+        <div class="card-cat">Scale Models · Diecast</div>
+        <div class="card-foot"><span class="price">$89</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#2a0f0a,#54241a 55%,#0a0a0a)"><span class="flag soon">Last chance</span></div>
+        <div class="card-name">Mars Horizon Print</div>
+        <div class="card-cat">Posters · 24×36 in</div>
+        <div class="card-foot"><span class="price">$45</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#0a1410,#1c3a2a 55%,#0a0a0a)"></div>
+        <div class="card-name">Occupational Hat</div>
+        <div class="card-cat">Apparel · One size</div>
+        <div class="card-foot"><span class="price">$30</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#100a1c,#241a3d 55%,#0a0a0a)"></div>
+        <div class="card-name">Starship Lithograph</div>
+        <div class="card-cat">Collector · Numbered</div>
+        <div class="card-foot"><span class="price">$120</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#0b1014,#20303c 60%,#0a0a0a)"><span class="flag">New</span></div>
+        <div class="card-name">Mission Control Mug</div>
+        <div class="card-cat">Lifestyle · 12 oz</div>
+        <div class="card-foot"><span class="price">$22</span><button class="btn-fill">Add</button></div>
+      </article>
+      <article class="card">
+        <div class="card-art" style="background:linear-gradient(160deg,#141414,#3a3a3f 60%,#0a0a0a)"></div>
+        <div class="card-name">Dragon Lapel Pin</div>
+        <div class="card-cat">Patches · Enamel</div>
+        <div class="card-foot"><span class="price">$14</span><button class="btn-fill">Add</button></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="feat-inner">
+    <div>
+      <div class="g-main"><span class="mars"></span><span class="flag">Flight 12 Official</span></div>
+      <div class="g-thumbs" aria-hidden="true">
+        <span class="thumb on t1"></span><span class="thumb t2"></span><span class="thumb t3"></span><span class="thumb t4"></span>
+      </div>
+    </div>
+    <div class="feat-info">
+      <div class="caps">Collector Series · 02 of 500</div>
+      <h2>Starship Flight Poster</h2>
+      <p class="lead">Numbered lithograph printed on archival stock from the Flight 12 campaign imagery. Each print is stamped by the launch integrity team and ships in a rigid tube.</p>
+      <div class="specs">
+        <div class="spec"><b>Dimensions</b><span>24 × 36 in</span></div>
+        <div class="spec"><b>Stock</b><span>Archival matte</span></div>
+        <div class="spec"><b>Edition</b><span>500 numbered</span></div>
+      </div>
+      <div class="caps" style="opacity:.7">Select size</div>
+      <div class="sizes">
+        <button class="size on">24 × 36</button>
+        <button class="size">18 × 24</button>
+        <button class="size">36 × 48</button>
+      </div>
+      <div class="buy-row">
+        <div class="stepper"><button aria-label="Decrease">−</button><span class="qty">1</span><button aria-label="Increase">+</button></div>
+        <span class="feat-price mono-num">$120.00</span>
+        <button class="btn-ghost">Add to bag</button>
+      </div>
+      <div class="rating-line">
+        <div class="rv"><span class="st">★★★★★</span><b>“Print quality is exceptional.”</b><span>— R. Okafor, verified buyer</span></div>
+        <div class="rv"><span class="st">★★★★★</span><b>“Framed it the day it arrived.”</b><span>— J. Lindqvist, verified buyer</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cart" id="cart">
+  <div class="cart-inner">
+    <div>
+      <h2>Your Bag</h2>
+      <div class="ci">
+        <span class="ci-art" style="background:linear-gradient(160deg,#2a0f0a,#54241a)"></span>
+        <div class="ci-info"><b>Mars Horizon Print</b><span>24 × 36 in · ships in tube</span></div>
+        <span class="ci-price">$45.00</span>
+        <button class="ci-remove">Remove</button>
+      </div>
+      <div class="ci">
+        <span class="ci-art" style="background:linear-gradient(160deg,#0d0d0f,#2c2c34)"></span>
+        <div class="ci-info"><b>Booster Model 1:200</b><span>Diecast · display base included</span></div>
+        <span class="ci-price">$89.00</span>
+        <button class="ci-remove">Remove</button>
+      </div>
+      <div class="ci">
+        <span class="ci-art" style="background:linear-gradient(160deg,#0b0d14,#233042)"></span>
+        <div class="ci-info"><b>Flight 12 Crew Tee</b><span>Size L · black</span></div>
+        <span class="ci-price">$32.00</span>
+        <button class="ci-remove">Remove</button>
+      </div>
+    </div>
+    <aside class="summary">
+      <h3>Order Summary</h3>
+      <div class="sr"><span>Subtotal (3 items)</span><span>$166.00</span></div>
+      <div class="sr"><span>Shipping</span><span>$12.00</span></div>
+      <div class="sr"><span>Tax (8.25%)</span><span>$14.67</span></div>
+      <div class="sr total"><span>Total</span><span>$192.67</span></div>
+      <button class="btn-fill">Checkout</button>
+      <p class="note">FREE SHIPPING ON ORDERS OVER $150 · RETURNS WITHIN 30 DAYS</p>
+    </aside>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div class="f-cols">
+      <div class="f-brand">
+        <a class="logo" href="#" style="display:block;margin-bottom:6px">AXIOM</a>
+        <p>Official merchandise of the AXIOM flight program. Manufactured to flight-program quality standards.</p>
+      </div>
+      <div><h4>Shop</h4><ul><li><a href="#">Apparel</a></li><li><a href="#">Patches</a></li><li><a href="#">Models</a></li><li><a href="#">Posters</a></li></ul></div>
+      <div><h4>Missions</h4><ul><li><a href="#">Starship</a></li><li><a href="#">Falcon</a></li><li><a href="#">Dragon</a></li><li><a href="#">Rideshare</a></li></ul></div>
+      <div><h4>Support</h4><ul><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">Size Guide</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Updates</a></li><li><a href="#">Suppliers</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© 2026 AXIOM SHOP</span><span>PRIVACY · TERMS · SUPPLIER CODE</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

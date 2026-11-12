@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expo — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --primary:#000000;
+  --primary-active:#1a1a1a;
+  --text-link:#0d74ce;
+  --text-link-secondary:#476cff;
+  --ink:#171717;
+  --body:#60646c;
+  --body-strong:#171717;
+  --muted:#999999;
+  --muted-soft:#cccccc;
+  --hairline:#f0f0f3;
+  --hairline-soft:#f5f5f7;
+  --hairline-strong:#dcdee0;
+  --canvas:#ffffff;
+  --canvas-soft:#fafafa;
+  --surface-card:#ffffff;
+  --surface-strong:#f0f0f3;
+  --surface-dark:#171717;
+  --surface-dark-elevated:#1a1a1a;
+  --on-primary:#ffffff;
+  --on-dark:#ffffff;
+  --on-dark-soft:#b0b4ba;
+  --gradient-sky-light:#cfe7ff;
+  --gradient-sky-mid:#a8c8e8;
+  --accent-warning:#ab6400;
+  --accent-preview:#8145b5;
+  --accent-link-bright:#47c2ff;
+  --semantic-error:#eb8e90;
+  --semantic-success:#16a34a;
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-xxl:24px; --r-pill:9999px; --r-full:9999px;
+  /* spacing */
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-base:16px; --s-md:20px; --s-lg:24px; --s-xl:32px; --s-xxl:48px; --s-section:96px;
+  --font-sans:'Inter',-apple-system,system-ui,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  --shadow-soft:0 4px 12px rgba(0,0,0,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--canvas);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.inline-link{color:var(--text-link)}
+.inline-link:hover{text-decoration:underline}
+.container{max-width:1200px;margin:0 auto;padding:0 48px}
+
+/* ============ Banner ============ */
+.sg-banner{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:var(--surface-dark);color:var(--on-dark);height:44px;padding:0 24px}
+.sg-banner .sg-id{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--on-dark-soft);text-transform:uppercase}
+.sg-banner .sg-brand{font-size:14px;font-weight:600;color:#fff;margin-left:12px}
+.sg-banner .sg-desc{font-size:12px;color:var(--on-dark-soft);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ============ Components ============ */
+#components{padding:var(--s-section) 0}
+.sec-label{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.sec-title{font-size:36px;font-weight:600;line-height:1.15;letter-spacing:-1.08px;margin-bottom:16px}
+.sec-sub{font-size:16px;color:var(--body);max-width:560px;margin-bottom:56px}
+.block{margin-bottom:72px}
+.block-label{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--hairline);padding-bottom:10px;margin-bottom:24px}
+
+/* swatches */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.swatch{border:1px solid var(--hairline-strong);border-radius:var(--r-lg);overflow:hidden;background:var(--surface-card)}
+.swatch .chip{height:64px;border-bottom:1px solid var(--hairline)}
+.swatch .meta{padding:10px 12px}
+.swatch .meta .name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.swatch .meta .hex{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+
+/* typography */
+.type-spec{border:1px solid var(--hairline-strong);border-radius:var(--r-lg);padding:var(--s-xl);background:var(--surface-card)}
+.type-row{display:flex;align-items:baseline;gap:24px;padding:18px 0;border-bottom:1px solid var(--hairline)}
+.type-row:last-child{border-bottom:none}
+.type-token{flex:0 0 200px;font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.t-display-mega{font-size:56px;font-weight:600;line-height:1.05;letter-spacing:-1.68px;color:var(--ink)}
+.t-display-md{font-size:28px;font-weight:600;line-height:1.2;letter-spacing:-.84px;color:var(--ink)}
+.t-title-md{font-size:18px;font-weight:600;line-height:1.4;color:var(--ink)}
+.t-body-md{font-size:16px;font-weight:400;line-height:1.5;color:var(--body-strong)}
+.t-body-sm{font-size:14px;font-weight:400;line-height:1.5;color:var(--body)}
+.t-caption{font-size:13px;font-weight:400;line-height:1.4;color:var(--muted)}
+.t-caption-up{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--ink)}
+.t-code{font-family:var(--font-mono);font-size:13px;line-height:1.5;color:var(--ink)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
+  font-family:var(--font-sans);font-size:14px;font-weight:500;line-height:1;border-radius:var(--r-md);
+  height:40px;padding:0 18px;transition:background .15s ease,border-color .15s ease}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-secondary{background:var(--surface-card);color:var(--ink);border:1px solid var(--hairline-strong)}
+.btn-secondary:hover{border-color:var(--muted)}
+.btn-text{background:transparent;color:var(--text-link);padding:0 6px}
+.btn-text:hover{text-decoration:underline}
+.btn-sm{height:34px;padding:0 14px;font-size:13px}
+.btn-lg{height:48px;padding:0 24px;font-size:15px}
+.btn-active{background:var(--primary-active);color:#fff}
+.btn-disabled{background:var(--surface-strong);color:var(--muted-soft);cursor:not-allowed}
+.btn-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+
+/* inputs */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:820px}
+.field label{display:block;font-size:14px;font-weight:500;color:var(--ink);margin-bottom:8px}
+.input,.select{width:100%;background:var(--surface-card);color:var(--ink);font-family:var(--font-sans);font-size:16px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:12px 16px;height:44px;outline:none;transition:border .15s ease}
+.input:focus,.select:focus{border:2px solid var(--ink);padding:11px 15px}
+.input::placeholder{color:var(--muted-soft)}
+.input:disabled{background:var(--canvas-soft);color:var(--muted-soft);cursor:not-allowed}
+.check{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
+.check input{width:16px;height:16px;accent-color:var(--primary)}
+.switch{position:relative;display:inline-block;width:44px;height:26px}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;background:var(--surface-strong);border-radius:var(--r-full);transition:background .15s ease}
+.switch .track::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15);border-radius:var(--r-full);transition:transform .15s ease}
+.switch input:checked + .track{background:var(--primary)}
+.switch input:checked + .track::before{transform:translateX(18px)}
+
+/* cards */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-lg);padding:24px}
+.card h4{font-size:18px;font-weight:600;line-height:1.4;color:var(--ink);margin-bottom:8px}
+.card p{font-size:16px;line-height:1.5;color:var(--body)}
+.card-dark{background:var(--surface-dark);border:1px solid var(--surface-dark);border-radius:var(--r-lg);padding:24px;color:var(--on-dark)}
+.card-dark h4{color:#fff}
+.card-dark p{color:var(--on-dark-soft)}
+.stat-card{background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-lg);padding:24px}
+.stat-card .big{font-family:var(--font-mono);font-size:30px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.stat-card .lbl{font-size:13px;color:var(--muted)}
+
+/* workflow steps */
+.workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.step{background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-lg);padding:20px}
+.step-icon{width:32px;height:32px;border-radius:var(--r-md);background:var(--surface-strong);display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--ink);margin-bottom:14px}
+.step .n{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.step p{font-size:14px;color:var(--body);line-height:1.5}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-pill);padding:4px 10px;
+  font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase}
+.badge-gray{background:var(--surface-strong);color:var(--ink)}
+.badge-outline{background:var(--surface-card);border:1px solid var(--hairline-strong);color:var(--ink)}
+.badge-preview{background:rgba(129,69,181,.1);color:var(--accent-preview)}
+.badge-warn{background:rgba(171,100,0,.08);color:var(--accent-warning)}
+
+/* nav */
+.nav-demo{background:var(--canvas);border:1px solid var(--hairline-strong);border-radius:var(--r-lg);height:64px;display:flex;align-items:center;padding:0 24px;gap:32px;overflow:hidden}
+.nav-logo{font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-.4px}
+.nav-menu{display:flex;gap:24px;flex:1}
+.nav-menu a{font-size:14px;font-weight:500;color:var(--ink)}
+.nav-menu a:hover{color:var(--body)}
+
+/* code block */
+.code-block{background:var(--surface-dark);color:var(--on-dark);border-radius:var(--r-lg);padding:20px;font-family:var(--font-mono);font-size:13px;line-height:1.7}
+.code-block .c-kw{color:#79b8ff}.c-str{color:#9ecbff}.c-fn{color:#c8e1ff}.c-cm{color:var(--on-dark-soft)}
+
+/* ============ Product ============ */
+.p-nav{background:var(--canvas);height:64px;display:flex;align-items:center}
+.p-nav .inner{display:flex;align-items:center;gap:32px;width:100%}
+.p-nav .nav-menu a{color:var(--ink)}
+
+.hero{position:relative;background:var(--canvas);padding:var(--s-section) 0 0;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;left:50%;top:0;width:1400px;height:900px;transform:translate(-50%,-30%);pointer-events:none;
+  background:radial-gradient(ellipse at center, var(--gradient-sky-light) 0%, var(--gradient-sky-mid) 42%, transparent 70%);opacity:.55}
+.hero-inner{position:relative}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface-card);border:1px solid var(--hairline-strong);
+  border-radius:var(--r-pill);padding:5px 12px;font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--ink);margin-bottom:28px}
+h1.display-mega{font-size:64px;font-weight:600;line-height:1.05;letter-spacing:-1.92px;color:var(--ink);margin-bottom:24px}
+.hero-sub{font-size:16px;color:var(--body);line-height:1.5;max-width:540px;margin:0 auto 32px}
+.hero-ctas{display:flex;gap:16px;justify-content:center;margin-bottom:16px}
+.hero-note{font-size:13px;color:var(--muted);margin-bottom:64px}
+.hero-note code{font-family:var(--font-mono);font-size:12px;background:var(--surface-strong);border-radius:var(--r-sm);padding:3px 8px;color:var(--ink)}
+
+/* device mockup: MacBook + iPhone */
+.device-composite{position:relative;max-width:980px;margin:0 auto;text-align:left}
+.macbook{background:var(--surface-dark);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:14px 14px 0;border:1px solid var(--hairline-strong);border-bottom:none}
+.macbook-screen{background:var(--surface-dark);border-radius:var(--r-sm) var(--r-sm) 0 0;overflow:hidden}
+.mb-bar{display:flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-bottom:1px solid #2c2c2c}
+.mb-bar .tl{width:9px;height:9px;border-radius:var(--r-full);background:#3a3a3a}
+.mb-bar .addr{flex:1;text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--on-dark-soft)}
+.mb-body{display:grid;grid-template-columns:170px 1fr 220px;min-height:340px}
+.mb-side{border-right:1px solid #2c2c2c;padding:14px 10px}
+.mb-side .grp{font-size:10px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--on-dark-soft);margin:10px 0 6px}
+.mb-side a{display:block;font-size:12px;color:var(--on-dark-soft);padding:4px 8px;border-radius:var(--r-sm)}
+.mb-side a.on{background:#2a2a2a;color:#fff}
+.mb-main{padding:18px}
+.mb-main .h{font-size:15px;font-weight:600;color:#fff;margin-bottom:14px}
+.build-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #262626;font-size:12px;color:var(--on-dark-soft)}
+.build-row:last-child{border-bottom:none}
+.build-row .id{font-family:var(--font-mono);color:#fff;flex:0 0 130px}
+.build-row .st{font-family:var(--font-mono);flex:1}
+.mb-right{border-left:1px solid #2c2c2c;padding:14px}
+.mb-right .h{font-size:10px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--on-dark-soft);margin-bottom:10px}
+.stat-dark{background:#242424;border-radius:var(--r-sm);padding:10px 12px;margin-bottom:8px}
+.stat-dark .v{font-family:var(--font-mono);font-size:16px;font-weight:500;color:#fff}
+.stat-dark .k{font-size:10px;color:var(--on-dark-soft);margin-top:2px}
+.macbook-base{height:16px;background:linear-gradient(#e8e8ec,#c9c9cf);border-radius:0 0 14px 14px;border:1px solid var(--hairline-strong);border-top:none;position:relative}
+.macbook-base::before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:120px;height:6px;background:#b5b5bc;border-radius:0 0 8px 8px}
+/* iphone overlay */
+.iphone{position:absolute;right:24px;bottom:-40px;width:200px;background:var(--surface-dark);border-radius:28px;padding:8px;border:1px solid var(--hairline-strong);box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.iphone .screen{background:#fff;border-radius:22px;overflow:hidden;height:380px}
+.ip-status{display:flex;justify-content:space-between;padding:8px 14px 4px;font-size:9px;color:var(--ink)}
+.ip-app{padding:14px}
+.ip-app .apptitle{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px}
+.ip-card{background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--r-md);padding:10px;margin-bottom:8px}
+.ip-card .t{font-size:11px;font-weight:600;color:var(--ink)}
+.ip-card .d{font-size:10px;color:var(--muted);margin-top:2px}
+.ip-button{background:var(--primary);color:#fff;border-radius:var(--r-md);text-align:center;font-size:11px;font-weight:500;padding:9px 0;margin-top:6px}
+.ip-tabbar{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid var(--hairline);background:#fff}
+.ip-tabbar span{font-size:9px;color:var(--muted)}
+.ip-tabbar span.on{color:var(--ink);font-weight:600}
+
+.logos-band{padding:56px 0 48px}
+.logos-inner{display:flex;align-items:center;gap:32px}
+.logos-caption{font-size:13px;color:var(--muted);white-space:nowrap;margin-right:auto}
+.logos{display:flex;gap:44px;color:var(--muted);font-weight:600;font-size:15px}
+
+.features{padding:var(--s-section) 0;background:var(--canvas-soft);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.feature-icon{width:36px;height:36px;border-radius:var(--r-md);background:var(--surface-strong);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.feature-icon svg{width:16px;height:16px;stroke:var(--ink)}
+.card-dark .feature-icon{background:#262626}
+.card-dark .feature-icon svg{stroke:#fff}
+
+.eco{padding:var(--s-section) 0}
+.eco-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:16px;margin-top:40px}
+.eco-tile{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);height:64px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:15px;color:var(--ink)}
+
+.quotes{padding:var(--s-section) 0;background:var(--canvas-soft);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.quote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.quote-card{background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-lg);padding:24px}
+.quote-card p{font-size:16px;line-height:1.5;color:var(--body);margin-bottom:20px}
+.quote-who{display:flex;align-items:center;gap:12px}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-strong);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink)}
+.quote-who .n{font-size:14px;font-weight:600;color:var(--ink)}
+.quote-who .r{font-size:12px;color:var(--muted)}
+
+.pricing{padding:var(--s-section) 0}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.tier{background:var(--surface-card);border:1px solid var(--hairline-strong);border-radius:var(--r-lg);padding:32px;display:flex;flex-direction:column}
+.tier.featured{background:var(--surface-dark);color:var(--on-dark);border-color:var(--surface-dark)}
+.tier .tier-name{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:12px}
+.tier.featured .tier-name{color:#fff}
+.tier .tier-price{font-family:var(--font-mono);font-size:36px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.tier.featured .tier-price{color:#fff}
+.tier .tier-per{font-size:13px;color:var(--muted);margin-bottom:24px}
+.tier.featured .tier-per{color:var(--on-dark-soft)}
+.tier ul{list-style:none;margin-bottom:28px;flex:1}
+.tier li{font-size:14px;padding:8px 0;border-bottom:1px solid var(--hairline);color:var(--body)}
+.tier.featured li{border-bottom-color:#2c2c2c;color:var(--on-dark-soft)}
+.tier .btn{width:100%}
+
+.cta-band{background:var(--canvas);padding:96px 0;text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;left:50%;bottom:-60%;width:1200px;height:700px;transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(ellipse at center, var(--gradient-sky-light) 0%, transparent 65%);opacity:.6}
+.cta-band .inner{position:relative}
+.cta-band h2{font-size:36px;font-weight:600;line-height:1.15;letter-spacing:-1.08px;color:var(--ink);margin-bottom:16px}
+.cta-band p{font-size:16px;color:var(--body);margin-bottom:36px}
+
+footer.p-footer{background:var(--canvas);border-top:1px solid var(--hairline-strong);padding:64px 48px 40px}
+.footer-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:48px;max-width:1200px;margin:0 auto 48px}
+.footer-brand{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:12px;letter-spacing:-.4px}
+.footer-brand-sub{font-size:14px;color:var(--muted);max-width:240px;line-height:1.5}
+.footer-col h5{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;color:var(--body);padding:5px 0}
+.footer-col a:hover{color:var(--ink)}
+.legal{border-top:1px solid var(--hairline);padding-top:24px;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.legal p{font-size:13px;color:var(--muted)}
+.legal a{color:var(--text-link-secondary)}
+
+@media (max-width:1024px){
+  .container{padding:0 24px}
+  .swatch-grid{grid-template-columns:repeat(3,1fr)}
+  .card-grid,.quote-grid,.input-grid,.price-grid{grid-template-columns:1fr}
+  .workflow{grid-template-columns:repeat(2,1fr)}
+  .eco-grid{grid-template-columns:repeat(4,1fr)}
+  h1.display-mega{font-size:40px}
+  .mb-body{grid-template-columns:1fr}
+  .mb-side,.mb-right{display:none}
+  .iphone{display:none}
+  .nav-menu{display:none}
+  .footer-grid{grid-template-columns:repeat(2,1fr)}
+  .logos-inner{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div><span class="sg-id">expo</span><span class="sg-brand">Expo</span></div>
+  <div class="sg-desc">React Native developer platform — white canvas, sky-wash hero, black CTAs, device-mockup chrome.</div>
+</header>
+
+<main>
+<!-- ================= COMPONENTS ================= -->
+<section id="components">
+  <div class="container">
+    <div class="sec-label">Components</div>
+    <h2 class="sec-title">Quiet infrastructure</h2>
+    <p class="sec-sub">Pure white canvas, Inter 600 display, one black CTA fill — and JetBrains Mono on every code surface.</p>
+
+    <!-- Colors -->
+    <div class="block">
+      <div class="block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><div class="name">Primary</div><div class="hex">#000000</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#171717"></div><div class="meta"><div class="name">Ink / Dark</div><div class="hex">#171717</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#0d74ce"></div><div class="meta"><div class="name">Text Link</div><div class="hex">#0D74CE</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#cfe7ff"></div><div class="meta"><div class="name">Sky Light</div><div class="hex">#CFE7FF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#a8c8e8"></div><div class="meta"><div class="name">Sky Mid</div><div class="hex">#A8C8E8</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f0f0f3"></div><div class="meta"><div class="name">Surface Strong</div><div class="hex">#F0F0F3</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#60646c"></div><div class="meta"><div class="name">Body</div><div class="hex">#60646C</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#dcdee0"></div><div class="meta"><div class="name">Hairline Strong</div><div class="hex">#DCDEE0</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#8145b5"></div><div class="meta"><div class="name">Accent Preview</div><div class="hex">#8145B5</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ab6400"></div><div class="meta"><div class="name">Accent Warning</div><div class="hex">#AB6400</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#16a34a"></div><div class="meta"><div class="name">Success</div><div class="hex">#16A34A</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#47c2ff"></div><div class="meta"><div class="name">Bright Cyan</div><div class="hex">#47C2FF</div></div></div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="block">
+      <div class="block-label">Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><div class="type-token">display-mega · 64/600</div><div class="t-display-mega">The fastest way to build apps</div></div>
+        <div class="type-row"><div class="type-token">display-md · 28/600</div><div class="t-display-md">Ship to every store from one codebase</div></div>
+        <div class="type-row"><div class="type-token">title-md · 18/600</div><div class="t-title-md">Build, submit, and iterate from the cloud</div></div>
+        <div class="type-row"><div class="type-token">body-md · 16/400</div><div class="t-body-md">Expo is the framework and cloud platform that takes a React Native app from <code class="t-code">npm create</code> to the App Store — <a class="inline-link" href="#">read the docs</a>.</div></div>
+        <div class="type-row"><div class="type-token">body-sm · 14/400</div><div class="t-body-sm">Over one million apps have been built with Expo tooling.</div></div>
+        <div class="type-row"><div class="type-token">caption-uppercase · 11/600</div><div class="t-caption-up">Section label style</div></div>
+        <div class="type-row"><div class="type-token">code · mono 13</div><div class="t-code">npx create-expo-app@latest my-app</div></div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="block">
+      <div class="block-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started</button>
+        <button class="btn btn-primary btn-lg">Start building — free</button>
+        <button class="btn btn-secondary">Read the docs</button>
+        <button class="btn btn-text">View on GitHub →</button>
+        <button class="btn btn-primary btn-sm">Sign in</button>
+        <button class="btn btn-active">Pressed</button>
+        <button class="btn btn-disabled" aria-disabled="true">Disabled</button>
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="block">
+      <div class="block-label">Inputs</div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Project slug</label>
+          <input class="input" type="text" placeholder="my-expo-app">
+        </div>
+        <div class="field">
+          <label>Project slug — focused</label>
+          <input class="input" type="text" value="acme-mobile" style="border:2px solid var(--ink);padding:11px 15px">
+        </div>
+        <div class="field">
+          <label>Build profile</label>
+          <select class="select"><option>production (app store)</option><option>preview (internal dist)</option><option>development (simulator)</option></select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input" type="text" value="acme-mobile (taken)" disabled>
+        </div>
+        <div class="field">
+          <label>Controls</label>
+          <div style="display:flex;gap:24px;align-items:center;height:44px">
+            <label class="check"><input type="checkbox" checked> Auto-increment build number</label>
+            <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>OTA updates</label>
+          <div style="display:flex;align-items:center;gap:12px;height:44px">
+            <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            <span class="t-caption">Roll out JS updates without a store review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="block">
+      <div class="block-label">Cards — light &amp; dark</div>
+      <div class="card-grid">
+        <div class="card">
+          <h4>File-based routing</h4>
+          <p>expo-router gives every screen a URL. Shared layouts, typed links, and deep links by default.</p>
+        </div>
+        <div class="card-dark">
+          <h4>EAS Build in the cloud</h4>
+          <p>Reproducible iOS and Android builds on managed infrastructure — no local Xcode required.</p>
+        </div>
+        <div class="stat-card">
+          <div class="big">1M+</div>
+          <div class="lbl">Apps built with Expo tooling</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow steps -->
+    <div class="block">
+      <div class="block-label">Workflow steps</div>
+      <div class="workflow">
+        <div class="step"><div class="step-icon">01</div><div class="n">Create</div><p>Bootstrap with <code class="t-code">create-expo-app</code> — TypeScript, routing, and linting prewired.</p></div>
+        <div class="step"><div class="step-icon">02</div><div class="n">Develop</div><p>Press <code class="t-code">i</code> for iOS or <code class="t-code">a</code> for Android. Fast refresh on save.</p></div>
+        <div class="step"><div class="step-icon">03</div><div class="n">Build</div><p>Queue a cloud build with EAS — signed, reproducible, cached.</p></div>
+        <div class="step"><div class="step-icon">04</div><div class="n">Submit</div><p>Push to App Store Connect and Play Console with one command.</p></div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="block">
+      <div class="block-label">Badges &amp; pills</div>
+      <div class="btn-row">
+        <span class="badge badge-gray">NEW · SDK 54</span>
+        <span class="badge badge-outline">STABLE</span>
+        <span class="badge badge-preview">PREVIEW</span>
+        <span class="badge badge-warn">DEPRECATED IN SDK 52</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="block">
+      <div class="block-label">Navigation — top-nav</div>
+      <div class="nav-demo">
+        <div class="nav-logo">⬡ Expo</div>
+        <nav class="nav-menu">
+          <a href="#">Tools</a><a href="#">Workflows</a><a href="#">EAS</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Showcase</a>
+        </nav>
+        <div style="display:flex;gap:12px;align-items:center">
+          <a href="#" style="font-size:14px;font-weight:500">Sign in</a>
+          <button class="btn btn-primary btn-sm">Get started</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code block -->
+    <div class="block">
+      <div class="block-label">Code block</div>
+      <div class="code-block"><span class="c-cm"># from zero to device in a minute</span><br>
+<span class="c-kw">npx</span> create-expo-app@latest my-app<br>
+<span class="c-kw">cd</span> my-app<br>
+npx expo start <span class="c-cm"># press i for iOS, a for Android</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FINISHED PRODUCT ================= -->
+<section id="product">
+
+  <div class="p-nav">
+    <div class="container inner">
+      <div class="nav-logo">⬡ Expo</div>
+      <nav class="nav-menu">
+        <a href="#">Tools</a><a href="#">Workflows</a><a href="#">EAS</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Showcase</a>
+      </nav>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="#" style="font-size:14px;font-weight:500">Sign in</a>
+        <button class="btn btn-primary btn-sm">Get started</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- hero + device composite over sky wash -->
+  <div class="hero">
+    <div class="container hero-inner">
+      <div class="hero-badge">SDK 54 · NOW WITH NEW ARCHITECTURE BY DEFAULT</div>
+      <h1 class="display-mega">The fastest way<br>to build apps</h1>
+      <p class="hero-sub">Expo is the framework and cloud platform that takes your React Native app from first commit to the App Store — with the boring parts handled.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary btn-lg">Start building — free</button>
+        <button class="btn btn-secondary btn-lg">Watch the demo</button>
+      </div>
+      <div class="hero-note">or run <code>npx create-expo-app@latest</code></div>
+
+      <div class="device-composite">
+        <div class="macbook">
+          <div class="macbook-screen">
+            <div class="mb-bar"><span class="tl"></span><span class="tl"></span><span class="tl"></span><span class="addr">expo.dev — EAS Dashboard</span></div>
+            <div class="mb-body">
+              <div class="mb-side">
+                <div class="grp">Projects</div>
+                <a class="on" href="#">acme-mobile</a>
+                <a href="#">acme-web</a>
+                <div class="grp">Services</div>
+                <a href="#">Build</a>
+                <a href="#">Submit</a>
+                <a href="#">Update</a>
+                <a href="#">Insights</a>
+              </div>
+              <div class="mb-main">
+                <div class="h">Builds · acme-mobile</div>
+                <div class="build-row"><span class="id">#412</span><span class="st" style="color:var(--semantic-success)">● finished</span><span>ios · production</span><span>8m 12s</span></div>
+                <div class="build-row"><span class="id">#411</span><span class="st" style="color:var(--semantic-success)">● finished</span><span>android · production</span><span>6m 48s</span></div>
+                <div class="build-row"><span class="id">#410</span><span class="st" style="color:var(--accent-warning)">● errored</span><span>ios · preview</span><span>3m 02s</span></div>
+                <div class="build-row"><span class="id">#409</span><span class="st" style="color:var(--semantic-success)">● finished</span><span>android · preview</span><span>5m 55s</span></div>
+                <div class="build-row"><span class="id">#408</span><span class="st" style="color:var(--accent-link-bright)">● in progress</span><span>ios · development</span><span>—</span></div>
+              </div>
+              <div class="mb-right">
+                <div class="h">This week</div>
+                <div class="stat-dark"><div class="v">34</div><div class="k">Builds</div></div>
+                <div class="stat-dark"><div class="v">2:41</div><div class="k">Median build time</div></div>
+                <div class="stat-dark"><div class="v">99.2%</div><div class="k">Success rate</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="macbook-base"></div>
+        <div class="iphone">
+          <div class="screen">
+            <div class="ip-status"><span>9:41</span><span>Expo Go · ●●●</span></div>
+            <div class="ip-app">
+              <div class="apptitle">Acme Mobile</div>
+              <div class="ip-card"><div class="t">Welcome back, Ana</div><div class="d">3 tasks due today</div></div>
+              <div class="ip-card"><div class="t">Weekly sync</div><div class="d">Today · 2:30 PM · Room 4</div></div>
+              <div class="ip-card"><div class="t">Design review</div><div class="d">Tomorrow · 11:00 AM</div></div>
+              <div class="ip-button">New task</div>
+            </div>
+            <div class="ip-tabbar"><span class="on">Home</span><span>Search</span><span>Create</span><span>Profile</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- social proof -->
+  <div class="logos-band">
+    <div class="container logos-inner">
+      <span class="logos-caption">Powering apps at</span>
+      <div class="logos"><span>Bluesky</span><span>Coinbase</span><span>PayPal</span><span>Burger King</span><span>NFL</span></div>
+    </div>
+  </div>
+
+  <!-- features -->
+  <div class="features">
+    <div class="container">
+      <div class="sec-label">The platform</div>
+      <h2 class="sec-title">Everything between idea and store</h2>
+      <div class="card-grid" style="margin-top:40px">
+        <div class="card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <h4>expo-router</h4>
+          <p>File-based navigation with typed links, shared layouts, and universal deep links — web and native from one tree.</p>
+        </div>
+        <div class="card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 10h-1.3A7 7 0 1 0 5 16h13a3 3 0 0 0 0-6z"/></svg></div>
+          <h4>EAS Build</h4>
+          <p>Cloud builds for iOS and Android with managed credentials, caching, and the exact toolchain every time.</p>
+        </div>
+        <div class="card-dark">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+          <h4>EAS Update</h4>
+          <p>Ship JavaScript fixes to production instantly — no store review, with instant rollback if anything regresses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ecosystem -->
+  <div class="eco">
+    <div class="container">
+      <div class="sec-label">Ecosystem</div>
+      <h2 class="sec-title">Plays well with your stack</h2>
+      <div class="eco-grid">
+        <div class="eco-tile">TS</div>
+        <div class="eco-tile">React</div>
+        <div class="eco-tile">Sentry</div>
+        <div class="eco-tile">RevenueCat</div>
+        <div class="eco-tile">Supabase</div>
+        <div class="eco-tile">Stripe</div>
+        <div class="eco-tile">Tamagui</div>
+        <div class="eco-tile">MMKV</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- testimonials -->
+  <div class="quotes">
+    <div class="container">
+      <div class="sec-label">Teams on Expo</div>
+      <div class="quote-grid" style="margin-top:40px">
+        <div class="quote-card">
+          <p>"We deleted our entire Fastlane setup. EAS Build signs, builds, and submits from CI — and it just works every time."</p>
+          <div class="quote-who"><div class="avatar">JB</div><div><div class="n">Jonas Berg</div><div class="r">Mobile Lead, Kavling</div></div></div>
+        </div>
+        <div class="quote-card">
+          <p>"A crash in production used to mean a week of store-review purgatory. Now we patch it with EAS Update in minutes."</p>
+          <div class="quote-who"><div class="avatar">RT</div><div><div class="n">Renata Toledo</div><div class="r">Engineer, Fintuple</div></div></div>
+        </div>
+        <div class="quote-card">
+          <p>"Our web team ships React Native now. expo-router made the mental model identical — that halved our onboarding."</p>
+          <div class="quote-who"><div class="avatar">DK</div><div><div class="n">Daeun Kim</div><div class="r">CTO, Bookloop</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- pricing -->
+  <div class="pricing">
+    <div class="container">
+      <div class="sec-label">Pricing</div>
+      <h2 class="sec-title">Free to start. Scale when you ship.</h2>
+      <div class="price-grid" style="margin-top:40px">
+        <div class="tier">
+          <div class="tier-name">Free</div>
+          <div class="tier-price">$0</div>
+          <div class="tier-per">per month · hobby</div>
+          <ul>
+            <li>30 cloud builds / month</li>
+            <li>1,000 EAS Update requests</li>
+            <li>Community support</li>
+          </ul>
+          <button class="btn btn-secondary">Start free</button>
+        </div>
+        <div class="tier featured">
+          <div class="tier-name">Production <span class="badge badge-gray" style="margin-left:8px;background:#2c2c2c;color:#fff">POPULAR</span></div>
+          <div class="tier-price">$99</div>
+          <div class="tier-per">per month / seat</div>
+          <ul>
+            <li>Unlimited cloud builds, 2 concurrent</li>
+            <li>10M EAS Update requests</li>
+            <li>Build caching &amp; priority queue</li>
+            <li>Email support, 1 business day</li>
+          </ul>
+          <button class="btn btn-primary" style="background:#fff;color:var(--ink)">Choose Production</button>
+        </div>
+        <div class="tier">
+          <div class="tier-name">Enterprise</div>
+          <div class="tier-price">Custom</div>
+          <div class="tier-per">SSO, SLAs, dedicated infra</div>
+          <ul>
+            <li>Concurrent builds on demand</li>
+            <li>SAML SSO &amp; audit logs</li>
+            <li>Dedicated support engineer</li>
+          </ul>
+          <button class="btn btn-secondary">Contact sales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA band -->
+  <div class="cta-band">
+    <div class="container inner">
+      <h2>Build your first app today</h2>
+      <p>Free forever for hobby projects. No credit card, no Xcode download.</p>
+      <button class="btn btn-primary btn-lg">Get started — free</button>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="p-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">⬡ Expo</div>
+        <p class="footer-brand-sub">The framework and cloud platform for React Native. Made by 650 Industries in Palo Alto.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#">expo-router</a><a href="#">EAS Build</a><a href="#">EAS Submit</a><a href="#">EAS Update</a><a href="#">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <a href="#">Documentation</a><a href="#">API reference</a><a href="#">SDK changelog</a><a href="#">Snack</a><a href="#">Status</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Showcase</a><a href="#">Brand</a>
+      </div>
+      <div class="footer-col">
+        <h5>Community</h5>
+        <a href="#">GitHub</a><a href="#">Discord</a><a href="#">Forums</a><a href="#">X / Twitter</a><a href="#">Newsletter</a>
+      </div>
+    </div>
+    <div class="legal">
+      <p>© 2026 650 Industries, Inc. All rights reserved.</p>
+      <p><a href="#">Terms of Service</a> · <a href="#">Privacy Policy</a> · <a href="#">Security</a></p>
+    </div>
+  </footer>
+
+</section>
+</main>
+
+</body>
+</html>

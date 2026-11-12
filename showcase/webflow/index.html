@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>webflow — design showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inconsolata:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --primary:#080808;
+  --on-primary:#ffffff;
+  --ink:#080808;
+  --ink-strong:#222222;
+  --body:#363636;
+  --body-mid:#5a5a5a;
+  --mute:#898989;
+  --mute-soft:#ababab;
+  --hairline:#d8d8d8;
+  --canvas:#ffffff;
+  --accent-purple:#7a3dff;
+  --accent-pink:#ed52cb;
+  --accent-blue:#3b89ff;
+  --accent-blue-deep:#006acc;
+  --accent-blue-info:#146ef5;
+  --accent-orange:#ff6b00;
+  --accent-green:#00d722;
+  --accent-yellow:#ffae13;
+  --accent-red:#ee1d36;
+  /* radii */
+  --r-none:0px; --r-xs:2px; --r-sm:4px; --r-md:8px; --r-full:9999px;
+  /* spacing */
+  --sp-xxs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:20px;
+  --sp-2xl:24px; --sp-3xl:32px;
+  /* type */
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'Inconsolata',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  /* layered shadow recipes */
+  --shadow-l2:0 84px 24px rgba(0,0,0,0),0 54px 22px rgba(0,0,0,.01),0 30px 18px rgba(0,0,0,.04),0 13px 13px rgba(0,0,0,.08),0 3px 7px rgba(0,0,0,.09);
+  --shadow-l3:0 84px 24px rgba(0,0,0,0),0 54px 22px rgba(0,0,0,.01),0 30px 18px rgba(0,0,0,.05),0 13px 13px rgba(0,0,0,.1),0 3px 7px rgba(0,0,0,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* ───────── banner ───────── */
+.sg-banner{position:sticky;top:0;z-index:50;background:var(--canvas);border-bottom:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3xl);padding:var(--sp-lg) var(--sp-3xl)}
+.sg-id{display:flex;align-items:center;gap:var(--sp-md)}
+.sg-folder{font-family:var(--mono);font-size:12px;color:var(--mute)}
+.sg-brand{font-size:18px;font-weight:600;letter-spacing:-.3px;color:var(--ink)}
+.sg-mark{width:28px;height:28px;background:var(--primary);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex:none}
+.sg-mark svg{width:16px;height:16px;display:block}
+.sg-desc{font-size:14px;color:var(--body-mid);max-width:620px;text-align:right;line-height:1.45}
+
+/* ───────── shared ───────── */
+.eyebrow{font-size:15px;font-weight:500;line-height:19.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;gap:var(--sp-lg)}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--hairline)}
+.section-head{font-size:44.8px;font-weight:600;line-height:1.05;letter-spacing:-.4px;max-width:720px}
+#components{padding:var(--sp-3xl);display:flex;flex-direction:column;gap:var(--sp-3xl);max-width:1400px;margin:0 auto}
+.comp-block{display:flex;flex-direction:column;gap:var(--sp-lg)}
+
+/* 1. colors */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-md)}
+.swatch{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+.swatch .chip{height:64px;border-bottom:1px solid var(--hairline)}
+.swatch .meta{padding:var(--sp-md)}
+.swatch .name{font-size:14px;font-weight:500;line-height:22.4px}
+.swatch .hex{font-family:var(--mono);font-size:12px;color:var(--body-mid)}
+
+/* 2. typography */
+.specimen{border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl);display:flex;flex-direction:column;gap:var(--sp-2xl)}
+.spec-row .tag{font-family:var(--mono);font-size:12px;color:var(--mute);margin-bottom:var(--sp-xs)}
+.t-xxl{font-size:72px;font-weight:600;line-height:1.04;letter-spacing:-.8px}
+.t-lg{font-size:44.8px;font-weight:600;line-height:1.04;letter-spacing:-.4px}
+.t-md{font-size:32px;font-weight:500;line-height:1.3}
+.t-sm{font-size:24px;font-weight:500;line-height:31.2px}
+.t-eyebrow{font-size:15px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase}
+.t-body-lg{font-size:28.8px;font-weight:400;line-height:46.08px;letter-spacing:-.288px;color:var(--ink-strong);max-width:760px}
+.t-body{font-size:16px;font-weight:400;line-height:25.6px;letter-spacing:-.16px;color:var(--body);max-width:640px}
+.t-body strong{color:var(--ink);font-weight:500}
+.t-caption{font-size:12.8px;font-weight:550;line-height:15.36px}
+.t-mono{font-family:var(--mono);font-size:12px;line-height:18px;color:var(--body-mid)}
+
+/* 3. buttons */
+.btn-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-sm);cursor:pointer;
+  font-family:var(--font);font-size:16px;font-weight:500;line-height:25.6px;letter-spacing:-.16px;
+  padding:var(--sp-md) var(--sp-xl);border-radius:var(--r-sm);border:1px solid transparent;
+  transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:#2b2b2b}
+.btn-secondary{background:var(--canvas);color:var(--ink);border-color:var(--hairline)}
+.btn-secondary:hover{border-color:var(--mute-soft);box-shadow:var(--shadow-l2)}
+.btn-secondary.hover-look{border-color:var(--mute-soft);box-shadow:var(--shadow-l2)}
+.btn-text{background:transparent;color:var(--ink);padding:var(--sp-xl) 0;border-radius:0}
+.btn-text:hover .arr{transform:translateX(4px)}
+.btn-text .arr{display:inline-block;transition:transform .15s ease}
+.btn-sm{font-size:14px;line-height:22.4px;padding:var(--sp-sm) var(--sp-lg)}
+.btn-icon{width:40px;height:40px;padding:0;border-radius:var(--r-full);background:var(--canvas);border:1px solid var(--hairline);display:inline-flex;align-items:center;justify-content:center}
+.btn-icon:hover{box-shadow:var(--shadow-l2)}
+
+/* 4. inputs */
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:var(--sp-lg);max-width:760px}
+.field{display:flex;flex-direction:column;gap:var(--sp-xs)}
+.field label{font-size:14px;font-weight:500;line-height:22.4px}
+.input{font-family:var(--font);font-size:16px;font-weight:400;line-height:25.6px;letter-spacing:-.16px;color:var(--ink);
+  background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:var(--sp-md) var(--sp-lg);
+  width:100%;outline:none;transition:border-color .15s ease,box-shadow .15s ease}
+.input::placeholder{color:var(--mute-soft)}
+.input:focus,.input.focus-look{border-color:var(--accent-blue-info);box-shadow:0 0 0 3px rgba(20,110,245,.14)}
+.input:disabled,.input.disabled{background:#f6f6f6;border-color:var(--hairline);color:var(--mute-soft);cursor:not-allowed}
+.select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23363636' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.switch-row{display:flex;align-items:center;gap:var(--sp-lg);margin-top:var(--sp-lg);flex-wrap:wrap}
+.switch{position:relative;width:44px;height:24px;background:var(--hairline);border-radius:var(--r-full);cursor:pointer;transition:background .15s ease;flex:none}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:var(--r-full);box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .15s ease}
+.switch.on{background:var(--primary)}
+.switch.on::after{transform:translateX(20px)}
+.check{display:flex;align-items:center;gap:var(--sp-sm);font-size:14px;line-height:22.4px;color:var(--body)}
+.check .box{width:18px;height:18px;border:1px solid var(--hairline);border-radius:var(--r-xs);display:flex;align-items:center;justify-content:center;background:var(--canvas)}
+.check .box.on{background:var(--primary);border-color:var(--primary)}
+
+/* 5. cards */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-lg)}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl)}
+.card h3{font-size:24px;font-weight:500;line-height:31.2px;margin-bottom:var(--sp-xs)}
+.card p{font-size:16px;line-height:25.6px;letter-spacing:-.16px;color:var(--body)}
+.card-dark{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.card-dark h3{color:#fff}
+.card-dark p{color:rgba(255,255,255,.72)}
+.stat-card{display:flex;flex-direction:column;gap:var(--sp-xs);box-shadow:var(--shadow-l2);border-color:transparent}
+.stat-card .num{font-size:44.8px;font-weight:600;line-height:1.1;letter-spacing:-.4px}
+.stat-card .lbl{font-size:15px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--body-mid)}
+.stat-card p{font-size:14px;line-height:22.4px}
+
+/* 6. badges */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.badge{display:inline-flex;align-items:center;gap:var(--sp-xs);font-size:12.8px;font-weight:550;line-height:15.36px;
+  border-radius:var(--r-sm);padding:var(--sp-xs) var(--sp-sm)}
+.badge-info{background:var(--accent-blue-info);color:#fff}
+.badge-info-soft{background:var(--canvas);color:var(--accent-blue-info);border:1px solid var(--accent-blue-info)}
+.badge-green{background:rgba(0,215,34,.12);color:#00930f}
+.badge-yellow{background:rgba(255,174,19,.14);color:#9a6400}
+.badge-red{background:rgba(238,29,54,.1);color:var(--accent-red)}
+.toast{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-md) var(--sp-lg);
+  font-size:14px;line-height:22.4px;display:inline-flex;align-items:center;gap:var(--sp-md);box-shadow:var(--shadow-l3)}
+.toast .dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--accent-green)}
+
+/* 7. navigation */
+.nav-demo{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3xl);padding:var(--sp-lg) var(--sp-3xl)}
+.nav-links{display:flex;align-items:center;gap:var(--sp-2xl)}
+.nav-links a{font-size:14px;font-weight:500;line-height:22.4px;color:var(--ink);padding:var(--sp-xs) 0}
+.nav-links a:hover{color:var(--accent-blue-deep)}
+.nav-links a.active{border-bottom:2px solid var(--primary)}
+.nav-actions{display:flex;align-items:center;gap:var(--sp-md)}
+
+/* 8. table */
+.table-wrap{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--canvas);text-align:left;font-size:12.8px;font-weight:550;line-height:15.36px;
+  letter-spacing:.6px;text-transform:uppercase;color:var(--body-mid);padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline)}
+tbody td{font-size:14px;line-height:22.4px;color:var(--ink);padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline)}
+tbody tr:last-child td{border-bottom:none}
+.td-mute{color:var(--body-mid)}
+.mono{font-family:var(--mono);font-size:12px;color:var(--body-mid)}
+
+/* ═════════ PRODUCT ═════════ */
+.p-hero{padding:var(--sp-3xl) var(--sp-3xl) var(--sp-2xl);max-width:1400px;margin:0 auto}
+.p-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-sm);font-size:12.8px;font-weight:550;line-height:15.36px;
+  background:var(--canvas);color:var(--accent-blue-info);border:1px solid var(--accent-blue-info);border-radius:var(--r-sm);
+  padding:var(--sp-xs) var(--sp-sm);margin-bottom:var(--sp-xl)}
+.p-hero h1{font-size:80px;font-weight:600;line-height:1.04;letter-spacing:-.8px;max-width:980px}
+.p-hero h1 .u{position:relative;white-space:nowrap}
+.p-hero h1 .u::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.12em;background:var(--accent-purple);border-radius:var(--r-full)}
+.p-hero .sub{margin-top:var(--sp-2xl);font-size:28.8px;font-weight:400;line-height:46.08px;letter-spacing:-.288px;color:var(--ink-strong);max-width:780px}
+.p-hero .cta-row{margin-top:var(--sp-2xl);display:flex;gap:var(--sp-md);flex-wrap:wrap;align-items:center}
+.p-hero .note{font-size:14px;color:var(--body-mid)}
+.hero-art{margin-top:var(--sp-3xl);display:grid;grid-template-columns:repeat(5,1fr);gap:var(--sp-md)}
+.hero-art .cell{border-radius:var(--r-md);height:120px;display:flex;align-items:flex-end;padding:var(--sp-md);font-size:12.8px;font-weight:550;color:#fff;letter-spacing:.6px;text-transform:uppercase;transition:transform .2s ease}
+.hero-art .cell:hover{transform:translateY(-4px)}
+.hero-art .cell.ink{background:var(--primary)}
+
+.p-logos{padding:var(--sp-2xl) var(--sp-3xl);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);max-width:1400px;margin:0 auto}
+.p-logos .inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3xl);flex-wrap:wrap}
+.p-logos .cap{font-size:12.8px;font-weight:550;letter-spacing:.6px;text-transform:uppercase;color:var(--mute)}
+.p-logos .row{display:flex;gap:var(--sp-3xl);flex-wrap:wrap;align-items:center}
+.p-logos .logo{font-size:16px;font-weight:600;letter-spacing:-.2px;color:var(--mute)}
+
+.p-features{padding:var(--sp-3xl);max-width:1400px;margin:0 auto}
+.p-features .head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--sp-3xl);margin-bottom:var(--sp-3xl);flex-wrap:wrap}
+.p-features h2{font-size:44.8px;font-weight:600;line-height:46.6px;letter-spacing:-.4px;max-width:620px;margin-top:var(--sp-md)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg)}
+.feat{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl);display:flex;flex-direction:column;gap:var(--sp-md);transition:box-shadow .2s ease,transform .2s ease}
+.feat:hover{box-shadow:var(--shadow-l2);transform:translateY(-2px)}
+.feat .icon{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex:none}
+.feat h3{font-size:24px;font-weight:500;line-height:31.2px}
+.feat p{font-size:16px;line-height:25.6px;letter-spacing:-.16px;color:var(--body)}
+.feat .more{margin-top:auto;font-size:16px;font-weight:500;color:var(--accent-blue-deep);display:flex;align-items:center;gap:6px}
+
+.p-categories{padding:var(--sp-3xl);max-width:1400px;margin:0 auto}
+.p-categories h2{font-size:44.8px;font-weight:600;line-height:46.6px;letter-spacing:-.4px;margin:var(--sp-md) 0 var(--sp-3xl)}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:200px;gap:var(--sp-lg)}
+.cat{border-radius:var(--r-md);padding:var(--sp-3xl);color:#fff;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s ease}
+.cat:hover{transform:translateY(-4px)}
+.cat h3{font-size:32px;font-weight:500;line-height:41.6px}
+.cat .go{font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px}
+.cat.ink{grid-column:span 2;background:var(--primary)}
+.cat.purple{background:var(--accent-purple)}
+.cat.pink{background:var(--accent-pink)}
+.cat.blue{background:var(--accent-blue)}
+.cat.orange{background:var(--accent-orange)}
+.cat.green{background:var(--accent-green);color:var(--primary)}
+
+.p-pricing{padding:var(--sp-3xl);max-width:1400px;margin:0 auto;background:#fafafa;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.p-pricing .center{text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-md);margin-bottom:var(--sp-3xl)}
+.p-pricing h2{font-size:44.8px;font-weight:600;line-height:46.6px;letter-spacing:-.4px}
+.p-pricing .lede{font-size:28.8px;font-weight:400;line-height:46.08px;letter-spacing:-.288px;color:var(--ink-strong);max-width:720px}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg);max-width:1120px;margin:0 auto;width:100%}
+.tier{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl);display:flex;flex-direction:column;gap:var(--sp-sm)}
+.tier .name{font-size:15px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--body-mid)}
+.tier .price{font-size:44.8px;font-weight:600;letter-spacing:-.4px;line-height:1.1}
+.tier .price span{font-size:16px;font-weight:400;color:var(--body-mid);letter-spacing:-.16px}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:var(--sp-sm);margin:var(--sp-md) 0 var(--sp-xl)}
+.tier li{display:flex;gap:var(--sp-sm);font-size:14px;line-height:22.4px;color:var(--body)}
+.tier li svg{flex:none;margin-top:3px}
+.tier.featured{box-shadow:var(--shadow-l3);border-color:transparent;transform:translateY(-4px)}
+.tier.featured .name{color:var(--accent-purple)}
+.tier .tier-btn{margin-top:auto}
+
+.p-quote{padding:var(--sp-3xl);max-width:1400px;margin:0 auto}
+.p-quote .inner{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:var(--sp-xl);align-items:flex-start}
+.p-quote blockquote{font-size:32px;font-weight:500;line-height:41.6px;letter-spacing:-.4px}
+.p-quote blockquote span{color:var(--accent-purple)}
+.p-quote .who{display:flex;align-items:center;gap:var(--sp-md)}
+.p-quote .avatar{width:48px;height:48px;border-radius:var(--r-full);background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500}
+.p-quote .n{font-size:14px;font-weight:500;line-height:22.4px}
+.p-quote .r{font-size:14px;line-height:22.4px;color:var(--body-mid)}
+
+.p-cta{background:var(--primary);color:var(--on-primary);padding:var(--sp-3xl)}
+.p-cta .inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3xl);flex-wrap:wrap}
+.p-cta h2{font-size:56px;font-weight:600;line-height:58.24px;letter-spacing:-.8px;max-width:640px}
+.p-cta p{margin-top:var(--sp-md);font-size:16px;line-height:25.6px;letter-spacing:-.16px;color:rgba(255,255,255,.72);max-width:480px}
+.btn-white{background:var(--canvas);color:var(--ink)}
+.btn-white:hover{background:#ededed}
+.btn-white-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.btn-white-outline:hover{border-color:#fff}
+
+.p-footer{background:var(--canvas);color:var(--body-mid);padding:var(--sp-3xl)}
+.p-footer .inner{max-width:1400px;margin:0 auto}
+.f-cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:var(--sp-3xl);padding-bottom:var(--sp-3xl)}
+.f-col .eyebrow2{font-size:12px;font-weight:500;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);margin-bottom:var(--sp-md)}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:var(--sp-sm)}
+.f-col a{font-size:14px;line-height:22.4px;color:var(--body-mid)}
+.f-col a:hover{color:var(--accent-blue-deep);text-decoration:underline}
+.f-about{font-size:14px;line-height:22.4px;color:var(--body-mid);max-width:260px;margin-top:var(--sp-md)}
+.f-bottom{border-top:1px solid var(--hairline);padding-top:var(--sp-lg);display:flex;justify-content:space-between;gap:var(--sp-lg);flex-wrap:wrap;font-size:14px;color:var(--mute)}
+
+@media (max-width:900px){
+  .sg-banner{flex-direction:column;align-items:flex-start;gap:var(--sp-sm)}
+  .sg-desc{text-align:left}
+  .p-hero h1{font-size:44px}
+  .p-hero .sub{font-size:22.8px;line-height:1.5}
+  .p-cta h2{font-size:36px}
+  .feat-grid,.price-grid,.cat-grid,.card-grid,.form-grid{grid-template-columns:1fr}
+  .cat.ink{grid-column:span 1}
+  .hero-art{grid-template-columns:repeat(2,1fr)}
+  .f-cols{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <div class="sg-mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M11.2 2 8.9 8.6 6.8 2H2l3.9 12h3l1.7-5 1.7 5h2.9L15 8.4 11.2 2Z" fill="#fff" opacity="0"/><path d="M1.5 3h3.2l2 6.4L9.1 3h2.4l-3.2 10H5.9L1.5 3Z" fill="#fff"/><path d="M9.6 3h3.2l1.7 5.4L11.9 3h-2.3Z" fill="#fff" opacity=".55"/></svg></div>
+    <span class="sg-folder">webflow</span>
+    <span class="sg-brand">Webflow-Inspired</span>
+  </div>
+  <p class="sg-desc">The visual web development platform — deep near-black conversion color on a generous white canvas, with a five-stop chromatic category palette used only as surface fills.</p>
+</header>
+
+<main>
+
+<!-- ═══════════════ COMPONENTS ═══════════════ -->
+<section id="components">
+
+  <h2 class="section-head">Engineered, confident, five colors deep.</h2>
+
+  <!-- 1. Color tokens -->
+  <div class="comp-block">
+    <div class="eyebrow">01 · Color tokens</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#080808"></div><div class="meta"><div class="name">Ink Black</div><div class="hex">#080808</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#7a3dff"></div><div class="meta"><div class="name">Accent Purple</div><div class="hex">#7a3dff</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#ed52cb"></div><div class="meta"><div class="name">Accent Pink</div><div class="hex">#ed52cb</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3b89ff"></div><div class="meta"><div class="name">Accent Blue</div><div class="hex">#3b89ff</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#ff6b00"></div><div class="meta"><div class="name">Accent Orange</div><div class="hex">#ff6b00</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#00d722"></div><div class="meta"><div class="name">Accent Green</div><div class="hex">#00d722</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#146ef5"></div><div class="meta"><div class="name">Info Blue</div><div class="hex">#146ef5</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#d8d8d8"></div><div class="meta"><div class="name">Hairline</div><div class="hex">#d8d8d8</div></div></div>
+    </div>
+  </div>
+
+  <!-- 2. Typography -->
+  <div class="comp-block">
+    <div class="eyebrow">02 · Typography specimen</div>
+    <div class="specimen">
+      <div class="spec-row">
+        <div class="tag">display-xxl · 80px · 600 · -0.8px</div>
+        <div class="t-xxl">Build for the web, visually</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">display-lg · 44.8px · 600</div>
+        <div class="t-lg">Section headline, weight ceiling 600</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">display-md · 32px · 500</div>
+        <div class="t-md">Card-cluster headline weight</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">eyebrow-uppercase · 15px · 500 · 1.5px</div>
+        <div class="t-eyebrow">Product Surfaces</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">body-lg · 28.8px · 400 · lh 46.08</div>
+        <p class="t-body-lg">Lead paragraphs breathe at nearly 29 pixels with generous line height — the brand never shouts.</p>
+      </div>
+      <div class="spec-row">
+        <div class="tag">body-md · 16px · 400 &nbsp;/&nbsp; caption · 12.8px · 550 &nbsp;/&nbsp; caption-mono</div>
+        <p class="t-body">Default body copy at weight 400. <strong>Badge labels use the signature 550-weight caption</strong>, and rare technical captions run in <span class="t-mono">WFVisualSans-Mono · 0x2F</span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Buttons -->
+  <div class="comp-block">
+    <div class="eyebrow">03 · Buttons — tight 4px rectangles, near-black conversion color</div>
+    <div style="border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl);display:flex;flex-direction:column;gap:var(--sp-2xl)">
+      <div class="btn-row">
+        <button class="btn btn-primary">Start building</button>
+        <button class="btn btn-secondary">View pricing</button>
+        <button class="btn btn-text">Learn more <span class="arr">→</span></button>
+        <button class="btn btn-secondary hover-look">Hover lift</button>
+        <button class="btn btn-icon" aria-label="Next">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#080808" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-secondary btn-sm">Secondary small</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Inputs -->
+  <div class="comp-block">
+    <div class="eyebrow">04 · Inputs — hairline borders, blue info focus ring</div>
+    <div style="border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl)">
+      <div class="form-grid">
+        <div class="field">
+          <label for="site">Site name</label>
+          <input class="input" id="site" type="text" placeholder="my-portfolio-site">
+        </div>
+        <div class="field">
+          <label for="sitef">Focused state</label>
+          <input class="input focus-look" id="sitef" type="text" value="my-portfolio-site">
+        </div>
+        <div class="field">
+          <label for="plan">Workspace plan</label>
+          <select class="input select" id="plan">
+            <option>Starter — 2 static sites</option>
+            <option>Core — 150 pages</option>
+            <option>Growth — CMS + ecommerce</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="disc">Disabled</label>
+          <input class="input disabled" id="disc" type="text" value="custom-domain.webflow.io" disabled>
+        </div>
+      </div>
+      <div class="switch-row">
+        <div class="switch on" role="switch" aria-checked="true"></div>
+        <span class="check">Auto-publish on save</span>
+        <div class="check" style="margin-left:var(--sp-2xl)"><span class="box on"><svg width="10" height="8" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span> Staging environment</div>
+        <div class="check" style="margin-left:var(--sp-lg)"><span class="box"></span> Backups</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Cards -->
+  <div class="comp-block">
+    <div class="eyebrow">05 · Cards — hairline chrome, layered multi-stop shadow when featured</div>
+    <div class="card-grid">
+      <article class="card">
+        <h3>Design on an exact canvas</h3>
+        <p>Pixel-level control with production HTML, CSS and JS underneath — no plug-in export step, no drift between design and code.</p>
+      </article>
+      <article class="card card-dark stat-card" style="box-shadow:none">
+        <div class="lbl" style="color:rgba(255,255,255,.6)">Sites published / yr</div>
+        <div class="num">1.4M+</div>
+        <p>The polarity-flipped dark card carries the same 8px chrome on near-black.</p>
+      </article>
+    </div>
+  </div>
+
+  <!-- 6. Badges -->
+  <div class="comp-block">
+    <div class="eyebrow">06 · Badges — 550-weight captions, 4px corners</div>
+    <div style="border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-3xl)">
+      <div class="badge-row">
+        <span class="badge badge-info">New in Designer</span>
+        <span class="badge badge-info-soft">Beta</span>
+        <span class="badge badge-green">Site published</span>
+        <span class="badge badge-yellow">Build queued</span>
+        <span class="badge badge-red">Deploy failed</span>
+      </div>
+      <div style="margin-top:var(--sp-2xl)"><span class="toast"><span class="dot"></span>my-portfolio-site published to production.</span></div>
+    </div>
+  </div>
+
+  <!-- 7. Navigation -->
+  <div class="comp-block">
+    <div class="eyebrow">07 · Navigation — white bar, near-black active underline</div>
+    <nav class="nav-demo">
+      <div class="nav-inner">
+        <div class="sg-id">
+          <div class="sg-mark"><svg viewBox="0 0 16 16"><path d="M1.5 3h3.2l2 6.4L9.1 3h2.4l-3.2 10H5.9L1.5 3Z" fill="#fff"/><path d="M9.6 3h3.2l1.7 5.4L11.9 3h-2.3Z" fill="#fff" opacity=".55"/></svg></div>
+          <span style="font-weight:600;letter-spacing:-.3px">webflow</span>
+        </div>
+        <div class="nav-links">
+          <a href="#" class="active">Platform</a>
+          <a href="#">Solutions</a>
+          <a href="#">Resources</a>
+          <a href="#">Enterprise</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-secondary btn-sm">Log in</button>
+          <button class="btn btn-primary btn-sm">Get started</button>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- 8. Table -->
+  <div class="comp-block">
+    <div class="eyebrow">08 · Data table — 550-weight caption header</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Site</th><th>Plan</th><th>Pages</th><th>CMS items</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500">acme-marketing</td><td class="td-mute">Growth</td><td class="td-mute">42</td><td class="td-mute">1,280</td><td><span class="badge badge-green">Published</span></td></tr>
+          <tr><td style="font-weight:500">acme-docs</td><td class="td-mute">Core</td><td class="td-mute">96</td><td class="td-mute">340</td><td><span class="badge badge-yellow">Building</span></td></tr>
+          <tr><td style="font-weight:500">acme-store</td><td class="td-mute">Ecommerce</td><td class="td-mute">210</td><td class="td-mute">5,640</td><td><span class="badge badge-info-soft">Staging</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════ FINISHED PRODUCT ═══════════════ -->
+<section id="product" style="border-top:1px solid var(--hairline)">
+
+  <!-- hero -->
+  <div class="p-hero">
+    <span class="p-eyebrow">New · Interactions 3.0 is live</span>
+    <h1>Build for the web, <span class="u">visually</span> — ship production code.</h1>
+    <p class="sub">Webflow-Inspired is the visual development platform: design pixel-perfect sites on a real canvas, manage content in a typed CMS, and publish to fast, reliable hosting — all without writing glue code.</p>
+    <div class="cta-row">
+      <button class="btn btn-primary">Start building — it's free</button>
+      <button class="btn btn-secondary">Book a demo</button>
+      <span class="note">No credit card required</span>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="cell ink">Designer</div>
+      <div class="cell" style="background:var(--accent-purple)">CMS</div>
+      <div class="cell" style="background:var(--accent-blue)">Analytics</div>
+      <div class="cell" style="background:var(--accent-orange)">Hosting</div>
+      <div class="cell" style="background:var(--accent-green);color:var(--primary)">Ecommerce</div>
+    </div>
+  </div>
+
+  <!-- logos -->
+  <div class="p-logos">
+    <div class="inner">
+      <span class="cap">Trusted by teams at</span>
+      <div class="row">
+        <span class="logo">Dell</span>
+        <span class="logo">MURAL</span>
+        <span class="logo">Upwork</span>
+        <span class="logo">Zendesk</span>
+        <span class="logo">Vice</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- features -->
+  <div class="p-features">
+    <div class="head">
+      <div class="eyebrow" style="flex:0 0 auto">Why teams switch</div>
+      <h2>One platform from first draft to production.</h2>
+    </div>
+    <div class="feat-grid">
+      <article class="feat">
+        <div class="icon" style="background:rgba(122,61,255,.1)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="2" stroke="#7a3dff" stroke-width="1.6"/><path d="M6 7h8M6 10h5" stroke="#7a3dff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>The Designer</h3>
+        <p>A true visual canvas over clean HTML and CSS. Interactions, breakpoints and reusable classes — without a handoff step.</p>
+        <span class="more">Explore the Designer →</span>
+      </article>
+      <article class="feat">
+        <div class="icon" style="background:rgba(59,137,255,.1)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="5" rx="7" ry="2.6" stroke="#3b89ff" stroke-width="1.6"/><path d="M3 5v10c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V5M3 10c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6" stroke="#3b89ff" stroke-width="1.6"/></svg></div>
+        <h3>The CMS</h3>
+        <p>Structured content with typed fields, flexible collections and an editing experience your marketing team will actually use.</p>
+        <span class="more">Meet the CMS →</span>
+      </article>
+      <article class="feat">
+        <div class="icon" style="background:rgba(255,107,0,.1)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 14.5 7 9l3 3.5L14 5l3 4" stroke="#ff6b00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5 5h2.5v2.5" stroke="#ff6b00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Fast hosting</h3>
+        <p>Global CDN, automatic scaling and one-click publishing. Sites hold 100/100 Lighthouse scores out of the box.</p>
+        <span class="more">About hosting →</span>
+      </article>
+    </div>
+  </div>
+
+  <!-- categories -->
+  <div class="p-categories">
+    <div class="eyebrow" style="flex:0 0 auto">Product surfaces</div>
+    <h2>Every part of the platform has a color.</h2>
+    <div class="cat-grid">
+      <div class="cat ink">
+        <h3>The Designer</h3>
+        <span class="go">Start designing →</span>
+      </div>
+      <div class="cat purple">
+        <h3>CMS</h3>
+        <span class="go">Structure content →</span>
+      </div>
+      <div class="cat blue">
+        <h3>Analytics</h3>
+        <span class="go">Measure →</span>
+      </div>
+      <div class="cat orange">
+        <h3>Hosting</h3>
+        <span class="go">Publish →</span>
+      </div>
+      <div class="cat green">
+        <h3>Ecommerce</h3>
+        <span class="go">Sell →</span>
+      </div>
+      <div class="cat pink">
+        <h3>Interactions</h3>
+        <span class="go">Animate →</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- pricing -->
+  <div class="p-pricing">
+    <div class="center">
+      <div class="eyebrow" style="flex:0 0 auto">Pricing</div>
+      <h2>Plans that scale with your site.</h2>
+      <p class="lede">Start free. Upgrade when your traffic does. Every plan includes hosting, SSL and unlimited editors on Content.</p>
+    </div>
+    <div class="price-grid">
+      <div class="tier">
+        <div class="name">Starter</div>
+        <div class="price">$0 <span>/ forever</span></div>
+        <ul>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>2 static sites</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>50 CMS items</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>webflow.io domain</li>
+        </ul>
+        <button class="btn btn-secondary tier-btn">Get started</button>
+      </div>
+      <div class="tier featured">
+        <div class="name">Growth · Most popular</div>
+        <div class="price">$29 <span>/ mo</span></div>
+        <ul>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>150 pages + full CMS</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Custom domains &amp; staging</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Site search &amp; analytics</li>
+        </ul>
+        <button class="btn btn-primary tier-btn">Choose Growth</button>
+      </div>
+      <div class="tier">
+        <div class="name">Enterprise</div>
+        <div class="price">Custom</div>
+        <ul>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>SSO &amp; advanced roles</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>99.99% uptime SLA</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#080808" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Dedicated success manager</li>
+        </ul>
+        <button class="btn btn-secondary tier-btn">Contact sales</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- quote -->
+  <div class="p-quote">
+    <div class="inner">
+      <blockquote>&ldquo;Marketing ships pages <span>the same day</span> they're briefed now. Engineering stopped being the bottleneck — that changed the whole team.&rdquo;</blockquote>
+      <div class="who">
+        <div class="avatar">MK</div>
+        <div><div class="n">Maya Kessler</div><div class="r">Head of Digital, Mural &amp; Co.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA band -->
+  <div class="p-cta">
+    <div class="inner">
+      <div>
+        <h2>Build your next site the visual way.</h2>
+        <p>Join over three million designers and teams shipping faster with Webflow-Inspired.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-white">Start building — it's free</button>
+        <button class="btn btn-white-outline">Talk to sales</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="p-footer">
+    <div class="inner">
+      <div class="f-cols">
+        <div class="f-col">
+          <div class="sg-id">
+            <div class="sg-mark"><svg viewBox="0 0 16 16"><path d="M1.5 3h3.2l2 6.4L9.1 3h2.4l-3.2 10H5.9L1.5 3Z" fill="#fff"/><path d="M9.6 3h3.2l1.7 5.4L11.9 3h-2.3Z" fill="#fff" opacity=".55"/></svg></div>
+            <span style="font-weight:600;letter-spacing:-.3px;color:var(--ink)">webflow</span>
+          </div>
+          <p class="f-about">The visual web development platform. Design, build and launch — in one place.</p>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow2">Product</div>
+          <ul>
+            <li><a href="#">Designer</a></li>
+            <li><a href="#">CMS</a></li>
+            <li><a href="#">Ecommerce</a></li>
+            <li><a href="#">Hosting</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow2">Resources</div>
+          <ul>
+            <li><a href="#">University</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Templates</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow2">Company</div>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Partners</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow2">Support</div>
+          <ul>
+            <li><a href="#">Help center</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Forum</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="f-bottom">
+        <span>© 2026 Webflow-Inspired. A design-language showcase, not the real platform.</span>
+        <span>Privacy · Terms · Cookies · Accessibility</span>
+      </div>
+    </div>
+  </footer>
+
+</section>
+</main>
+
+</body>
+</html>

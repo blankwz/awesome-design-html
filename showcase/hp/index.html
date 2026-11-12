@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HP — Design System Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --primary:#024ad8; --primary-bright:#296ef9; --primary-deep:#0e3191; --primary-soft:#c9e0fc;
+  --on-primary:#ffffff;
+  --ink:#1a1a1a; --ink-deep:#000000; --ink-soft:#292929; --on-ink:#ffffff;
+  --canvas:#ffffff; --paper:#ffffff;
+  --cloud:#f7f7f7; --fog:#e8e8e8; --steel:#c2c2c2;
+  --graphite:#636363; --charcoal:#3d3d3d;
+  --hairline:#e8e8e8; --hairline-strong:#c2c2c2;
+  --link:#024ad8; --link-pressed:#0e3191;
+  --bloom-coral:#ff5050; --bloom-rose:#f9d4d2; --bloom-deep:#b3262b; --bloom-wine:#5a1313;
+  --storm-mist:#8ebdce; --storm-sea:#7fadbe; --storm-deep:#356373;
+  --error:#b3262b;
+
+  --font:'Manrope',-apple-system,'Segoe UI',Arial,sans-serif;
+
+  --r-none:0px; --r-xs:2px; --r-sm:3px; --r-md:4px; --r-lg:8px; --r-xl:16px; --r-pill:9999px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px;
+  --sp-lg:20px; --sp-xl:24px; --sp-xxl:32px; --sp-section:80px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--canvas);color:var(--ink);
+  font-size:16px;font-weight:400;line-height:1.38;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+
+/* type scale */
+.t-display-xxl{font-size:72px;font-weight:500;line-height:1.0;letter-spacing:0}
+.t-display-xl{font-size:56px;font-weight:500;line-height:1.0;letter-spacing:0}
+.t-display-lg{font-size:44px;font-weight:500;line-height:1.0;letter-spacing:0}
+.t-display-md{font-size:32px;font-weight:500;line-height:1.0;letter-spacing:0}
+.t-display-sm{font-size:24px;font-weight:500;line-height:1.17;letter-spacing:0}
+.t-display-xs{font-size:20px;font-weight:500;line-height:1.0;letter-spacing:0}
+.t-body-lg{font-size:18px;font-weight:400;line-height:1.33}
+.t-body-md{font-size:16px;font-weight:400;line-height:1.38}
+.t-body-em{font-size:16px;font-weight:500;line-height:1.38}
+.t-caption-md{font-size:14px;font-weight:400;line-height:1.5}
+.t-caption-sm{font-size:12px;font-weight:400;line-height:1.33}
+.t-caption-bold{font-size:14px;font-weight:700;line-height:1.3}
+.t-link-md{font-size:16px;font-weight:500;line-height:1.38}
+.t-button-md{font-size:14px;font-weight:600;line-height:1.4;letter-spacing:0.7px;text-transform:uppercase}
+.t-price-md{font-size:24px;font-weight:500;line-height:1.17}
+
+.wrap{max-width:1366px;margin:0 auto;padding:0 var(--sp-xxl)}
+
+/* ============ BANNER ============ */
+.sg-banner{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:var(--sp-sm) var(--sp-xxl);
+  background:var(--ink);color:var(--on-ink);
+  position:sticky;top:0;z-index:50;
+}
+.sg-id{display:flex;align-items:baseline;gap:var(--sp-md)}
+.sg-folder{font-size:12px;letter-spacing:0.2px;color:var(--steel)}
+.sg-brand{font-size:16px;font-weight:700;letter-spacing:0.126px;color:#fff}
+.sg-desc{font-size:14px;color:var(--steel)}
+
+/* section labels */
+.sg-section{padding:var(--sp-section) 0 0}
+.sg-section-label{display:flex;align-items:center;gap:var(--sp-lg);margin-bottom:var(--sp-xxl)}
+.sg-section-label .line{flex:1;height:1px;background:var(--hairline)}
+.sg-section-label .txt{font-size:12px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:var(--primary)}
+.sg-block{margin-bottom:var(--sp-section)}
+.sg-block-label{font-size:12px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:var(--graphite);margin-bottom:var(--sp-lg)}
+
+/* ============ 1. COLORS ============ */
+.swatch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.swatch{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--hairline)}
+.swatch .chip{height:72px}
+.swatch .meta{padding:var(--sp-sm);font-size:12px;color:var(--graphite)}
+.swatch .meta b{display:block;color:var(--ink);font-weight:700;margin-bottom:2px;font-size:12px}
+
+/* ============ 2. TYPE ============ */
+.specimen .row{display:flex;align-items:baseline;gap:var(--sp-xl);padding:var(--sp-md) 0;border-bottom:1px solid var(--hairline)}
+.specimen .tag{font-size:12px;color:var(--graphite);width:220px;flex-shrink:0}
+.specimen .val{color:var(--ink)}
+
+/* ============ 3. BUTTONS — sharp 4px ============ */
+.btn-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:44px;padding:12px 24px;
+  font-family:var(--font);font-size:14px;font-weight:600;line-height:1.4;letter-spacing:0.7px;text-transform:uppercase;
+  border-radius:var(--r-md);border:none;cursor:pointer;
+  transition:background .15s ease,color .15s ease;
+}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-bright)}
+.btn-primary:active{background:var(--primary-deep)}
+.btn-ink{background:var(--ink);color:var(--on-primary)}
+.btn-ink:hover{background:var(--ink-soft)}
+.btn-outline{background:var(--canvas);color:var(--primary);border:1px solid var(--primary)}
+.btn-outline:hover{background:var(--primary-soft)}
+.btn-outline-ink{background:var(--canvas);color:var(--ink);border:1px solid var(--ink)}
+.btn-outline-ink:hover{background:var(--cloud)}
+.btn-text{background:transparent;color:var(--primary);height:auto;padding:4px 0;text-transform:none;letter-spacing:0;font-weight:500;font-size:16px}
+.btn-text:hover{text-decoration:underline}
+.btn-disabled{background:var(--steel);color:#fff;cursor:not-allowed}
+.btn-sm{height:36px;padding:8px 16px;font-size:12.6px;font-weight:700;letter-spacing:0.126px}
+.btn-lg{height:52px;padding:14px 32px}
+
+/* ============ 4. INPUTS ============ */
+.input-row{display:flex;flex-wrap:wrap;gap:var(--sp-lg);align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:var(--sp-xxs)}
+.field label{font-size:14px;font-weight:700;color:var(--ink)}
+.ti{
+  height:44px;width:250px;
+  background:var(--canvas);color:var(--ink);
+  font-family:var(--font);font-size:16px;
+  border:1px solid var(--steel);border-radius:var(--r-md);
+  padding:0 16px;outline:none;
+  transition:border-color .15s;
+}
+.ti::placeholder{color:var(--graphite)}
+.ti:focus{border-color:var(--ink)}
+select.ti{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%231a1a1a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.ti.disabled{background:var(--cloud);color:var(--graphite);cursor:not-allowed}
+.search-pill{position:relative}
+.search-pill input{width:280px;border-radius:var(--r-pill);padding-right:44px}
+.search-pill svg{position:absolute;right:16px;top:50%;transform:translateY(-50%)}
+.switch{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;background:var(--fog);border-radius:var(--r-full);transition:background .2s}
+.switch .track::before{content:"";position:absolute;width:20px;height:20px;background:#fff;border-radius:var(--r-full);top:3px;left:3px;box-shadow:0 1px 3px rgba(26,26,26,0.25);transition:transform .2s}
+.switch input:checked + .track{background:var(--primary)}
+.switch input:checked + .track::before{transform:translateX(18px)}
+.checkbox{width:18px;height:18px;border:1px solid var(--steel);border-radius:var(--r-xs);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--canvas)}
+.checkbox.on{background:var(--primary);border-color:var(--primary)}
+.check-row{display:flex;align-items:center;gap:var(--sp-xxs)}
+.check-row .lbl{font-size:14px}
+
+/* ============ 5. CARDS — soft 16px vs sharp buttons ============ */
+.card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-xl)}
+.card-product{background:var(--canvas);border-radius:var(--r-xl);padding:var(--sp-xl);box-shadow:0 2px 8px rgba(26,26,26,0.08)}
+.card-product .photo{height:140px;border-radius:var(--r-xl);background:linear-gradient(150deg,var(--cloud),var(--fog));display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-md)}
+.card-product h4{font-size:20px;font-weight:500;line-height:1.0;margin-bottom:6px}
+.card-product .spec{font-size:14px;color:var(--charcoal);line-height:1.5}
+.card-product .price{font-size:24px;font-weight:500;line-height:1.17;margin:var(--sp-sm) 0}
+.card-feature{background:var(--cloud);border-radius:var(--r-xl);padding:var(--sp-xxl)}
+.card-feature .big{font-size:48px;font-weight:500;line-height:1.0}
+.card-feature .lbl{font-size:14px;color:var(--charcoal);margin-top:var(--sp-xs)}
+
+/* category icon cards */
+.cat-row{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--sp-md);margin-top:var(--sp-xl)}
+.cat{background:var(--canvas);border-radius:var(--r-lg);padding:var(--sp-md);text-align:center;box-shadow:0 2px 8px rgba(26,26,26,0.08)}
+.cat .ic{width:48px;height:48px;margin:0 auto var(--sp-xs);border-radius:var(--r-lg);background:var(--primary-soft);display:flex;align-items:center;justify-content:center;color:var(--primary)}
+.cat span{font-size:16px;font-weight:500}
+
+/* ============ 6. BADGES ============ */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.badge{display:inline-flex;align-items:center;padding:6px 12px;border-radius:var(--r-lg);font-size:16px;line-height:1.38}
+.badge-ink{background:var(--ink);color:#fff}
+.badge-outline{background:var(--canvas);color:var(--ink);border:1px solid var(--ink)}
+.badge-sale{background:var(--bloom-coral);color:#fff;padding:4px 8px;border-radius:var(--r-sm);font-size:14px;font-weight:700}
+.badge-soft-blue{background:var(--primary-soft);color:var(--primary-deep)}
+
+/* category tabs (pills) */
+.tab-row{display:flex;gap:var(--sp-sm);flex-wrap:wrap}
+.tab{border:none;cursor:pointer;font-family:var(--font);font-size:16px;font-weight:500;
+  padding:8px 20px;border-radius:var(--r-pill);background:var(--canvas);color:var(--ink);
+  border:1px solid var(--hairline);transition:background .15s,color .15s}
+.tab:hover{background:var(--cloud)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* ============ 7. NAV ============ */
+.nav-demo{border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden}
+.utility-strip{display:flex;align-items:center;gap:var(--sp-lg);height:36px;padding:0 var(--sp-xl);background:var(--ink);color:#fff;font-size:14px}
+.utility-strip .right{margin-left:auto;display:flex;gap:var(--sp-lg)}
+.utility-strip a:hover{text-decoration:underline}
+.nav-bar{display:flex;align-items:center;gap:var(--sp-lg);height:64px;padding:0 var(--sp-xl);background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.nav-bar .wordmark{font-size:24px;font-weight:700;letter-spacing:-0.5px;color:var(--ink-deep)}
+.nav-bar .wordmark .sl{color:var(--primary)}
+.nav-bar .links{display:flex;gap:var(--sp-xs);flex:1}
+.nav-bar .links a{font-size:16px;padding:8px 16px;border-radius:var(--r-md)}
+.nav-bar .links a:hover{background:var(--cloud)}
+.nav-bar .links a.active{box-shadow:inset 0 -2px 0 var(--primary)}
+.nav-bar .utils{display:flex;align-items:center;gap:var(--sp-md)}
+
+/* ============ 8. TABLE ============ */
+.cmp{width:100%;border-collapse:collapse}
+.cmp td,.cmp th{padding:var(--sp-md) var(--sp-sm);border-bottom:1px solid var(--hairline);text-align:left;font-size:16px}
+.cmp th{font-size:14px;font-weight:700;color:var(--ink)}
+.cmp .feat{color:var(--charcoal)}
+.cmp .ok{color:var(--primary);font-weight:700}
+.cmp .no{color:var(--steel)}
+
+/* chevron decoration */
+.chevron{width:56px;height:220px;background:var(--primary);clip-path:polygon(38% 0,100% 0,62% 100%,0 100%)}
+
+/* faq row */
+.faq-row{border-top:1px solid var(--hairline)}
+.faq-row .row{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-md);padding:20px 24px;font-size:16px;font-weight:500}
+.faq-row .row + .row{border-top:1px solid var(--hairline)}
+.faq-row .plus{color:var(--primary);font-size:20px}
+
+/* ============ PRODUCT ============ */
+.p-utility{display:flex;align-items:center;gap:var(--sp-lg);height:36px;padding:0 var(--sp-xxl);background:var(--ink);color:#fff;font-size:14px}
+.p-utility .right{margin-left:auto;display:flex;gap:var(--sp-lg)}
+.p-nav{display:flex;align-items:center;gap:var(--sp-lg);height:64px;padding:0 var(--sp-xxl);background:var(--canvas);border-bottom:1px solid var(--hairline);position:sticky;top:0;background:#fff;z-index:40}
+.p-nav .wordmark{font-size:24px;font-weight:700;letter-spacing:-0.5px}
+.p-nav .wordmark .sl{color:var(--primary)}
+.p-nav .links{display:flex;gap:var(--sp-xs);flex:1}
+.p-nav .links a{font-size:16px;padding:8px 16px;border-radius:4px}
+.p-nav .links a:hover{background:var(--cloud)}
+.p-nav .links a.active{box-shadow:inset 0 -2px 0 var(--primary)}
+.p-nav .search-pill{position:relative}
+.p-nav .search-pill input{width:220px;height:40px;border-radius:4px}
+
+/* hero with chevrons */
+.hero{padding:var(--sp-xl) 0 var(--sp-section)}
+.hero .frame{display:flex;align-items:center;gap:var(--sp-lg)}
+.hero-card{flex:1;background:var(--canvas);border-radius:var(--r-xl);box-shadow:0 2px 8px rgba(26,26,26,0.08);display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.hero-photo{min-height:420px;background:
+  radial-gradient(ellipse 80% 60% at 70% 30%,var(--primary-soft),transparent 70%),
+  linear-gradient(160deg,var(--cloud) 0%,var(--fog) 100%);
+  display:flex;align-items:center;justify-content:center;position:relative}
+.laptop{width:70%;height:52%;background:var(--ink);border-radius:10px 10px 0 0;position:relative;transform:translateY(24px)}
+.laptop::before{content:"";position:absolute;inset:8px;background:linear-gradient(135deg,#2e4a86,var(--primary));border-radius:6px}
+.laptop::after{content:"";position:absolute;left:-6%;right:-6%;bottom:-12px;height:12px;background:var(--ink-soft);border-radius:0 0 12px 12px}
+.hero-copy{padding:var(--sp-xxl);display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.hero-copy .eyebrow{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:var(--sp-sm)}
+.hero-copy h1{font-size:72px;font-weight:500;line-height:1.0;letter-spacing:0;margin-bottom:var(--sp-md)}
+.hero-copy .sub{font-size:18px;color:var(--charcoal);max-width:420px;margin-bottom:var(--sp-md)}
+.hero-copy .price{display:flex;align-items:baseline;gap:var(--sp-sm);margin-bottom:var(--sp-xl)}
+.hero-copy .price .now{font-size:32px;font-weight:500}
+.hero-copy .price s{font-size:18px;color:var(--graphite)}
+.hero-copy .sale{background:var(--bloom-coral);color:#fff;font-size:14px;font-weight:700;padding:4px 8px;border-radius:3px}
+.hero-copy .cta{display:flex;gap:var(--sp-md)}
+
+/* cloud band */
+.cloud-band{background:var(--cloud);padding:var(--sp-section) 0}
+.band-head{margin-bottom:var(--sp-xl)}
+.band-head h2{font-size:56px;font-weight:500;line-height:1.0}
+.band-head .lead{font-size:18px;color:var(--charcoal);max-width:520px;margin-top:var(--sp-sm)}
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xl)}
+
+/* ink slab promo */
+.slab{background:var(--ink);color:#fff;padding:var(--sp-section) 0}
+.slab .inner{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-xxl);align-items:center}
+.slab h2{font-size:32px;font-weight:500;line-height:1.0;margin-bottom:var(--sp-md)}
+.slab p{color:var(--fog);max-width:440px;margin-bottom:var(--sp-xl)}
+.slab .visual{height:280px;border-radius:var(--r-xl);background:
+  radial-gradient(ellipse 70% 70% at 30% 30%,rgba(41,110,249,0.45),transparent 65%),
+  linear-gradient(150deg,var(--ink-soft),#000);
+  display:flex;align-items:center;justify-content:center}
+.slab .visual .chipmock{width:120px;height:120px;background:linear-gradient(135deg,var(--primary-bright),var(--primary-deep));border-radius:12px;transform:rotate(45deg);box-shadow:0 24px 60px rgba(41,110,249,0.35)}
+.slab .btn-outline{background:transparent;color:#fff;border-color:#fff}
+.slab .btn-outline:hover{background:rgba(255,255,255,0.1)}
+.slab .btn-primary{background:var(--primary-bright)}
+.slab .btn-primary:hover{background:#4c85ff}
+
+/* pricing */
+.pricing{padding:var(--sp-section) 0}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-xl)}
+.p-card{background:var(--canvas);border-radius:var(--r-xl);padding:var(--sp-xl);box-shadow:0 2px 8px rgba(26,26,26,0.08);display:flex;flex-direction:column}
+.p-card.featured{border-top:4px solid var(--primary)}
+.p-card.featured .price{color:var(--primary)}
+.p-card h4{font-size:24px;font-weight:500;line-height:1.17;margin-bottom:var(--sp-sm)}
+.p-card .price{font-size:32px;font-weight:500;line-height:1.0}
+.p-card .per{font-size:14px;color:var(--charcoal);margin-top:4px}
+.p-card ul{list-style:none;margin:var(--sp-lg) 0;flex:1}
+.p-card li{font-size:14px;color:var(--charcoal);padding:6px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.p-card li svg{flex-shrink:0;margin-top:3px}
+
+/* quote */
+.quote{padding:0 0 var(--sp-section)}
+.quote-card{background:var(--canvas);border-radius:var(--r-xl);box-shadow:0 2px 8px rgba(26,26,26,0.08);padding:var(--sp-xxl);max-width:860px}
+.quote-card blockquote{font-size:24px;font-weight:500;line-height:1.17}
+.quote-card .who{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-xl)}
+.quote-card .ava{width:48px;height:48px;border-radius:var(--r-md);background:var(--primary-soft);display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700}
+.quote-card .who b{display:block;font-size:16px;font-weight:500}
+.quote-card .who span{font-size:14px;color:var(--charcoal)}
+
+/* help band dark */
+.help-band{background:var(--ink);color:#fff;padding:var(--sp-xxl) 0;text-align:center}
+.help-band h2{font-size:32px;font-weight:500;line-height:1.0;margin-bottom:var(--sp-xl)}
+.help-band .tab{background:transparent;color:#fff;border-color:rgba(255,255,255,0.4)}
+.help-band .tab:hover{background:rgba(255,255,255,0.1)}
+.help-band .tab.on{background:var(--primary-bright);border-color:var(--primary-bright);color:#fff}
+
+/* footer */
+footer.sg-footer{background:var(--ink);color:#fff;padding:var(--sp-xxl) 0 var(--sp-xl)}
+footer.sg-footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--sp-xl)}
+footer.sg-footer .wordmark{font-size:28px;font-weight:700;letter-spacing:-0.5px}
+footer.sg-footer .wordmark .sl{color:var(--primary-bright)}
+footer.sg-footer h5{font-size:16px;font-weight:500;margin-bottom:var(--sp-sm)}
+footer.sg-footer a{display:block;font-size:14px;color:var(--steel);padding:4px 0}
+footer.sg-footer a:hover{color:#fff;text-decoration:underline}
+footer.sg-footer .legal{margin-top:var(--sp-xl);padding-top:var(--sp-lg);border-top:1px solid var(--ink-soft);font-size:12px;color:var(--steel);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-sm)}
+
+@media (max-width:900px){
+  .swatch-grid{grid-template-columns:repeat(2,1fr)}
+  .card-row{grid-template-columns:1fr}
+  .prod-grid,.p-grid{grid-template-columns:1fr}
+  .cat-row{grid-template-columns:repeat(3,1fr)}
+  .hero-card{grid-template-columns:1fr}
+  .hero .frame .chevron{display:none}
+  .hero-copy h1{font-size:40px}
+  .band-head h2{font-size:32px}
+  .slab .inner{grid-template-columns:1fr}
+  footer.sg-footer .cols{grid-template-columns:repeat(2,1fr)}
+  .btn-row,.input-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">hp/</span>
+    <span class="sg-brand">HP</span>
+  </div>
+  <span class="sg-desc">White-paper catalog, Electric Blue signal, sharp buttons on soft cards</span>
+</header>
+
+<main>
+
+<!-- ================= COMPONENTS ================= -->
+<section id="components" class="sg-section">
+  <div class="wrap">
+    <div class="sg-section-label"><span class="txt">Components</span><span class="line"></span></div>
+
+    <!-- 1 Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">01 · Color Tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#024ad8"></div><div class="meta"><b>HP Electric Blue</b>#024ad8</div></div>
+        <div class="swatch"><div class="chip" style="background:#296ef9"></div><div class="meta"><b>Bright Blue</b>#296ef9</div></div>
+        <div class="swatch"><div class="chip" style="background:#0e3191"></div><div class="meta"><b>Deep Navy</b>#0e3191</div></div>
+        <div class="swatch"><div class="chip" style="background:#c9e0fc"></div><div class="meta"><b>Soft Blue</b>#c9e0fc</div></div>
+        <div class="swatch"><div class="chip" style="background:#1a1a1a"></div><div class="meta"><b>Ink</b>#1a1a1a</div></div>
+        <div class="swatch"><div class="chip" style="background:#f7f7f7"></div><div class="meta"><b>Cloud</b>#f7f7f7</div></div>
+        <div class="swatch"><div class="chip" style="background:#e8e8e8"></div><div class="meta"><b>Fog</b>#e8e8e8</div></div>
+        <div class="swatch"><div class="chip" style="background:#c2c2c2"></div><div class="meta"><b>Steel</b>#c2c2c2</div></div>
+        <div class="swatch"><div class="chip" style="background:#3d3d3d"></div><div class="meta"><b>Charcoal</b>#3d3d3d</div></div>
+        <div class="swatch"><div class="chip" style="background:#ff5050"></div><div class="meta"><b>Bloom Coral</b>#ff5050</div></div>
+        <div class="swatch"><div class="chip" style="background:#8ebdce"></div><div class="meta"><b>Storm Mist</b>#8ebdce</div></div>
+        <div class="swatch"><div class="chip" style="background:#b3262b"></div><div class="meta"><b>Error</b>#b3262b</div></div>
+      </div>
+    </div>
+
+    <!-- 2 Type -->
+    <div class="sg-block">
+      <div class="sg-block-label">02 · Typography Specimen — Forma DJR → Manrope · weight 500 at every display size</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">display-xxl · 72/500</span><span class="val t-display-xxl">Work without limits</span></div>
+        <div class="row"><span class="tag">display-xl · 56/500</span><span class="val t-display-xl">Built for what's next</span></div>
+        <div class="row"><span class="tag">display-lg · 44/500</span><span class="val t-display-lg">Trending laptops</span></div>
+        <div class="row"><span class="tag">display-md · 32/500</span><span class="val t-display-md">Printer plans that fit</span></div>
+        <div class="row"><span class="tag">display-sm · 24/500</span><span class="val t-display-sm">OMEN Gaming Laptop 16</span></div>
+        <div class="row"><span class="tag">display-xs · 20/500</span><span class="val t-display-xs">Free shipping, always</span></div>
+        <div class="row"><span class="tag">body-lg · 18/400</span><span class="val t-body-lg">Every HP laptop ships with Windows 11 Pro and a one-year care pack.</span></div>
+        <div class="row"><span class="tag">body-md · 16/400</span><span class="val t-body-md">Intel Core Ultra 7 · 16 GB RAM · 1 TB SSD · 2.8K OLED display.</span></div>
+        <div class="row"><span class="tag">body-emphasis · 16/500</span><span class="val t-body-em">Save $200 instantly at checkout.</span></div>
+        <div class="row"><span class="tag">caption-md · 14/400</span><span class="val t-caption-md" style="color:var(--charcoal)">Model: 16-ab1047nr · SKU 9XK21UA</span></div>
+        <div class="row"><span class="tag">caption-sm · 12/400</span><span class="val t-caption-sm" style="color:var(--graphite)">Prices shown include applicable rebates. Offer ends June 30.</span></div>
+        <div class="row"><span class="tag">button-md · 14/600 up</span><span class="val t-button-md">Shop Now</span></div>
+        <div class="row"><span class="tag">price-md · 24/500</span><span class="val t-price-md">$1,299.99</span></div>
+      </div>
+    </div>
+
+    <!-- 3 Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">03 · Buttons — sharp 4px, uppercase 0.7px tracking</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Buy Now</button>
+        <button class="btn btn-ink">Customize</button>
+        <button class="btn btn-outline">Compare</button>
+        <button class="btn btn-outline-ink">View Details</button>
+        <button class="btn btn-text">See all offers →</button>
+        <button class="btn btn-primary" style="background:var(--primary-deep)">Pressed</button>
+        <button class="btn btn-disabled">Out of Stock</button>
+        <button class="btn btn-primary btn-sm">Quick Buy</button>
+        <button class="btn btn-primary btn-lg">Shop All Laptops</button>
+      </div>
+    </div>
+
+    <!-- 4 Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">04 · Inputs — steel border, ink focus, pill search</div>
+      <div class="input-row">
+        <div class="field"><label>Email address</label><input class="ti" type="email" placeholder="you@example.com"></div>
+        <div class="field"><label>Focus</label><input class="ti" type="text" value="Spectre x360" style="border-color:var(--ink)"></div>
+        <div class="field"><label>Screen size</label><select class="ti"><option>14-inch</option><option>15.6-inch</option><option>16-inch</option></select></div>
+        <div class="field"><label>Disabled</label><input class="ti disabled" value="Care Pack included" disabled></div>
+        <div class="field"><label>Search</label>
+          <div class="search-pill"><input class="ti" style="border-radius:9999px;width:280px;padding-right:44px" placeholder="Search hp.com"><svg width="16" height="16" viewBox="0 0 16 16" style="position:absolute;right:16px;top:22px;transform:translateY(-50%)"><circle cx="7" cy="7" r="5" fill="none" stroke="#636363" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="#636363" stroke-width="1.5"/></svg></div>
+        </div>
+      </div>
+      <div class="input-row" style="margin-top:var(--sp-lg)">
+        <div class="check-row">
+          <span class="checkbox on"><svg width="11" height="11" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.8"/></svg></span>
+          <span class="lbl">Email me exclusive deals</span>
+        </div>
+        <div class="check-row">
+          <span class="checkbox"></span>
+          <span class="lbl">Remember this device</span>
+        </div>
+        <div class="check-row" style="gap:var(--sp-sm)">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span class="lbl">Auto-renew ink</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">05 · Cards — soft 16px product tiles + category icons</div>
+      <div class="card-row">
+        <div class="card-product">
+          <div class="photo">
+            <svg width="120" height="60" viewBox="0 0 120 60"><rect x="10" y="6" width="100" height="44" rx="4" fill="#1a1a1a"/><rect x="15" y="10" width="90" height="36" rx="2" fill="#3f6fd8"/><rect x="4" y="50" width="112" height="5" rx="2.5" fill="#292929"/></svg>
+          </div>
+          <h4>HP OmniBook Ultra 14</h4>
+          <div class="spec">Next-gen AI PC · 32 GB · 1 TB SSD</div>
+          <div class="price">$1,649.99</div>
+          <button class="btn btn-primary btn-sm">Buy Now</button>
+        </div>
+        <div class="card-product">
+          <div class="photo" style="background:linear-gradient(150deg,var(--bloom-rose),var(--cloud))">
+            <svg width="120" height="60" viewBox="0 0 120 60"><rect x="10" y="6" width="100" height="44" rx="4" fill="#1a1a1a"/><rect x="15" y="10" width="90" height="36" rx="2" fill="#c96a76"/><rect x="4" y="50" width="112" height="5" rx="2.5" fill="#292929"/></svg>
+          </div>
+          <h4><span class="badge-sale" style="margin-right:8px;vertical-align:2px">SAVE $200</span>HP Spectre x360</h4>
+          <div class="spec">2.8K OLED touch · Core Ultra 7 · 16 GB</div>
+          <div class="price">$1,299.99 <s style="font-size:16px;color:var(--graphite)">$1,499.99</s></div>
+          <button class="btn btn-outline-ink btn-sm">Customize</button>
+        </div>
+        <div class="card-feature">
+          <div class="big">Free</div>
+          <div class="lbl">Shipping on every order — no minimum</div>
+          <div class="big" style="margin-top:var(--sp-xl);color:var(--primary)">2–4</div>
+          <div class="lbl">Business days to your door</div>
+          <button class="btn btn-outline" style="margin-top:var(--sp-xl)">Learn more</button>
+        </div>
+      </div>
+
+      <div class="cat-row">
+        <div class="cat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M1 19h22"/></svg></div><span>Laptops</span></div>
+        <div class="cat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div><span>Desktops</span></div>
+        <div class="cat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 9h12v8a2 2 0 01-2 2H8a2 2 0 01-2-2zM6 11H4a2 2 0 000 4h2M18 11h2a2 2 0 010 4h-2M9 5h6v4H9z"/></svg></div><span>Printers</span></div>
+        <div class="cat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h4M7 14h7"/></svg></div><span>Monitors</span></div>
+        <div class="cat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="2" width="8" height="14" rx="2"/><path d="M10 18h4"/></svg></div><span>Accessories</span></div>
+        <div class="cat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9z"/><path d="M12 12l9-4.5M12 12v9M12 12L3 7.5"/></svg></div><span>Enterprise</span></div>
+      </div>
+    </div>
+
+    <!-- 6 Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">06 · Badges &amp; Category Tabs — pills, sale stamps, ink tags</div>
+      <div class="badge-row" style="margin-bottom:var(--sp-lg)">
+        <span class="badge badge-ink">New</span>
+        <span class="badge badge-outline">AI PC</span>
+        <span class="badge badge-sale">25% OFF</span>
+        <span class="badge badge-soft-blue">Instant Ink eligible</span>
+      </div>
+      <div class="tab-row">
+        <button class="tab on">All</button>
+        <button class="tab">Trending</button>
+        <button class="tab">On Sale</button>
+        <button class="tab">For Business</button>
+      </div>
+    </div>
+
+    <!-- 7 Nav -->
+    <div class="sg-block">
+      <div class="sg-block-label">07 · Navigation — utility strip + 64px nav bar, HP slashes in the wordmark</div>
+      <div class="nav-demo">
+        <div class="utility-strip">
+          <span>United States</span><span>For Home</span><span>For Business</span>
+          <div class="right"><a href="#">Sign in</a><a href="#">Cart (2)</a></div>
+        </div>
+        <div class="nav-bar">
+          <span class="wordmark">hp<span class="sl">//</span></span>
+          <div class="links">
+            <a href="#" class="active">Laptops</a><a href="#">Desktops</a><a href="#">Printers</a><a href="#">Ink &amp; Toner</a><a href="#">Accessories</a><a href="#">Support</a>
+          </div>
+          <div class="utils">
+            <button class="btn btn-outline btn-sm">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Table + chevron + faq -->
+    <div class="sg-block" style="margin-bottom:0">
+      <div class="sg-block-label">08 · Comparison Rows, Chevron Motif &amp; FAQ Accordion</div>
+      <table class="cmp">
+        <thead><tr><th style="width:40%">Plan</th><th>Pages / month</th><th>Price</th><th>Ink included</th></tr></thead>
+        <tbody>
+          <tr><td class="feat">Occasional printing</td><td>15</td><td>$0.99/mo</td><td class="ok">✓</td></tr>
+          <tr><td class="feat">Moderate printing</td><td>50</td><td>$2.99/mo</td><td class="ok">✓</td></tr>
+          <tr><td class="feat">Frequent printing</td><td>100</td><td>$4.99/mo</td><td class="ok">✓</td></tr>
+          <tr><td class="feat">Business printing</td><td>Unlimited</td><td>Custom</td><td class="no">Contact us</td></tr>
+        </tbody>
+      </table>
+
+      <div style="display:flex;gap:var(--sp-xxl);align-items:center;margin-top:var(--sp-xxl);flex-wrap:wrap">
+        <div style="display:flex;gap:var(--sp-md)">
+          <div class="chevron" style="height:120px;width:32px"></div>
+          <div class="chevron" style="height:120px;width:32px;background:var(--primary-deep)"></div>
+        </div>
+        <div style="flex:1;min-width:300px">
+          <div class="faq-row">
+            <div class="row">How long does free shipping take?<span class="plus">+</span></div>
+            <div class="row">Can I return a customized laptop?<span class="plus">+</span></div>
+            <div class="row">What does the one-year care pack cover?<span class="plus">+</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PRODUCT ================= -->
+<section id="product">
+
+  <div class="p-utility">
+    <span>United States</span><span>For Home</span><span>For Business</span>
+    <div class="right"><a href="#">Sign in</a><a href="#">Cart (2)</a></div>
+  </div>
+  <div class="p-nav">
+    <span class="wordmark">hp<span class="sl">//</span></span>
+    <div class="links">
+      <a href="#" class="active">Laptops</a><a href="#">Desktops</a><a href="#">Printers</a><a href="#">Accessories</a><a href="#">Support</a>
+    </div>
+    <div class="search-pill">
+      <input class="ti" style="width:220px;height:40px;border-radius:9999px;padding-right:44px" placeholder="Search hp.com">
+      <svg width="16" height="16" viewBox="0 0 16 16" style="position:absolute;right:16px;top:20px;transform:translateY(-50%)"><circle cx="7" cy="7" r="5" fill="none" stroke="#636363" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="#636363" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <!-- hero with chevrons -->
+  <div class="wrap hero">
+    <div class="frame">
+      <div class="chevron"></div>
+      <div class="hero-card">
+        <div class="hero-photo"><div class="laptop"></div></div>
+        <div class="hero-copy">
+          <div class="eyebrow">NEW · OMEN GAMING</div>
+          <h1>Play at full power.</h1>
+          <p class="sub">The OMEN 16 pairs a 240Hz QHD panel with next-gen graphics — engineered for victory, priced for reality.</p>
+          <div class="price">
+            <span class="now">$1,499.99</span>
+            <s>$1,799.99</s>
+            <span class="sale">SAVE $300</span>
+          </div>
+          <div class="cta">
+            <button class="btn btn-primary">Buy Now</button>
+            <button class="btn btn-outline">Customize</button>
+          </div>
+        </div>
+      </div>
+      <div class="chevron" style="background:var(--primary-deep)"></div>
+    </div>
+  </div>
+
+  <!-- cloud band: products -->
+  <div class="cloud-band">
+    <div class="wrap">
+      <div class="band-head">
+        <h2>Shop these must haves</h2>
+        <p class="lead">Four-up catalog grid on the cloud band — photography floats in soft 16px frames with room to breathe.</p>
+      </div>
+      <div class="prod-grid">
+        <div class="card-product">
+          <div class="photo">
+            <svg width="110" height="56" viewBox="0 0 120 60"><rect x="10" y="6" width="100" height="44" rx="4" fill="#1a1a1a"/><rect x="15" y="10" width="90" height="36" rx="2" fill="#7fadbe"/><rect x="4" y="50" width="112" height="5" rx="2.5" fill="#292929"/></svg>
+          </div>
+          <h4>HP OmniBook Aero 13</h4>
+          <div class="spec">Under 1 kg · 18-hr battery</div>
+          <div class="price">$999.99</div>
+          <button class="btn btn-primary btn-sm">Buy Now</button>
+        </div>
+        <div class="card-product">
+          <div class="photo">
+            <svg width="70" height="80" viewBox="0 0 70 80"><rect x="15" y="20" width="40" height="26" rx="4" fill="#e8e8e8" stroke="#c2c2c2"/><rect x="25" y="6" width="20" height="14" rx="2" fill="#f7f7f7" stroke="#c2c2c2"/><rect x="28" y="46" width="14" height="12" rx="2" fill="#fff" stroke="#c2c2c2"/></svg>
+          </div>
+          <h4>HP Envy Inspire 7955e</h4>
+          <div class="spec">All-in-one · 3 mo Instant Ink</div>
+          <div class="price">$229.99</div>
+          <button class="btn btn-outline-ink btn-sm">View Printer</button>
+        </div>
+        <div class="card-product">
+          <div class="photo">
+            <svg width="80" height="70" viewBox="0 0 80 70"><rect x="10" y="30" width="60" height="32" rx="4" fill="#1a1a1a"/><rect x="16" y="36" width="48" height="20" rx="2" fill="#3f6fd8"/><path d="M20 24l40-14" stroke="#292929" stroke-width="6" stroke-linecap="round"/></svg>
+          </div>
+          <h4>HP Series 7 Pro 34"</h4>
+          <div class="spec">WQHD · USB-C 100W · tilt/swivel</div>
+          <div class="price">$649.99</div>
+          <button class="btn btn-outline-ink btn-sm">View Monitor</button>
+        </div>
+        <div class="card-product">
+          <div class="photo" style="background:linear-gradient(150deg,var(--primary-soft),var(--cloud))">
+            <svg width="90" height="60" viewBox="0 0 90 60"><rect x="20" y="8" width="50" height="30" rx="6" fill="#1a1a1a"/><rect x="24" y="12" width="42" height="22" rx="4" fill="#2e4a86"/><path d="M35 44h20l4 8H31z" fill="#292929"/></svg>
+          </div>
+          <h4>HP 960 Docking Station</h4>
+          <div class="spec">Thunderbolt 4 · dual 4K out</div>
+          <div class="price">$299.99</div>
+          <button class="btn btn-outline-ink btn-sm">View Accessory</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ink slab promo -->
+  <div class="slab">
+    <div class="wrap inner">
+      <div>
+        <h2>When did work start getting in the way of work?</h2>
+        <p>HP hybrid solutions put security, collaboration, and battery life on autopilot — so your team can focus on the actual job.</p>
+        <div style="display:flex;gap:var(--sp-md);flex-wrap:wrap">
+          <button class="btn btn-primary">Shop Business</button>
+          <button class="btn btn-outline">Talk to Sales</button>
+        </div>
+      </div>
+      <div class="visual"><div class="chipmock"></div></div>
+    </div>
+  </div>
+
+  <!-- pricing -->
+  <div class="wrap pricing">
+    <div class="band-head">
+      <h2>Instant Ink plans</h2>
+      <p class="lead">Never run out. Ink ships to your door before you need it — cancel anytime.</p>
+    </div>
+    <div class="p-grid">
+      <div class="p-card">
+        <h4>Occasional</h4>
+        <div class="price">$0.99</div>
+        <div class="per">per month · 15 pages</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Rolls over unused pages</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Ink &amp; toner delivered</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Recycling envelope included</li>
+        </ul>
+        <button class="btn btn-outline">Choose Plan</button>
+      </div>
+      <div class="p-card featured">
+        <h4>Moderate</h4>
+        <div class="price">$2.99</div>
+        <div class="per">per month · 50 pages</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Everything in Occasional</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Print 5x5 photos at no cost</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Toner plans supported</li>
+        </ul>
+        <button class="btn btn-primary">Choose Plan</button>
+      </div>
+      <div class="p-card">
+        <h4>Frequent</h4>
+        <div class="price">$4.99</div>
+        <div class="per">per month · 100 pages</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Everything in Moderate</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Best value per page</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#024ad8" stroke-width="1.8"/></svg>Priority support chat</li>
+        </ul>
+        <button class="btn btn-outline">Choose Plan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- quote -->
+  <div class="wrap quote">
+    <div class="quote-card">
+      <blockquote>"HP's business laptops just work. We deployed five hundred of them and support tickets dropped by half."</blockquote>
+      <div class="who">
+        <div class="ava">MR</div>
+        <div><b>Maria Reyes</b><span>Director of IT, Northwind Traders</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- help band -->
+  <div class="help-band">
+    <div class="wrap">
+      <h2>How can we help?</h2>
+      <div class="tab-row" style="justify-content:center">
+        <button class="tab">Browse Topics</button>
+        <button class="tab on">Live Chat</button>
+        <button class="tab">Contact</button>
+        <button class="tab">Diagnose</button>
+        <button class="tab">Order Status</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="sg-footer">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <div class="wordmark">hp<span class="sl">//</span></div>
+          <p style="font-size:14px;color:var(--steel);margin-top:var(--sp-md);max-width:260px;line-height:1.5">Let's do great things together. Technology that works for people, businesses, and the planet.</p>
+        </div>
+        <div><h5>Shop</h5><a href="#">Laptops</a><a href="#">Desktops</a><a href="#">Printers</a><a href="#">Ink &amp; Toner</a><a href="#">Deals</a></div>
+        <div><h5>Support</h5><a href="#">Troubleshooting</a><a href="#">Drivers</a><a href="#">Warranty</a><a href="#">Contact HP</a></div>
+        <div><h5>Company</h5><a href="#">About HP</a><a href="#">Careers</a><a href="#">Investors</a><a href="#">Sustainability</a></div>
+        <div><h5>Resources</h5><a href="#">HP Community</a><a href="#">Business Blog</a><a href="#">Recycling</a><a href="#">HP Labs</a></div>
+      </div>
+      <div class="legal">
+        <span>© 2026 HP Development Company, L.P.</span>
+        <span>Privacy · Terms of Use · Cookie Preferences · Recycling programs</span>
+      </div>
+    </div>
+  </footer>
+
+</section>
+
+</main>
+</body>
+</html>

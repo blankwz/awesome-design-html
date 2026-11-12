@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMW M — The Most Powerful Letter in the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ffffff; --ink:#ffffff;
+  --body:#bbbbbb; --body-strong:#e6e6e6; --muted:#7e7e7e;
+  --hairline:#3c3c3c; --hairline-strong:#262626;
+  --canvas:#000000; --card:#1a1a1a; --elev:#262626; --soft:#0d0d0d;
+  --on-primary:#000000; --on-dark:#ffffff;
+  --m-blue-light:#0066b1; --m-blue-dark:#1c69d4; --m-red:#e22718;
+  --bmw-blue:#1c69d4; --electric-blue:#0653b6; --carbon:#2b2b2b;
+  --warning:#f4b400; --success:#0fa336;
+  --r-xs:2px; --r-sm:4px; --r-md:6px; --r-full:9999px;
+  --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:40px; --sp-xxl:64px; --sp-section:96px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--canvas);color:var(--body);font-weight:300;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer;border:none;background:none}
+.wrap{max-width:1440px;margin:0 auto;padding:0 32px}
+.upper{text-transform:uppercase;letter-spacing:1.5px;font-weight:700;font-size:14px;line-height:1.3}
+.mstripe{height:4px;width:64px;background:linear-gradient(90deg,var(--m-blue-light) 0 33.3%,var(--m-blue-dark) 33.3% 66.6%,var(--m-red) 66.6% 100%)}
+
+/* ===== TOP NAV ===== */
+.nav{height:64px;background:var(--canvas);border-bottom:1px solid var(--hairline-strong);position:sticky;top:0;z-index:60}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:32px}
+.mlogo{display:flex;align-items:center;gap:10px}
+.roundel{width:32px;height:32px;border-radius:9999px;background:conic-gradient(from 45deg,#0066b1 0 25%,#ffffff 25% 50%,#0066b1 50% 75%,#ffffff 75%);display:flex;align-items:center;justify-content:center;flex:none}
+.roundel i{width:22px;height:22px;border-radius:9999px;background:#16171a;display:block}
+.mword{font-size:22px;font-weight:700;color:var(--on-dark);letter-spacing:2px;font-style:italic}
+.menu{display:flex;gap:28px}
+.menu a{font-size:14px;font-weight:400;letter-spacing:.5px;color:var(--body)}
+.menu a:hover,.menu a.on{color:var(--on-dark)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:20px}
+.nav-right a{color:var(--body)}
+.nav-right a:hover{color:var(--on-dark)}
+
+/* ===== HERO PHOTO BAND ===== */
+.hero{position:relative;min-height:640px;display:flex;align-items:flex-end;background:
+  linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.05) 40%,rgba(0,0,0,.9) 100%),
+  linear-gradient(115deg,#101418 0%,#1b2733 45%,#312026 75%,#1a1214 100%)}
+.hero .track{position:absolute;inset:0;opacity:.5}
+.hero-inner{padding:64px 0 80px;width:100%}
+.hero .kick{color:var(--on-dark)}
+.hero h1{font-size:80px;font-weight:700;line-height:1;color:var(--on-dark);text-transform:uppercase;margin-top:16px;letter-spacing:0}
+.hero .sub{font-size:16px;font-weight:300;color:var(--body-strong);margin-top:16px;max-width:520px}
+.hero .ctarow{display:flex;gap:16px;margin-top:32px;flex-wrap:wrap}
+.btn{display:inline-block;height:48px;line-height:46px;padding:0 32px;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:0;text-align:center}
+.btn.primary{background:var(--canvas);color:var(--on-dark);border:1px solid var(--on-dark)}
+.btn.primary:hover{background:var(--on-dark);color:var(--canvas)}
+.btn.outline{background:transparent;color:var(--on-dark);border:1px solid var(--on-dark)}
+.btn.outline:hover{background:rgba(255,255,255,.1)}
+.track path{fill:none;stroke:#5a6a78;stroke-width:2;stroke-dasharray:14 10}
+.track .car{fill:#e22718}
+
+/* ===== CATEGORY TABS ===== */
+.catband{border-bottom:1px solid var(--hairline-strong)}
+.catrow{display:flex;gap:40px;overflow-x:auto}
+.cattab{padding:12px 0;color:var(--body)}
+.cattab span{font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.cattab:hover{color:var(--on-dark)}
+.cattab.on{color:var(--on-dark);box-shadow:inset 0 -2px 0 var(--on-dark)}
+
+/* ===== MODEL GRID ===== */
+.section{padding:var(--sp-section) 0}
+.sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:40px}
+h2{font-size:56px;font-weight:700;line-height:1.05;text-transform:uppercase;color:var(--on-dark)}
+h2.sm{font-size:32px}
+.textlink{font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--on-dark);flex:none;padding-bottom:8px}
+.modelgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.mcard{display:block}
+.mcard .photo{aspect-ratio:16/10;position:relative;overflow:hidden;border:1px solid var(--hairline-strong)}
+.mcard .photo svg{position:absolute;inset:0;width:100%;height:100%}
+.c1{background:linear-gradient(140deg,#1e2833,#0d1114 60%)}
+.c2{background:linear-gradient(140deg,#2b1d20,#120d0e 60%)}
+.c3{background:linear-gradient(140deg,#243240,#0e1319 60%)}
+.c4{background:linear-gradient(140deg,#33302a,#141311 60%)}
+.c5{background:linear-gradient(140deg,#1d2a2a,#0c1212 60%)}
+.c6{background:linear-gradient(140deg,#2e2233,#130e16 60%)}
+.c7{background:linear-gradient(140deg,#30353b,#131518 60%)}
+.c8{background:linear-gradient(140deg,#33241c,#140f0c 60%)}
+.carsil{fill:#0a0c0e;stroke:#4a545e;stroke-width:1.5}
+.stripe-chip{position:absolute;top:0;left:0;width:56px;height:4px;background:linear-gradient(90deg,var(--m-blue-light) 0 33.3%,var(--m-blue-dark) 33.3% 66.6%,var(--m-red) 66.6% 100%)}
+.mtag{position:absolute;top:12px;right:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,.7);color:var(--on-dark);padding:4px 10px}
+.mtag.red{background:var(--m-red)}
+.mcard h3{font-size:24px;font-weight:700;color:var(--on-dark);text-transform:uppercase;margin-top:20px;line-height:1.3}
+.mcard .spec{font-size:14px;font-weight:300;color:var(--body);margin-top:6px}
+.mcard .lnk{font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--on-dark);display:inline-block;margin-top:14px}
+
+/* ===== SPEC CELLS ===== */
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hairline-strong);border:1px solid var(--hairline-strong)}
+.scell{background:var(--soft);padding:24px}
+.scell .v{font-size:32px;font-weight:700;color:var(--on-dark);line-height:1.15}
+.scell .l{font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+/* ===== FEATURED MODEL DETAIL ===== */
+.featured{padding:var(--sp-section) 0;border-top:1px solid var(--hairline-strong)}
+.fgrid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:start}
+.gal{position:relative}
+.gal .main{aspect-ratio:16/9;border:1px solid var(--hairline-strong);position:relative;overflow:hidden;background:linear-gradient(135deg,#232c36,#0c0f12 70%)}
+.gal .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.gal .th{aspect-ratio:16/10;border:1px solid var(--hairline-strong)}
+.gal .th.sel{outline:2px solid var(--on-dark);outline-offset:-2px}
+.t2{background:linear-gradient(135deg,#2b1d20,#120d0e)}
+.t3{background:linear-gradient(135deg,#1d2a2a,#0c1212)}
+.t4{background:linear-gradient(135deg,#33302a,#141311)}
+.ftitle h2{font-size:40px;margin-top:20px}
+.ftitle .lead{font-size:18px;font-weight:400;color:var(--body-strong);margin-top:12px}
+.config{margin-top:32px}
+.cfglabel{font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--on-dark);margin:24px 0 12px}
+.cfglabel span{color:var(--muted);font-weight:400;letter-spacing:.5px;text-transform:none}
+.swrow{display:flex;gap:16px}
+.sw{width:44px;height:44px;border:1px solid var(--hairline);position:relative}
+.sw.sel{outline:2px solid var(--on-dark);outline-offset:2px}
+.swrow .sw i{position:absolute;left:0;right:0;bottom:-22px;font-size:11px;color:var(--muted);font-style:normal;text-align:center;letter-spacing:.5px}
+.optrow{display:flex;flex-wrap:wrap;gap:12px}
+.opt{border:1px solid var(--hairline);padding:12px 20px;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--body);background:transparent}
+.opt.sel{border-color:var(--on-dark);color:var(--on-dark)}
+.qtyrow{display:flex;align-items:center;gap:20px;margin-top:8px}
+.qbtn{width:48px;height:48px;border-radius:9999px;background:var(--card);color:var(--on-dark);font-size:18px;font-weight:700}
+.buildcard{border:1px solid var(--hairline);padding:24px;position:sticky;top:88px}
+.buildcard h3{font-size:24px;font-weight:700;color:var(--on-dark);text-transform:uppercase}
+.buildcard .price{font-size:40px;font-weight:700;color:var(--on-dark);margin-top:12px}
+.buildcard .price span{font-size:16px;font-weight:300;color:var(--body)}
+.brow{display:flex;justify-content:space-between;font-size:14px;font-weight:300;color:var(--body);padding:10px 0;border-bottom:1px solid var(--hairline-strong)}
+.brow b{font-weight:700;color:var(--on-dark)}
+.buildcard .btn{width:100%;margin-top:20px}
+.buildcard .fine{font-size:14px;font-weight:300;color:var(--muted);margin-top:14px;text-align:center}
+
+/* ===== CTA BAND PHOTO ===== */
+.ctaband{position:relative;padding:80px 0;text-align:center;background:
+  linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.45) 45%,rgba(0,0,0,.85)),
+  linear-gradient(100deg,#1a2027 0%,#2a3542 50%,#3a2320 100%)}
+.ctaband h2{font-size:40px;margin:0 auto;max-width:720px}
+.ctaband .mstripe{margin:24px auto 0}
+.ctaband .btn{margin-top:32px}
+
+/* ===== FOOTER ===== */
+footer{padding:64px 0 0;border-top:1px solid var(--hairline-strong)}
+.fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.fcol h5{font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--on-dark);margin-bottom:16px}
+.fcol a{display:block;font-size:14px;font-weight:300;color:var(--body);padding:6px 0}
+.fcol a:hover{color:var(--on-dark)}
+.fbottom{border-top:1px solid var(--hairline-strong);margin-top:48px;padding:24px 0 48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;letter-spacing:.5px;color:var(--muted)}
+
+@media (max-width:1128px){.modelgrid{grid-template-columns:repeat(2,1fr)}.specs{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:960px){
+  .menu{display:none}
+  .hero h1{font-size:48px}
+  .fgrid{grid-template-columns:1fr}
+  .buildcard{position:static}
+  h2{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="mlogo" href="#">
+      <span class="roundel"><i></i></span>
+      <span class="mword">M</span>
+      <span class="mstripe" style="width:28px"></span>
+    </a>
+    <div class="menu">
+      <a href="#" class="on">Models</a><a href="#">Motorsport</a><a href="#">Configurator</a><a href="#">Magazine</a><a href="#">Fastlane</a>
+    </div>
+    <div class="nav-right">
+      <a class="upper" href="#" style="font-size:12px">EN</a>
+      <a href="#" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></a>
+      <a href="#" aria-label="Account"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="track" viewBox="0 0 1440 640" preserveAspectRatio="none">
+    <path d="M-40 520 C 260 470 380 560 640 500 S 1080 380 1180 430 1440 360 1480 400"/>
+    <path d="M-40 580 C 300 540 420 610 700 560 S 1120 460 1480 480" opacity=".5"/>
+    <circle class="car" cx="640" cy="500" r="5"/>
+  </svg>
+  <div class="wrap hero-inner">
+    <div class="mstripe"></div>
+    <h1>The M5 CS.<br>Track DNA. Road Legal.</h1>
+    <p class="sub">727 hp. 0–100 km/h in 2.9 seconds. Carbon everywhere it counts. The most powerful M5 ever built.</p>
+    <div class="ctarow">
+      <a class="btn primary" href="#build">Build your M5</a>
+      <a class="btn outline" href="#">Book a test drive</a>
+    </div>
+  </div>
+</header>
+
+<div class="catband">
+  <div class="wrap catrow">
+    <a class="cattab on" href="#"><span>All Models</span></a>
+    <a class="cattab" href="#"><span>Coupé</span></a>
+    <a class="cattab" href="#"><span>Sedan</span></a>
+    <a class="cattab" href="#"><span>SUV</span></a>
+    <a class="cattab" href="#"><span>Convertible</span></a>
+    <a class="cattab" href="#"><span>CS Editions</span></a>
+    <a class="cattab" href="#"><span>Hybrid M</span></a>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sechead">
+      <h2>The M Model Range</h2>
+      <a class="textlink" href="#">View all 23 models →</a>
+    </div>
+    <div class="modelgrid">
+      <a class="mcard" href="#">
+        <div class="photo c1"><span class="stripe-chip"></span><span class="mtag red">New</span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M20 85 q10-18 40-22 l18-14 q30-8 60 0 l20 14 q26 4 30 20 l-2 8 H24 Z"/><circle cx="62" cy="92" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="148" cy="92" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>M2 Coupé</h3>
+        <p class="spec">460 hp · 0–100 in 3.9 s · RWD</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c2"><span class="stripe-chip"></span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M22 88 q12-16 38-20 l26-16 q26-6 52 0 l22 16 q24 4 26 18 l-2 8 H26 Z"/><circle cx="64" cy="94" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="146" cy="94" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>M3 Competition</h3>
+        <p class="spec">530 hp · 0–100 in 3.5 s · M xDrive</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c3"><span class="stripe-chip"></span><span class="mtag">Hybrid</span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M18 86 q12-18 42-22 l22-15 q32-8 62 0 l20 15 q26 4 28 20 l-2 8 H22 Z"/><circle cx="60" cy="93" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="150" cy="93" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>M5 CS</h3>
+        <p class="spec">727 hp · 0–100 in 2.9 s · M xDrive</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c4"><span class="stripe-chip"></span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M20 84 q14-20 44-24 l26-14 q30-7 56 1 l20 15 q26 5 28 20 l-2 8 H24 Z"/><circle cx="62" cy="92" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="148" cy="92" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>X5 M</h3>
+        <p class="spec">625 hp · 0–100 in 3.9 s · M xDrive</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c5"><span class="stripe-chip"></span><span class="mtag red">Limited</span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M20 88 q10-14 36-18 l30-18 q28-6 54 1 l24 17 q22 3 24 16 l-2 8 H24 Z"/><circle cx="64" cy="94" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="146" cy="94" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>M4 CSL</h3>
+        <p class="spec">550 hp · 0–100 in 3.7 s · 1,000 units</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c6"><span class="stripe-chip"></span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M22 86 q12-18 40-22 l20-14 q30-8 58 0 l22 14 q24 4 26 20 l-2 8 H26 Z"/><circle cx="62" cy="93" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="148" cy="93" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>M8 Convertible</h3>
+        <p class="spec">625 hp · 0–100 in 3.3 s · M xDrive</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c7"><span class="stripe-chip"></span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M18 84 q14-20 44-24 l26-13 q30-7 56 1 l22 14 q26 5 28 20 l-2 8 H22 Z"/><circle cx="60" cy="92" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="150" cy="92" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>X6 M Competition</h3>
+        <p class="spec">625 hp · 0–100 in 3.8 s · M xDrive</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+      <a class="mcard" href="#">
+        <div class="photo c8"><span class="stripe-chip"></span><span class="mtag">Electric</span>
+          <svg viewBox="0 0 200 125" preserveAspectRatio="none"><path class="carsil" d="M20 86 q12-18 40-22 l24-15 q30-8 58 0 l20 15 q26 4 28 20 l-2 8 H24 Z"/><circle cx="62" cy="93" r="10" fill="#0a0c0e" stroke="#4a545e"/><circle cx="148" cy="93" r="10" fill="#0a0c0e" stroke="#4a545e"/></svg>
+        </div>
+        <h3>i4 M70 xDrive</h3>
+        <p class="spec">601 hp · 0–100 in 3.7 s · 595 km range</p>
+        <span class="lnk">Explore this model →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="featured" id="build">
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="gal">
+        <div class="main">
+          <span class="stripe-chip" style="width:72px"></span>
+        </div>
+        <div class="thumbs">
+          <div class="th sel"></div>
+          <div class="th t2"></div>
+          <div class="th t3"></div>
+          <div class="th t4"></div>
+        </div>
+        <div class="ftitle">
+          <h2>M5 CS</h2>
+          <p class="lead">The definitive M5. A 4.4-litre M TwinPower Turbo V8 with M Hybrid drive, carbon-fibre bucket seats, and the most track-focused chassis we have ever engineered for the road.</p>
+        </div>
+        <div class="specs" style="margin-top:32px">
+          <div class="scell"><div class="v">727 hp</div><div class="l">Output</div></div>
+          <div class="scell"><div class="v">2.9 s</div><div class="l">0–100 km/h</div></div>
+          <div class="scell"><div class="v">350 km/h</div><div class="l">Top speed</div></div>
+          <div class="scell"><div class="v">1,825 kg</div><div class="l">DIN weight</div></div>
+        </div>
+        <div class="config">
+          <p class="cfglabel">Exterior finish <span>— Frozen Deep Green</span></p>
+          <div class="swrow">
+            <button class="sw sel" style="background:#1f3a2d"><i>Frozen Green</i></button>
+            <button class="sw" style="background:#0f1114"><i>Black Sapphire</i></button>
+            <button class="sw" style="background:#7d8a94"><i>Frozen Grey</i></button>
+            <button class="sw" style="background:#e22718"><i>Imola Red</i></button>
+            <button class="sw" style="background:#e8e6e1"><i>Alpine White</i></button>
+          </div>
+          <p class="cfglabel">Wheels <span>— 20" M forged gold</span></p>
+          <div class="optrow">
+            <button class="opt sel">20" Forged Gold</button>
+            <button class="opt">20" Carbon Black</button>
+            <button class="opt">19" Track Set</button>
+          </div>
+          <p class="cfglabel">Interior <span>— M Carbon bucket seats</span></p>
+          <div class="optrow">
+            <button class="opt sel">Carbon Buckets</button>
+            <button class="opt">M Merino Leather</button>
+            <button class="opt">Kyalami Orange</button>
+          </div>
+          <p class="cfglabel">Quantity</p>
+          <div class="qtyrow">
+            <button class="qbtn">−</button><b style="color:#fff;font-size:21px;font-weight:700">1</b><button class="qbtn">+</button>
+            <span style="font-size:14px;color:#7e7e7e">Allocation confirmed for Q3 2027 delivery</span>
+          </div>
+        </div>
+      </div>
+      <aside class="buildcard">
+        <h3>Your M5 CS</h3>
+        <div style="margin-top:16px">
+          <div class="brow"><span>Base vehicle</span><b>$146,900</b></div>
+          <div class="brow"><span>Frozen Deep Green finish</span><b>$5,400</b></div>
+          <div class="brow"><span>20" M forged gold wheels</span><b>$3,200</b></div>
+          <div class="brow"><span>M Carbon bucket seats</span><b>$4,800</b></div>
+          <div class="brow"><span>Delivery &amp; handling</span><b>$995</b></div>
+          <div class="brow" style="border-bottom:none"><span>Estimated total</span><b style="font-size:21px">$161,295</b></div>
+        </div>
+        <a class="btn primary" href="#">Reserve with $2,500</a>
+        <a class="btn outline" href="#" style="width:100%;margin-top:12px">Save build</a>
+        <p class="fine">Fully refundable deposit · Production slot Q3 2027</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="ctaband">
+  <div class="wrap">
+    <h2>Every M begins where the road ends.</h2>
+    <div class="mstripe"></div>
+    <div><a class="btn outline" href="#">Drive an M</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fcol"><h5>BMW M Models</h5><a href="#">M2 Coupé</a><a href="#">M3 Sedan</a><a href="#">M4 CSL</a><a href="#">M5 CS</a><a href="#">X5 M</a><a href="#">All models</a></div>
+      <div class="fcol"><h5>M Lifestyle</h5><a href="#">M Collection</a><a href="#">M Driving Experience</a><a href="#">M Town</a><a href="#">Sim Racing</a></div>
+      <div class="fcol"><h5>Owners</h5><a href="#">Book a service</a><a href="#">M Warranty</a><a href="#">Roadside assistance</a><a href="#">Parts &amp; accessories</a></div>
+      <div class="fcol"><h5>Company</h5><a href="#">BMW M GmbH</a><a href="#">Motorsport</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Contact</a></div>
+    </div>
+    <div class="fbottom">
+      <span>© 2026 BMW M GmbH. Fuel consumption and CO2 figures shown are preliminary values. BMW M Driving Experiences subject to availability.</span>
+      <span>Deutsch · English · 中文</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

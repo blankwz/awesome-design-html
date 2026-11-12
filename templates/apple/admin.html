@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple Store Admin — Retail Operations</title>
+<style>
+:root{
+  --primary:#0066cc; --primary-focus:#0071e3; --primary-on-dark:#2997ff;
+  --ink:#1d1d1f; --body:#1d1d1f; --body-muted:#cccccc;
+  --ink-80:#333333; --ink-48:#7a7a7a;
+  --divider-soft:#f0f0f0; --hairline:#e0e0e0;
+  --canvas:#ffffff; --parchment:#f5f5f7; --pearl:#fafafc;
+  --tile-1:#272729; --tile-2:#2a2a2c; --black:#000000;
+  --chip-gray:#d2d2d7;
+  --r-xs:5px; --r-sm:8px; --r-md:11px; --r-lg:18px; --r-pill:9999px;
+  --sp-sm:12px; --sp-lg:24px; --sp-xl:32px;
+  --font-sf:'SF Pro Display','SF Pro Text',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+  /* semantic */
+  --ok-bg:#e2f0e4; --ok-tx:#1d7a35;
+  --warn-bg:#fdf0dc; --warn-tx:#b25b00;
+  --danger-bg:#fbe5e3; --danger-tx:#c0392b;
+  --neutral-bg:#f0f0f2; --neutral-tx:#6e6e73;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sf);color:var(--ink);background:var(--parchment);font-size:14px;letter-spacing:-.224px;line-height:1.43;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:var(--primary)}
+button{font-family:var(--font-sf);cursor:pointer;border:none;background:none}
+button:active{transform:scale(.95)}
+input{font-family:var(--font-sf)}
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+
+/* ===== SIDEBAR ===== */
+.side{background:var(--black);color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh}
+.side .brand{display:flex;align-items:center;gap:10px;padding:6px 10px 22px;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.2px}
+.side .brand svg{width:20px;height:20px}
+.side .brand .tag{font-size:10px;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.25);border-radius:var(--r-pill);padding:1px 8px;font-weight:400}
+.mlabel{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.45);padding:16px 10px 6px}
+.mitem{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:var(--r-sm);font-size:14px;color:rgba(255,255,255,.78)}
+.mitem svg{width:17px;height:17px;flex:none}
+.mitem:hover{background:rgba(255,255,255,.08);color:#fff}
+.mitem.active{background:var(--primary);color:#fff;font-weight:600}
+.mitem .count{margin-left:auto;font-size:12px;color:rgba(255,255,255,.55)}
+.mitem.active .count{color:rgba(255,255,255,.85)}
+.usercard{margin-top:auto;border-radius:var(--r-md);background:rgba(255,255,255,.08);padding:12px;display:flex;gap:10px;align-items:center}
+.usercard .av{width:34px;height:34px;border-radius:9999px;background:var(--primary-focus);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.usercard b{font-size:14px;display:block;color:#fff}
+.usercard span{font-size:12px;color:rgba(255,255,255,.55)}
+
+/* ===== TOPBAR ===== */
+.main{min-width:0}
+.topbar{height:64px;display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08);z-index:40}
+.crumbs{font-size:14px;color:var(--ink-48)}
+.crumbs b{color:var(--ink);font-weight:600}
+.globalsearch{margin-left:auto;display:flex;align-items:center;gap:10px;border:1px solid rgba(0,0,0,.08);border-radius:var(--r-pill);height:44px;padding:0 8px 0 20px;width:380px;background:var(--canvas)}
+.globalsearch svg{width:16px;height:16px;color:var(--ink-48);flex:none}
+.globalsearch input{border:none;outline:none;flex:1;font-size:14px;background:transparent;letter-spacing:-.224px}
+.tb-ic{width:44px;height:44px;border-radius:9999px;background:rgba(210,210,215,.64);display:flex;align-items:center;justify-content:center;color:var(--ink);position:relative}
+.tb-ic .dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:9999px;background:#c0392b;border:2px solid var(--parchment)}
+.tb-avatar{width:36px;height:36px;border-radius:9999px;background:var(--primary-focus);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.btn-pill{display:inline-block;background:var(--primary);color:#fff;font-size:14px;border-radius:var(--r-pill);padding:10px 20px}
+.btn-pill:hover{background:var(--primary-focus)}
+
+.page{padding:28px 24px 56px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.page-left{min-width:0}
+h1{font-size:34px;font-weight:600;letter-spacing:-.374px}
+.pagesub{font-size:17px;color:var(--ink-80);margin-top:6px;letter-spacing:-.374px}
+.secthead{display:flex;align-items:center;justify-content:space-between;margin:32px 0 16px}
+h2{font-size:21px;font-weight:600;letter-spacing:.231px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:14px;border:1px solid rgba(0,0,0,.08);border-radius:var(--r-pill);padding:8px 16px;background:var(--canvas);color:var(--ink)}
+.chip.on{border:2px solid var(--primary-focus);padding:7px 15px;font-weight:600}
+
+/* ===== KPI ===== */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--canvas);border:1px solid rgba(0,0,0,.08);border-radius:var(--r-lg);padding:24px}
+.kpi .lab{font-size:14px;color:var(--ink-48)}
+.kpi .val{font-size:28px;font-weight:600;letter-spacing:-.374px;margin-top:6px}
+.kpi .delta{font-size:14px;font-weight:600;display:inline-flex;gap:4px;margin-top:6px}
+.up{color:#1d7a35}
+.down{color:#c0392b}
+.spark{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:14px}
+.spark i{flex:1;background:var(--divider-soft);border-radius:2px 2px 0 0}
+.spark i.hot{background:var(--primary)}
+
+/* ===== CHARTS ===== */
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.card{background:var(--canvas);border:1px solid rgba(0,0,0,.08);border-radius:var(--r-lg);padding:24px}
+.card h3{font-size:17px;font-weight:600;letter-spacing:-.374px}
+.card .sub{font-size:14px;color:var(--ink-48);margin-top:2px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px;margin-top:24px}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:34px;background:var(--divider-soft);border-radius:4px 4px 2px 2px;position:relative}
+.bar.hot{background:var(--primary)}
+.bar .tip{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--ink-48)}
+.bcol span{font-size:12px;color:var(--ink-48)}
+.donut-wrap{display:flex;gap:24px;align-items:center;margin-top:20px}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .ctr b{font-size:24px;font-weight:600;letter-spacing:-.374px}
+.donut .ctr span{font-size:12px;color:var(--ink-48)}
+.legend{display:grid;gap:10px;font-size:14px}
+.legend .li{display:flex;align-items:center;gap:10px}
+.legend .sw{width:12px;height:12px;border-radius:4px;flex:none}
+.legend b{margin-left:auto;font-weight:600}
+
+/* ===== TABLE ===== */
+.tablecard{background:var(--canvas);border:1px solid rgba(0,0,0,.08);border-radius:var(--r-lg);overflow:hidden;margin-top:16px}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:12px;font-weight:600;letter-spacing:-.12px;text-transform:uppercase;color:var(--ink-48);text-align:left;padding:14px 16px;border-bottom:1px solid var(--hairline);background:var(--pearl)}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--divider-soft);font-size:14px;vertical-align:middle}
+tbody tr:hover{background:var(--pearl)}
+tbody tr:last-child td{border-bottom:none}
+.prodc{display:flex;align-items:center;gap:12px}
+.prodimg{width:52px;height:44px;border-radius:var(--r-sm);flex:none}
+.prodc b{font-weight:600;display:block;letter-spacing:-.224px}
+.prodc span{font-size:12px;color:var(--ink-48)}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--primary)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:4px 12px}
+.badge::before{content:"";width:6px;height:6px;border-radius:9999px;background:currentColor}
+.b-ok{background:var(--ok-bg);color:var(--ok-tx)}
+.b-warn{background:var(--warn-bg);color:var(--warn-tx)}
+.b-danger{background:var(--danger-bg);color:var(--danger-tx)}
+.b-neutral{background:var(--neutral-bg);color:var(--neutral-tx)}
+.amt{font-weight:600}
+.actions{display:flex;gap:4px;justify-content:flex-end}
+.act{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:var(--ink-48);font-size:14px}
+.act:hover{background:var(--divider-soft);color:var(--ink)}
+.tfoot{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;font-size:14px;color:var(--ink-48)}
+.pager{display:flex;gap:6px}
+.pg{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink)}
+.pg:hover{background:var(--divider-soft)}
+.pg.on{background:var(--primary);color:#fff}
+
+/* ===== ACTIVITY PANEL ===== */
+.panel{background:var(--canvas);border:1px solid rgba(0,0,0,.08);border-radius:var(--r-lg);padding:24px;position:sticky;top:88px}
+.panel h3{font-size:17px;font-weight:600;letter-spacing:-.374px;margin-bottom:8px}
+.ev{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--divider-soft)}
+.ev:last-child{border-bottom:none}
+.ev .dot{width:10px;height:10px;border-radius:9999px;flex:none;margin-top:5px}
+.ev p{font-size:14px;color:var(--ink-80);line-height:1.43}
+.ev p b{color:var(--ink);font-weight:600}
+.ev time{font-size:12px;color:var(--ink-48)}
+.d-blue{background:var(--primary-focus)}
+.d-green{background:#1d7a35}
+.d-amber{background:#b25b00}
+.d-red{background:#c0392b}
+.d-gray{background:var(--chip-gray)}
+.quickstats{margin-top:18px;padding-top:14px;border-top:1px solid var(--divider-soft)}
+.qs{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--ink-80)}
+.qs b{font-weight:600;color:var(--ink)}
+
+@media (max-width:1128px){.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .page{grid-template-columns:1fr}
+  .panel{position:static}
+  .globalsearch{width:180px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.6-1-2.6-3.6zM14.3 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.2 1.9-1 2.9 1.1.1 2.2-.5 2.8-1.3z"/></svg>
+      Store <span class="tag">Admin</span>
+    </div>
+    <span class="mlabel">Overview</span>
+    <a class="mitem active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Dashboard</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>Orders<span class="count">142</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg>Products<span class="count">86</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg>Inventory</a>
+    <span class="mlabel">Customers</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>Customers<span class="count">5.2k</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>Messages<span class="count">23</span></a>
+    <span class="mlabel">Business</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20V9M12 20V4M18 20v-8"/><path d="M3 20h18"/></svg>Sales analytics</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Payments</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V8l8-4 8 4v11"/><path d="M9 19v-6h6v6"/></svg>Stores</a>
+    <span class="mlabel">System</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.07-.4.1-.8.1-1.2z"/></svg>Settings</a>
+    <div class="usercard">
+      <span class="av">JW</span>
+      <div><b>Jordan Wells</b><span>Retail operations lead</span></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">Online Store &nbsp;/&nbsp; <b>Dashboard</b></div>
+      <div class="globalsearch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        <input type="text" placeholder="Search orders, products, customers">
+      </div>
+      <button class="tb-ic" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 9a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="tb-avatar">JW</span>
+      <button class="btn-pill">+ New order</button>
+    </header>
+
+    <div class="page">
+      <div class="page-left">
+        <h1>Online Store overview</h1>
+        <p class="pagesub">Sales across all channels today · updated 4 minutes ago</p>
+
+        <div class="secthead">
+          <h2>Sales</h2>
+          <div class="chips">
+            <button class="chip">Today</button>
+            <button class="chip on">7 days</button>
+            <button class="chip">Quarter</button>
+          </div>
+        </div>
+        <div class="kpis">
+          <div class="kpi">
+            <p class="lab">Revenue</p>
+            <p class="val">$2.41M</p>
+            <p class="delta up">↑ 9.8%</p>
+            <div class="spark"><i style="height:42%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:63%"></i><i style="height:58%"></i><i style="height:74%"></i><i class="hot" style="height:92%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Orders</p>
+            <p class="val">3,184</p>
+            <p class="delta up">↑ 6.2%</p>
+            <div class="spark"><i style="height:40%"></i><i style="height:48%"></i><i style="height:52%"></i><i style="height:50%"></i><i style="height:64%"></i><i style="height:70%"></i><i class="hot" style="height:84%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Conversion rate</p>
+            <p class="val">3.6%</p>
+            <p class="delta down">↓ 0.3 pts</p>
+            <div class="spark"><i style="height:70%"></i><i style="height:76%"></i><i style="height:72%"></i><i style="height:64%"></i><i style="height:68%"></i><i style="height:62%"></i><i class="hot" style="height:58%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Avg. order value</p>
+            <p class="val">$757</p>
+            <p class="delta up">↑ 3.4%</p>
+            <div class="spark"><i style="height:52%"></i><i style="height:58%"></i><i style="height:56%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:70%"></i><i class="hot" style="height:78%"></i></div>
+          </div>
+        </div>
+
+        <div class="secthead"><h2>Revenue &amp; channel mix</h2></div>
+        <div class="charts">
+          <div class="card">
+            <h3>Revenue per month</h3>
+            <p class="sub">Trailing 12 months · online store</p>
+            <div class="bars">
+              <div class="bcol"><div class="bar" style="height:44%"><span class="tip">$1.9M</span></div><span>Nov</span></div>
+              <div class="bcol"><div class="bar" style="height:60%"><span class="tip">$2.6M</span></div><span>Dec</span></div>
+              <div class="bcol"><div class="bar" style="height:38%"><span class="tip">$1.6M</span></div><span>Jan</span></div>
+              <div class="bcol"><div class="bar" style="height:42%"><span class="tip">$1.8M</span></div><span>Feb</span></div>
+              <div class="bcol"><div class="bar" style="height:50%"><span class="tip">$2.1M</span></div><span>Mar</span></div>
+              <div class="bcol"><div class="bar hot" style="height:88%"><span class="tip">$3.7M</span></div><span>Apr</span></div>
+              <div class="bcol"><div class="bar" style="height:56%"><span class="tip">$2.4M</span></div><span>May</span></div>
+              <div class="bcol"><div class="bar" style="height:64%"><span class="tip">$2.7M</span></div><span>Jun</span></div>
+              <div class="bcol"><div class="bar" style="height:52%"><span class="tip">$2.2M</span></div><span>Jul</span></div>
+              <div class="bcol"><div class="bar" style="height:46%"><span class="tip">$2.0M</span></div><span>Aug</span></div>
+              <div class="bcol"><div class="bar" style="height:54%"><span class="tip">$2.3M</span></div><span>Sep</span></div>
+              <div class="bcol"><div class="bar" style="height:50%"><span class="tip">$2.1M</span></div><span>Oct</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Revenue by product line</h3>
+            <p class="sub">Last 7 days</p>
+            <div class="donut-wrap">
+              <div class="donut">
+                <svg viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#f0f0f2" stroke-width="7"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#0066cc" stroke-width="7" stroke-dasharray="46 54" stroke-dashoffset="0"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#0071e3" stroke-width="7" stroke-dasharray="24 76" stroke-dashoffset="-46"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1d1d1f" stroke-width="7" stroke-dasharray="18 82" stroke-dashoffset="-70"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#d2d2d7" stroke-width="7" stroke-dasharray="12 88" stroke-dashoffset="-88"/>
+                </svg>
+                <div class="ctr"><b>$14.1M</b><span>7 days</span></div>
+              </div>
+              <div class="legend">
+                <div class="li"><span class="sw" style="background:#0066cc"></span>iPhone<b>46%</b></div>
+                <div class="li"><span class="sw" style="background:#0071e3"></span>Mac<b>24%</b></div>
+                <div class="li"><span class="sw" style="background:#1d1d1f"></span>Watch &amp; AirPods<b>18%</b></div>
+                <div class="li"><span class="sw" style="background:#d2d2d7"></span>Accessories<b>12%</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="secthead">
+          <h2>Recent orders</h2>
+          <div class="chips">
+            <button class="chip on">All</button>
+            <button class="chip">Processing</button>
+            <button class="chip">Shipped</button>
+            <button class="chip">Issues</button>
+          </div>
+        </div>
+        <div class="tablecard">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:44px"><input type="checkbox" aria-label="Select all"></th>
+                <th>Order</th>
+                <th>Product</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920482</b><span>Priya Mehta · Priya M., Brooklyn NY</span></div></td>
+                <td>iPhone 17 Pro · 512GB</td>
+                <td><span class="badge b-ok">Shipped</span></td>
+                <td class="amt">$1,199.00</td>
+                <td>Oct 25, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920479</b><span>Marcus Webb · Seattle WA</span></div></td>
+                <td>MacBook Air 15" · M4</td>
+                <td><span class="badge b-ok">Shipped</span></td>
+                <td class="amt">$1,499.00</td>
+                <td>Oct 25, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920471</b><span>Elena Sato · Chicago IL</span></div></td>
+                <td>Apple Watch Series 11 + band</td>
+                <td><span class="badge b-warn">Processing</span></td>
+                <td class="amt">$458.00</td>
+                <td>Oct 24, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920466</b><span>Tomás Rivera · Austin TX</span></div></td>
+                <td>iPad Air 11" · 256GB</td>
+                <td><span class="badge b-warn">Processing</span></td>
+                <td class="amt">$749.00</td>
+                <td>Oct 24, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920458</b><span>Alice Chen · San Jose CA</span></div></td>
+                <td>AirPods Pro 3 · 2 units</td>
+                <td><span class="badge b-ok">Shipped</span></td>
+                <td class="amt">$498.00</td>
+                <td>Oct 23, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920451</b><span>Noah Berger · Denver CO</span></div></td>
+                <td>Mac mini M4 + Studio Display</td>
+                <td><span class="badge b-danger">Payment issue</span></td>
+                <td class="amt">$2,098.00</td>
+                <td>Oct 23, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920444</b><span>Sofia Marino · Boston MA</span></div></td>
+                <td>Apple Pencil Pro · engraved</td>
+                <td><span class="badge b-warn">Personalizing</span></td>
+                <td class="amt">$129.00</td>
+                <td>Oct 22, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="prodc"><b>W16920439</b><span>Daniel Osei · Atlanta GA</span></div></td>
+                <td>AirPods Max · Space Gray</td>
+                <td><span class="badge b-neutral">Refunded</span></td>
+                <td class="amt">−$549.00</td>
+                <td>Oct 21, 2026</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tfoot">
+            <span>Showing 1–8 of 3,184 orders</span>
+            <div class="pager">
+              <button class="pg">‹</button>
+              <button class="pg on">1</button>
+              <button class="pg">2</button>
+              <button class="pg">3</button>
+              <button class="pg">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3>Recent activity</h3>
+        <div class="feed">
+          <div class="ev"><span class="dot d-blue"></span><div><p><b>Order shipped</b> — W16920482 · iPhone 17 Pro via FedEx, arriving Thu Oct 29</p><time>12 min ago</time></div></div>
+          <div class="ev"><span class="dot d-red"></span><div><p><b>Payment declined</b> — W16920451 flagged by fraud check, needs review</p><time>38 min ago</time></div></div>
+          <div class="ev"><span class="dot d-amber"></span><div><p><b>Low stock</b> — AirPods Pro 3 (Starlight) down to 14 units in the Northeast DC</p><time>2 hrs ago</time></div></div>
+          <div class="ev"><span class="dot d-green"></span><div><p><b>Personalization queue</b> — 42 engraved Apple Pencils completed at the Cupertino hub</p><time>4 hrs ago</time></div></div>
+          <div class="ev"><span class="dot d-gray"></span><div><p><b>Refund issued</b> — W16920439 · AirPods Max returned unopened</p><time>Yesterday</time></div></div>
+        </div>
+        <div class="quickstats">
+          <div class="qs"><span>Fulfillment SLA</span><b>97.4%</b></div>
+          <div class="qs"><span>Return rate (30d)</span><b>2.1%</b></div>
+          <div class="qs"><span>Open issues</span><b>6</b></div>
+          <div class="qs"><span>Next pickup wave</span><b>5:30 PM · 312 orders</b></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</body>
+</html>

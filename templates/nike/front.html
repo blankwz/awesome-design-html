@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nike. Just Do It. — Men's Trail Running</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111111; --canvas:#ffffff; --cloud:#f5f5f5;
+  --charcoal:#39393b; --ash:#4b4b4d; --mute:#707072; --stone:#9e9ea0;
+  --hairline:#cacacb; --hairline-soft:#e5e5e5;
+  --sale:#d30005; --sale-deep:#780700; --success:#007d48; --success-bright:#1eaa52;
+  --info:#1151ff; --pink:#ed1aa0; --purple-soft:#beaffd; --purple-pale:#d6d1ff; --teal:#0a7281;
+  --font-ui:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --font-display:'Bebas Neue',Impact,'Helvetica Neue',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-ui);color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.wrap{max-width:1440px;margin:0 auto;padding:0 48px}
+.section{margin-top:48px}
+
+/* ── buttons: pill vocabulary only ───────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:30px;height:48px;padding:0 32px;font-weight:500;font-size:16px}
+.btn-primary{background:var(--ink);color:var(--canvas)}
+.btn-primary:active{transform:scale(.97);opacity:.85}
+.btn-soft{background:var(--cloud);color:var(--ink)}
+.btn-on-image{background:var(--canvas);color:var(--ink);height:44px;padding:0 24px}
+.icon-circle{width:40px;height:40px;border-radius:9999px;background:var(--cloud);display:inline-flex;align-items:center;justify-content:center}
+.icon-circle svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7}
+
+/* ── utility bar ─────────────────────────────────────────── */
+.utility{background:var(--cloud);height:36px;font-size:12px;font-weight:500}
+.utility .wrap{display:flex;justify-content:flex-end;align-items:center;height:100%;gap:8px}
+.utility a{padding:0 6px}
+.utility a:hover{text-decoration:underline}
+
+/* ── primary nav ─────────────────────────────────────────── */
+.nav{background:var(--canvas);box-shadow:inset 0 -1px 0 var(--hairline-soft)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:24px}
+.logo svg{width:60px;height:22px;fill:var(--ink)}
+.nav-links{display:flex;gap:4px}
+.nav-links a{font-weight:500;font-size:16px;padding:19px 12px;border-bottom:2px solid transparent}
+.nav-links a.active{border-bottom-color:var(--ink)}
+.nav-tools{display:flex;align-items:center;gap:12px}
+.search-pill{display:flex;align-items:center;gap:8px;background:var(--cloud);border-radius:24px;height:40px;padding:0 16px;width:180px;color:var(--mute)}
+.search-pill input{border:none;background:none;outline:none;font-family:inherit;font-size:16px;width:100%;color:var(--ink)}
+.bag-btn{position:relative}
+.bag-btn .dot{position:absolute;top:2px;right:0;background:var(--sale);color:#fff;font-size:10px;font-weight:500;width:17px;height:17px;border-radius:9999px;display:flex;align-items:center;justify-content:center}
+
+/* ── campaign hero ───────────────────────────────────────── */
+.campaign{position:relative;height:620px;display:flex;align-items:flex-end;overflow:hidden;
+  background:linear-gradient(200deg,#0a7281 0%,#123a41 34%,#111111 78%)}
+.campaign::before{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(560px 300px at 78% 30%,rgba(255,255,255,.22),transparent 70%),
+   radial-gradient(900px 460px at 20% 110%,rgba(0,0,0,.55),transparent 70%),
+   repeating-linear-gradient(115deg,transparent 0 90px,rgba(255,255,255,.05) 90px 91px)}
+.campaign-figure{position:absolute;right:12%;bottom:0;width:420px;height:470px;
+  background:radial-gradient(200px 340px at 50% 62%,rgba(255,255,255,.34),transparent 68%),
+   radial-gradient(120px 200px at 50% 30%,rgba(255,255,255,.5),transparent 70%);
+  filter:blur(2px)}
+.campaign-copy{position:relative;padding:0 0 56px;max-width:900px}
+.campaign-kicker{color:#fff;font-weight:500;font-size:14px;letter-spacing:.02em;margin-bottom:12px}
+.campaign h1{font-family:var(--font-display);font-weight:400;font-size:96px;line-height:.9;text-transform:uppercase;color:#fff;letter-spacing:0}
+.campaign h1 span{display:block;color:#c9e8ec}
+.campaign-sub{color:#e8f2f3;font-weight:500;margin:20px 0 24px;max-width:520px}
+
+/* ── section headers ─────────────────────────────────────── */
+.head-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.head-xl{font-size:32px;font-weight:500;line-height:1.2;text-transform:uppercase}
+.head-link{font-weight:500;font-size:16px;text-decoration:underline;color:var(--ink)}
+
+/* ── filter chips ────────────────────────────────────────── */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.chip{border:1px solid var(--hairline);border-radius:30px;padding:8px 16px;font-size:16px;font-weight:500;background:var(--canvas)}
+.chip.active{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+
+/* ── product grid ────────────────────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.card{background:var(--canvas)}
+.card-media{position:relative;aspect-ratio:1/1;background:var(--cloud);overflow:hidden}
+.card-media::after{content:"";position:absolute;inset:0;background:var(--art);opacity:.9}
+.badge-promo{position:absolute;top:12px;left:12px;z-index:2;background:var(--canvas);border:1px solid var(--hairline);border-radius:30px;padding:4px 12px;font-size:12px;font-weight:500}
+.dots{display:flex;gap:6px;margin:8px 0}
+.dots span{width:12px;height:12px;border-radius:9999px;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.dots span.on{box-shadow:0 0 0 2px var(--canvas),0 0 0 4px var(--ink)}
+.card h3{font-size:16px;font-weight:500;margin-top:6px}
+.card .sub{font-size:14px;font-weight:500;color:var(--mute);margin-top:2px}
+.price{font-size:16px;font-weight:500;margin-top:6px}
+.price .now{color:var(--sale)}
+.price .was{color:var(--mute);text-decoration:line-through;margin:0 6px}
+.price .off{color:var(--sale);font-size:14px;font-weight:500}
+
+/* art variants (CSS-only product stages) */
+.p1{--art:linear-gradient(160deg,#dbe4e8 12%,#9fb4bd 55%,#6c8794 100%)}
+.p2{--art:radial-gradient(140px 90px at 40% 58%,#f2c1d8 0%,transparent 75%),linear-gradient(150deg,#f5f5f5 30%,#e7c8d8 100%)}
+.p3{--art:linear-gradient(200deg,#d6d1ff 0%,#a89bd6 60%,#5d5480 100%)}
+.p4{--art:radial-gradient(160px 100px at 60% 40%,#ffd9a8 0%,transparent 70%),linear-gradient(160deg,#f5f5f5 25%,#d9c4a5 100%)}
+.p5{--art:linear-gradient(140deg,#cfe3d8 10%,#7fae95 60%,#3c6b52 100%)}
+.p6{--art:radial-gradient(150px 100px at 45% 55%,#b9e0e6 0%,transparent 72%),linear-gradient(170deg,#f5f5f5 30%,#a9ccd4 100%)}
+.p7{--art:linear-gradient(190deg,#e8e2f8 0%,#b7a8e4 55%,#6f5fae 100%)}
+.p8{--art:radial-gradient(170px 110px at 55% 60%,#f6b9b9 0%,transparent 70%),linear-gradient(150deg,#f5f5f5 20%,#d8a5a5 100%)}
+</style>
+</head>
+<body>
+
+<!-- utility bar -->
+<div class="utility"><div class="wrap">
+  <a href="#">Find a Store</a><span aria-hidden="true">|</span>
+  <a href="#">Help</a><span aria-hidden="true">|</span>
+  <a href="#">Join Us</a><span aria-hidden="true">|</span>
+  <a href="#">Sign In</a>
+</div></div>
+
+<!-- primary nav -->
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#" aria-label="Nike home">
+    <svg viewBox="0 0 60 22" aria-hidden="true"><path d="M59 1 14.9 19.7C11.2 21.3 8 22 5.5 22 2.4 22 .5 20.7.1 18.4c-.6-3 1.5-7 5.5-11.2C3.9 9.6 3 12 3.6 13.6c.5 1.2 1.9 1.7 4 1.4 1.5-.2 3.4-.8 5.6-1.7L59 1z"/></svg>
+  </a>
+  <nav class="nav-links">
+    <a href="#">New &amp; Featured</a>
+    <a href="#" class="active">Men</a>
+    <a href="#">Women</a>
+    <a href="#">Kids</a>
+    <a href="#">Jordan</a>
+    <a href="#">Sale</a>
+  </nav>
+  <div class="nav-tools">
+    <label class="search-pill">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#707072" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/></svg>
+      <input type="search" placeholder="Search" aria-label="Search">
+    </label>
+    <button class="icon-circle" aria-label="Favorites">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5C7 16.6 3.5 13.4 3.5 9.9 3.5 7.2 5.6 5 8.2 5c1.6 0 3 .8 3.8 2.1C12.8 5.8 14.2 5 15.8 5c2.6 0 4.7 2.2 4.7 4.9 0 3.5-3.5 6.7-8.5 10.6z"/></svg>
+    </button>
+    <button class="icon-circle bag-btn" aria-label="Bag, 3 items">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8V6.5a4 4 0 0 1 8 0V8h3.5L21 21H3L4.5 8H8zm2 0h4V6.5a2 2 0 0 0-4 0V8z"/></svg>
+      <span class="dot">3</span>
+    </button>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+  <!-- campaign hero -->
+  <section class="campaign section" style="margin-top:0">
+    <div class="campaign-figure" aria-hidden="true"></div>
+    <div class="campaign-copy">
+      <p class="campaign-kicker">Nike ACG · Trail Running</p>
+      <h1>Run the trail.<span>Not the road.</span></h1>
+      <p class="campaign-sub">Built with unheard-of grit for wet rock, loose gravel, and everything between. The Zegama collection is ready when you are.</p>
+      <a href="#" class="btn btn-on-image">Shop Trail Running</a>
+    </div>
+  </section>
+
+  <!-- trending -->
+  <section class="section">
+    <div class="head-row">
+      <h2 class="head-xl">Trending Now</h2>
+      <a class="head-link" href="#">View All</a>
+    </div>
+    <div class="chips" role="tablist" aria-label="Filter products">
+      <button class="chip active">Shoes</button>
+      <button class="chip">Clothing</button>
+      <button class="chip">Accessories &amp; Equipment</button>
+      <button class="chip">Trail Running</button>
+      <button class="chip">Sale</button>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-media p1"><span class="badge-promo">Just In</span></div>
+        <div class="dots"><span class="on" style="--sw:#6c8794"></span><span style="--sw:#111111"></span><span style="--sw:#d6d1ff"></span><span style="--sw:#ffb0dd"></span></div>
+        <h3>Nike Zegama 2</h3>
+        <p class="sub">Men's Trail Running Shoes</p>
+        <p class="price">$180</p>
+      </article>
+      <article class="card">
+        <div class="card-media p2"><span class="badge-promo">Just In</span></div>
+        <div class="dots"><span class="on" style="--sw:#e7c8d8"></span><span style="--sw:#ffffff"></span></div>
+        <h3>Nike Swift Repel</h3>
+        <p class="sub">Women's Running Jacket</p>
+        <p class="price">$150</p>
+      </article>
+      <article class="card">
+        <div class="card-media p3"><span class="badge-promo">Member Exclusive</span></div>
+        <div class="dots"><span class="on" style="--sw:#5d5480"></span><span style="--sw:#beaffd"></span><span style="--sw:#0a0a0a"></span></div>
+        <h3>Neko Pegasus Trail 5</h3>
+        <p class="sub">Men's Trail Running Shoes</p>
+        <p class="price"><span class="now">$139</span><span class="was">$160</span><span class="off">13% off</span></p>
+      </article>
+      <article class="card">
+        <div class="card-media p4"></div>
+        <div class="dots"><span class="on" style="--sw:#d9c4a5"></span><span style="--sw:#39393b"></span><span style="--sw:#0a7281"></span></div>
+        <h3>Nike Dri-FIT Trail</h3>
+        <p class="sub">Men's Scaled Running Vest</p>
+        <p class="price">$95</p>
+      </article>
+      <article class="card">
+        <div class="card-media p5"><span class="badge-promo">Recycled Materials</span></div>
+        <div class="dots"><span class="on" style="--sw:#3c6b52"></span><span style="--sw:#f5f5f5"></span></div>
+        <h3>ACG Mountain Fly 2 Low</h3>
+        <p class="sub">GORE-TEX Hiking Shoes</p>
+        <p class="price">$170</p>
+      </article>
+      <article class="card">
+        <div class="card-media p6"><span class="badge-promo">Coming Soon</span></div>
+        <div class="dots"><span class="on" style="--sw:#a9ccd4"></span><span style="--sw:#111111"></span><span style="--sw:#ed1aa0"></span></div>
+        <h3>Nike Ultrafly Summit</h3>
+        <p class="sub">Unisex Trail Racing Shoes</p>
+        <p class="price">$210</p>
+      </article>
+      <article class="card">
+        <div class="card-media p7"></div>
+        <div class="dots"><span class="on" style="--sw:#6f5fae"></span><span style="--sw:#ffffff"></span><span style="--sw:#beaffd"></span></div>
+        <h3>Nike Trail GORE-TEX</h3>
+        <p class="sub">Men's Waterproof Running Jacket</p>
+        <p class="price"><span class="now">$186</span><span class="was">$220</span><span class="off">15% off</span></p>
+      </article>
+      <article class="card">
+        <div class="card-media p8"></div>
+        <div class="dots"><span class="on" style="--sw:#d8a5a5"></span><span style="--sw:#111111"></span></div>
+        <h3>Nike ACG Therma-FIT</h3>
+        <p class="sub">Unisex Fleece Trail Hoodie</p>
+        <p class="price">$110</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- featured PDP row -->
+  <section class="section">
+    <div class="head-row">
+      <h2 class="head-xl">Featured: Nike Zegama 2</h2>
+      <a class="head-link" href="#">View Product Details</a>
+    </div>
+    <div class="pdp">
+      <div class="thumbs" role="listbox" aria-label="Product images">
+        <div class="thumb on p1"></div>
+        <div class="thumb p5"></div>
+        <div class="thumb p3"></div>
+        <div class="thumb p6"></div>
+        <div class="thumb p8"></div>
+      </div>
+      <div class="pdp-media p1" role="img" aria-label="Nike Zegama 2 on soft gray stage"></div>
+      <div class="pdp-panel">
+        <span class="badge-promo" style="position:static;display:inline-block;margin-bottom:8px">Just In</span>
+        <h3 class="pdp-title">Nike Zegama 2</h3>
+        <p class="pdp-sub">Men's Trail Running Shoes</p>
+        <p class="pdp-price">$180 <span class="pdp-tax">incl. of taxes</span></p>
+        <p class="opt-label">Colors <span class="count">(4)</span></p>
+        <div class="dots" style="margin:8px 0 20px">
+          <span class="on" style="--sw:#6c8794"></span><span style="--sw:#111111"></span><span style="--sw:#d6d1ff"></span><span style="--sw:#ffb0dd"></span>
+        </div>
+        <p class="opt-label">Select Size <a class="size-guide" href="#">Size Guide</a></p>
+        <div class="sizes">
+          <button class="size">M 6 / W 7.5</button>
+          <button class="size">M 7 / W 8.5</button>
+          <button class="size on">M 8 / W 9.5</button>
+          <button class="size">M 8.5 / W 10</button>
+          <button class="size">M 9 / W 10.5</button>
+          <button class="size off">M 10 / W 11.5</button>
+          <button class="size">M 10.5 / W 12</button>
+          <button class="size">M 11 / W 12.5</button>
+        </div>
+        <div class="pdp-actions">
+          <div class="stepper" aria-label="Quantity">
+            <button aria-label="Decrease quantity">−</button>
+            <span>1</span>
+            <button aria-label="Increase quantity">+</button>
+          </div>
+          <a href="#" class="btn btn-primary" style="flex:1">Add to Bag</a>
+          <button class="btn btn-soft" style="width:56px;padding:0" aria-label="Favorite">♡</button>
+        </div>
+        <div class="review-snippet">
+          <div class="stars" aria-label="Rated 4.6 out of 5 stars">
+            <span>★★★★★</span><span class="empty">★</span><b>4.6</b>
+          </div>
+          <p class="stars-n">312 Reviews</p>
+          <blockquote>"Grippy, cushioned, and locked-in on wet granite. The best trail shoe I've run all year."</blockquote>
+          <p class="review-by">— Dana R., Verified Buyer · Ultramarathoner</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- bag drawer / checkout summary -->
+  <section class="section bag-section">
+    <div class="head-row"><h2 class="head-xl">Your Bag (3)</h2></div>
+    <div class="bag">
+      <div class="bag-items">
+        <div class="bag-row">
+          <div class="bag-img p1"></div>
+          <div class="bag-meta">
+            <p class="bag-name">Nike Zegama 2</p>
+            <p class="bag-sub">Men's Trail Running Shoes · Smoke Grey/Summit White · M 8 / W 9.5</p>
+            <p class="bag-sub">Qty 1 · In Stock</p>
+          </div>
+          <p class="bag-price">$180</p>
+        </div>
+        <div class="bag-row">
+          <div class="bag-img p5"></div>
+          <div class="bag-meta">
+            <p class="bag-name">ACG Mountain Fly 2 Low</p>
+            <p class="bag-sub">GORE-TEX Hiking Shoes · Vintage Green · M 9</p>
+            <p class="bag-sub">Qty 1 · In Stock</p>
+          </div>
+          <p class="bag-price">$170</p>
+        </div>
+        <div class="bag-row">
+          <div class="bag-img p2"></div>
+          <div class="bag-meta">
+            <p class="bag-name">Nike Swift Repel</p>
+            <p class="bag-sub">Women's Running Jacket · Pink Glaze · XS</p>
+            <p class="bag-sub">Qty 1 · In Stock</p>
+          </div>
+          <p class="bag-price">$150</p>
+        </div>
+      </div>
+      <aside class="bag-summary">
+        <h3 class="sum-title">Summary</h3>
+        <div class="sum-row"><span>Subtotal</span><span>$500</span></div>
+        <div class="sum-row"><span>Estimated Shipping &amp; Handling</span><span class="free">Free</span></div>
+        <div class="sum-row"><span>Estimated Tax</span><span>$41.25</span></div>
+        <div class="sum-row total"><span>Total</span><span>$541.25</span></div>
+        <p class="member-note"><b>Members</b> get free shipping on every order.</p>
+        <a href="#" class="btn btn-primary" style="width:100%">Checkout</a>
+        <div class="pay-row">
+          <span class="pay-chip">Apple Pay</span><span class="pay-chip">PayPal</span><span class="pay-chip">Klarna</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<!-- footer -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-cols">
+      <div>
+        <h4>Resources</h4>
+        <ul><li><a href="#">Find A Store</a></li><li><a href="#">Become A Member</a></li><li><a href="#">Running Shoe Finder</a></li><li><a href="#">Product Advice</a></li></ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul><li><a href="#">Get Help</a></li><li><a href="#">Order Status</a></li><li><a href="#">Shipping &amp; Delivery</a></li><li><a href="#">Returns</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#">About Nike</a></li><li><a href="#">News</a></li><li><a href="#">Careers</a></li><li><a href="#">Sustainability</a></li></ul>
+      </div>
+      <div class="foot-news">
+        <h4>Sign Up for Email</h4>
+        <p class="news-copy">Get first access to new arrivals, member exclusives, and trail stories.</p>
+        <form class="news-form">
+          <input type="email" placeholder="Email address" aria-label="Email address">
+          <button type="button" class="btn btn-primary" style="height:40px;padding:0 24px;border-radius:24px">Sign Up</button>
+        </form>
+        <div class="socials">
+          <span class="icon-circle" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg></span>
+          <span class="icon-circle" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/></svg></span>
+          <span class="icon-circle" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="m10 9.5 5 2.5-5 2.5z"/></svg></span>
+        </div>
+      </div>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Nike, Inc. All rights reserved</span>
+      <nav><a href="#">Guides</a><a href="#">Terms of Sale</a><a href="#">Terms of Use</a><a href="#">Privacy Policy</a></nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+/* ── PDP featured row ────────────────────────────────────── */
+.pdp{display:grid;grid-template-columns:76px 1fr 460px;gap:24px;align-items:start}
+.thumbs{display:flex;flex-direction:column;gap:8px}
+.thumb{aspect-ratio:1/1;background:var(--cloud);position:relative;overflow:hidden;cursor:pointer}
+.thumb::after{content:"";position:absolute;inset:0;background:inherit;opacity:.9}
+.thumb.on{outline:2px solid var(--ink);outline-offset:-2px}
+.pdp-media{aspect-ratio:1/1;background:var(--cloud);position:relative}
+.pdp-media::after{content:"";position:absolute;inset:0;background:inherit;opacity:.9}
+.pdp-panel{padding-top:4px}
+.pdp-title{font-size:32px;font-weight:500;line-height:1.2;margin-top:4px}
+.pdp-sub{font-size:16px;color:var(--mute);font-weight:500;margin-top:4px}
+.pdp-price{font-size:24px;font-weight:500;margin-top:16px}
+.pdp-tax{font-size:14px;font-weight:400;color:var(--mute);margin-left:8px}
+.opt-label{font-size:16px;font-weight:500;margin-top:20px;display:flex;justify-content:space-between}
+.opt-label .count{color:var(--mute);font-weight:400;margin-left:4px}
+.size-guide{font-weight:400;color:var(--mute);text-decoration:underline;font-size:14px}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.size{border:1px solid var(--hairline);border-radius:30px;height:40px;font-size:14px;font-weight:500;background:var(--canvas)}
+.size.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+.size.off{color:var(--stone);background:var(--cloud);border-color:var(--cloud);text-decoration:line-through;cursor:not-allowed}
+.pdp-actions{display:flex;gap:12px;margin-top:24px}
+.stepper{display:flex;align-items:center;border:1px solid var(--hairline);border-radius:30px;height:48px;padding:0 6px}
+.stepper button{width:32px;height:32px;border-radius:9999px;font-size:18px;color:var(--ink)}
+.stepper span{min-width:28px;text-align:center;font-weight:500}
+.review-snippet{margin-top:32px;padding-top:24px;border-top:1px solid var(--hairline)}
+.stars span{color:var(--ink);letter-spacing:2px}
+.stars .empty{color:var(--hairline)}
+.stars b{margin-left:12px;font-size:16px}
+.stars-n{color:var(--mute);font-size:14px;margin-top:2px}
+.review-snippet blockquote{font-size:16px;line-height:1.5;margin-top:12px;color:var(--charcoal)}
+.review-by{font-size:14px;font-weight:500;color:var(--mute);margin-top:8px}
+
+/* ── bag drawer ──────────────────────────────────────────── */
+.bag-section{background:var(--cloud);padding:48px;margin-top:48px}
+.bag-section .head-row{margin-bottom:32px}
+.bag{display:grid;grid-template-columns:1fr 420px;gap:48px}
+.bag-row{display:grid;grid-template-columns:120px 1fr auto;gap:16px;background:var(--canvas);padding:16px;margin-bottom:8px;align-items:center}
+.bag-img{width:120px;height:120px;background:var(--cloud);position:relative}
+.bag-img::after{content:"";position:absolute;inset:0;background:inherit;opacity:.9}
+.bag-name{font-weight:500}
+.bag-sub{font-size:14px;color:var(--mute);margin-top:2px}
+.bag-price{font-weight:500}
+.bag-summary{background:var(--canvas);padding:24px;height:fit-content}
+.sum-title{font-size:24px;font-weight:500;margin-bottom:16px}
+.sum-row{display:flex;justify-content:space-between;font-size:16px;margin-bottom:12px;color:var(--charcoal)}
+.sum-row.total{font-weight:500;color:var(--ink);border-top:1px solid var(--hairline);padding-top:16px;margin-top:16px}
+.sum-row .free{color:var(--success);font-weight:500}
+.member-note{font-size:14px;color:var(--mute);margin:8px 0 16px}
+.pay-row{display:flex;gap:8px;margin-top:16px;justify-content:center}
+.pay-chip{border:1px solid var(--hairline);border-radius:30px;padding:6px 14px;font-size:12px;font-weight:500;color:var(--mute)}
+
+/* ── footer ──────────────────────────────────────────────── */
+.footer{border-top:1px solid var(--hairline);margin-top:48px;background:var(--canvas)}
+.foot-cols{display:grid;grid-template-columns:1fr 1fr 1fr 1.6fr;gap:32px;padding:48px 0 32px}
+.foot-cols h4{font-size:16px;font-weight:500;margin-bottom:16px;text-transform:uppercase}
+.foot-cols ul li{margin-bottom:10px}
+.foot-cols ul a{font-size:14px;font-weight:500;color:var(--mute)}
+.foot-cols ul a:hover{color:var(--ink)}
+.news-copy{font-size:14px;color:var(--mute);margin-bottom:16px}
+.news-form{display:flex;gap:8px}
+.news-form input{flex:1;background:var(--cloud);border:none;border-radius:24px;height:40px;padding:0 16px;font-family:inherit;font-size:14px;outline:none}
+.socials{display:flex;gap:8px;margin-top:16px}
+.socials .icon-circle{width:36px;height:36px;background:var(--cloud)}
+.socials svg{width:16px;height:16px}
+.fineprint{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--hairline);padding:16px 0 24px;color:var(--mute)}
+.fineprint span{font-size:9px;font-weight:500;line-height:1.75}
+.fineprint nav a{font-size:9px;font-weight:500;line-height:1.75;margin-left:16px}
+
+@media (max-width:1023px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .pdp{grid-template-columns:1fr}
+  .thumbs{flex-direction:row;order:2}
+  .bag{grid-template-columns:1fr}
+  .campaign h1{font-size:64px}
+}
+@media (max-width:959px){
+  .nav-links{display:none}
+  .wrap{padding:0 24px}
+  .campaign h1{font-size:48px}
+}
+</style>
+</body>
+</html>

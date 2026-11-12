@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostHog — Project Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#f7a501; --primary-pressed:#dd9001; --on-primary:#23251d;
+  --ink:#23251d; --body:#4d4f46; --charcoal:#33342d; --mute:#6c6e63; --ash:#9b9c92; --stone:#b6b7af;
+  --hairline:#bfc1b7; --hairline-soft:#dcdfd2;
+  --canvas:#eeefe9; --surface-soft:#e5e7e0; --surface-card:#ffffff; --surface-doc:#fcfcfa; --surface-dark:#23251d;
+  --link-blue:#1d4ed8; --link-teal:#1078a3;
+  --accent-blue:#2c84e0; --accent-blue-soft:#dceaf6;
+  --accent-red:#cd4239; --accent-red-soft:#f7d6d3;
+  --accent-green:#2c8c66; --accent-green-soft:#d9eddf;
+  --accent-purple:#7c44a6; --accent-purple-soft:#e7d8ee;
+  --font-sans:"IBM Plex Sans",-apple-system,system-ui,"Segoe UI",sans-serif;
+  --font-mono:"Source Code Pro",ui-monospace,monospace;
+  --r-xs:2px; --r-sm:4px; --r-md:6px; --r-lg:8px; --r-full:9999px;
+  --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:24px; --sp-xxl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:14px;line-height:1.43;-webkit-font-smoothing:antialiased}
+a{color:var(--link-teal);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-sans);border:0}
+h1,h2,h3{color:var(--ink)}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.side{background:var(--canvas);border-right:1px solid var(--hairline-soft);padding:var(--sp-md);display:flex;flex-direction:column;gap:2px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;color:var(--ink);padding:var(--sp-sm) var(--sp-md) var(--sp-lg)}
+.hedgehog{width:26px;height:26px;flex:none}
+.team{font-size:12px;color:var(--mute);padding:0 var(--sp-md) var(--sp-sm);font-family:var(--font-mono)}
+.m-label{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--mute);padding:var(--sp-lg) var(--sp-md) var(--sp-xs)}
+.menu a{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--r-md);color:var(--body);font-size:14px;font-weight:500}
+.menu a .ico{width:18px;text-align:center;font-style:normal}
+.menu a:hover{background:var(--surface-soft)}
+.menu a.active{background:var(--surface-card);color:var(--ink);font-weight:600;box-shadow:inset 0 0 0 1px var(--hairline-soft)}
+.menu a .cnt{margin-left:auto;background:var(--primary);color:var(--on-primary);border-radius:var(--r-full);font-size:11px;font-weight:700;padding:1px 8px}
+.ai-box{margin:var(--sp-md);background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);padding:10px 12px;font-size:13px;font-weight:600;color:var(--ink)}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:10px;padding:var(--sp-sm);background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-md)}
+.ava{width:34px;height:34px;border-radius:var(--r-full);background:var(--accent-purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.user-card .nm{font-weight:600;color:var(--ink);font-size:13px}
+.user-card .rl{font-size:12px;color:var(--mute)}
+
+/* ---------- topbar ---------- */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:56px;background:var(--canvas);border-bottom:1px solid var(--hairline-soft);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-xl)}
+.crumb{font-size:14px;color:var(--mute)}
+.crumb b{color:var(--ink);font-weight:600}
+.searchbar{margin-left:auto;height:36px;width:320px;background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--mute)}
+.searchbar input{border:0;background:transparent;outline:0;flex:1;font-size:14px;font-family:var(--font-sans);color:var(--ink)}
+.icon-btn{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-card);border:1px solid var(--hairline);display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink)}
+.bell{position:relative}
+.bell .dot{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:var(--r-full);background:var(--accent-red);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* ---------- content ---------- */
+.content{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-lg)}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-md)}
+.page-head h1{font-size:24px;font-weight:800;letter-spacing:-0.6px}
+.btn-yellow{display:inline-flex;align-items:center;gap:6px;height:40px;padding:8px 16px;background:var(--primary);color:var(--on-primary);border-radius:var(--r-md);font-size:14px;font-weight:700}
+.btn-yellow:active{background:var(--primary-pressed)}
+.btn-gray{display:inline-flex;align-items:center;gap:6px;height:40px;padding:8px 16px;background:var(--surface-soft);color:var(--ink);border-radius:var(--r-md);font-size:14px;font-weight:700}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+.kpi{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-lg)}
+.kpi .lbl{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.kpi .val{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-0.5px}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+.delta{font-size:12px;font-weight:700}
+.up{color:var(--accent-green)} .down{color:var(--accent-red)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:24px}
+.spark i{width:6px;border-radius:var(--r-xs);background:var(--hairline-soft)}
+.spark i.hot{background:var(--primary)}
+
+/* ---------- charts ---------- */
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-lg)}
+.card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-xl)}
+.card h3{font-size:20px;font-weight:700;margin-bottom:var(--sp-lg)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:180px;border-bottom:1px solid var(--hairline-soft)}
+.bcol{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:60%;background:var(--hairline-soft);border-radius:var(--r-sm) var(--r-sm) 0 0}
+.bcol.hot .bar{background:var(--primary)}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-size:12px;color:var(--mute)}
+.donut-wrap{display:flex;gap:var(--sp-xl);align-items:center}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-size:22px;font-weight:800;color:var(--ink)}
+.donut .center .t{font-size:12px;color:var(--mute)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--body)}
+.leg i{width:10px;height:10px;border-radius:3px;flex:none}
+.leg .pct{margin-left:auto;font-weight:700;color:var(--ink)}
+
+/* ---------- table + panel ---------- */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-lg);align-items:start}
+.table-card{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+.tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-lg) var(--sp-xl);border-bottom:1px solid var(--hairline-soft)}
+.tc-head h3{font-size:20px;font-weight:700}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--mute);text-align:left;padding:var(--sp-sm) var(--sp-xl);border-bottom:1px solid var(--hairline-soft);background:var(--surface-doc)}
+td{padding:var(--sp-md) var(--sp-xl);border-bottom:1px solid var(--hairline-soft);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.cell-name{font-weight:600;color:var(--ink)}
+.cell-sub{font-size:12px;color:var(--mute);font-family:var(--font-mono)}
+.num{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:600;border-radius:var(--r-full);padding:2px 8px}
+.badge.success{background:var(--accent-green-soft);color:var(--accent-green)}
+.badge.warning{background:#fdf0cf;color:#8a5a00}
+.badge.danger{background:var(--accent-red-soft);color:var(--accent-red)}
+.badge.neutral{background:var(--surface-soft);color:var(--charcoal)}
+.badge.purple{background:var(--accent-purple-soft);color:var(--accent-purple)}
+.badge.info{background:var(--accent-blue-soft);color:var(--link-blue)}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--hairline);border-radius:var(--r-xs);background:var(--surface-card);vertical-align:middle}
+input[type=checkbox]:checked{background:var(--primary);border-color:var(--primary-pressed)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+.act{width:30px;height:30px;border-radius:var(--r-sm);background:var(--surface-soft);display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-xl);border-top:1px solid var(--hairline-soft);font-size:12px;color:var(--mute)}
+.pages{display:flex;gap:6px}
+.pg{min-width:30px;height:30px;border-radius:var(--r-sm);background:var(--surface-soft);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink)}
+.pg.on{background:var(--ink);color:#fff}
+
+/* ---------- side panel ---------- */
+.feed{display:flex;flex-direction:column;gap:var(--sp-lg)}
+.fi{display:flex;gap:10px;align-items:flex-start}
+.fi .dot{width:10px;height:10px;border-radius:var(--r-full);margin-top:4px;flex:none}
+.fi .tx{font-size:13px;color:var(--body)}
+.fi .tx b{color:var(--ink)}
+.fi .tm{font-size:12px;color:var(--mute);margin-top:2px}
+.note-blue{background:var(--accent-blue-soft);border-radius:var(--r-md);padding:16px 20px;font-size:14px;color:var(--ink)}
+.note-blue b{display:block;margin-bottom:4px}
+.settings{margin-top:var(--sp-lg);border-top:1px solid var(--hairline-soft);padding-top:var(--sp-lg)}
+.frow{display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:13px;color:var(--body)}
+.switch{width:36px;height:20px;border-radius:var(--r-full);background:var(--hairline-soft);position:relative;flex:none}
+.switch.on{background:var(--accent-green)}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:var(--r-full);background:#fff}
+.switch.on::after{left:auto;right:2px}
+.save-btn{width:100%;margin-top:var(--sp-md)}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .searchbar{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="logo">
+      <svg class="hedgehog" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 20 L8 10 L12 16 L15 7 L19 15 L23 8 L26 16 L30 13 L27 22 Z" fill="#23251d"/><circle cx="12" cy="23" r="6" fill="#b6805a"/><circle cx="10" cy="22" r="1.4" fill="#23251d"/><path d="M7 24 L4 25" stroke="#23251d" stroke-width="1.2" fill:none=""/></svg>
+      PostHog
+    </div>
+    <div class="team">fieldnote / production</div>
+    <div class="ai-box">✦ Ask PostHog AI</div>
+    <nav class="menu">
+      <a href="#"><i class="ico">◫</i>Dashboard</a>
+      <a href="#" class="active"><i class="ico">◔</i>Insights</a>
+      <a href="#"><i class="ico">▷</i>Cohorts</a>
+      <a href="#"><i class="ico">⚑</i>Feature flags<span class="cnt">6</span></a>
+      <a href="#"><i class="ico">⚗</i>Experiments</a>
+      <a href="#"><i class="ico">▶</i>Session replay</a>
+      <a href="#"><i class="ico">⌘</i>Toolbar</a>
+      <a href="#"><i class="ico">✦</i>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="ava">AO</div>
+      <div><div class="nm">Ada Okafor</div><div class="rl">Admin · Fieldnote</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="crumb">Insights &nbsp;›&nbsp; <b>Onboarding funnel</b></span>
+      <div class="searchbar">⌕<input type="search" placeholder="Search insights, people, flags…"></div>
+      <button class="icon-btn bell" aria-label="Notifications">◔<span class="dot">3</span></button>
+      <div class="ava">AO</div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <h1>Onboarding health</h1>
+        <div style="display:flex;gap:8px">
+          <button class="btn-gray">Last 30 days</button>
+          <button class="btn-yellow">+ New insight</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Signups</div><div class="val">6,214</div><div class="row"><span class="delta up">↑ 11.2%</span><span class="spark"><i style="height:32%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:74%"></i><i class="hot" style="height:92%"></i></span></div></div>
+        <div class="kpi"><div class="lbl">Activation rate</div><div class="val">41.8%</div><div class="row"><span class="delta up">↑ 2.4%</span><span class="spark"><i style="height:38%"></i><i style="height:46%"></i><i style="height:42%"></i><i style="height:55%"></i><i style="height:60%"></i><i style="height:64%"></i><i class="hot" style="height:78%"></i></span></div></div>
+        <div class="kpi"><div class="lbl">Stalled 7d cohort</div><div class="val">1,088</div><div class="row"><span class="delta down">↓ 9.6%</span><span class="spark"><i style="height:80%"></i><i style="height:70%"></i><i style="height:74%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:44%"></i><i class="hot" style="height:38%"></i></span></div></div>
+        <div class="kpi"><div class="lbl">Events used</div><div class="val">71%</div><div class="row"><span class="delta up">↑ on pace</span><span class="spark"><i style="height:30%"></i><i style="height:38%"></i><i style="height:45%"></i><i style="height:52%"></i><i style="height:60%"></i><i style="height:66%"></i><i class="hot" style="height:71%"></i></span></div></div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3>Activation events per month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:30%"></div></div>
+            <div class="bcol"><div class="bar" style="height:38%"></div></div>
+            <div class="bcol"><div class="bar" style="height:35%"></div></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div></div>
+            <div class="bcol"><div class="bar" style="height:45%"></div></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div></div>
+            <div class="bcol"><div class="bar" style="height:54%"></div></div>
+            <div class="bcol"><div class="bar" style="height:66%"></div></div>
+            <div class="bcol"><div class="bar" style="height:62%"></div></div>
+            <div class="bcol"><div class="bar" style="height:74%"></div></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:90%"></div></div>
+          </div>
+          <div class="blabels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+        </div>
+        <div class="card">
+          <h3>Signups by source</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#dcdfd2" stroke-width="20"/>
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#f7a501" stroke-width="20" stroke-dasharray="150 256" stroke-linecap="round"/>
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#7c44a6" stroke-width="20" stroke-dasharray="66 256" stroke-dashoffset="-158" stroke-linecap="round"/>
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#2c84e0" stroke-width="20" stroke-dasharray="48 256" stroke-dashoffset="-232" stroke-linecap="round"/>
+              </svg>
+              <div class="center"><span class="v">6.2k</span><span class="t">signups</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#f7a501"></i>Organic / docs<span class="pct">59%</span></div>
+              <div class="leg"><i style="background:#7c44a6"></i>Templates gallery<span class="pct">26%</span></div>
+              <div class="leg"><i style="background:#2c84e0"></i>Referral<span class="pct">15%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head"><h3>Feature flags</h3><button class="btn-gray">Export</button></div>
+          <table>
+            <thead><tr><th></th><th>Flag</th><th>Key</th><th>Status</th><th>Rollout</th><th>Release</th><th style="text-align:right">Actions</th></tr></thead>
+            <tbody>
+              <tr><td><input type="checkbox" checked></td><td><div class="cell-name">Guided setup checklist</div><div class="cell-sub">onboarding-checklist-v3</div></td><td><span class="badge success">Enabled</span></td><td class="num">25% → 50%</td><td>Oct 24</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Slack drop-off alerts</div><div class="cell-sub">funnel-alerts-slack</div></td><td><span class="badge success">Enabled</span></td><td class="num">100%</td><td>Oct 12</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">New activation event set</div><div class="cell-sub">events-onboarding-v4</div></td><td><span class="badge warning">Hold</span></td><td class="num">0%</td><td>Oct 26</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Invite-first onboarding</div><div class="cell-sub">invite-first-flow</div></td><td><span class="badge info">Experiment</span></td><td class="num">10% test</td><td>Oct 20</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Stalled cohort email</div><div class="cell-sub">stalled-7d-email</div></td><td><span class="badge success">Enabled</span></td><td class="num">100%</td><td>Sep 30</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Legacy signup form</div><div class="cell-sub">signup-form-legacy</div></td><td><span class="badge danger">Kill planned</span></td><td class="num">100% → 0</td><td>Nov 1</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span>Showing 1–6 of 48 flags</span>
+            <div class="pages"><button class="pg">‹</button><button class="pg on">1</button><button class="pg">2</button><button class="pg">3</button><button class="pg">›</button></div>
+          </div>
+        </div>
+
+        <div class="feed">
+          <div class="note-blue"><b>📘 Note</b>Checklist flag hits 50% rollout tomorrow — watch error-rate guardrails before pushing to 100%.</div>
+          <div class="card">
+            <h3>Recent activity</h3>
+            <div class="fi"><span class="dot" style="background:#2c8c66"></span><div><div class="tx"><b>Ada Okafor</b> increased <b>onboarding-checklist-v3</b> to 25% → 50%.</div><div class="tm">22 minutes ago</div></div></div>
+            <div class="fi"><span class="dot" style="background:#cd4239"></span><div><div class="tx">Drop-off alert: <b>signed_up → created_project</b> fell below 62% on mobile.</div><div class="tm">2 hours ago</div></div></div>
+            <div class="fi"><span class="dot" style="background:#f7a501"></span><div><div class="tx">Experiment <b>invite-first-flow</b> reached minimum sample size — results ready.</div><div class="tm">4 hours ago</div></div></div>
+            <div class="fi"><span class="dot" style="background:#6c6e63"></span><div><div class="tx">412 session replays saved for <b>rage-click</b> pattern on /signup.</div><div class="tm">Yesterday</div></div></div>
+          </div>
+          <div class="card">
+            <h3>Project settings</h3>
+            <div class="settings" style="margin-top:0;border:0;padding:0">
+              <div class="frow"><span>Autocapture events</span><span class="switch on"></span></div>
+              <div class="frow"><span>Session replay sampling</span><span class="switch on"></span></div>
+              <div class="frow"><span>EU data residency</span><span class="switch on"></span></div>
+              <div class="frow"><span>Personality-based prompts</span><span class="switch"></span></div>
+              <button class="btn-yellow save-btn">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

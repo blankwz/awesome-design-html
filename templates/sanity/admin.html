@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanity Exchange — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#0b0b0b;
+  --surface:#212121;
+  --surface-deep:#0b0b0b;
+  --border-subtle:#212121;
+  --border-visible:#353535;
+  --text:#ffffff;
+  --text-2:#b9b9b9;
+  --text-3:#797979;
+  --cta:#f36458;
+  --interactive:#0052ef;
+  --success:#37cd84;
+  --warning:#e0a63c;
+  --error:#dd0000;
+  --neutral:#797979;
+  --light-surface:#ededed;
+  --sans:'Space Grotesk','Inter',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --r-xs:3px;--r-sm:5px;--r-md:6px;--r-lg:12px;--r-pill:99999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+
+/* ===== Sidebar ===== */
+.sidebar{background:var(--canvas);border-right:1px solid var(--border-subtle);padding:20px 12px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.logo{font-size:15px;font-weight:500;display:flex;align-items:center;gap:10px;padding:4px 12px 20px}
+.logo .glyph{width:20px;height:20px;background:var(--cta);border-radius:var(--r-xs)}
+.logo .env{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text-3);border:1px solid var(--border-subtle);border-radius:var(--r-sm);padding:2px 6px}
+.nav-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-3);padding:16px 12px 8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:var(--r-sm);color:var(--text-2);font-size:15px;cursor:pointer;margin-bottom:1px}
+.nav-item:hover{background:var(--surface);color:var(--interactive)}
+.nav-item.active{background:var(--surface);color:var(--text)}
+.nav-item svg{flex:none;opacity:.8}
+.nav-item .count{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border-visible);border-radius:var(--r-md)}
+.avatar{width:30px;height:30px;border-radius:var(--r-full);background:var(--canvas);border:1px solid var(--border-visible);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--text-2);flex:none}
+.user-card .name{font-size:13px;color:var(--text)}
+.user-card .role{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+
+/* ===== Topbar ===== */
+.topbar{height:60px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:24px;padding:0 32px;position:sticky;top:0;background:rgba(11,11,11,0.92);backdrop-filter:blur(8px);z-index:40}
+.crumb{font-family:var(--mono);font-size:12px;color:var(--text-3)}
+.crumb b{color:var(--text);font-weight:500}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface-deep);border:1px solid var(--border-subtle);border-radius:var(--r-xs);height:36px;padding:0 12px;width:320px;margin-left:auto}
+.search svg{flex:none;stroke:var(--text-3)}
+.search input{background:none;border:none;outline:none;color:var(--text-2);font-family:var(--sans);font-size:15px;width:100%}
+.search input::placeholder{color:var(--text-3)}
+.search kbd{font-family:var(--mono);font-size:10px;color:var(--text-3);border:1px solid var(--border-subtle);border-radius:var(--r-xs);padding:2px 5px}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:none;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2)}
+.icon-btn:hover{color:var(--interactive)}
+.icon-btn .badge{position:absolute;top:0;right:0;min-width:15px;height:15px;border-radius:var(--r-pill);background:var(--cta);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* ===== Main ===== */
+.main{padding:32px;display:flex;flex-direction:column;gap:32px}
+.page-head{display:flex;align-items:center;gap:16px}
+.page-head h1{font-size:48px;font-weight:400;letter-spacing:-1.68px;line-height:1.08}
+.page-head .sub{font-family:var(--mono);font-size:12px;color:var(--text-3);margin-top:6px}
+.page-actions{margin-left:auto;display:flex;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:16px;font-weight:400;height:40px;padding:8px 20px;border-radius:var(--r-pill);cursor:pointer;border:none;transition:background .12s,color .12s}
+.btn-primary{background:var(--cta);color:#fff}
+.btn-primary:hover{background:var(--interactive);color:#fff}
+.btn-ghost{background:var(--surface-deep);color:var(--text-2);border:1px solid var(--border-subtle)}
+.btn-ghost:hover{background:var(--interactive);color:#fff}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.kpi{background:var(--surface);border:1px solid var(--border-visible);border-radius:var(--r-md);padding:24px}
+.kpi .label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-3);margin-bottom:10px}
+.kpi .value{font-size:34px;font-weight:400;letter-spacing:-1px;line-height:1.1}
+.kpi .delta{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:12px;margin-top:8px}
+.up{color:var(--success)}.down{color:var(--error)}
+.kpi .vs{color:var(--text-3)}
+.spark{display:flex;align-items:flex-end;gap:4px;height:30px;margin-top:16px}
+.spark i{flex:1;border-radius:2px 2px 0 0;background:var(--canvas);border:1px solid var(--border-visible)}
+.spark i.hi{background:var(--interactive);border-color:var(--interactive)}
+
+/* Charts */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:20px}
+.panel{background:var(--surface);border:1px solid var(--border-visible);border-radius:var(--r-md);padding:24px}
+.panel-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
+.panel-head h3{font-size:20px;font-weight:425;letter-spacing:-0.2px}
+.panel-head .hint{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-3);margin-left:auto}
+.bars{display:flex;align-items:flex-end;gap:12px;height:170px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:34px;border-radius:var(--r-xs) var(--r-xs) 0 0;background:var(--canvas);border:1px solid var(--border-visible);border-bottom:none}
+.bar.hi{background:var(--interactive);border-color:var(--interactive)}
+.bar-col .m{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--text-3)}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{position:relative;width:150px;height:150px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center b{font-family:var(--mono);font-size:20px}
+.donut .center span{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--text-3)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.legend .li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2)}
+.legend .sw{width:8px;height:8px;border-radius:2px}
+.legend .v{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--text-3)}
+
+/* Table + feed */
+.duo{display:grid;grid-template-columns:1.7fr 1fr;gap:20px;align-items:start}
+.table-panel{border:1px solid var(--border-visible);border-radius:var(--r-md);background:var(--surface);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-3);font-weight:500;padding:12px 16px;border-bottom:1px solid var(--border-visible)}
+tbody td{padding:13px 16px;border-bottom:1px solid var(--border-subtle);font-size:14px;color:var(--text-2)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--canvas)}
+.t-name{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:425}
+.t-mark{width:26px;height:26px;border-radius:var(--r-sm);background:var(--canvas);border:1px solid var(--border-visible);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:var(--cta);flex:none}
+.t-cat{font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;border-radius:var(--r-pill);padding:3px 10px;border:1px solid}
+.badge .d{width:6px;height:6px;border-radius:50%}
+.b-success{color:var(--success);border-color:rgba(55,205,132,0.4);background:rgba(55,205,132,0.06)}
+.b-warning{color:var(--warning);border-color:rgba(224,166,60,0.4);background:rgba(224,166,60,0.06)}
+.b-danger{color:var(--error);border-color:rgba(221,0,0,0.4);background:rgba(221,0,0,0.06)}
+.b-neutral{color:var(--text-2);border-color:var(--border-visible);background:var(--canvas)}
+.row-actions{display:flex;gap:8px;justify-content:flex-end}
+.row-actions button{background:none;border:1px solid var(--border-subtle);border-radius:var(--r-sm);color:var(--text-2);font-size:12px;font-family:var(--sans);padding:4px 10px;cursor:pointer}
+.row-actions button:hover{background:var(--interactive);border-color:var(--interactive);color:#fff}
+.t-foot{display:flex;align-items:center;padding:12px 16px;font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.pager{margin-left:auto;display:flex;gap:6px}
+.pager button{width:26px;height:26px;border-radius:var(--r-sm);background:var(--canvas);border:1px solid var(--border-subtle);color:var(--text-2);cursor:pointer;font-family:var(--mono);font-size:11px}
+.pager button.cur{background:var(--interactive);border-color:var(--interactive);color:#fff}
+
+/* Feed */
+.feed{display:flex;flex-direction:column;margin-top:4px}
+.feed-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--border-subtle)}
+.feed-item:last-child{border-bottom:none}
+.feed-item .avatar{width:26px;height:26px;font-size:9px;margin-top:2px}
+.feed-item p{font-size:13px;color:var(--text-2);line-height:1.45}
+.feed-item p b{color:var(--text);font-weight:425}
+.feed-item .time{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-top:4px;display:block}
+
+@media(max-width:1100px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.duo{grid-template-columns:1fr}
+  .page-head h1{font-size:32px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="logo" href="#"><span class="glyph"></span>Exchange<span class="env">ops</span></a>
+    <div>
+      <div class="nav-label">Overview</div>
+      <div class="nav-item active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+        Analytics
+      </div>
+    </div>
+    <div>
+      <div class="nav-label">Catalog</div>
+      <div class="nav-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 6l2-3h12l2 3M6 6v13a1 1 0 001 1h10a1 1 0 001-1V6"/></svg>
+        Packages <span class="count">1,842</span>
+      </div>
+      <div class="nav-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+        Installs <span class="count">94k</span>
+      </div>
+      <div class="nav-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Publishers <span class="count">314</span>
+      </div>
+      <div class="nav-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Payouts
+      </div>
+    </div>
+    <div>
+      <div class="nav-label">System</div>
+      <div class="nav-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        Settings
+      </div>
+    </div>
+    <div class="user-card">
+      <div class="avatar">EA</div>
+      <div>
+        <div class="name">Elena Anders</div>
+        <div class="role">exchange.admin</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div>
+    <header class="topbar">
+      <span class="crumb">exchange / <b>dashboard</b></span>
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search packages, publishers, invoices…">
+        <kbd>⌘K</kbd>
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="badge">5</span>
+      </button>
+      <button class="icon-btn" aria-label="Account">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0116 0v1"/></svg>
+      </button>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1>Dashboard</h1>
+          <div class="sub">exchange health · 2026-10-01 → 2026-10-26</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">Export JSON</button>
+          <button class="btn btn-primary">Review queue (9)</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Net revenue · MTD</div>
+          <div class="value">$61,340</div>
+          <div class="delta up">▲ 10.6% <span class="vs">vs Sept</span></div>
+          <div class="spark"><i style="height:30%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:58%"></i><i style="height:62%"></i><i style="height:82%" class="hi"></i><i style="height:100%" class="hi"></i></div>
+        </div>
+        <div class="kpi">
+          <div class="label">Installs · MTD</div>
+          <div class="value">94,118</div>
+          <div class="delta up">▲ 7.2% <span class="vs">vs Sept</span></div>
+          <div class="spark"><i style="height:38%"></i><i style="height:34%"></i><i style="height:52%"></i><i style="height:50%"></i><i style="height:68%"></i><i style="height:78%" class="hi"></i><i style="height:94%" class="hi"></i></div>
+        </div>
+        <div class="kpi">
+          <div class="label">Failed installs</div>
+          <div class="value">0.4%</div>
+          <div class="delta down">▼ 0.2% <span class="vs">vs Sept</span></div>
+          <div class="spark"><i style="height:80%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:50%"></i><i style="height:42%"></i><i style="height:34%" class="hi"></i><i style="height:28%" class="hi"></i></div>
+        </div>
+        <div class="kpi">
+          <div class="label">Publisher payout</div>
+          <div class="value">$28.9K</div>
+          <div class="delta up">▲ Sep cycle <span class="vs">paid Oct 24</span></div>
+          <div class="spark"><i style="height:26%"></i><i style="height:36%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:60%"></i><i style="height:74%" class="hi"></i><i style="height:88%" class="hi"></i></div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts">
+        <div class="panel">
+          <div class="panel-head"><h3>Monthly net revenue</h3><span class="hint">nov 2025 – oct 2026 · usd</span></div>
+          <div class="bars">
+            <div class="bar-col"><div class="bar" style="height:34%"></div><span class="m">Nov</span></div>
+            <div class="bar-col"><div class="bar" style="height:40%"></div><span class="m">Dec</span></div>
+            <div class="bar-col"><div class="bar" style="height:36%"></div><span class="m">Jan</span></div>
+            <div class="bar-col"><div class="bar" style="height:50%"></div><span class="m">Feb</span></div>
+            <div class="bar-col"><div class="bar" style="height:46%"></div><span class="m">Mar</span></div>
+            <div class="bar-col"><div class="bar" style="height:58%"></div><span class="m">Apr</span></div>
+            <div class="bar-col"><div class="bar" style="height:54%"></div><span class="m">May</span></div>
+            <div class="bar-col"><div class="bar" style="height:66%"></div><span class="m">Jun</span></div>
+            <div class="bar-col"><div class="bar" style="height:70%"></div><span class="m">Jul</span></div>
+            <div class="bar-col"><div class="bar" style="height:78%"></div><span class="m">Aug</span></div>
+            <div class="bar-col"><div class="bar" style="height:86%"></div><span class="m">Sep</span></div>
+            <div class="bar-col"><div class="bar hi" style="height:100%"></div><span class="m">Oct</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Installs by package type</h3><span class="hint">mtd</span></div>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="150" height="150" viewBox="0 0 150 150">
+                <circle cx="75" cy="75" r="60" fill="none" stroke="#0b0b0b" stroke-width="14"/>
+                <circle cx="75" cy="75" r="60" fill="none" stroke="#0052ef" stroke-width="14" stroke-dasharray="157 220" stroke-linecap="butt"/>
+                <circle cx="75" cy="75" r="60" fill="none" stroke="#37cd84" stroke-width="14" stroke-dasharray="113 264" stroke-dashoffset="-157"/>
+                <circle cx="75" cy="75" r="60" fill="none" stroke="#f36458" stroke-width="14" stroke-dasharray="63 314" stroke-dashoffset="-270"/>
+              </svg>
+              <div class="center"><b>94.1k</b><span>installs</span></div>
+            </div>
+            <div class="legend">
+              <div class="li"><span class="sw" style="background:#0052ef"></span>Schema packs<span class="v">42%</span></div>
+              <div class="li"><span class="sw" style="background:#37cd84"></span>Plugins<span class="v">30%</span></div>
+              <div class="li"><span class="sw" style="background:#f36458"></span>Starters<span class="v">17%</span></div>
+              <div class="li"><span class="sw" style="background:#353535"></span>Other<span class="v">11%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table + feed -->
+      <div class="duo">
+        <div class="table-panel">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34px"><input type="checkbox" aria-label="Select all"></th>
+                <th>Package</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Revenue</th>
+                <th>Updated</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">CMS</span>Commerce Core</span></td>
+                <td><span class="t-cat">schema-pack</span></td>
+                <td><span class="badge b-success"><span class="d" style="background:var(--success)"></span>published</span></td>
+                <td>$0 — free</td>
+                <td>2026-10-24</td>
+                <td><div class="row-actions"><button>view</button><button>edit</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">EDT</span>Editorial Newsroom</span></td>
+                <td><span class="t-cat">starter</span></td>
+                <td><span class="badge b-success"><span class="d" style="background:var(--success)"></span>published</span></td>
+                <td>$14,820</td>
+                <td>2026-10-22</td>
+                <td><div class="row-actions"><button>view</button><button>edit</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">MLB</span>Media Library Plus</span></td>
+                <td><span class="t-cat">plugin</span></td>
+                <td><span class="badge b-warning"><span class="d" style="background:var(--warning)"></span>in review</span></td>
+                <td>$8,240</td>
+                <td>2026-10-21</td>
+                <td><div class="row-actions"><button>view</button><button>review</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">I18</span>i18n Field Kit</span></td>
+                <td><span class="t-cat">schema-pack</span></td>
+                <td><span class="badge b-success"><span class="d" style="background:var(--success)"></span>published</span></td>
+                <td>$0 — free</td>
+                <td>2026-10-19</td>
+                <td><div class="row-actions"><button>view</button><button>edit</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">EVN</span>Event Calendar</span></td>
+                <td><span class="t-cat">starter</span></td>
+                <td><span class="badge b-neutral"><span class="d" style="background:var(--neutral)"></span>unlisted</span></td>
+                <td>$3,110</td>
+                <td>2026-10-16</td>
+                <td><div class="row-actions"><button>view</button><button>list</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">APR</span>Approval Chains</span></td>
+                <td><span class="t-cat">plugin</span></td>
+                <td><span class="badge b-danger"><span class="d" style="background:var(--error)"></span>quarantined</span></td>
+                <td>$6,420</td>
+                <td>2026-10-14</td>
+                <td><div class="row-actions"><button>view</button><button>resolve</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><span class="t-name"><span class="t-mark">AST</span>Asset Sync Bridge</span></td>
+                <td><span class="t-cat">plugin</span></td>
+                <td><span class="badge b-neutral"><span class="d" style="background:var(--neutral)"></span>draft</span></td>
+                <td>—</td>
+                <td>2026-10-11</td>
+                <td><div class="row-actions"><button>view</button><button>publish</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot">
+            <span>7 of 1,842 packages</span>
+            <div class="pager">
+              <button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>…</button><button>264</button><button>›</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Recent activity</h3><a href="#" style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-2)">view all</a></div>
+          <div class="feed">
+            <div class="feed-item">
+              <div class="avatar">MK</div>
+              <div>
+                <p><b>Magnus Kiil</b> published Media Library Plus v5.0 with focus-point detection.</p>
+                <span class="time">12 min ago</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="avatar">SCN</div>
+              <div>
+                <p><b>Scanner</b> quarantined Approval Chains — postinstall script touched network.</p>
+                <span class="time">1 hr ago</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="avatar">JW</div>
+              <div>
+                <p><b>June Wexler</b> purchased Priority support for Editorial Newsroom.</p>
+                <span class="time">3 hrs ago</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="avatar">PAY</div>
+              <div>
+                <p>September payout run cleared — <b>$28,940</b> to 314 publishers.</p>
+                <span class="time">2026-10-24</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="avatar">TB</div>
+              <div>
+                <p><b>Tomasz Bak</b> submitted Asset Sync Bridge for exchange review.</p>
+                <span class="time">2026-10-23</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

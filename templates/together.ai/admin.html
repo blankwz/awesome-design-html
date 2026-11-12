@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Together AI — Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#000000;
+  --on-primary:#ffffff;
+  --ink:#000000;
+  --body:#959494;
+  --canvas:#ffffff;
+  --canvas-dark:#010120;
+  --surface-dark-soft:#26263a;
+  --surface-dark-soft-2:#313641;
+  --on-dark:#ffffff;
+  --accent-orange:#fc4c02;
+  --accent-magenta:#ef2cc1;
+  --accent-periwinkle:#bdbbff;
+  --accent-mint:#c8f6f9;
+  --hairline:#ebebeb;
+  --brand-gradient:linear-gradient(100deg,var(--accent-orange) 0%,var(--accent-magenta) 50%,var(--accent-periwinkle) 100%);
+  --ok-bg:#e2f5ec; --ok-tx:#0f6b46;
+  --warn-bg:#fdf3e0; --warn-tx:#9a6a12;
+  --bad-bg:#fbe9ec; --bad-tx:#a83a55;
+  --neu-bg:#f5f5f5; --neu-tx:#666;
+  --r-xs:3.25px; --r-sm:4px; --r-md:8px; --r-full:9999px;
+  --sh-orb:rgba(1,1,32,.1) 0px 4px 10px 0px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',Helvetica Neue,Arial,sans-serif;
+  font-weight:400;color:var(--ink);background:var(--canvas);
+  font-size:16px;line-height:1.3;letter-spacing:-.16px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.mono{font-family:'JetBrains Mono',monospace;text-transform:uppercase}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;color:var(--body)}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;letter-spacing:.08px;text-transform:uppercase;line-height:1;border-radius:var(--r-sm);padding:12px 24px;transition:background-color .18s,color .18s,border-color .18s}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:#1c1c1c}
+.btn-mint{background:var(--accent-mint);color:var(--ink)}
+.btn-mint:hover{background:#b3f0f4}
+.btn-outline{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r-xs)}
+.btn-outline:hover{border-color:var(--body)}
+
+/* ---------- Sidebar (dark) ---------- */
+.sidebar{background:var(--canvas-dark);color:var(--on-dark);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-brand{display:flex;align-items:center;gap:10px;padding:20px;font-size:16px;font-weight:500;letter-spacing:-.16px;border-bottom:1px solid var(--surface-dark-soft)}
+.logo-mark{width:24px;height:24px;border-radius:var(--r-sm);background:var(--brand-gradient);flex:none}
+.side-brand .tag{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.55px;text-transform:uppercase;color:#8a8aa8;border:1px solid var(--surface-dark-soft);border-radius:var(--r-xs);padding:2px 8px;margin-left:2px}
+.side-group{padding:20px 12px 4px}
+.side-label{font-family:'JetBrains Mono';font-size:10px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;color:#8a8aa8;padding:0 8px;margin-bottom:8px}
+.side-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r-sm);font-size:14px;color:#c5c5da;transition:background-color .15s,color .15s}
+.side-item:hover{background:rgba(255,255,255,.06);color:var(--on-dark)}
+.side-item.active{background:rgba(200,246,249,.1);color:var(--on-dark);box-shadow:inset 3px 0 0 var(--accent-mint)}
+.side-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;flex:none}
+.side-item .count{margin-left:auto;font-family:'JetBrains Mono';font-size:10px;background:rgba(255,255,255,.08);border-radius:var(--r-xs);padding:2px 8px;color:#c5c5da}
+.side-user{margin-top:auto;padding:16px;border-top:1px solid var(--surface-dark-soft);display:flex;gap:12px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:var(--r-sm);flex:none;display:grid;place-items:center;font-family:'JetBrains Mono';font-size:12px;font-weight:500;background:var(--brand-gradient);color:#fff}
+.side-user strong{display:block;font-size:14px;font-weight:500;color:var(--on-dark)}
+.side-user span{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.05px;text-transform:uppercase;color:#8a8aa8}
+
+/* ---------- Topbar ---------- */
+.topbar{background:var(--canvas);border-bottom:1px solid var(--hairline);padding:12px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:40}
+.crumbs{font-size:14px;color:var(--body)}
+.crumbs strong{color:var(--ink);font-weight:500}
+.crumbs span{margin:0 8px;color:var(--hairline)}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--hairline);border-radius:var(--r-sm);padding:8px 12px;width:300px;margin-left:auto;color:var(--body);transition:border-color .15s}
+.search:focus-within{border-color:var(--body)}
+.search input{border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink);background:transparent}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--hairline);display:grid;place-items:center;color:var(--ink);transition:border-color .15s}
+.icon-btn:hover{border-color:var(--body)}
+.icon-btn .dot{position:absolute;top:6px;right:6px;min-width:15px;height:15px;border-radius:var(--r-full);background:var(--accent-magenta);color:#fff;font-family:'JetBrains Mono';font-size:9px;display:grid;place-items:center;padding:0 3px}
+
+/* ---------- Content ---------- */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px;background:var(--canvas)}
+.page-head{display:flex;align-items:end;justify-content:space-between;gap:24px}
+.page-head h1{font-size:40px;font-weight:500;line-height:1.2;letter-spacing:-.8px}
+.page-head p{font-size:14px;color:var(--body);margin-top:6px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border:1px solid var(--hairline);border-radius:var(--r-sm);padding:24px}
+.kpi .label{font-family:'JetBrains Mono';font-size:10px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;color:var(--body)}
+.kpi .value{font-size:28px;font-weight:500;letter-spacing:-.42px;margin:10px 0 6px}
+.kpi .delta{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.05px;text-transform:uppercase;font-weight:500}
+.delta.up{color:var(--ok-tx)}
+.delta.down{color:var(--bad-tx)}
+.kpi .sub{font-size:12px;color:var(--body);margin-top:2px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:14px}
+.spark i{flex:1;background:var(--hairline);border-radius:2px 2px 0 0}
+.spark i.hi{background:var(--accent-magenta)}
+
+/* ---------- Charts ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{border:1px solid var(--hairline);border-radius:var(--r-sm);padding:24px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.panel-head h3{font-size:22px;font-weight:500;letter-spacing:-.22px}
+.panel-head .hint{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.05px;text-transform:uppercase;color:var(--body)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:36px;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--accent-periwinkle),var(--accent-magenta))}
+.bar-col.hi i{background:linear-gradient(180deg,var(--accent-magenta),var(--accent-orange))}
+.bar-col .v{font-family:'JetBrains Mono';font-size:10px;color:var(--body)}
+.bar-col .m{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.05px;text-transform:uppercase;color:var(--body)}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:18}
+.donut .c1{stroke:var(--ink);stroke-dasharray:250 660}
+.donut .c2{stroke:var(--accent-magenta);stroke-dasharray:172 660;stroke-dashoffset:-250}
+.donut .c3{stroke:var(--accent-periwinkle);stroke-dasharray:140 660;stroke-dashoffset:-422}
+.donut .c4{stroke:var(--hairline);stroke-dasharray:98 660;stroke-dashoffset:-562}
+.donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut-center strong{display:block;font-size:22px;font-weight:500;letter-spacing:-.22px}
+.donut-center span{font-family:'JetBrains Mono';font-size:9px;letter-spacing:.05px;text-transform:uppercase;color:var(--body)}
+.legend{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--body)}
+.legend .sw{width:10px;height:10px;border-radius:2px;flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:500}
+
+/* ---------- Table ---------- */
+.badge{display:inline-block;font-family:'JetBrains Mono';font-size:10px;font-weight:500;letter-spacing:.05px;text-transform:uppercase;border-radius:var(--r-xs);padding:3px 8px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-family:'JetBrains Mono';font-size:10px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;color:var(--body);background:var(--hairline);padding:12px 16px}
+td{padding:12px 16px;border-bottom:1px solid var(--hairline)}
+td.strong{font-weight:500}
+.row-act{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.05px;text-transform:uppercase;border:1px solid var(--hairline);border-radius:var(--r-xs);padding:6px 10px;color:var(--ink);transition:border-color .15s}
+.row-act:hover{border-color:var(--body)}
+
+/* ---------- Feed + settings ---------- */
+.feed-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--hairline)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:32px;height:32px;border-radius:var(--r-sm);flex:none;display:grid;place-items:center;font-family:'JetBrains Mono';font-size:11px}
+.feed-item p{font-size:13px;line-height:1.5;color:var(--body)}
+.feed-item strong{color:var(--ink);font-weight:500}
+.feed-item em{font-style:normal;font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;color:var(--body);display:block;margin-top:2px}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
+.field input,.field select{border:1px solid var(--hairline);border-radius:var(--r-sm);padding:10px 12px;font-family:inherit;font-size:14px;font-weight:400;color:var(--ink);outline:none;background:var(--canvas);transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:var(--ink)}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--hairline)}
+.setting-row:last-of-type{border-bottom:none}
+.setting-row .t{font-size:14px;font-weight:500}
+.setting-row .d{font-size:12px;color:var(--body)}
+.toggle{width:38px;height:22px;border-radius:var(--r-sm);background:var(--hairline);position:relative;flex:none;transition:background-color .15s}
+.toggle i{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:var(--r-xs);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15);transition:left .15s}
+.toggle.on{background:var(--primary)}
+.toggle.on i{left:19px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="side-brand"><span class="logo-mark"></span>together.ai<span class="tag">Console</span></div>
+    <nav class="side-group">
+      <p class="side-label">Platform</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Overview</a>
+      <a class="side-item active" href="#"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg>Endpoints<span class="count">14</span></a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4V2M15 4V2M9 22v-2M15 22v-2M4 9H2M4 15H2M22 9h-2M22 15h-2"/></svg>GPU clusters</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Fine-tuning<span class="count">2</span></a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Operations</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>Logs</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 5-6"/></svg>Usage &amp; billing</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>Rate limits</a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Settings</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>Org settings</a>
+    </nav>
+    <div class="side-user">
+      <span class="avatar">PR</span>
+      <div><strong>Priya Raman</strong><span>Lumen Retail · Admin</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div>
+    <header class="topbar">
+      <div class="crumbs">Console <span>/</span> <strong>Endpoints</strong></div>
+      <label class="search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search endpoints, models, regions">
+      </label>
+      <button class="icon-btn" aria-label="Alerts">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot">2</span>
+      </button>
+      <span class="avatar" style="width:34px;height:34px;font-size:11px">PR</span>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Endpoints</h1>
+          <p>prod-eu-west-1 · billing cycle day 26 of 30</p>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn btn-outline">Export usage</button>
+          <button class="btn btn-primary">New endpoint</button>
+        </div>
+      </div>
+      <!-- ============ KPI ROW ============ -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="label">Requests (24h)</p>
+          <p class="value">41.2M</p>
+          <p class="delta up">↑ 7.4% vs yesterday</p>
+          <p class="sub">Peak 2.1k req/s</p>
+          <div class="spark"><i style="height:32%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:72%"></i><i class="hi" style="height:100%"></i><i style="height:68%"></i><i style="height:78%"></i><i style="height:86%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Spend (MTD)</p>
+          <p class="value">$31.4k</p>
+          <p class="delta up">↑ 4.1% vs Oct run-rate</p>
+          <p class="sub">92% on dedicated</p>
+          <div class="spark"><i style="height:36%"></i><i style="height:40%"></i><i class="hi" style="height:94%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:68%"></i><i style="height:64%"></i><i style="height:74%"></i><i style="height:70%"></i><i style="height:80%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">p50 latency</p>
+          <p class="value">184 ms</p>
+          <p class="delta up">↓ 11 ms faster</p>
+          <p class="sub">p99 612 ms</p>
+          <div class="spark"><i style="height:86%"></i><i style="height:80%"></i><i style="height:82%"></i><i style="height:72%"></i><i style="height:74%"></i><i style="height:62%"></i><i style="height:58%"></i><i style="height:54%"></i><i style="height:46%"></i><i class="hi" style="height:30%"></i><i style="height:38%"></i><i style="height:34%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Error rate</p>
+          <p class="value">0.04%</p>
+          <p class="delta down">↑ 0.01% vs yesterday</p>
+          <p class="sub">SLO 99.9% · met</p>
+          <div class="spark"><i style="height:24%"></i><i style="height:30%"></i><i style="height:26%"></i><i style="height:42%"></i><i style="height:36%"></i><i style="height:48%"></i><i class="hi" style="height:92%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:38%"></i></div>
+        </div>
+      </section>
+
+      <!-- ============ CHARTS ============ -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head"><h3>Tokens served by month</h3><span class="hint">2026 · all endpoints</span></div>
+          <div class="bars">
+            <div class="bar-col"><span class="v">3.1B</span><i style="height:30%"></i><span class="m">Nov</span></div>
+            <div class="bar-col"><span class="v">4.4B</span><i style="height:42%"></i><span class="m">Dec</span></div>
+            <div class="bar-col"><span class="v">2.8B</span><i style="height:27%"></i><span class="m">Jan</span></div>
+            <div class="bar-col"><span class="v">3.6B</span><i style="height:35%"></i><span class="m">Feb</span></div>
+            <div class="bar-col"><span class="v">4.0B</span><i style="height:39%"></i><span class="m">Mar</span></div>
+            <div class="bar-col"><span class="v">4.8B</span><i style="height:47%"></i><span class="m">Apr</span></div>
+            <div class="bar-col"><span class="v">5.5B</span><i style="height:54%"></i><span class="m">May</span></div>
+            <div class="bar-col"><span class="v">5.1B</span><i style="height:50%"></i><span class="m">Jun</span></div>
+            <div class="bar-col"><span class="v">6.2B</span><i style="height:61%"></i><span class="m">Jul</span></div>
+            <div class="bar-col"><span class="v">7.0B</span><i style="height:69%"></i><span class="m">Aug</span></div>
+            <div class="bar-col"><span class="v">6.6B</span><i style="height:65%"></i><span class="m">Sep</span></div>
+            <div class="bar-col hi"><span class="v">8.9B</span><i style="height:94%"></i><span class="m">Oct</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Spend by product</h3><span class="hint">MTD share</span></div>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="105" stroke="var(--hairline)" stroke-width="18"></circle>
+                <circle class="c1" cx="110" cy="110" r="105"></circle>
+                <circle class="c2" cx="110" cy="110" r="105"></circle>
+                <circle class="c3" cx="110" cy="110" r="105"></circle>
+                <circle class="c4" cx="110" cy="110" r="105"></circle>
+              </svg>
+              <div class="donut-center"><div><strong>$31.4k</strong><span>MTD spend</span></div></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:var(--ink)"></span>Dedicated endpoints<b>38%</b></div>
+              <div class="row"><span class="sw" style="background:var(--accent-magenta)"></span>Serverless tokens<b>26%</b></div>
+              <div class="row"><span class="sw" style="background:var(--accent-periwinkle)"></span>GPU clusters<b>21%</b></div>
+              <div class="row"><span class="sw" style="background:var(--hairline)"></span>Fine-tuning<b>15%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TABLE + SIDE PANELS ============ -->
+      <section style="display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start">
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="panel-head" style="padding:24px 24px 16px;margin-bottom:0">
+            <h3>Endpoints</h3>
+            <span class="hint">Showing 8 of 14</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px"><input type="checkbox" style="accent-color:var(--primary)"></th>
+                <th>Endpoint</th>
+                <th>Model</th>
+                <th>Status</th>
+                <th>Tokens (24h)</th>
+                <th>Updated</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">prod-chat-eu</td><td>DeepSeek V3</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Healthy</span></td><td>8.4M</td><td>2 min</td><td style="text-align:right"><button class="row-act">Manage</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">prod-chat-us</td><td>Llama 3.3 70B</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Healthy</span></td><td>12.1M</td><td>2 min</td><td style="text-align:right"><button class="row-act">Manage</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">embed-rerank</td><td>M2-BERT 8k</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Healthy</span></td><td>9.8M</td><td>4 min</td><td style="text-align:right"><button class="row-act">Manage</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">img-gen-batch</td><td>FLUX.1 schnell</td><td><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">Scaling</span></td><td>3.2M</td><td>6 min</td><td style="text-align:right"><button class="row-act">Manage</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">vision-ocr-eu</td><td>Llama 3.2 Vision 11B</td><td><span class="badge" style="background:var(--bad-bg);color:var(--bad-tx)">Degraded</span></td><td>1.1M</td><td>9 min</td><td style="text-align:right"><button class="row-act">Inspect</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">audio-stt-us</td><td>DeepDistil Whisper</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Healthy</span></td><td>2.6M</td><td>12 min</td><td style="text-align:right"><button class="row-act">Manage</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">ft-support-1743</td><td>Llama 3.3 70B · FT</td><td><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx)">Training</span></td><td>—</td><td>18 min</td><td style="text-align:right"><button class="row-act">Logs</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">staging-sandbox</td><td>Qwen 2.5 72B</td><td><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx)">Paused</span></td><td>—</td><td>2 d</td><td style="text-align:right"><button class="row-act">Resume</button></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--hairline);font-size:14px;color:var(--body)">
+            <span>Page 1 of 2</span>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline" disabled style="opacity:.5;cursor:default">Previous</button>
+              <button class="btn btn-outline">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Activity feed -->
+          <div class="panel">
+            <div class="panel-head"><h3>Activity</h3><span class="hint">live</span></div>
+            <div class="feed-item" style="padding-top:0">
+              <span class="feed-dot" style="background:var(--accent-mint)">AU</span>
+              <p>Autoscaler added <strong>4 H200s</strong> to prod-chat-us <em>3 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot" style="background:var(--bad-bg);color:var(--bad-tx)">!</span>
+              <p><strong>vision-ocr-eu</strong> breached p99 for 4 minutes <em>9 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot" style="background:var(--accent-periwinkle)">FT</span>
+              <p>Fine-tune <strong>ft-support-1743</strong> reached step 12k/20k <em>18 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot" style="background:var(--surface-dark-soft-2);color:#fff">KEY</span>
+              <p>New API key <strong>ci-runner-prod</strong> created by dev-ops <em>1 hr ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot" style="background:var(--hairline)">BK</span>
+              <p>Monthly invoice preview ready — <strong>$31.4k MTD</strong> <em>2 hrs ago</em></p>
+            </div>
+          </div>
+
+          <!-- Quick settings -->
+          <div class="panel">
+            <div class="panel-head"><h3>Quick settings</h3></div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:8px">
+              <label class="field">Default region
+                <select><option>eu-west-1 (current)</option><option>us-central-1</option><option>ap-south-1</option></select>
+              </label>
+              <label class="field">Monthly spend cap
+                <input type="text" value="$40,000">
+              </label>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Auto-scale dedicated GPUs</p><p class="d">2–32 replicas per endpoint</p></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Spend-cap alerts</p><p class="d">Email at 80% and 95%</p></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row" style="border-bottom:none">
+              <div><p class="t">Zero-retention logging</p><p class="d">Drop prompts after 30 days</p></div>
+              <span class="toggle"><i></i></span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:16px">Save changes</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

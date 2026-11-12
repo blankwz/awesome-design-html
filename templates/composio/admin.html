@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composio — Admin Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0007cd; --primary-active:#0005a3; --primary-glow:#1a26ff;
+  --ink:#ffffff; --body:#a8a8a8; --body-strong:#ffffff; --muted:#888888; --muted-soft:#666666;
+  --hairline:#222222; --hairline-soft:#1a1a1a; --hairline-strong:#333333;
+  --canvas:#0f0f0f; --canvas-deep:#000000; --surface-card:#181818; --surface-card-elevated:#222222; --surface-strong:#2a2a2a;
+  --on-primary:#ffffff; --accent-cyan:#00d4ff; --accent-violet:#7b3aed;
+  --semantic-error:#ff4d4d; --semantic-success:#33d17a; --semantic-warning:#f4b000;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-base:16px; --s-md:20px; --s-lg:24px; --s-xl:32px; --s-xxl:48px;
+  --font-sans:'Inter',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--canvas);color:var(--body-strong);font-size:16px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+/* ── Sidebar ── */
+.sidebar{background:var(--canvas-deep);border-right:1px solid var(--hairline-soft);padding:var(--s-lg);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.sb-brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:17px;color:var(--ink);padding:4px 8px var(--s-lg)}
+.sb-brand .glyph{width:26px;height:26px;border-radius:var(--r-md);background:var(--primary);position:relative;box-shadow:0 0 16px rgba(26,38,255,.6)}
+.sb-brand .glyph::after{content:"";position:absolute;inset:7px;border-radius:3px;background:var(--canvas-deep)}
+.sb-label{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);padding:var(--s-base) 8px 8px}
+.sb-menu{list-style:none;display:flex;flex-direction:column;gap:2px}
+.sb-menu a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-md);font-size:14px;font-weight:500;color:var(--body)}
+.sb-menu a svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
+.sb-menu a:hover{background:var(--surface-card)}
+.sb-menu a.active{background:var(--surface-card-elevated);color:var(--ink)}
+.sb-menu .cnt{margin-left:auto;font-size:11px;font-family:var(--font-mono);background:var(--surface-card-elevated);border-radius:var(--r-pill);padding:2px 8px;color:var(--body)}
+.sb-menu a.active .cnt{color:var(--ink)}
+.sb-user{margin-top:auto;display:flex;align-items:center;gap:10px;background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);padding:10px}
+.avatar{width:34px;height:34px;border-radius:var(--r-md);background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.sb-user .who{flex:1;min-width:0}
+.sb-user .who b{display:block;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-user .who span{font-size:12px;color:var(--muted)}
+.sb-user .st{width:8px;height:8px;border-radius:var(--r-pill);background:var(--semantic-success)}
+/* ── Topbar ── */
+.topbar{height:64px;background:var(--canvas);border-bottom:1px solid var(--hairline-soft);display:flex;align-items:center;gap:var(--s-lg);padding:0 var(--s-xl);position:sticky;top:0;z-index:40}
+.crumb{font-size:14px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:500}
+.tb-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);height:40px;padding:10px 16px;width:280px;font-size:14px;color:var(--muted)}
+.tb-search input{border:none;background:transparent;outline:none;font:inherit;width:100%;color:var(--ink)}
+.tb-icon{position:relative;width:40px;height:40px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;cursor:pointer;background:transparent}
+.tb-icon svg{width:19px;height:19px;stroke:var(--body);fill:none;stroke-width:1.6}
+.tb-icon .dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:var(--r-pill);background:var(--primary-glow)}
+.btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;border:none;cursor:pointer;border-radius:var(--r-md);height:40px;padding:10px 18px;font-family:var(--font-sans)}
+.btn-primary{background:var(--primary);color:var(--on-primary);box-shadow:0 0 20px rgba(26,38,255,.3)}
+.btn-primary:active{background:var(--primary-active)}
+.btn-secondary{background:var(--surface-card-elevated);color:var(--body-strong)}
+.btn-sm{height:36px;padding:8px 14px}
+/* ── Main ── */
+main{padding:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-lg);max-width:1400px}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-base);flex-wrap:wrap}
+.page-head h1{font-size:32px;font-weight:500;letter-spacing:-.96px;color:var(--ink)}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-base)}
+.kpi{background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-xl);padding:var(--s-lg)}
+.kpi .lab{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-family:var(--font-mono);font-size:26px;color:var(--ink);margin:6px 0}
+.kpi .foot{display:flex;align-items:center;justify-content:space-between}
+.delta{font-size:13px;font-weight:500}
+.delta.up{color:var(--semantic-success)} .delta.down{color:var(--semantic-error)}
+.kpi .spark{width:92px;height:26px}
+.kpi .spark svg{width:92px;height:26px;display:block}
+/* Charts */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-base)}
+.card{background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-xl);padding:var(--s-xl)}
+.card h3{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.card .sub{font-size:13px;color:var(--muted);margin-bottom:var(--s-lg)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:34px;background:var(--surface-card-elevated);border-radius:6px 6px 2px 2px;border:1px solid var(--hairline)}
+.bar.hot{background:linear-gradient(180deg,var(--primary-glow),var(--primary));border-color:var(--primary-glow)}
+.bar-col span{font-size:11px;color:var(--muted)}
+.donut-wrap{display:flex;align-items:center;gap:var(--s-lg)}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:18}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center b{font-family:var(--font-mono);font-size:22px;color:var(--ink)}
+.donut .center span{font-size:12px;color:var(--muted)}
+.legend{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
+.legend li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--body)}
+.legend .sw{width:10px;height:10px;border-radius:var(--r-pill);flex:none}
+.legend .pv{margin-left:auto;font-family:var(--font-mono);color:var(--ink)}
+/* Table + feed */
+.duo{display:grid;grid-template-columns:1.8fr 1fr;gap:var(--s-base);align-items:start}
+.tbl-tools{display:flex;align-items:center;gap:var(--s-sm);margin-bottom:var(--s-base)}
+.mini-input{width:100%;height:36px;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:8px 12px;font:inherit;font-size:13px;color:var(--ink);outline:none;background:var(--canvas)}
+.mini-input:focus{border-color:var(--primary-glow)}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--hairline)}
+td{font-size:14px;color:var(--body-strong);padding:13px 12px;border-bottom:1px solid var(--hairline-soft);vertical-align:middle}
+tbody tr:hover{background:var(--surface-card)}
+.name-cell{display:flex;align-items:center;gap:10px}
+.name-cell .ic{width:32px;height:32px;border-radius:var(--r-md);background:var(--surface-card-elevated);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink);flex:none}
+.name-cell b{display:block;font-weight:600;font-size:14px;color:var(--ink)}
+.name-cell span{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+.badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border-radius:var(--r-pill);padding:3px 9px}
+.b-success{background:rgba(51,209,122,.12);color:var(--semantic-success)}
+.b-warning{background:rgba(244,176,0,.12);color:var(--semantic-warning)}
+.b-danger{background:rgba(255,77,77,.12);color:var(--semantic-error)}
+.b-neutral{background:var(--surface-card-elevated);color:var(--body)}
+.acts{display:flex;gap:6px;justify-content:flex-end}
+.acts button{width:30px;height:30px;border-radius:var(--r-md);border:1px solid var(--hairline-strong);background:var(--canvas);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.acts button svg{width:14px;height:14px;stroke:var(--body);fill:none;stroke-width:1.7}
+.acts button:hover{background:var(--surface-card-elevated)}
+.pager{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s-base);font-size:13px;color:var(--muted)}
+.pager .pages{display:flex;gap:4px}
+.pager button{min-width:30px;height:30px;border:1px solid var(--hairline-strong);border-radius:var(--r-md);background:var(--canvas);font:inherit;font-size:13px;color:var(--body-strong);cursor:pointer;padding:0 8px}
+.pager button.on{background:var(--primary);border-color:var(--primary);color:#fff}
+input[type=checkbox]{width:15px;height:15px;accent-color:var(--primary-glow);cursor:pointer}
+/* Activity feed */
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed li{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--hairline-soft)}
+.feed li:last-child{border-bottom:none}
+.feed .adot{width:30px;height:30px;border-radius:var(--r-md);flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff}
+.feed p{font-size:13px;color:var(--body)}
+.feed p b{color:var(--ink);font-weight:500}
+.feed time{font-size:12px;color:var(--muted)}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .kpis{grid-template-columns:1fr 1fr}
+  .charts,.duo{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-brand"><span class="glyph"></span>composio<span style="font-weight:400;color:var(--muted);font-size:12px;margin-left:auto">ADMIN</span></div>
+    <div class="sb-label">Overview</div>
+    <ul class="sb-menu">
+      <li><a href="#"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a></li>
+      <li><a href="#" class="active"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Subscriptions<span class="cnt">312</span></a></li>
+      <li><a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Workspaces</a></li>
+      <li><a href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10"/></svg>Toolkits<span class="cnt">256</span></a></li>
+    </ul>
+    <div class="sb-label">Platform</div>
+    <ul class="sb-menu">
+      <li><a href="#"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>Usage &amp; billing</a></li>
+      <li><a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Triggers log</a></li>
+      <li><a href="#"><svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg>Auth &amp; secrets</a></li>
+    </ul>
+    <div class="sb-label">Admin</div>
+    <ul class="sb-menu">
+      <li><a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 01-.1 1.2l2 1.6-2 3.4-2.4-1a7 7 0 01-2 1.2L14 21h-4l-.4-2.6a7 7 0 01-2-1.2l-2.4 1-2-3.4 2-1.6A7 7 0 015 12"/></svg>Settings</a></li>
+    </ul>
+    <div class="sb-user">
+      <span class="avatar">DK</span>
+      <div class="who"><b>Dev Kapoor</b><span>Platform admin</span></div>
+      <span class="st" title="Online"></span>
+    </div>
+  </aside>
+
+  <div>
+    <!-- Topbar -->
+    <header class="topbar">
+      <span class="crumb">Platform / <b>Subscriptions</b></span>
+      <label class="tb-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="text" placeholder="Search workspaces, toolkits, keys">
+      </label>
+      <button class="tb-icon" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="avatar" style="background:var(--surface-card-elevated);color:var(--ink)">DK</span>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1>Subscriptions</h1>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary btn-sm">Export</button>
+          <button class="btn btn-primary btn-sm">New workspace</button>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <section class="kpis">
+        <div class="kpi">
+          <div class="lab">MRR</div>
+          <div class="val">$184.2K</div>
+          <div class="foot">
+            <span class="delta up">▲ 7.2% MoM</span>
+            <span class="spark"><svg viewBox="0 0 92 26"><path d="M0 20 L12 17 L24 19 L36 13 L48 15 L60 9 L72 11 L84 6 L92 4" fill="none" stroke="#33d17a" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="lab">Active workspaces</div>
+          <div class="val">6,140</div>
+          <div class="foot">
+            <span class="delta up">▲ 214 this week</span>
+            <span class="spark"><svg viewBox="0 0 92 26"><path d="M0 18 L12 19 L24 15 L36 17 L48 12 L60 14 L72 9 L84 11 L92 7" fill="none" stroke="#33d17a" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="lab">Actions / day</div>
+          <div class="val">38.4M</div>
+          <div class="foot">
+            <span class="delta up">▲ 12.6% WoW</span>
+            <span class="spark"><svg viewBox="0 0 92 26"><path d="M0 22 L12 18 L24 20 L36 14 L48 16 L60 10 L72 12 L84 7 L92 5" fill="none" stroke="#33d17a" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="lab">Churn rate</div>
+          <div class="val">1.8%</div>
+          <div class="foot">
+            <span class="delta down">▲ 0.3pt vs Q2</span>
+            <span class="spark"><svg viewBox="0 0 92 26"><path d="M0 14 L12 12 L24 15 L36 13 L48 16 L60 15 L72 18 L84 17 L92 19" fill="none" stroke="#ff4d4d" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts -->
+      <section class="charts">
+        <div class="card">
+          <h3>Actions executed</h3>
+          <p class="sub">Millions of toolkit actions per month, trailing 12 months</p>
+          <div class="bars">
+            <div class="bar-col"><div class="bar" style="height:34%"></div><span>Nov</span></div>
+            <div class="bar-col"><div class="bar" style="height:40%"></div><span>Dec</span></div>
+            <div class="bar-col"><div class="bar" style="height:36%"></div><span>Jan</span></div>
+            <div class="bar-col"><div class="bar" style="height:48%"></div><span>Feb</span></div>
+            <div class="bar-col"><div class="bar" style="height:52%"></div><span>Mar</span></div>
+            <div class="bar-col"><div class="bar" style="height:58%"></div><span>Apr</span></div>
+            <div class="bar-col"><div class="bar" style="height:55%"></div><span>May</span></div>
+            <div class="bar-col"><div class="bar" style="height:66%"></div><span>Jun</span></div>
+            <div class="bar-col"><div class="bar" style="height:70%"></div><span>Jul</span></div>
+            <div class="bar-col"><div class="bar" style="height:78%"></div><span>Aug</span></div>
+            <div class="bar-col"><div class="bar" style="height:86%"></div><span>Sep</span></div>
+            <div class="bar-col"><div class="bar hot" style="height:96%"></div><span>Oct</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Traffic by toolkit family</h3>
+          <p class="sub">Share of actions, last 30 days</p>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="64" stroke="#222222"/>
+                <circle cx="80" cy="80" r="64" stroke="#1a26ff" stroke-dasharray="188 402" stroke-dashoffset="0"/>
+                <circle cx="80" cy="80" r="64" stroke="#00d4ff" stroke-dasharray="100 402" stroke-dashoffset="-188"/>
+                <circle cx="80" cy="80" r="64" stroke="#7b3aed" stroke-dasharray="72 402" stroke-dashoffset="-288"/>
+                <circle cx="80" cy="80" r="64" stroke="#666666" stroke-dasharray="42 402" stroke-dashoffset="-360"/>
+              </svg>
+              <div class="center"><b>38.4M</b><span>actions/mo</span></div>
+            </div>
+            <ul class="legend">
+              <li><span class="sw" style="background:#1a26ff"></span>Dev tools<span class="pv">47%</span></li>
+              <li><span class="sw" style="background:#00d4ff"></span>Communication<span class="pv">25%</span></li>
+              <li><span class="sw" style="background:#7b3aed"></span>Data &amp; AI<span class="pv">18%</span></li>
+              <li><span class="sw" style="background:#666666"></span>Other<span class="pv">10%</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Table + activity -->
+      <section class="duo">
+        <div class="card">
+          <h3>Recent subscriptions</h3>
+          <p class="sub">Latest 8 workspace subscriptions</p>
+          <div class="tbl-tools">
+            <div style="flex:1;max-width:260px"><input class="mini-input" type="text" placeholder="Filter subscriptions…"></div>
+            <button class="btn btn-secondary btn-sm">Plan: All</button>
+            <button class="btn btn-secondary btn-sm">Status: All</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th></th><th>Workspace</th><th>Toolkits</th><th>Plan</th><th>Status</th><th>MRR</th><th>Renews</th><th style="text-align:right">Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">NL</span><span><b>Nimbus Labs</b><span>ws-nimbus-prod</span></span></div></td>
+                <td>GitHub, Slack</td><td>Pro</td><td><span class="badge b-success">Active</span></td><td class="mono">$250.00</td><td>Nov 18, 2026</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">AX</span><span><b>Axiom Robotics</b><span>ws-axiom-01</span></span></div></td>
+                <td>Stripe, Gmail, Jira</td><td>Enterprise</td><td><span class="badge b-success">Active</span></td><td class="mono">$1,900.00</td><td>Dec 02, 2026</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">FB</span><span><b>Fieldbook AI</b><span>ws-fieldbook</span></span></div></td>
+                <td>Notion, Postgres</td><td>Free</td><td><span class="badge b-warning">Trial ends 3d</span></td><td class="mono">$0.00</td><td>Oct 29, 2026</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">HG</span><span><b>Hopper &amp; Grey</b><span>ws-hopper-prod</span></span></div></td>
+                <td>Slack, Linear</td><td>Pro</td><td><span class="badge b-danger">Past due</span></td><td class="mono">$250.00</td><td>Oct 12, 2026</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">VB</span><span><b>Vantera Bio</b><span>ws-vantera</span></span></div></td>
+                <td>Postgres, Jira</td><td>Enterprise</td><td><span class="badge b-success">Active</span></td><td class="mono">$2,400.00</td><td>Jan 09, 2027</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">KW</span><span><b>Kitewire</b><span>ws-kitewire-dev</span></span></div></td>
+                <td>GitHub</td><td>Pro</td><td><span class="badge b-neutral">Cancelled</span></td><td class="mono">$0.00</td><td>—</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">SM</span><span><b>Summit Metrics</b><span>ws-summit</span></span></div></td>
+                <td>Gmail, Notion, Stripe</td><td>Pro</td><td><span class="badge b-success">Active</span></td><td class="mono">$250.00</td><td>Nov 25, 2026</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select"></td>
+                <td><div class="name-cell"><span class="ic">OR</span><span><b>Orbital Freight</b><span>ws-orbital</span></span></div></td>
+                <td>Slack, Postgres</td><td>Pro</td><td><span class="badge b-warning">Review</span></td><td class="mono">$250.00</td><td>Nov 05, 2026</td>
+                <td><div class="acts"><button title="View"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button><button title="More"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span>Showing 1–8 of 6,140 workspaces</span>
+            <div class="pages">
+              <button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>›</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Platform activity</h3>
+          <p class="sub">Auth, trigger and billing events — live</p>
+          <ul class="feed">
+            <li>
+              <span class="adot" style="background:#33d17a">OA</span>
+              <div><p><b>Axiom Robotics</b> connected 3 new Stripe accounts via managed OAuth.</p><time>6 min ago</time></div>
+            </li>
+            <li>
+              <span class="adot" style="background:#1a26ff">TG</span>
+              <div><p>Trigger <b>github.pr.opened</b> fired 41,209 times in the last hour (p99 210ms).</p><time>23 min ago</time></div>
+            </li>
+            <li>
+              <span class="adot" style="background:#f4b000">BL</span>
+              <div><p><b>Hopper &amp; Grey</b> payment retry 2/4 failed — card declined.</p><time>48 min ago</time></div>
+            </li>
+            <li>
+              <span class="adot" style="background:#7b3aed">TK</span>
+              <div><p>New toolkit <b>HubSpot v2</b> published to the marketplace (34 actions).</p><time>2 hrs ago</time></div>
+            </li>
+            <li>
+              <span class="adot" style="background:#ff4d4d">SC</span>
+              <div><p>Token refresh failing for 12 <b>Salesforce</b> connections — expiry policy updated.</p><time>4 hrs ago</time></div>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

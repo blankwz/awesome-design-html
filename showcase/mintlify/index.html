@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mintlify — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* colors */
+    --c-primary:#0a0a0a; --c-on-primary:#ffffff; --c-charcoal:#1c1c1e;
+    --c-brand-green:#00d4a4; --c-brand-green-deep:#00b48a; --c-brand-green-soft:#7cebcb;
+    --c-brand-tag:#3772cf; --c-brand-warn:#c37d0d; --c-brand-annotate:#1ba673; --c-brand-error:#d45656;
+    --c-hero-sky-from:#87a8c8; --c-hero-sky-to:#f5e9d8;
+    --c-hero-dark-from:#1a3d4a; --c-hero-dark-to:#2d5a4f;
+    --c-testimonial-orange:#f55a3c; --c-testimonial-orange-deep:#cc3a1f;
+    --c-canvas:#ffffff; --c-canvas-dark:#0a0a0a; --c-surface:#f7f7f7; --c-surface-soft:#fafafa;
+    --c-surface-code:#1c1c1e; --c-hairline:#e5e5e5; --c-hairline-soft:#ededed; --c-hairline-dark:#1f1f1f;
+    --c-ink:#0a0a0a; --c-slate:#3a3a3c; --c-steel:#5a5a5c; --c-stone:#888888; --c-muted:#a8a8aa;
+    --c-on-dark:#ffffff; --c-on-dark-muted:#b3b3b3;
+    /* radii */
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-xxl:24px; --r-full:9999px;
+    /* spacing */
+    --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:20px; --s-xl:24px;
+    --s-xxl:32px; --s-xxxl:40px; --s-section-sm:48px; --s-section:64px; --s-section-lg:96px; --s-hero:120px;
+    /* type */
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);color:var(--c-ink);background:var(--c-canvas);font-size:16px;line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  .sg-container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+
+  /* ===== Banner ===== */
+  .sg-banner{background:var(--c-canvas-dark);color:var(--c-on-dark);position:sticky;top:0;z-index:50}
+  .sg-banner-inner{max-width:1280px;margin:0 auto;padding:var(--s-md) var(--s-xxl);display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap}
+  .sg-banner-left{display:flex;align-items:baseline;gap:var(--s-md)}
+  .sg-banner-folder{font-family:var(--mono);font-size:12px;color:var(--c-stone)}
+  .sg-banner-name{font-size:20px;font-weight:600;letter-spacing:-0.5px}
+  .sg-banner-desc{font-size:12px;color:var(--c-on-dark-muted);font-weight:400}
+
+  /* ===== Section scaffolding ===== */
+  .sg-section-label{font-size:14px;font-weight:600;color:var(--c-stone);text-transform:uppercase;letter-spacing:1px;margin:var(--s-section-lg) 0 var(--s-xl)}
+  .sg-section-label:first-child{margin-top:var(--s-section)}
+  .sg-sub{margin-bottom:var(--s-xxl)}
+  .sg-sub-label{font-size:13px;font-weight:500;color:var(--c-steel);margin-bottom:var(--s-base)}
+  .sg-panel{background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-lg);padding:var(--s-xl)}
+
+  /* ===== Colors ===== */
+  .swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s-md)}
+  .swatch{border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden}
+  .swatch-chip{height:64px}
+  .swatch-meta{padding:var(--s-sm) var(--s-md);font-size:12px}
+  .swatch-name{font-weight:600;display:block}
+  .swatch-hex{color:var(--c-steel);font-family:var(--mono)}
+
+  /* ===== Typography ===== */
+  .type-row{padding:var(--s-base) 0;border-bottom:1px solid var(--c-hairline-soft);display:flex;align-items:baseline;gap:var(--s-lg);flex-wrap:wrap}
+  .type-row:last-child{border-bottom:none}
+  .type-token{font-family:var(--mono);font-size:11px;color:var(--c-stone);min-width:190px;flex-shrink:0}
+  .t-hero{font-size:72px;font-weight:600;line-height:1.05;letter-spacing:-2px}
+  .t-display{font-size:56px;font-weight:600;line-height:1.1;letter-spacing:-1.5px}
+  .t-h1{font-size:48px;font-weight:600;line-height:1.1;letter-spacing:-1px}
+  .t-h2{font-size:36px;font-weight:600;line-height:1.2;letter-spacing:-0.5px}
+  .t-h3{font-size:28px;font-weight:600;line-height:1.25}
+  .t-h4{font-size:22px;font-weight:600;line-height:1.3}
+  .t-h5{font-size:18px;font-weight:600;line-height:1.4}
+  .t-sub{font-size:18px;font-weight:400;line-height:1.5;color:var(--c-slate)}
+  .t-body{font-size:16px;font-weight:400;line-height:1.5;color:var(--c-charcoal)}
+  .t-sm{font-size:14px;font-weight:400;line-height:1.5;color:var(--c-steel)}
+  .t-cap{font-size:13px;font-weight:400;line-height:1.4;color:var(--c-stone)}
+  code.sg-code{font-family:var(--mono);font-size:13px;font-weight:500;background:var(--c-surface);border:1px solid var(--c-hairline);color:var(--c-charcoal);border-radius:var(--r-xs);padding:2px 6px}
+
+  /* ===== Buttons ===== */
+  .btn-row{display:flex;gap:var(--s-md);flex-wrap:wrap;align-items:center;margin-bottom:var(--s-lg)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;line-height:1.3;border-radius:var(--r-full);cursor:pointer;border:none;transition:background-color .18s ease,color .18s ease,border-color .18s ease;font-family:var(--font)}
+  .btn-primary{background:var(--c-primary);color:var(--c-on-primary);padding:10px 20px}
+  .btn-primary:hover{background:var(--c-charcoal)}
+  .btn-primary:disabled{background:var(--c-hairline);color:var(--c-muted);cursor:not-allowed}
+  .btn-green{background:var(--c-brand-green);color:var(--c-primary);padding:10px 20px}
+  .btn-green:hover{background:var(--c-brand-green-deep)}
+  .btn-on-dark{background:var(--c-on-dark);color:var(--c-primary);padding:10px 20px}
+  .btn-secondary{background:transparent;color:var(--c-ink);padding:9px 19px;border:1px solid var(--c-hairline)}
+  .btn-secondary:hover{border-color:var(--c-stone)}
+  .btn-ghost{background:transparent;color:var(--c-ink);padding:8px 12px;border-radius:var(--r-md)}
+  .btn-ghost:hover{background:var(--c-surface)}
+  .btn-link{background:transparent;color:var(--c-ink);font-size:14px;font-weight:500;padding:0;text-decoration:underline;text-underline-offset:3px}
+  .btn-icon{width:32px;height:32px;border-radius:var(--r-full);background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline);display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+  .btn-lg{padding:12px 24px;font-size:15px}
+
+  /* ===== Inputs ===== */
+  .input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-xl)}
+  .field-label{display:block;font-size:14px;font-weight:500;margin-bottom:var(--s-xs)}
+  .text-input{width:100%;background:var(--c-canvas);color:var(--c-ink);font-size:16px;font-family:var(--font);border:1px solid var(--c-hairline);border-radius:var(--r-md);padding:0 var(--s-md);height:40px;outline:none;transition:border-color .15s ease}
+  .text-input:focus{border:2px solid var(--c-brand-green);padding:0 15px}
+  .text-input-error{border:1px solid var(--c-brand-error)}
+  .field-error{font-size:14px;color:var(--c-brand-error);margin-top:var(--s-xxs)}
+  .text-input:disabled{background:var(--c-surface);color:var(--c-muted);cursor:not-allowed}
+  select.text-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5a5c' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+  .search-pill{display:inline-flex;align-items:center;gap:var(--s-sm);background:var(--c-surface);color:var(--c-steel);font-size:14px;border-radius:var(--r-md);padding:0 var(--s-md);height:36px;width:100%;border:1px solid var(--c-hairline)}
+  .toggle{display:inline-flex;background:var(--c-surface);border-radius:var(--r-full);padding:4px;font-size:14px;font-weight:500}
+  .toggle span{border-radius:var(--r-full);padding:6px 16px;color:var(--c-steel);cursor:pointer}
+  .toggle .on{background:var(--c-canvas);color:var(--c-ink);box-shadow:rgba(0,0,0,.04) 0 1px 2px}
+
+  /* ===== Cards ===== */
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg)}
+  .card-base{background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-lg);padding:var(--s-xl)}
+  .card-base h3{font-size:22px;font-weight:600;line-height:1.3;margin-bottom:var(--s-xs)}
+  .card-base p{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-base)}
+  .card-feature{background:var(--c-surface);border-radius:var(--r-lg);padding:var(--s-xxl)}
+  .card-feature .kpi{font-size:48px;font-weight:600;letter-spacing:-1px;line-height:1.1}
+  .card-feature .lbl{font-size:14px;color:var(--c-steel);margin-top:var(--s-xxs)}
+  .mockup{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-lg);box-shadow:rgba(0,0,0,.12) 0 24px 48px -8px;overflow:hidden}
+  .mockup .bar{background:var(--c-surface-code);color:var(--c-on-dark-muted);font-family:var(--mono);font-size:13px;padding:var(--s-xs) var(--s-md);border-bottom:1px solid var(--c-hairline-dark);display:flex;justify-content:space-between;align-items:center}
+  .mockup .bar button{background:transparent;color:var(--c-on-dark-muted);font-family:var(--mono);font-size:12px;border:1px solid var(--c-hairline-dark);border-radius:var(--r-sm);padding:2px 6px;cursor:pointer}
+  .mockup pre{background:var(--c-surface-code);color:var(--c-on-dark);font-family:var(--mono);font-size:14px;line-height:1.5;padding:var(--s-md);overflow:auto}
+  .mockup pre .k{color:var(--c-brand-tag)}
+  .mockup pre .s{color:var(--c-brand-green)}
+  .mockup pre .f{color:#c6a0f7}
+  .mockup pre .c{color:var(--c-on-dark-muted)}
+  .mockup pre .warn{color:var(--c-brand-warn)}
+
+  /* ===== Badges ===== */
+  .badge{display:inline-flex;align-items:center;font-size:13px;font-weight:600;border-radius:var(--r-full);padding:2px 8px}
+  .b-discount{background:var(--c-brand-green);color:var(--c-primary);border-radius:var(--r-full)}
+  .b-required{background:var(--c-brand-error);color:var(--c-on-dark);font-size:11px;font-weight:600;letter-spacing:0.5px;border-radius:var(--r-sm);padding:2px 6px;text-transform:uppercase}
+  .b-type{background:var(--c-surface);color:var(--c-steel);font-family:var(--mono);font-size:13px;font-weight:400;border-radius:var(--r-sm);padding:2px 6px}
+  .b-tag{background:rgba(55,114,207,0.15);color:var(--c-brand-tag);border-radius:var(--r-sm);padding:2px 8px}
+
+  /* ===== Navigation ===== */
+  .nav-demo{border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden;margin-bottom:var(--s-lg)}
+  .promo-banner{background:var(--c-canvas-dark);color:var(--c-on-dark);font-size:14px;font-weight:500;padding:var(--s-sm) var(--s-md);text-align:center}
+  .promo-banner a{text-decoration:underline;text-underline-offset:3px}
+  .topnav{background:var(--c-canvas);border-bottom:1px solid var(--c-hairline-soft);padding:0 var(--s-xl);height:64px;display:flex;align-items:center;gap:var(--s-xl)}
+  .brandmark{font-size:22px;font-weight:600;letter-spacing:-0.6px}
+  .nav-links{display:flex;gap:var(--s-lg);font-size:14px;font-weight:500;color:var(--c-slate)}
+  .nav-links a:hover{color:var(--c-ink)}
+  .nav-cta{margin-left:auto;display:flex;gap:var(--s-md);align-items:center}
+  .docs-demo{display:grid;grid-template-columns:240px 1fr 200px;gap:var(--s-xxl);border:1px solid var(--c-hairline);border-radius:var(--r-lg);padding:var(--s-xl);margin-top:var(--s-lg)}
+  .docs-demo h6{font-size:11px;color:var(--c-steel);font-weight:600;letter-spacing:0.5px;margin-bottom:var(--s-sm);text-transform:uppercase}
+  .side-item{display:block;font-size:14px;color:var(--c-steel);border-radius:var(--r-sm);padding:var(--s-xs) var(--s-md)}
+  .side-item-active{background:var(--c-surface);color:var(--c-ink);font-weight:500}
+  .toc-item{display:block;font-size:14px;color:var(--c-steel);padding:var(--s-xxs) 0}
+  .toc-item-active{color:var(--c-ink);font-weight:500;border-left:2px solid var(--c-brand-green);padding-left:var(--s-sm)}
+  .prop-row{display:flex;gap:var(--s-sm);align-items:center;padding:var(--s-md) 0;border-bottom:1px solid var(--c-hairline-soft);font-size:14px;flex-wrap:wrap}
+
+  /* ===== Table ===== */
+  .cmp-table{width:100%;border-collapse:collapse;background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-md);overflow:hidden;font-size:14px}
+  .cmp-table th{text-align:left;background:var(--c-surface);color:var(--c-steel);font-size:13px;font-weight:600;padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--c-hairline)}
+  .cmp-table td{padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--c-hairline-soft)}
+  .cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table .yes{color:var(--c-brand-annotate);font-weight:600}
+  .cmp-table .no{color:var(--c-muted)}
+
+  /* ================= PRODUCT LANDING ================= */
+  .lp{background:var(--c-canvas)}
+  .lp-hero{background:linear-gradient(180deg,var(--c-hero-sky-from) 0%,var(--c-hero-sky-to) 100%);padding:var(--s-hero) 0 var(--s-section-lg);text-align:center;position:relative;overflow:hidden}
+  .cloud{position:absolute;border-radius:var(--r-full);background:rgba(255,255,255,0.55);filter:blur(2px)}
+  .lp-hero h1{font-size:72px;font-weight:600;line-height:1.05;letter-spacing:-2px;color:var(--c-on-dark);max-width:900px;margin:0 auto var(--s-lg);text-shadow:0 1px 12px rgba(20,40,60,0.18)}
+  .lp-hero .sub{font-size:18px;line-height:1.5;color:#1d2b38;max-width:620px;margin:0 auto var(--s-xxl)}
+  .lp-hero .cta-row{display:flex;gap:var(--s-md);justify-content:center;flex-wrap:wrap}
+  .lp-hero .note{font-size:13px;color:#2b3b4a;margin-top:var(--s-md)}
+  .lp-hero-visual{max-width:980px;margin:var(--s-xxl) auto 0;text-align:left}
+  .mock-hero{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-lg);box-shadow:rgba(0,0,0,.12) 0 24px 48px -8px;display:grid;grid-template-columns:220px 1fr;overflow:hidden}
+  .mock-hero .side{background:var(--c-surface-soft);border-right:1px solid var(--c-hairline-soft);padding:var(--s-lg) var(--s-md)}
+  .mock-hero .side h6{font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--c-steel);margin:var(--s-base) 0 var(--s-xs);text-transform:uppercase}
+  .mock-hero .side a{display:block;font-size:13px;color:var(--c-steel);border-radius:var(--r-sm);padding:4px 8px}
+  .mock-hero .side .on{background:var(--c-surface);color:var(--c-ink);font-weight:500}
+  .mock-hero .prose{padding:var(--s-xl)}
+  .mock-hero .prose h4{font-size:22px;font-weight:600;margin-bottom:var(--s-sm)}
+  .mock-hero .prose p{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-md);max-width:520px}
+  .mock-hero .prose pre{background:var(--c-surface-code);color:var(--c-on-dark);font-family:var(--mono);font-size:13px;line-height:1.6;border-radius:var(--r-md);padding:var(--s-md);overflow:auto}
+  .logo-strip{border-bottom:1px solid var(--c-hairline-soft);padding:var(--s-xl) 0}
+  .logo-strip .row{display:flex;justify-content:space-between;align-items:center;gap:var(--s-xl);flex-wrap:wrap;color:var(--c-steel);font-size:16px;font-weight:500}
+  .band-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap;margin-bottom:var(--s-xxl)}
+  .band-head h2{font-size:36px;font-weight:600;line-height:1.2;letter-spacing:-0.5px}
+  .band-head p{font-size:16px;color:var(--c-steel)}
+  .lp-band{padding:var(--s-section-lg) 0}
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg)}
+  .feature-grid .card-base{display:flex;flex-direction:column}
+  .feature-grid .icn{width:40px;height:40px;border-radius:var(--r-md);background:var(--c-surface);display:flex;align-items:center;justify-content:center;margin-bottom:var(--s-lg)}
+  .lp-dark-band{background:linear-gradient(135deg,var(--c-hero-dark-from) 0%,var(--c-hero-dark-to) 100%);color:var(--c-on-dark);padding:var(--s-section-lg) 0}
+  .lp-dark-band .split{display:grid;grid-template-columns:1.1fr 0.9fr;gap:var(--s-xxl);align-items:center}
+  .lp-dark-band h2{font-size:56px;font-weight:600;line-height:1.1;letter-spacing:-1.5px;margin-bottom:var(--s-md)}
+  .lp-dark-band p{font-size:18px;color:rgba(255,255,255,0.85);max-width:520px;margin-bottom:var(--s-xxl)}
+  .rocket{position:relative;height:280px}
+  .rocket .trail{position:absolute;left:20%;top:80%;width:4px;height:200px;background:linear-gradient(0deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 100%);transform:rotate(35deg)}
+  .rocket .body{position:absolute;left:18%;top:12%;width:46px;height:120px;background:#fff;border-radius:46px 46px 18px 18px;transform:rotate(35deg)}
+  .rocket .fin{position:absolute;left:12%;top:52%;width:26px;height:40px;background:#00d4a4;border-radius:6px 2px 12px 12px;transform:rotate(35deg)}
+  .rocket .fin2{position:absolute;left:26%;top:56%;width:26px;height:40px;background:#00b48a;border-radius:2px 6px 12px 12px;transform:rotate(35deg)}
+  .lp-pricing{padding:var(--s-section) 0}
+  .toggle-band{display:flex;justify-content:center;align-items:center;gap:var(--s-md);margin-bottom:var(--s-xxl)}
+  .b-discount-lg{background:var(--c-brand-green);color:var(--c-primary);font-size:13px;font-weight:600;border-radius:var(--r-full);padding:2px 8px}
+  .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg)}
+  .pricing-card{background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-lg);padding:var(--s-xxl);display:flex;flex-direction:column}
+  .pricing-card .name{font-size:28px;font-weight:600;margin-bottom:var(--s-xs)}
+  .pricing-card .price{font-size:56px;font-weight:600;letter-spacing:-1.5px;line-height:1.1}
+  .pricing-card .per{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-lg)}
+  .pricing-card ul{list-style:none;margin-bottom:var(--s-xl)}
+  .pricing-card li{font-size:14px;color:var(--c-charcoal);padding:var(--s-xs) 0;display:flex;gap:var(--s-sm);align-items:flex-start}
+  .pricing-card li::before{content:"✓";color:var(--c-brand-annotate);font-weight:600}
+  .pricing-card-featured{border:2px solid var(--c-brand-green);box-shadow:rgba(0,212,164,.08) 0 8px 24px}
+  .popular-pill{background:var(--c-brand-teal-deep, transparent);background:var(--c-canvas-dark);color:var(--c-on-dark);font-size:13px;font-weight:600;border-radius:var(--r-full);padding:4px 10px;margin-bottom:var(--s-md);align-self:flex-start}
+  .cmp-band{padding-bottom:var(--s-section)}
+  .lp-testimonial{background:var(--c-testimonial-orange);color:var(--c-on-dark);border-radius:var(--r-lg);padding:var(--s-section);display:grid;grid-template-columns:1.2fr 0.8fr;gap:var(--s-xxl);align-items:center;margin:var(--s-section) 0}
+  .lp-testimonial blockquote{font-size:28px;font-weight:600;line-height:1.25;letter-spacing:-0.5px}
+  .lp-testimonial .by{display:flex;align-items:center;gap:var(--s-md)}
+  .avatar{width:64px;height:64px;border-radius:var(--r-md);background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600}
+  .lp-testimonial .who strong{display:block;font-size:14px;font-weight:500}
+  .lp-testimonial .who span{font-size:14px;color:rgba(255,255,255,0.75)}
+  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);margin-bottom:var(--s-section-lg)}
+  .card-help{background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-lg);padding:var(--s-xl)}
+  .card-help h4{font-size:18px;font-weight:600;margin-bottom:var(--s-xxs)}
+  .card-help p{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-md)}
+  .lp-faq{max-width:760px;margin:0 auto var(--s-section-lg)}
+  .faq-item{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-md);padding:var(--s-xl);margin-bottom:var(--s-md);display:flex;justify-content:space-between;gap:var(--s-lg);align-items:flex-start}
+  .faq-item h4{font-size:18px;font-weight:600;margin-bottom:var(--s-xs)}
+  .faq-item p{font-size:16px;color:var(--c-steel);max-width:600px}
+  .faq-item .chev{color:var(--c-steel);font-size:18px;flex-shrink:0}
+  .lp-cta{background:var(--c-canvas-dark);color:var(--c-on-dark);border-radius:var(--r-lg);padding:var(--s-section-lg);text-align:center;margin-bottom:var(--s-section)}
+  .lp-cta h2{font-size:48px;font-weight:600;letter-spacing:-1px;line-height:1.1;margin-bottom:var(--s-md)}
+  .lp-cta p{font-size:18px;color:var(--c-on-dark-muted);margin-bottom:var(--s-xxl)}
+  .lp-cta .cta-row{display:flex;gap:var(--s-md);justify-content:center;flex-wrap:wrap}
+  .lp-footer{border-top:1px solid var(--c-hairline);padding:var(--s-section) 0 var(--s-xxl);color:var(--c-steel)}
+  .lp-footer .cols{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:var(--s-xl)}
+  .lp-footer .brand{font-size:22px;font-weight:600;color:var(--c-ink);letter-spacing:-0.6px;margin-bottom:var(--s-sm)}
+  .lp-footer .brand-note{font-size:14px;max-width:220px;margin-bottom:var(--s-lg)}
+  .lp-footer h5{font-size:14px;font-weight:500;color:var(--c-ink);margin-bottom:var(--s-base)}
+  .lp-footer ul{list-style:none}
+  .lp-footer li{margin-bottom:var(--s-xxs)}
+  .lp-footer li a{font-size:14px;display:inline-block;padding:var(--s-xxs) 0}
+  .lp-footer li a:hover{color:var(--c-ink)}
+  .lp-footer .legal{margin-top:var(--s-xl);padding-top:var(--s-lg);border-top:1px solid var(--c-hairline-soft);display:flex;justify-content:space-between;flex-wrap:wrap;font-size:13px;color:var(--c-stone)}
+
+  @media (max-width:900px){
+    .input-grid,.feature-grid,.tier-grid,.lp-docs-demo,.mock-hero,.lp-dark-band .split,.lp-testimonial,.help-grid{grid-template-columns:1fr}
+    .t-hero,.lp-hero h1{font-size:40px}
+    .lp-dark-band h2{font-size:36px}
+    .docs-demo{grid-template-columns:1fr}
+    .lp-footer .cols{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ BANNER ============ -->
+<header class="sg-banner">
+  <div class="sg-banner-inner">
+    <div class="sg-banner-left">
+      <span class="sg-banner-folder">mintlify</span>
+      <span class="sg-banner-name">Mintlify</span>
+    </div>
+    <span class="sg-banner-desc">Documentation infrastructure — atmospheric sky-gradient heroes up top, dense developer surfaces below, mint green spent only where it counts.</span>
+  </div>
+</header>
+
+<main>
+<!-- ============ COMPONENTS ============ -->
+<section id="components" class="sg-container">
+  <h2 class="sg-section-label">Components</h2>
+
+  <!-- 1. Colors -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Color tokens</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-chip" style="background:#00d4a4"></div><div class="swatch-meta"><span class="swatch-name">brand-green</span><span class="swatch-hex">#00D4A4</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#00b48a"></div><div class="swatch-meta"><span class="swatch-name">brand-green-deep</span><span class="swatch-hex">#00B48A</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#7cebcb"></div><div class="swatch-meta"><span class="swatch-name">brand-green-soft</span><span class="swatch-hex">#7CEBCB</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#0a0a0a"></div><div class="swatch-meta"><span class="swatch-name">primary</span><span class="swatch-hex">#0A0A0A</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#f55a3c"></div><div class="swatch-meta"><span class="swatch-name">testimonial-orange</span><span class="swatch-hex">#F55A3C</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:linear-gradient(180deg,#87a8c8,#f5e9d8)"></div><div class="swatch-meta"><span class="swatch-name">hero-sky</span><span class="swatch-hex">#87A8C8 → #F5E9D8</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:linear-gradient(135deg,#1a3d4a,#2d5a4f)"></div><div class="swatch-meta"><span class="swatch-name">hero-dark</span><span class="swatch-hex">#1A3D4A → #2D5A4F</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#f7f7f7;border-bottom:1px solid #e5e5e5"></div><div class="swatch-meta"><span class="swatch-name">surface</span><span class="swatch-hex">#F7F7F7</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#1c1c1e"></div><div class="swatch-meta"><span class="swatch-name">surface-code</span><span class="swatch-hex">#1C1C1E</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#3772cf"></div><div class="swatch-meta"><span class="swatch-name">brand-tag</span><span class="swatch-hex">#3772CF</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#d45656"></div><div class="swatch-meta"><span class="swatch-name">brand-error</span><span class="swatch-hex">#D45656</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#5a5a5c"></div><div class="swatch-meta"><span class="swatch-name">steel</span><span class="swatch-hex">#5A5A5C</span></div></div>
+    </div>
+  </div>
+
+  <!-- 2. Typography -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Typography specimen — Inter (UI) + Geist Mono (code)</div>
+    <div class="sg-panel">
+      <div class="type-row"><span class="type-token">hero-display · 72 / 600 / -2px</span><span class="t-hero">The intelligent Knowledge Platform</span></div>
+      <div class="type-row"><span class="type-token">display-lg · 56 / 600 / -1.5px</span><span class="t-display">Built for the intelligence age</span></div>
+      <div class="type-row"><span class="type-token">heading-1 · 48 / 600 / -1px</span><span class="t-h1">Pricing on your terms</span></div>
+      <div class="type-row"><span class="type-token">heading-2 · 36 / 600 / -0.5px</span><span class="t-h2">Apply to the startup program</span></div>
+      <div class="type-row"><span class="type-token">heading-3 · 28 / 600 / 1.25</span><span class="t-h3">Tabs</span></div>
+      <div class="type-row"><span class="type-token">heading-4 · 22 / 600 / 1.30</span><span class="t-h4">Synchronize your docs with GitHub</span></div>
+      <div class="type-row"><span class="type-token">heading-5 · 18 / 600 / 1.40</span><span class="t-h5">What counts as a viewer?</span></div>
+      <div class="type-row"><span class="type-token">subtitle · 18 / 400 / 1.50</span><span class="t-sub">Beautiful, maintained documentation that converts visitors into users.</span></div>
+      <div class="type-row"><span class="type-token">body-md · 16 / 400 / 1.50</span><span class="t-body">Tabs organize related content into switchable panels. Wrap each panel in <code class="sg-code">&lt;Tab&gt;</code> elements inside a <code class="sg-code">&lt;Tabs&gt;</code> group.</span></div>
+      <div class="type-row"><span class="type-token">code-md · Geist Mono 14 / 1.50</span><span style="font-family:var(--mono);font-size:14px">npx mintlify dev --port 3333</span></div>
+      <div class="type-row"><span class="type-token">caption · 13 / 400 / 1.40</span><span class="t-cap">Viewer counts reset monthly. Overage is billed per seat.</span></div>
+    </div>
+  </div>
+
+  <!-- 3. Buttons -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Buttons — black pill primary, mint accent spent sparingly, white-on-dark inversions</div>
+    <div class="sg-panel">
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started</button>
+        <button class="btn btn-primary" style="background:var(--c-charcoal)">Primary pressed</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-green">Get started free</button>
+        <button class="btn btn-on-dark">Startups apply</button>
+        <button class="btn btn-secondary">Talk to sales</button>
+        <button class="btn btn-ghost">Skip</button>
+        <button class="btn btn-link">View changelog &rarr;</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-lg">Start documenting</button>
+        <button class="btn btn-icon" aria-label="Copy">⧉</button>
+        <button class="btn btn-icon" aria-label="Close">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Inputs -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Inputs — 40px fields, mint focus ring; segmented and pill tabs, monthly/annual toggle</div>
+    <div class="sg-panel">
+      <div class="input-grid">
+        <div>
+          <label class="field-label" for="em">Work email</label>
+          <input class="text-input" id="em" type="email" placeholder="founder@startup.dev">
+        </div>
+        <div>
+          <label class="field-label" for="emf">Focused input</label>
+          <input class="text-input" id="emf" style="border:2px solid var(--c-brand-green);padding:0 15px" value="docs.acme.com" readonly>
+        </div>
+        <div>
+          <label class="field-label" for="pl">Deployment region</label>
+          <select class="text-input" id="pl"><option>Global (default)</option><option>EU (Frankfurt)</option><option>US (Oregon)</option></select>
+        </div>
+        <div>
+          <label class="field-label">Error state</label>
+          <input class="text-input text-input-error" value="acme.github." readonly>
+          <div class="field-error">Enter a valid GitHub repository.</div>
+        </div>
+        <div>
+          <label class="field-label" for="dis">Disabled</label>
+          <input class="text-input" id="dis" value="Custom domain — Pro plan only" disabled>
+        </div>
+        <div>
+          <label class="field-label">Search pill</label>
+          <div class="search-pill"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#5a5a5c" stroke-width="1.6"/><path d="M11 11l3.4 3.4" stroke="#5a5a5c" stroke-width="1.6" stroke-linecap="round"/></svg>Search docs…</div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:var(--s-xl);margin-bottom:0">
+        <button class="btn btn-ghost" style="border:1px solid var(--c-hairline);border-radius:var(--r-md)">First tab</button>
+        <button class="btn btn-ghost" style="border-bottom:2px solid var(--c-ink);border-radius:0">Second tab</button>
+        <button class="btn btn-ghost">Third tab</button>
+        <span style="width:1px;height:24px;background:var(--c-hairline)"></span>
+        <span class="toggle"><span>Monthly</span><span class="on">Annual</span></span>
+        <span class="badge b-discount-lg">Save 20%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Cards + code -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Cards &amp; code — white card-base, gray card-feature, dark code blocks with Geist Mono</div>
+    <div class="card-grid">
+      <div class="card-base">
+        <div class="feature-grid" style="display:block">
+          <div class="icn" style="margin-bottom:var(--s-lg)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.2 4.9L17.5 8l-4 3.7.9 5.3L10 14.4 5.6 17l.9-5.3L2.5 8l5.3-1.1L10 2z" stroke="#0a0a0a" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        </div>
+        <h3>AI-powered answers</h3>
+        <p>Mintlify's search understands your docs and answers with citations, not links.</p>
+        <a class="btn btn-secondary btn-sm" style="align-self:flex-start" href="#">Learn more</a>
+      </div>
+      <div class="card-base">
+        <div class="feature-grid" style="display:block">
+          <div class="icn" style="margin-bottom:var(--s-lg)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4L2.5 10 6 16M14 4l3.5 6L14 16" stroke="#0a0a0a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        </div>
+        <h3>MDX-native authoring</h3>
+        <p>Write in MDX with 50+ built-in components — tabs, cards, expansions — no config required.</p>
+        <a class="btn btn-secondary btn-sm" style="align-self:flex-start" href="#">Browse components</a>
+      </div>
+      <div class="card-feature">
+        <div class="kpi">90K+</div>
+        <div class="lbl">developers document with Mintlify — including teams from Anthropic, Cursor and Vercel</div>
+      </div>
+    </div>
+    <div style="margin-top:var(--s-xl)">
+      <div class="sg-sub-label">Code block with header</div>
+      <div class="mockup">
+        <div class="bar"><span>installation</span><button>Copy code</button></div>
+        <pre>npm install <span class="s">@mintlify/cli</span>
+<span class="c"># then</span>
+mint dev <span class="warn">--port 3333</span>   <span class="c"># live preview with hot reload</span>
+mint deploy              <span class="c"># ship to your custom domain</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Badges -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Badges — mint discount, red REQUIRED, mono type chips, blue tag chip</div>
+    <div class="btn-row">
+      <span class="badge b-discount">Save 20%</span>
+      <span class="badge b-required">Required</span>
+      <span class="badge b-type">string</span>
+      <span class="badge b-type">boolean</span>
+      <span class="badge b-tag">&lt;Tabs&gt;</span>
+    </div>
+  </div>
+
+  <!-- 7. Navigation -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Navigation — marketing nav plus the 3-column docs grid with property rows</div>
+    <div class="nav-demo">
+      <div class="promo-banner">New: AI answers in every docs deployment. <a href="#">Read the announcement &rarr;</a></div>
+      <div class="topnav">
+        <span class="brandmark">mintlify</span>
+        <div class="nav-links"><a href="#">Solutions</a><a href="#">Pricing</a><a href="#">Customers</a><a href="#">Documentation</a></div>
+        <div class="nav-cta">
+          <button class="btn btn-secondary btn-sm">Talk to sales</button>
+          <button class="btn btn-primary btn-sm">Get Started</button>
+        </div>
+      </div>
+    </div>
+    <div class="docs-demo">
+      <div>
+        <h6>GETTING STARTED</h6>
+        <a class="side-item" href="#">Introduction</a>
+        <a class="side-item side-item-active" href="#">Quickstart</a>
+        <a class="side-item" href="#">Development</a>
+        <h6 style="margin-top:var(--s-lg)">COMPONENTS</h6>
+        <a class="side-item" href="#">Accordions</a>
+        <a class="side-item" href="#">Cards</a>
+        <a class="side-item" href="#">Steps</a>
+      </div>
+      <div>
+        <div class="t-h3" style="margin-bottom:var(--s-sm)">Tabs</div>
+        <p class="t-body" style="margin-bottom:var(--s-md)">Organize content into switchable panels. Commonly used for per-language quickstarts or SDK examples.</p>
+        <div class="prop-row"><code class="sg-code">defaultIndex</code><span class="badge b-type">number</span><span class="badge b-required">Required</span></div>
+        <div class="prop-row"><code class="sg-code">defaultValue</code><span class="badge b-type">string</span></div>
+        <p class="t-sm" style="margin-top:var(--s-md)">The index of the tab to show on first render. Zero-based.</p>
+      </div>
+      <div>
+        <h6>ON THIS PAGE</h6>
+        <a class="toc-item toc-item-active" href="#">Usage</a>
+        <a class="toc-item" href="#">Props</a>
+        <a class="toc-item" href="#">Examples</a>
+        <a class="toc-item" href="#">Best practices</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Table -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Feature comparison table — 14px cells, micro-uppercase section dividers</div>
+    <table class="cmp-table">
+      <thead><tr><th>Feature</th><th>Free</th><th>Lift Off</th><th>Custom</th></tr></thead>
+      <tbody>
+        <tr><td>Hosted docs sites</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>Custom domain</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>AI answers with citations</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>SSO / SAML</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+        <tr><td>Preview deployments per PR</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>Dedicated success engineer</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ FINISHED PRODUCT ============ -->
+<section id="product" class="lp">
+  <!-- Sky hero -->
+  <div class="lp-hero">
+    <span class="cloud" style="left:6%;top:18%;width:180px;height:52px"></span>
+    <span class="cloud" style="left:14%;top:12%;width:110px;height:36px"></span>
+    <span class="cloud" style="right:8%;top:22%;width:220px;height:60px"></span>
+    <span class="cloud" style="right:16%;top:14%;width:130px;height:40px"></span>
+    <div class="sg-container" style="position:relative">
+      <h1>The intelligent Knowledge Platform</h1>
+      <p class="sub">Beautiful out of the box, maintained in your codebase, and smart enough to answer for you.</p>
+      <div class="cta-row">
+        <a class="btn btn-green btn-lg" href="#">Get started</a>
+        <a class="btn btn-secondary btn-lg" style="border-color:rgba(255,255,255,0.6)" href="#">Talk to us</a>
+      </div>
+      <div class="note">Free for open source · live in 4 minutes</div>
+      <div class="lp-hero-visual">
+        <div class="mock-hero">
+          <div class="side">
+            <h6>Getting started</h6>
+            <a class="on" href="#">Introduction</a><a href="#">Quickstart</a><a href="#">Development</a>
+            <h6>Components</h6>
+            <a href="#">Accordions</a><a href="#">Cards</a><a href="#">Tabs</a><a href="#">Steps</a>
+          </div>
+          <div class="prose">
+            <h4>Introduction</h4>
+            <p>Mintlify turns a folder of MDX into a polished, searchable documentation site — with AI answers, analytics and preview deployments built in.</p>
+            <pre>npx mint dev
+<span style="color:var(--c-brand-green)">✓</span> docs live at <span style="color:var(--c-brand-tag)">http://localhost:3000</span>
+<span style="color:var(--c-on-dark-muted)">→ watching for changes…</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="logo-strip">
+    <div class="sg-container row">
+      <span>Anthropic</span><span>Cognition</span><span>Vercel</span><span>Cursor</span><span>react</span><span>Lovable</span><span>Stripe</span>
+    </div>
+  </div>
+
+  <div class="sg-container lp-band">
+    <div class="band-head"><h2>Built for the intelligence age</h2><p>Everything your docs need, nothing they don't</p></div>
+    <div class="feature-grid">
+      <div class="card-base">
+        <div class="icn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="#0a0a0a" stroke-width="1.6"/><path d="M10 6v4.2l2.8 1.8" stroke="#00d4a4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Answers, not links</h3>
+        <p>LLM-powered search reads your pages and responds with cited, up-to-date answers — cutting support tickets before they're filed.</p>
+      </div>
+      <div class="card-base">
+        <div class="icn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5v15M2.5 10h15" stroke="#0a0a0a" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5" stroke="#0a0a0a" stroke-width="1.6"/></svg></div>
+        <h3>Docs-as-code workflow</h3>
+        <p>Every change is a pull request. Preview deployments, review apps and CI checks come standard.</p>
+      </div>
+      <div class="card-base">
+        <div class="icn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10.5l4.5 4.5L17 5.5" stroke="#00b48a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Beautiful by default</h3>
+        <p>Typography, navigation and mobile layouts ship tuned — your team edits content, not CSS.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark startups band -->
+  <div class="lp-dark-band">
+    <div class="sg-container split">
+      <div>
+        <h2>Docs that grow with your startup</h2>
+        <p>Join the startup program for free Lift Off, credits, and priority support while you find product-market fit.</p>
+        <div class="cta-row" style="display:flex;gap:var(--s-md);flex-wrap:wrap">
+          <a class="btn btn-on-dark" href="#">Apply to the program</a>
+          <a class="btn btn-secondary btn-lg" style="border-color:rgba(255,255,255,0.4);color:#fff" href="#">See requirements</a>
+        </div>
+      </div>
+      <div class="rocket">
+        <div class="trail"></div><div class="fin"></div><div class="fin2"></div><div class="body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container lp-pricing" id="pricing">
+    <div style="text-align:center;margin-bottom:var(--s-xxl)">
+      <h2 class="t-h1" style="margin-bottom:var(--s-sm)">Pricing on your terms</h2>
+      <p class="t-sub">Start free. Upgrade when your readers do.</p>
+    </div>
+    <div class="toggle-band">
+      <span class="toggle"><span>Monthly</span><span class="on">Annual</span></span>
+      <span class="badge b-discount-lg">Save 20%</span>
+    </div>
+    <div class="tier-grid">
+      <div class="pricing-card">
+        <div class="name">Free</div>
+        <div class="price">$0</div>
+        <div class="per">For open source and side projects</div>
+        <ul><li>Unlimited editors</li><li>Mint subdomain</li><li>Community support</li></ul>
+        <a class="btn btn-secondary" style="width:100%;margin-top:auto" href="#">Start free</a>
+      </div>
+      <div class="pricing-card pricing-card-featured">
+        <span class="popular-pill">Most popular</span>
+        <div class="name">Lift Off</div>
+        <div class="price">$120<span style="font-size:18px;font-weight:500;color:var(--c-steel)"> /mo</span></div>
+        <div class="per">For growing products — billed annually</div>
+        <ul><li>Custom domain &amp; analytics</li><li>AI answers with citations</li><li>Preview deployments</li><li>Priority support</li></ul>
+        <a class="btn btn-green" style="width:100%;margin-top:auto" href="#">Get started</a>
+      </div>
+      <div class="pricing-card">
+        <div class="name">Custom</div>
+        <div class="price">Let's talk</div>
+        <div class="per">For regulated and scaled teams</div>
+        <ul><li>SSO / SAML &amp; audit logs</li><li>Custom LLM routing</li><li>Dedicated success engineer</li></ul>
+        <a class="btn btn-secondary" style="width:100%;margin-top:auto" href="#">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container cmp-band">
+    <div class="band-head"><h2 style="font-size:28px">Compare plans</h2><p>Everything in the table above applies here too</p></div>
+    <table class="cmp-table">
+      <thead><tr><th>Capability</th><th>Free</th><th>Lift Off</th><th>Custom</th></tr></thead>
+      <tbody>
+        <tr><td>Custom domain</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>AI answers</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>SSO / SAML</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-testimonial">
+      <div>
+        <blockquote>"Every YC batch, the top-performing startups build their docs with Mintlify."</blockquote>
+        <div class="by" style="margin-top:var(--s-xl)">
+          <span class="avatar">C</span>
+          <span class="who"><strong>Head of Platform</strong><span>Cursor</span></span>
+        </div>
+      </div>
+      <div style="text-align:right;font-size:64px;font-weight:600;opacity:0.35">”</div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="help-grid">
+      <div class="card-help"><h4>Quickstart guide</h4><p>From empty folder to live docs in four minutes.</p><a class="btn btn-link" href="#">Read guide &rarr;</a></div>
+      <div class="card-help"><h4>Guide to technical writing</h4><p>Structure docs your users actually finish.</p><a class="btn btn-link" href="#">Read guide &rarr;</a></div>
+      <div class="card-help"><h4>For founders</h4><p>Docs as a growth channel, not a cost center.</p><a class="btn btn-link" href="#">Read guide &rarr;</a></div>
+      <div class="card-help"><h4>For sales</h4><p>Answer security reviews with public docs.</p><a class="btn btn-link" href="#">Read guide &rarr;</a></div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-faq">
+      <div class="faq-item"><div><h4>What counts as a viewer?</h4><p>Anyone who loads a page of your docs. Bots and previews are excluded automatically.</p></div><span class="chev">⌄</span></div>
+      <div class="faq-item"><div><h4>Can I self-host?</h4><p>Yes — export static output anywhere, or keep our managed hosting with global CDN.</p></div><span class="chev">⌄</span></div>
+      <div class="faq-item"><div><h4>Do you support migration from Docusaurus?</h4><p>Our importer converts MDX/MDX themes in one command, then diff-reviews each page.</p></div><span class="chev">⌄</span></div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-cta">
+      <h2>Your docs deserve better</h2>
+      <p>Ship a beautiful documentation site this afternoon.</p>
+      <div class="cta-row">
+        <a class="btn btn-green btn-lg" href="#">Get started free</a>
+        <a class="btn btn-secondary btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.4)" href="#">Book a demo</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lp-footer">
+    <div class="sg-container">
+      <div class="cols">
+        <div>
+          <div class="brand">mintlify</div>
+          <p class="brand-note">The intelligent knowledge platform for teams that ship.</p>
+        </div>
+        <div><h5>Explore</h5><ul><li><a href="#">Pricing</a></li><li><a href="#">Customers</a></li><li><a href="#">Changelog</a></li><li><a href="#">Startups</a></li></ul></div>
+        <div><h5>Resources</h5><ul><li><a href="#">Documentation</a></li><li><a href="#">Guides</a></li><li><a href="#">Components</a></li><li><a href="#">Blog</a></li></ul></div>
+        <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+        <div><h5>Legal</h5><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li></ul></div>
+      </div>
+      <div class="legal"><span>&copy; 2026 Mintlify, Inc.</span><span>SOC 2 Type II &middot; GDPR ready</span></div>
+    </div>
+  </footer>
+</section>
+</main>
+</body>
+</html>

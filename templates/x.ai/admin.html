@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compute Console — xAI Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#ffffff; --on-primary:#0a0a0a;
+    --ink:#ffffff; --ink-hover:#fafaf7; --body:#dadbdf; --body-mid:#7d8187; --mute:#7d8187;
+    --hairline:#212327; --canvas:#0a0a0a; --canvas-soft:#1a1c20; --canvas-card:#191919; --canvas-mid:#363a3f;
+    --accent-sunset:#ff7a17; --accent-sunset-soft:#ffc285; --accent-dusk:#7c3aed;
+    --accent-twilight:#c4b5fd; --accent-breeze:#a0c3ec; --accent-midnight:#0d1726;
+    --success:#8fd6a0; --warning:#ffc285; --danger:#ff7a6b; --neutral:#7d8187;
+    --radius-sm:8px; --radius-pill:9999px;
+    --sp-xxs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px;
+    --sp-xl:24px; --sp-2xl:32px; --sp-3xl:48px; --sp-4xl:64px;
+    --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+    --font-mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--font-sans);font-weight:400;color:var(--ink);
+    background:var(--canvas);font-size:16px;line-height:24px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .eyebrow{font-family:var(--font-mono);font-size:14px;line-height:20px;letter-spacing:1.4px;text-transform:uppercase}
+  .eyebrow-sm{font-family:var(--font-mono);font-size:12px;line-height:16px;letter-spacing:1.2px;text-transform:uppercase;color:var(--body-mid)}
+
+  /* ── Shell ── */
+  .shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+  /* ── Sidebar ── */
+  .sidebar{
+    border-right:1px solid var(--hairline);background:var(--canvas);
+    display:flex;flex-direction:column;position:sticky;top:0;height:100vh;
+  }
+  .side-logo{display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-xl) var(--sp-lg);border-bottom:1px solid var(--hairline)}
+  .logo-mark{width:24px;height:24px;display:block}
+  .logo-word{font-size:17px;letter-spacing:-.3px}
+  .side-group{padding:var(--sp-xl) var(--sp-md) var(--sp-sm)}
+  .side-group .eyebrow-sm{display:block;padding:0 var(--sp-md) var(--sp-sm)}
+  .side-link{
+    display:flex;align-items:center;gap:var(--sp-md);
+    font-size:14px;line-height:20px;color:var(--body);
+    padding:var(--sp-md) var(--sp-lg);border-radius:var(--radius-sm);
+    border-left:2px solid transparent;
+  }
+  .side-link:hover{background:var(--canvas-soft);color:var(--ink)}
+  .side-link.on{
+    background:var(--canvas-soft);color:var(--ink);border-left-color:var(--primary);
+  }
+  .side-link svg{flex:none}
+  .side-link .pill{
+    margin-left:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;
+    border:1px solid var(--hairline);border-radius:var(--radius-pill);padding:0 var(--sp-sm);color:var(--body-mid);
+  }
+  .user-card{
+    margin-top:auto;border-top:1px solid var(--hairline);padding:var(--sp-lg);
+    display:flex;align-items:center;gap:var(--sp-md);
+  }
+  .avatar{
+    width:36px;height:36px;border-radius:9999px;flex:none;
+    background:linear-gradient(135deg,var(--accent-dusk),var(--accent-midnight));
+    border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:12px;color:var(--accent-twilight);
+  }
+  .user-card .who{flex:1;min-width:0}
+  .user-card .who b{display:block;font-size:14px;font-weight:400;color:var(--ink)}
+  .user-card .who span{font-size:12px;color:var(--body-mid)}
+  .user-card .gear{width:30px;height:30px;border:1px solid var(--hairline);border-radius:9999px;background:none;color:var(--body-mid);cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+  /* ── Topbar ── */
+  .topbar{
+    display:flex;align-items:center;gap:var(--sp-xl);
+    padding:var(--sp-md) var(--sp-2xl);border-bottom:1px solid var(--hairline);
+    background:var(--canvas);position:sticky;top:0;z-index:40;
+  }
+  .crumb{font-size:14px;color:var(--body-mid)}
+  .crumb b{color:var(--ink);font-weight:400}
+  .top-search{
+    flex:1;max-width:380px;display:flex;align-items:center;gap:var(--sp-sm);
+    background:var(--canvas-soft);border:1px solid var(--hairline);border-radius:var(--radius-pill);
+    padding:var(--sp-xs) var(--sp-md);
+  }
+  .top-search input{flex:1;background:none;border:0;outline:none;color:var(--ink);font-family:var(--font-sans);font-size:14px}
+  .top-search input::placeholder{color:var(--body-mid)}
+  .top-search kbd{font-family:var(--font-mono);font-size:12px;color:var(--body-mid);border:1px solid var(--hairline);border-radius:4px;padding:0 var(--sp-xxs)}
+  .top-actions{margin-left:auto;display:flex;align-items:center;gap:var(--sp-lg)}
+  .icon-btn{position:relative;width:34px;height:34px;border-radius:9999px;border:1px solid rgba(255,255,255,.25);background:none;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .icon-btn:hover{border-color:rgba(255,255,255,.5)}
+  .dot{position:absolute;top:-2px;right:-2px;width:9px;height:9px;border-radius:9999px;background:var(--accent-sunset);border:2px solid var(--canvas)}
+  .btn-primary{background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);border-radius:var(--radius-pill);padding:var(--sp-xs) var(--sp-md);font-size:14px;font-family:var(--font-sans);cursor:pointer}
+
+  /* ── Main ── */
+  .main{padding:var(--sp-2xl);display:grid;gap:var(--sp-2xl)}
+  .page-head h1{font-weight:400;font-size:32px;line-height:36px;letter-spacing:-.6px;margin-top:var(--sp-xxs)}
+
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+  .kpi{background:var(--canvas-card);border:1px solid var(--hairline);border-radius:var(--radius-sm);padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-sm)}
+  .kpi .label{font-family:var(--font-mono);font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--body-mid)}
+  .kpi .value{font-size:32px;line-height:36px;letter-spacing:-.6px}
+  .kpi .delta-row{display:flex;align-items:center;justify-content:space-between}
+  .delta{font-family:var(--font-mono);font-size:12px;letter-spacing:.5px}
+  .delta.up{color:var(--success)} .delta.down{color:var(--danger)}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:28px}
+  .spark i{flex:1;background:var(--canvas-mid);border-radius:1px}
+  .spark i.hot{background:var(--accent-breeze)}
+  .spark.sun i.hot{background:var(--accent-sunset)}
+  .spark.twi i.hot{background:var(--accent-twilight)}
+
+  /* Charts row */
+  .charts{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--sp-lg)}
+  .panel{background:var(--canvas-card);border:1px solid var(--hairline);border-radius:var(--radius-sm);padding:var(--sp-xl)}
+  .panel-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--sp-xl)}
+  .panel-head h2{font-weight:400;font-size:20px;line-height:28px}
+  .bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:180px}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:var(--sp-sm);height:100%;justify-content:flex-end}
+  .bar i{width:100%;background:linear-gradient(180deg,var(--accent-breeze),var(--accent-midnight));border-radius:2px 2px 0 0}
+  .bar.hot i{background:linear-gradient(180deg,var(--accent-sunset-soft),var(--accent-sunset))}
+  .bar span{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--body-mid)}
+  .donut-row{display:flex;align-items:center;gap:var(--sp-2xl)}
+  .donut{position:relative;width:160px;height:160px;flex:none}
+  .donut svg{transform:rotate(-90deg)}
+  .donut .center{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .donut .center b{font-size:24px;font-weight:400;letter-spacing:-.4px}
+  .donut .center span{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--body-mid)}
+  .legend{display:grid;gap:var(--sp-md);font-size:14px;color:var(--body)}
+  .legend .row{display:flex;align-items:center;gap:var(--sp-md)}
+  .legend .sw{width:10px;height:10px;border-radius:2px;flex:none}
+  .legend .val{margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--ink)}
+
+  /* Layout row: table + activity */
+  .content-row{display:grid;grid-template-columns:1.6fr .84fr;gap:var(--sp-lg);align-items:start}
+
+  /* Data table */
+  .table-card{background:var(--canvas-card);border:1px solid var(--hairline);border-radius:var(--radius-sm);overflow:hidden}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  thead th{
+    background:var(--canvas-soft);text-align:left;
+    font-family:var(--font-mono);font-size:12px;font-weight:400;letter-spacing:1.2px;text-transform:uppercase;color:var(--body-mid);
+    padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline);white-space:nowrap;
+  }
+  tbody td{padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline);color:var(--body);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover td{background:rgba(255,255,255,.02)}
+  td .name{color:var(--ink)}
+  td .sub{display:block;font-size:12px;color:var(--body-mid);margin-top:var(--sp-xxs)}
+  td.num,th.num{text-align:right;font-family:var(--font-mono);letter-spacing:.5px}
+  .check{width:15px;height:15px;accent-color:var(--primary);cursor:pointer}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.8px;text-transform:uppercase;
+    border-radius:var(--radius-pill);padding:2px var(--sp-md);border:1px solid;
+  }
+  .badge::before{content:"";width:6px;height:6px;border-radius:9999px;background:currentColor}
+  .b-success{color:var(--success);border-color:rgba(143,214,160,.35);background:rgba(143,214,160,.06)}
+  .b-warning{color:var(--warning);border-color:rgba(255,194,133,.35);background:rgba(255,194,133,.06)}
+  .b-danger{color:var(--danger);border-color:rgba(255,122,107,.35);background:rgba(255,122,107,.06)}
+  .b-neutral{color:var(--neutral);border-color:var(--hairline);background:transparent}
+  .row-actions{display:flex;gap:var(--sp-sm);justify-content:flex-end}
+  .ghost{
+    background:none;border:1px solid var(--hairline);border-radius:var(--radius-pill);
+    color:var(--body);font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;
+    padding:2px var(--sp-md);cursor:pointer;
+  }
+  .ghost:hover{border-color:rgba(255,255,255,.4);color:var(--ink)}
+  .table-foot{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-lg) var(--sp-xl)}
+  .pager{display:flex;gap:var(--sp-sm)}
+  .pg{
+    width:28px;height:28px;border:1px solid var(--hairline);border-radius:var(--radius-pill);
+    background:none;color:var(--body);font-family:var(--font-mono);font-size:12px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pg.on{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+
+  /* Activity feed */
+  .feed{display:grid;gap:var(--sp-lg);margin-top:var(--sp-lg)}
+  .feed-item{display:flex;gap:var(--sp-md);align-items:flex-start}
+  .feed-dot{
+    width:26px;height:26px;border-radius:9999px;flex:none;margin-top:2px;
+    border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:11px;
+  }
+  .fd-sunset{background:rgba(255,122,23,.14);color:var(--accent-sunset-soft)}
+  .fd-dusk{background:rgba(124,58,237,.16);color:var(--accent-twilight)}
+  .fd-breeze{background:rgba(160,195,236,.14);color:var(--accent-breeze)}
+  .fd-neutral{background:var(--canvas-soft);color:var(--body-mid)}
+  .feed-item p{font-size:14px;line-height:20px;color:var(--body)}
+  .feed-item p b{color:var(--ink);font-weight:400}
+  .feed-item time{font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;color:var(--body-mid)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="side-logo">
+      <svg class="logo-mark" viewBox="0 0 26 26" fill="none">
+        <path d="M2 24 L13 2 L15.5 7.2 L9.6 19 L24 19 L24 24 Z" fill="#fff"/>
+        <path d="M16.4 2 H24 V9.8 Z" fill="#fff"/>
+      </svg>
+      <span class="logo-word">Compute Console</span>
+    </div>
+    <nav class="side-group">
+      <span class="eyebrow-sm">Overview</span>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="4.6" height="4.6" stroke="#7d8187"/><rect x="7.9" y="1.5" width="4.6" height="4.6" stroke="#7d8187"/><rect x="1.5" y="7.9" width="4.6" height="4.6" stroke="#7d8187"/><rect x="7.9" y="7.9" width="4.6" height="4.6" stroke="#7d8187"/></svg>
+        Dashboard
+      </a>
+      <a class="side-link on" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3 H12 M2 7 H12 M2 11 H8" stroke="#fff"/></svg>
+        Orders
+        <span class="pill">312</span>
+      </a>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="3" stroke="#7d8187"/><path d="M1.5 12.5 C1.5 9.8 8.5 9.8 8.5 12.5 M10 2.2 A3 3 0 0 1 10 7.5 M12.5 12.5 C12.5 10.8 11.3 10 10 9.8" stroke="#7d8187"/></svg>
+        Customers
+        <span class="pill">8.4k</span>
+      </a>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="6" width="2.6" height="6.5" stroke="#7d8187"/><rect x="5.7" y="3" width="2.6" height="9.5" stroke="#7d8187"/><rect x="9.9" y="1.5" width="2.6" height="11" stroke="#7d8187"/></svg>
+        Usage &amp; Metering
+      </a>
+    </nav>
+    <nav class="side-group">
+      <span class="eyebrow-sm">Operations</span>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#7d8187"/><path d="M7 4 V7 L9.2 8.6" stroke="#7d8187"/></svg>
+        Clusters
+      </a>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5 C4.5 1.5 3 3.5 3 6 V9 L1.8 11 H12.2 L11 9 V6 C11 3.5 9.5 1.5 7 1.5 Z" stroke="#7d8187"/></svg>
+        Incidents
+        <span class="pill">2</span>
+      </a>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12 L5 8 L8 9.5 L12 3" stroke="#7d8187"/></svg>
+        Analytics
+      </a>
+      <a class="side-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.4" stroke="#7d8187"/><path d="M7 1.2 V3 M7 11 V12.8 M1.2 7 H3 M11 7 H12.8 M3 3 L4.2 4.2 M9.8 9.8 L11 11 M11 3 L9.8 4.2 M4.2 9.8 L3 11" stroke="#7d8187"/></svg>
+        Settings
+      </a>
+    </nav>
+    <div class="user-card">
+      <div class="avatar">EK</div>
+      <div class="who"><b>Elena Kovač</b><span>Ops admin · xai-7f2c</span></div>
+      <button class="gear" aria-label="Account settings">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="2" stroke="#7d8187"/><path d="M6 .8 V2.2 M6 9.8 V11.2 M.8 6 H2.2 M9.8 6 H11.2 M2.3 2.3 L3.3 3.3 M8.7 8.7 L9.7 9.7 M9.7 2.3 L8.7 3.3 M3.3 8.7 L2.3 9.7" stroke="#7d8187"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main column ── -->
+  <div>
+    <header class="topbar">
+      <span class="crumb">Console / <b>Orders</b></span>
+      <div class="top-search">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#7d8187"/><path d="M9.5 9.5 L13 13" stroke="#7d8187"/></svg>
+        <input type="text" placeholder="Search orders, accounts, clusters…">
+        <kbd>⌘K</kbd>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5 C4.5 1.5 3 3.5 3 6 V9 L1.8 11 H12.2 L11 9 V6 C11 3.5 9.5 1.5 7 1.5 Z" stroke="#fff"/><path d="M5.5 12.5 C5.8 13.2 8.2 13.2 8.5 12.5" stroke="#fff"/></svg>
+          <span class="dot"></span>
+        </button>
+        <button class="btn-primary">+ New order</button>
+        <div class="avatar" style="background:linear-gradient(135deg,var(--accent-dusk),var(--accent-midnight))">EK</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <span class="eyebrow">Orders — FY26 Q3</span>
+        <h1>Marketplace orders</h1>
+      </div>
+
+      <!-- KPI row -->
+      <section class="kpis">
+        <div class="kpi">
+          <span class="label">Revenue · MTD</span>
+          <span class="value">$1.84M</span>
+          <div class="delta-row">
+            <span class="delta up">▲ 12.4% vs Sep</span>
+            <div class="spark sun"><i style="height:30%"></i><i style="height:45%"></i><i style="height:38%"></i><i style="height:60%"></i><i style="height:52%"></i><i style="height:74%"></i><i class="hot" style="height:92%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <span class="label">Orders · MTD</span>
+          <span class="value">312</span>
+          <div class="delta-row">
+            <span class="delta up">▲ 6.1% vs Sep</span>
+            <div class="spark"><i style="height:40%"></i><i style="height:35%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:66%"></i><i style="height:58%"></i><i class="hot" style="height:80%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <span class="label">Tokens billed</span>
+          <span class="value">61.2B</span>
+          <div class="delta-row">
+            <span class="delta up">▲ 22.8% vs Sep</span>
+            <div class="spark twi"><i style="height:25%"></i><i style="height:42%"></i><i style="height:50%"></i><i style="height:46%"></i><i style="height:64%"></i><i style="height:78%"></i><i class="hot" style="height:96%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <span class="label">Failed settlements</span>
+          <span class="value">7</span>
+          <div class="delta-row">
+            <span class="delta down">▼ 3 fewer than Sep</span>
+            <div class="spark"><i style="height:70%"></i><i style="height:55%"></i><i style="height:64%"></i><i style="height:40%"></i><i style="height:34%"></i><i style="height:22%"></i><i class="hot" style="height:14%"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts row -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Settled revenue by month</h2>
+            <span class="eyebrow-sm">USD · FY26</span>
+          </div>
+          <div class="bars">
+            <div class="bar"><i style="height:38%"></i><span>N</span></div>
+            <div class="bar"><i style="height:44%"></i><span>D</span></div>
+            <div class="bar"><i style="height:41%"></i><span>J</span></div>
+            <div class="bar"><i style="height:55%"></i><span>F</span></div>
+            <div class="bar"><i style="height:50%"></i><span>M</span></div>
+            <div class="bar"><i style="height:63%"></i><span>A</span></div>
+            <div class="bar"><i style="height:59%"></i><span>M</span></div>
+            <div class="bar"><i style="height:72%"></i><span>J</span></div>
+            <div class="bar"><i style="height:68%"></i><span>J</span></div>
+            <div class="bar"><i style="height:81%"></i><span>A</span></div>
+            <div class="bar"><i style="height:76%"></i><span>S</span></div>
+            <div class="bar hot"><i style="height:94%"></i><span>O</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Revenue mix</h2>
+            <span class="eyebrow-sm">October</span>
+          </div>
+          <div class="donut-row">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+                <circle cx="80" cy="80" r="62" stroke="#212327" stroke-width="16"/>
+                <!-- circumference ≈ 389.6 -->
+                <circle cx="80" cy="80" r="62" stroke="#a0c3ec" stroke-width="16" stroke-dasharray="163.6 389.6" stroke-dashoffset="0"/>
+                <circle cx="80" cy="80" r="62" stroke="#7c3aed" stroke-width="16" stroke-dasharray="105.2 389.6" stroke-dashoffset="-163.6"/>
+                <circle cx="80" cy="80" r="62" stroke="#ff7a17" stroke-width="16" stroke-dasharray="81.8 389.6" stroke-dashoffset="-268.8"/>
+                <circle cx="80" cy="80" r="62" stroke="#c4b5fd" stroke-width="16" stroke-dasharray="39 389.6" stroke-dashoffset="-350.6"/>
+              </svg>
+              <div class="center"><b>100%</b><span>of mix</span></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:#a0c3ec"></span>API inference<span class="val">42%</span></div>
+              <div class="row"><span class="sw" style="background:#7c3aed"></span>Reserved GPUs<span class="val">27%</span></div>
+              <div class="row"><span class="sw" style="background:#ff7a17"></span>Agent kits<span class="val">21%</span></div>
+              <div class="row"><span class="sw" style="background:#c4b5fd"></span>Credits &amp; other<span class="val">10%</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Table + activity -->
+      <section class="content-row">
+        <div class="table-card">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:36px"><input class="check" type="checkbox" aria-label="Select all"></th>
+                  <th>Order</th>
+                  <th>Product</th>
+                  <th>Customer</th>
+                  <th>Status</th>
+                  <th class="num">Amount</th>
+                  <th>Date</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20841</span><span class="sub">grok-4 heavy · 4M blocks</span></td>
+                  <td>Model endpoint</td>
+                  <td><span class="name">Vantage Labs</span><span class="sub">xai-91ab</span></td>
+                  <td><span class="badge b-success">Settled</span></td>
+                  <td class="num">$72,410.00</td>
+                  <td>Oct 26</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Refund</button></div></td>
+                </tr>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20838</span><span class="sub">reserved 8×H100 · wk 44</span></td>
+                  <td>Reserved GPUs</td>
+                  <td><span class="name">Fjord AI</span><span class="sub">xai-5d20</span></td>
+                  <td><span class="badge b-warning">Pending</span></td>
+                  <td class="num">$6,400.00</td>
+                  <td>Oct 25</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Approve</button></div></td>
+                </tr>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20831</span><span class="sub">research agent kit · 12 seats</span></td>
+                  <td>Agent kit</td>
+                  <td><span class="name">Helios Robotics</span><span class="sub">xai-3fa7</span></td>
+                  <td><span class="badge b-success">Settled</span></td>
+                  <td class="num">$1,788.00</td>
+                  <td>Oct 25</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Invoice</button></div></td>
+                </tr>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20827</span><span class="sub">$5,000 credits · prepay</span></td>
+                  <td>API credits</td>
+                  <td><span class="name">Marlow &amp; Co</span><span class="sub">xai-77c1</span></td>
+                  <td><span class="badge b-danger">Failed</span></td>
+                  <td class="num">$5,000.00</td>
+                  <td>Oct 24</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Retry</button></div></td>
+                </tr>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20819</span><span class="sub">grok-code fast · 2B tok</span></td>
+                  <td>Model endpoint</td>
+                  <td><span class="name">Quanta Press</span><span class="sub">xai-a08e</span></td>
+                  <td><span class="badge b-success">Settled</span></td>
+                  <td class="num">$5,800.00</td>
+                  <td>Oct 24</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Invoice</button></div></td>
+                </tr>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20812</span><span class="sub">domain tuner · annual</span></td>
+                  <td>Agent kit</td>
+                  <td><span class="name">Northwind Bio</span><span class="sub">xai-2b94</span></td>
+                  <td><span class="badge b-neutral">Refunded</span></td>
+                  <td class="num">−$299.00</td>
+                  <td>Oct 23</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Audit</button></div></td>
+                </tr>
+                <tr>
+                  <td><input class="check" type="checkbox" aria-label="Select"></td>
+                  <td><span class="name">ORD-20803</span><span class="sub">voice · 120k minutes</span></td>
+                  <td>Voice</td>
+                  <td><span class="name">Atlas Tutoring</span><span class="sub">xai-f6d3</span></td>
+                  <td><span class="badge b-success">Settled</span></td>
+                  <td class="num">$4,800.00</td>
+                  <td>Oct 22</td>
+                  <td><div class="row-actions"><button class="ghost">View</button><button class="ghost">Invoice</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-foot">
+            <span class="eyebrow-sm">312 ORDERS · 7 SELECTED MAX PER PAGE</span>
+            <div class="pager">
+              <button class="pg">‹</button>
+              <button class="pg on">1</button>
+              <button class="pg">2</button>
+              <button class="pg">3</button>
+              <button class="pg">…</button>
+              <button class="pg">45</button>
+              <button class="pg">›</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head" style="margin-bottom:0">
+            <h2>Recent activity</h2>
+            <a class="eyebrow-sm" href="#" style="color:var(--ink)">Full log →</a>
+          </div>
+          <div class="feed">
+            <div class="feed-item">
+              <span class="feed-dot fd-sunset">$$</span>
+              <div><p><b>ORD-20841</b> settled — Vantage Labs drew 4M Grok-4 Heavy token blocks against PO-5521.</p><time>09:42 · today</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot fd-breeze">CL</span>
+              <div><p>Cluster <b>us-central-3</b> finished node rotation; queue depth back under 40 GPU-min.</p><time>08:15 · today</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot fd-dusk">UP</span>
+              <div><p><b>Grok-4 Vision</b> checkpoint v4.2 promoted to production for all priority accounts.</p><time>22:03 · Oct 25</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot fd-neutral">!</span>
+              <div><p>Card charge failed for <b>Marlow &amp; Co</b> — dunning email #2 scheduled in 48h.</p><time>19:47 · Oct 24</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot fd-breeze">KY</span>
+              <div><p>New enterprise account <b>Helios Robotics</b> passed KYB review; seat limit raised to 40.</p><time>14:20 · Oct 24</time></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

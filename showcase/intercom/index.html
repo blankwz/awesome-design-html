@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>intercom — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — from design-md/intercom/DESIGN.md
+   Saans → Inter (weight 500 substitute), SaansMono → JetBrains Mono
+   ============================================================ */
+:root{
+  /* colors */
+  --primary:#111111;
+  --on-primary:#ffffff;
+  --ink:#111111;
+  --ink-muted:#626260;
+  --ink-subtle:#7b7b78;
+  --ink-tertiary:#9c9fa5;
+  --canvas:#f5f1ec;
+  --surface-1:#ffffff;
+  --surface-2:#ebe7e1;
+  --inverse-canvas:#000000;
+  --inverse-surface-1:#313130;
+  --inverse-ink:#ffffff;
+  --inverse-ink-muted:#9c9fa5;
+  --hairline:#d3cec6;
+  --hairline-soft:#ebe7e1;
+  --fin-orange:#ff5600;
+  --report-orange:#fe4c02;
+  --report-blue:#65b5ff;
+  --report-green:#0bdf50;
+  --report-pink:#ff2067;
+  --report-lime:#b3e01c;
+  --report-cyan:#03b2cb;
+  --brand-blue:#0007cb;
+  --semantic-error:#c41c1c;
+  --semantic-success:#0bdf50;
+  /* typography */
+  --font-sans:'Saans Fallback','Saans','Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'SaansMono Fallback','SaansMono','JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --display-xl:72px; --display-xl-lh:1.05; --display-xl-ls:-2.0px;
+  --display-lg:56px; --display-lg-lh:1.10; --display-lg-ls:-1.4px;
+  --display-md:40px; --display-md-lh:1.15; --display-md-ls:-0.8px;
+  --headline:28px;  --headline-lh:1.20;  --headline-ls:-0.5px;
+  --card-title:22px;--card-title-lh:1.25;--card-title-ls:-0.3px;
+  --subhead:20px;   --subhead-lh:1.40;   --subhead-ls:-0.2px;
+  --body-lg:18px;   --body-lg-lh:1.50;   --body-lg-ls:-0.1px;
+  --body:16px;      --body-lh:1.50;
+  --body-sm:14px;   --body-sm-lh:1.50;
+  --caption:12px;   --caption-lh:1.40;
+  --button:15px;    --button-lh:1.20;
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-xxl:24px; --r-pill:9999px;
+  /* spacing */
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:24px; --s-xl:32px; --s-xxl:48px; --s-section:96px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  background:var(--canvas);
+  color:var(--ink);
+  font-size:var(--body);
+  line-height:var(--body-lh);
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:var(--s-md);
+  padding:0 32px;height:56px;
+  background:var(--canvas);
+  border-bottom:1px solid var(--hairline);
+}
+.sg-banner .sg-folder{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-tertiary);
+  margin-right:var(--s-md);
+}
+.sg-banner .sg-brand{
+  font-size:20px;font-weight:500;letter-spacing:-0.4px;color:var(--ink);
+  display:flex;align-items:center;gap:10px;
+}
+.sg-banner .sg-brand .dot{width:10px;height:10px;border-radius:50%;background:var(--fin-orange)}
+.sg-banner .sg-desc{
+  font-size:14px;color:var(--ink-subtle);text-align:right;
+}
+@media(max-width:900px){.sg-banner .sg-desc{display:none}}
+
+/* ============================================================
+   SHOWCASE LAYOUT
+   ============================================================ */
+main{max-width:1280px;margin:0 auto;padding:0 32px}
+.sg-section-label{
+  font-size:14px;font-weight:500;color:var(--ink-muted);
+  padding:var(--s-xxl) 0 var(--s-md);
+}
+.sg-section-title{
+  font-size:var(--display-md);font-weight:500;line-height:var(--display-md-lh);letter-spacing:var(--display-md-ls);
+  padding-bottom:var(--s-lg);
+}
+.sg-block{
+  background:var(--surface-1);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-xl);
+  margin-bottom:var(--s-lg);
+}
+.sg-block-label{
+  font-size:14px;font-weight:500;color:var(--ink-tertiary);
+  margin-bottom:var(--s-lg);
+}
+.sg-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg)}
+.sg-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+@media(max-width:1024px){.sg-grid-3,.sg-grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.sg-grid-3,.sg-grid-4{grid-template-columns:1fr}}
+
+/* ============================================================
+   1. COLOR TOKENS
+   ============================================================ */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--s-md)}
+@media(max-width:1024px){.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+.swatch .chip{height:64px;border-radius:var(--r-sm);border:1px solid var(--hairline)}
+.swatch .name{font-size:13px;font-weight:500;margin-top:8px}
+.swatch .hex{font-family:var(--font-mono);font-size:12px;color:var(--ink-tertiary);margin-top:2px}
+
+/* ============================================================
+   2. TYPOGRAPHY SPECIMEN
+   ============================================================ */
+.specimen > div{padding:var(--s-md) 0;border-bottom:1px solid var(--hairline-soft)}
+.specimen > div:last-child{border-bottom:none}
+.specimen .tag{
+  font-size:12px;color:var(--ink-tertiary);width:180px;flex:none;
+  font-family:var(--font-mono);
+}
+.specimen .row{display:flex;align-items:baseline;gap:var(--s-lg)}
+.t-display-xl{font-size:var(--display-xl);font-weight:500;line-height:1.05;letter-spacing:-2px}
+.t-display-lg{font-size:var(--display-lg);font-weight:500;line-height:1.1;letter-spacing:-1.4px}
+.t-display-md{font-size:var(--display-md);font-weight:500;line-height:1.15;letter-spacing:-0.8px}
+.t-headline{font-size:var(--headline);font-weight:500;line-height:1.2;letter-spacing:-0.5px}
+.t-card-title{font-size:var(--card-title);font-weight:500;line-height:1.25;letter-spacing:-0.3px}
+.t-subhead{font-size:var(--subhead);font-weight:400;line-height:1.4;letter-spacing:-0.2px}
+.t-body-lg{font-size:var(--body-lg);font-weight:400;line-height:1.5;letter-spacing:-0.1px}
+.t-body{font-size:var(--body);font-weight:400;line-height:1.5}
+.t-body-sm{font-size:var(--body-sm);font-weight:400;line-height:1.5}
+.t-caption{font-size:var(--caption);font-weight:400;line-height:1.4;color:var(--ink-muted)}
+.t-mono{font-family:var(--font-mono);font-size:13px;font-weight:400}
+.t-eyebrow{font-size:14px;font-weight:500;line-height:1.3}
+
+/* ============================================================
+   3. BUTTONS
+   ============================================================ */
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-md)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:var(--button);font-weight:500;line-height:var(--button-lh);
+  padding:10px 18px;border-radius:var(--r-md);
+  border:1px solid transparent;cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+  font-family:var(--font-sans);
+}
+.btn-primary{background:var(--ink);color:var(--on-primary)}
+.btn-primary:hover{background:var(--inverse-canvas)}
+.btn-primary.pressed,.btn-primary:active{background:var(--inverse-canvas)}
+.btn-secondary{background:var(--surface-1);color:var(--ink);border-color:var(--hairline)}
+.btn-secondary:hover{background:var(--surface-2)}
+.btn-tertiary{background:var(--canvas);color:var(--ink)}
+.btn-tertiary:hover{background:var(--surface-2)}
+.btn-fin{background:var(--fin-orange);color:var(--on-primary)}
+.btn-fin:hover{background:#e64d00}
+.btn-sm{padding:6px 12px;font-size:14px}
+.btn-lg{padding:14px 24px;font-size:16px}
+.btn.disabled,.btn[disabled]{background:var(--surface-2);color:var(--ink-tertiary);cursor:not-allowed}
+.btn-hover-look{outline:2px solid var(--fin-orange);outline-offset:2px}
+
+/* ============================================================
+   4. INPUTS
+   ============================================================ */
+.input-row{display:flex;flex-wrap:wrap;gap:var(--s-lg);align-items:flex-start}
+.field{display:flex;flex-direction:column;gap:8px;min-width:240px}
+.field label{font-size:14px;font-weight:500}
+.input{
+  background:var(--surface-1);color:var(--ink);
+  font-size:var(--body);font-family:var(--font-sans);
+  border:1px solid var(--hairline);border-radius:var(--r-md);
+  padding:10px 14px;outline:none;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+.input::placeholder{color:var(--ink-tertiary)}
+.input:hover{border-color:var(--ink-subtle)}
+.input:focus{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.input.focus-look{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.input:disabled,.input.disabled{background:var(--surface-2);color:var(--ink-tertiary);cursor:not-allowed}
+select.input{appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23626260' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.switch-row{display:flex;align-items:center;gap:12px;padding-top:26px}
+.switch{position:relative;width:40px;height:24px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{
+  position:absolute;inset:0;border-radius:var(--r-pill);
+  background:var(--surface-2);border:1px solid var(--hairline);
+  transition:background .15s ease;cursor:pointer;
+}
+.switch .track::after{
+  content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;
+  border-radius:50%;background:var(--surface-1);border:1px solid var(--hairline);
+  transition:transform .15s ease;
+}
+.switch input:checked + .track{background:var(--ink);border-color:var(--ink)}
+.switch input:checked + .track::after{transform:translateX(16px);border-color:var(--ink)}
+.checkbox{display:flex;align-items:center;gap:10px;padding-top:26px}
+.checkbox input{width:18px;height:18px;accent-color:var(--ink)}
+
+/* ============================================================
+   5. CARDS
+   ============================================================ */
+.card{
+  background:var(--surface-1);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-lg);
+}
+.card .eyebrow{font-size:14px;font-weight:500;color:var(--ink-muted);margin-bottom:var(--s-xs)}
+.card h3{font-size:var(--card-title);font-weight:500;line-height:1.25;letter-spacing:-0.3px;margin-bottom:var(--s-xs)}
+.card p{font-size:var(--body-sm);color:var(--ink-muted);margin-bottom:var(--s-md)}
+.card .text-link{font-size:14px;font-weight:500;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.card .text-link:hover{color:var(--fin-orange)}
+.stat-card{
+  background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--r-lg);
+  padding:var(--s-lg);
+}
+.stat-card .big{
+  font-size:44px;font-weight:500;line-height:1.05;letter-spacing:-1.2px;
+  margin-bottom:var(--s-xs);
+}
+.stat-card .delta{
+  display:inline-block;font-size:12px;font-weight:500;color:#026e08;
+  background:rgba(11,223,80,0.14);border-radius:var(--r-xs);
+  padding:2px 8px;margin-bottom:var(--s-sm);
+}
+.stat-card .label{font-size:14px;color:var(--ink-muted)}
+.spark{display:flex;align-items:flex-end;gap:6px;height:56px;margin-top:var(--s-md)}
+.spark i{flex:1;border-radius:2px 2px 0 0}
+
+/* ============================================================
+   6. BADGES
+   ============================================================ */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--s-sm)}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;
+  padding:4px 12px;border-radius:var(--r-pill);
+}
+.badge .dot{width:6px;height:6px;border-radius:50%}
+.badge-neutral{background:var(--surface-2);color:var(--ink-muted)}
+.badge-fin{background:rgba(255,86,0,0.10);color:var(--fin-orange)}
+.badge-fin .dot{background:var(--fin-orange)}
+.badge-success{background:rgba(11,223,80,0.14);color:#026e08}
+.badge-success .dot{background:var(--semantic-success)}
+.badge-outline{background:var(--surface-1);border:1px solid var(--hairline);color:var(--ink)}
+
+/* ============================================================
+   7. NAVIGATION
+   ============================================================ */
+.topnav{
+  background:var(--canvas);
+  border:1px solid var(--hairline);border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;padding:0 var(--s-lg);
+  margin-bottom:var(--s-md);
+}
+.topnav .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:500;letter-spacing:-0.4px}
+.topnav .logo .mark{width:22px;height:22px;border-radius:50%;background:var(--ink);position:relative;overflow:hidden}
+.topnav .logo .mark::after{content:'';position:absolute;right:-4px;top:-4px;width:16px;height:16px;border-radius:50%;background:var(--fin-orange)}
+.topnav ul{display:flex;list-style:none;gap:var(--s-lg)}
+.topnav ul a{font-size:14px;color:var(--ink-muted);padding:8px 0;transition:color .15s}
+.topnav ul a:hover,.topnav ul a.active{color:var(--ink)}
+.topnav .actions{display:flex;align-items:center;gap:var(--s-sm)}
+@media(max-width:900px){.topnav ul{display:none}}
+
+/* ============================================================
+   8. TABLE
+   ============================================================ */
+.table{width:100%;border-collapse:collapse}
+.table th{
+  text-align:left;font-size:12px;font-weight:500;color:var(--ink-tertiary);
+  padding:12px 16px;border-bottom:1px solid var(--hairline);
+}
+.table td{
+  font-size:var(--body-sm);padding:14px 16px;
+  border-bottom:1px solid var(--hairline-soft);color:var(--ink);
+}
+.table tr:last-child td{border-bottom:none}
+.table .muted{color:var(--ink-muted)}
+.pill-tab{
+  display:inline-flex;align-items:center;font-size:var(--button);font-weight:500;
+  padding:8px 16px;border-radius:var(--r-pill);
+  background:var(--canvas);color:var(--ink-muted);
+}
+.pill-tab.selected{background:var(--surface-1);color:var(--ink);border:1px solid var(--hairline)}
+
+/* ============================================================
+   PRODUCT — Fin, the AI agent for customer service
+   ============================================================ */
+#product{padding:var(--s-section) 0 0}
+.prod-eyebrow{font-size:14px;font-weight:500;color:var(--ink-muted);margin-bottom:var(--s-md)}
+.prod-hero{text-align:left;padding:var(--s-xxl) 0 var(--s-xl)}
+.prod-hero h1{
+  font-size:var(--display-xl);font-weight:500;line-height:1.05;letter-spacing:-2px;
+  max-width:880px;margin-bottom:var(--s-lg);
+}
+.prod-hero h1 em{font-style:normal;color:var(--fin-orange)}
+.prod-hero .sub{
+  font-size:var(--body-lg);color:var(--ink-muted);max-width:560px;
+  margin-bottom:var(--s-xl);
+}
+.prod-hero .cta-row{display:flex;gap:var(--s-sm);margin-bottom:var(--s-xl)}
+.prod-hero .note{font-size:13px;color:var(--ink-tertiary)}
+
+/* product mockup — helpdesk inbox UI */
+.mockup{
+  background:var(--surface-1);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-xl);
+  padding:var(--s-lg);
+  margin:var(--s-xl) 0;
+}
+.mockup .chrome{display:flex;align-items:center;gap:8px;padding-bottom:var(--s-md);border-bottom:1px solid var(--hairline-soft);margin-bottom:var(--s-md)}
+.mockup .chrome i{width:10px;height:10px;border-radius:50%;background:var(--surface-2)}
+.mockup .chrome .addr{margin-left:12px;font-family:var(--font-mono);font-size:12px;color:var(--ink-tertiary);background:var(--canvas);border-radius:var(--r-sm);padding:4px 12px}
+.inbox{display:grid;grid-template-columns:220px 1fr;gap:var(--s-md)}
+.inbox .list{border-right:1px solid var(--hairline-soft);padding-right:var(--s-md)}
+.inbox .list .item{padding:12px;border-radius:var(--r-sm);margin-bottom:4px}
+.inbox .list .item.sel{background:var(--canvas)}
+.inbox .list .item .who{font-size:13px;font-weight:500;display:flex;justify-content:space-between}
+.inbox .list .item .who span{font-weight:400;color:var(--ink-tertiary);font-size:12px}
+.inbox .list .item .snippet{font-size:12px;color:var(--ink-subtle);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbox .convo .msg{display:flex;gap:12px;margin-bottom:var(--s-md)}
+.inbox .convo .ava{width:32px;height:32px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+.inbox .convo .msg .bubble{border-radius:var(--r-md);padding:12px 14px;font-size:14px;max-width:520px}
+.inbox .convo .cust .ava{background:var(--surface-2);color:var(--ink-muted)}
+.inbox .convo .cust .bubble{background:var(--canvas)}
+.inbox .convo .fin .ava{background:var(--fin-orange);color:#fff}
+.inbox .convo .fin .bubble{background:rgba(255,86,0,0.06);border:1px solid rgba(255,86,0,0.18)}
+.inbox .convo .fin .fin-tag{font-size:11px;font-weight:500;color:var(--fin-orange);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.inbox .convo .fin .fin-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--fin-orange)}
+/* analytics strip inside mockup */
+.analytics{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-md);margin-top:var(--s-md)}
+.analytics .tile{border:1px solid var(--hairline-soft);border-radius:var(--r-md);padding:var(--s-md)}
+.analytics .tile .k{font-size:24px;font-weight:500;letter-spacing:-0.5px}
+.analytics .tile .l{font-size:12px;color:var(--ink-subtle);margin-top:2px}
+.analytics .bar{height:6px;border-radius:var(--r-xs);margin-top:10px;overflow:hidden;display:flex}
+.analytics .bar i{height:100%}
+
+/* logo strip */
+.logo-strip{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:var(--s-sm);
+  padding:var(--s-xl) 0;
+}
+@media(max-width:900px){.logo-strip{grid-template-columns:repeat(3,1fr)}}
+.logo-tile{
+  background:var(--canvas);border-radius:var(--r-xs);padding:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:500;color:var(--ink-muted);letter-spacing:-0.2px;
+}
+
+/* feature cards */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg);margin:var(--s-xl) 0}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feature-card{
+  background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--r-lg);
+  padding:var(--s-lg);
+  transition:border-color .15s ease;
+}
+.feature-card:hover{border-color:var(--ink-subtle)}
+.feature-card .ico{
+  width:40px;height:40px;border-radius:var(--r-md);background:var(--canvas);
+  display:flex;align-items:center;justify-content:center;margin-bottom:var(--s-md);
+}
+.feature-card h3{font-size:var(--card-title);font-weight:500;letter-spacing:-0.3px;margin-bottom:var(--s-xs)}
+.feature-card p{font-size:var(--body-sm);color:var(--ink-muted)}
+
+/* pricing */
+.pricing-head{text-align:center;max-width:640px;margin:0 auto var(--s-lg)}
+.pricing-head h2{font-size:var(--display-md);font-weight:500;letter-spacing:-0.8px;margin-bottom:var(--s-sm)}
+.pricing-head p{font-size:var(--subhead);color:var(--ink-muted)}
+.pricing-tabs{display:flex;justify-content:center;gap:var(--s-xs);margin-bottom:var(--s-lg)}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg);align-items:stretch;margin-bottom:var(--s-xl)}
+@media(max-width:1024px){.price-grid{grid-template-columns:1fr}}
+.price-card{
+  background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--r-lg);
+  padding:var(--s-lg);display:flex;flex-direction:column;
+}
+.price-card.featured{background:var(--ink);color:var(--on-primary)}
+.price-card .tier{font-size:22px;font-weight:500;letter-spacing:-0.3px;margin-bottom:4px}
+.price-card .tier-desc{font-size:14px;margin-bottom:var(--s-md)}
+.price-card .tier-desc{color:var(--ink-muted)}
+.price-card.featured .tier-desc{color:var(--inverse-ink-muted)}
+.price-card .amount{font-size:40px;font-weight:500;letter-spacing:-0.8px}
+.price-card .amount small{font-size:14px;font-weight:400;letter-spacing:0;color:var(--ink-subtle)}
+.price-card.featured .amount small{color:var(--inverse-ink-muted)}
+.price-card ul{list-style:none;margin:var(--s-md) 0 var(--s-lg);flex:1}
+.price-card li{
+  font-size:14px;padding:6px 0;display:flex;gap:10px;align-items:flex-start;
+}
+.price-card li svg{flex:none;margin-top:3px}
+.price-card.featured .btn{background:var(--surface-1);color:var(--ink);border:none}
+.price-card.featured .btn:hover{background:var(--surface-2)}
+
+/* black quote strip */
+.quote-strip{
+  background:var(--inverse-canvas);color:var(--inverse-ink);
+  border-radius:var(--r-lg);
+  padding:var(--s-xl);
+  margin:var(--s-xl) 0;
+}
+.quote-strip blockquote{
+  font-size:var(--display-md);font-weight:500;line-height:1.15;letter-spacing:-0.8px;
+  max-width:900px;margin-bottom:var(--s-lg);
+}
+.quote-strip .attr{display:flex;align-items:center;gap:var(--s-md)}
+.quote-strip .ava{width:48px;height:48px;border-radius:50%;background:var(--inverse-surface-1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500}
+.quote-strip .name{font-size:16px;font-weight:500}
+.quote-strip .role{font-size:14px;color:var(--inverse-ink-muted)}
+
+/* CTA banner */
+.cta-banner{
+  background:var(--surface-1);
+  border:1px solid var(--hairline);border-radius:var(--r-xxl);
+  padding:var(--s-xxl);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-xl);
+  margin:var(--s-xl) 0;
+}
+.cta-banner h2{font-size:var(--headline);font-weight:500;letter-spacing:-0.5px;margin-bottom:var(--s-xs)}
+.cta-banner p{font-size:var(--body);color:var(--ink-muted)}
+@media(max-width:900px){.cta-banner{flex-direction:column;align-items:flex-start}}
+
+/* FAQ */
+.faq{margin:var(--s-xl) 0}
+.faq-row{
+  background:var(--canvas);border-radius:var(--r-md);
+  padding:var(--s-lg);
+  border-bottom:1px solid var(--hairline-soft);
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:var(--s-sm);
+}
+.faq-row .q{font-size:var(--body);font-weight:500}
+.faq-row .plus{color:var(--ink-tertiary);font-size:20px;line-height:1}
+
+/* footer */
+footer{
+  background:var(--canvas);
+  padding:64px 32px;
+  margin-top:var(--s-section);
+  border-top:1px solid var(--hairline);
+}
+.foot-grid{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--s-xl);
+}
+@media(max-width:900px){.foot-grid{grid-template-columns:repeat(2,1fr)}}
+.foot-grid .col h4{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:var(--s-md)}
+.foot-grid .col a{display:block;font-size:12px;color:var(--ink-subtle);padding:4px 0;transition:color .15s}
+.foot-grid .col a:hover{color:var(--ink)}
+.foot-grid .wordmark{font-size:22px;font-weight:500;letter-spacing:-0.4px;margin-bottom:var(--s-md)}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div style="display:flex;align-items:baseline">
+    <span class="sg-folder">intercom</span>
+    <span class="sg-brand"><span class="dot"></span>Intercom</span>
+  </div>
+  <div class="sg-desc">An editorial customer-service marketing canvas on a soft cream-white ground with charcoal type and Fin Orange reserved for the Fin AI brand.</div>
+</header>
+
+<main>
+
+  <!-- ==================== COMPONENTS ==================== -->
+  <section id="components">
+    <h2 class="sg-section-title">Components</h2>
+
+    <!-- 1. Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#111111"></div><div class="name">ink</div><div class="hex">#111111</div></div>
+        <div class="swatch"><div class="chip" style="background:#626260"></div><div class="name">ink-muted</div><div class="hex">#626260</div></div>
+        <div class="swatch"><div class="chip" style="background:#f5f1ec"></div><div class="name">canvas</div><div class="hex">#f5f1ec</div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="name">surface-1</div><div class="hex">#ffffff</div></div>
+        <div class="swatch"><div class="chip" style="background:#ebe7e1"></div><div class="name">surface-2</div><div class="hex">#ebe7e1</div></div>
+        <div class="swatch"><div class="chip" style="background:#d3cec6"></div><div class="name">hairline</div><div class="hex">#d3cec6</div></div>
+        <div class="swatch"><div class="chip" style="background:#ff5600"></div><div class="name">fin-orange</div><div class="hex">#ff5600</div></div>
+        <div class="swatch"><div class="chip" style="background:#0007cb"></div><div class="name">brand-blue</div><div class="hex">#0007cb</div></div>
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="name">inverse-canvas</div><div class="hex">#000000</div></div>
+        <div class="swatch"><div class="chip" style="background:#65b5ff"></div><div class="name">report-blue</div><div class="hex">#65b5ff</div></div>
+        <div class="swatch"><div class="chip" style="background:#b3e01c"></div><div class="name">report-lime</div><div class="hex">#b3e01c</div></div>
+        <div class="swatch"><div class="chip" style="background:#c41c1c"></div><div class="name">semantic-error</div><div class="hex">#c41c1c</div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen — Saans (Inter substitute), weight 500 display, negative tracking</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">display-xl / 72 / 500</span><span class="t-display-xl">The best AI for humans</span></div>
+        <div class="row"><span class="tag">display-lg / 56 / 500</span><span class="t-display-lg">Support that resolves</span></div>
+        <div class="row"><span class="tag">display-md / 40 / 500</span><span class="t-display-md">One platform, every channel</span></div>
+        <div class="row"><span class="tag">headline / 28 / 500</span><span class="t-headline">Pricing that scales with you</span></div>
+        <div class="row"><span class="tag">card-title / 22 / 500</span><span class="t-card-title">Fin AI Agent resolves 65% instantly</span></div>
+        <div class="row"><span class="tag">subhead / 20 / 400</span><span class="t-subhead">Meet Fin — the AI agent built for customer service.</span></div>
+        <div class="row"><span class="tag">body-lg / 18 / 400</span><span class="t-body-lg">Intercom brings your support, product, and growth teams onto one platform.</span></div>
+        <div class="row"><span class="tag">body / 16 / 400</span><span class="t-body">Every conversation is an opportunity to build a stronger customer relationship.</span></div>
+        <div class="row"><span class="tag">body-sm / 14 / 400</span><span class="t-body-sm">Prices in USD, billed annually. Cancel anytime.</span></div>
+        <div class="row"><span class="tag">caption / 12 / 400</span><span class="t-caption">Updated October 2026 · Fin resolves an average of 65% of conversations</span></div>
+        <div class="row"><span class="tag">eyebrow / 14 / 500</span><span class="t-eyebrow">New in the helpdesk</span></div>
+        <div class="row"><span class="tag">mono / 13 / 400</span><span class="t-mono">fin.resolve(conversation_id) → 0.65</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons — charcoal primary, Fin Orange reserved for Fin AI</div>
+      <div class="btn-row" style="margin-bottom:24px">
+        <button class="btn btn-primary">Start free trial</button>
+        <button class="btn btn-secondary">Book a demo</button>
+        <button class="btn btn-tertiary">View pricing</button>
+        <button class="btn btn-fin">Try Fin AI Agent</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Default</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+        <button class="btn btn-primary btn-hover-look">Hover state</button>
+        <button class="btn btn-primary pressed">Pressed</button>
+        <button class="btn disabled" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs — white surfaces with 8px radius, charcoal focus ring</div>
+      <div class="input-row">
+        <div class="field">
+          <label>Work email</label>
+          <input class="input" type="text" placeholder="you@company.com">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="input focus-look" type="text" value="ana@northwind.io">
+        </div>
+        <div class="field">
+          <label>Team size</label>
+          <select class="input">
+            <option>1–10 people</option>
+            <option selected>11–100 people</option>
+            <option>101–1,000 people</option>
+            <option>1,000+ people</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input disabled" type="text" value="Enterprise only" disabled>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span style="font-size:14px">Enable Fin AI Agent</span>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" checked id="cb1"><label for="cb1" style="font-size:14px">Send me product updates</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">Cards — white lifted on cream, hairline borders, no shadows</div>
+      <div class="sg-grid-3">
+        <div class="card">
+          <div class="eyebrow">Helpdesk</div>
+          <h3>A shared inbox your whole team can live in</h3>
+          <p>Assign, collaborate, and resolve conversations with full customer context — without switching tools.</p>
+          <a class="text-link" href="#">Explore the helpdesk <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Fin AI Agent</div>
+          <h3>Instant answers, from your own content</h3>
+          <p>Fin reads your help center and past conversations to resolve common questions before they reach a human.</p>
+          <a class="text-link" href="#">Meet Fin <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="stat-card">
+          <div><span class="big">65%</span> <span class="delta">↑ 12% QoQ</span></div>
+          <div class="label">of conversations resolved by Fin, on average</div>
+          <div class="spark">
+            <i style="height:30%;background:#65b5ff"></i><i style="height:45%;background:#65b5ff"></i>
+            <i style="height:38%;background:#65b5ff"></i><i style="height:60%;background:#65b5ff"></i>
+            <i style="height:72%;background:#65b5ff"></i><i style="height:66%;background:#65b5ff"></i>
+            <i style="height:88%;background:#ff5600"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">Badges, tags and pills</div>
+      <div class="badge-row">
+        <span class="badge badge-fin"><span class="dot"></span>Fin AI Agent</span>
+        <span class="badge badge-success"><span class="dot"></span>Resolving</span>
+        <span class="badge badge-neutral">Awaiting customer</span>
+        <span class="badge badge-outline">Helpdesk</span>
+        <span class="pill-tab">Monthly</span>
+        <span class="pill-tab selected">Annual · save 20%</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation — sticky cream top nav, 56px</div>
+      <nav class="topnav">
+        <div class="logo"><span class="mark"></span>Intercom</div>
+        <ul>
+          <li><a class="active" href="#">Fin AI Agent</a></li>
+          <li><a href="#">Helpdesk</a></li>
+          <li><a href="#">Messenger</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Customers</a></li>
+        </ul>
+        <div class="actions">
+          <button class="btn btn-secondary btn-sm">Log in</button>
+          <button class="btn btn-primary btn-sm">Start free</button>
+        </div>
+      </nav>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="sg-block">
+      <div class="sg-block-label">Conversation table</div>
+      <table class="table">
+        <thead><tr><th>Conversation</th><th>Customer</th><th>Channel</th><th>Handled by</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Refund for order #48213</td><td class="muted">Maya Chen</td><td class="muted">Messenger</td><td>Fin AI Agent</td><td><span class="badge badge-success"><span class="dot"></span>Resolved</span></td></tr>
+          <tr><td>Can't access workspace</td><td class="muted">Tomas Berg</td><td class="muted">Email</td><td>Priya N.</td><td><span class="badge badge-fin"><span class="dot"></span>Fin suggested</span></td></tr>
+          <tr><td>Upgrade to Advanced plan</td><td class="muted">Alicia Fontaine</td><td class="muted">Chat</td><td>Unassigned</td><td><span class="badge badge-neutral">Waiting</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT ==================== -->
+  <section id="product">
+    <div class="prod-hero">
+      <div class="prod-eyebrow">Fin AI Agent · New</div>
+      <h1>The AI agent that <em>actually resolves</em> customer questions</h1>
+      <p class="sub">Fin learns from your help center and past conversations to resolve the majority of support requests instantly — and hands off to a human the moment it should.</p>
+      <div class="cta-row">
+        <button class="btn btn-fin btn-lg">Start free trial</button>
+        <button class="btn btn-secondary btn-lg">Watch a demo</button>
+      </div>
+      <div class="note">Free 14-day trial · No credit card required</div>
+    </div>
+
+    <!-- product mockup -->
+    <div class="mockup">
+      <div class="chrome"><i></i><i></i><i></i><span class="addr">app.intercom.com/a/inbox</span></div>
+      <div class="inbox">
+        <div class="list">
+          <div class="item sel">
+            <div class="who">Maya Chen <span>2m</span></div>
+            <div class="snippet">Hi! I was charged twice for my October invoice…</div>
+          </div>
+          <div class="item">
+            <div class="who">Tomas Berg <span>14m</span></div>
+            <div class="snippet">The dashboard keeps logging me out on Safari…</div>
+          </div>
+          <div class="item">
+            <div class="who">Alicia Fontaine <span>31m</span></div>
+            <div class="snippet">We'd like to add 20 more seats to our plan…</div>
+          </div>
+          <div class="item">
+            <div class="who">Derek Osei <span>1h</span></div>
+            <div class="snippet">Does the API support webhooks for refunds?</div>
+          </div>
+        </div>
+        <div class="convo">
+          <div class="msg cust">
+            <div class="ava">MC</div>
+            <div class="bubble">Hi! I was charged twice for my October invoice — can someone take a look at order #48213?</div>
+          </div>
+          <div class="msg fin">
+            <div class="ava">F</div>
+            <div class="bubble">
+              <div class="fin-tag">Fin AI Agent</div>
+              I checked your billing history and confirmed a duplicate charge of $96.00 on October 14. I've issued a refund — it should reach your card within 3–5 business days. Anything else I can help with?
+            </div>
+          </div>
+          <div class="msg cust">
+            <div class="ava">MC</div>
+            <div class="bubble">That was fast. Thank you!</div>
+          </div>
+          <div class="analytics">
+            <div class="tile"><div class="k">4,182</div><div class="l">Conversations this week</div></div>
+            <div class="tile"><div class="k">65%</div><div class="l">Resolved by Fin</div>
+              <div class="bar"><i style="width:65%;background:#ff5600"></i><i style="width:35%;background:#d3cec6"></i></div>
+            </div>
+            <div class="tile"><div class="k">38s</div><div class="l">Median first response</div></div>
+            <div class="tile"><div class="k">4.8</div><div class="l">CSAT this week</div>
+              <div class="bar"><i style="width:96%;background:#0bdf50"></i><i style="width:4%;background:#d3cec6"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- logos -->
+    <div class="logo-strip">
+      <div class="logo-tile">Anthropic</div><div class="logo-tile">Notion</div><div class="logo-tile">Linear</div>
+      <div class="logo-tile">Vercel</div><div class="logo-tile">Ramp</div><div class="logo-tile">Duolingo</div>
+    </div>
+
+    <!-- features -->
+    <div class="feat-grid">
+      <div class="feature-card">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l6.5 3v4.5c0 4-2.8 7-6.5 8.5-3.7-1.5-6.5-4.5-6.5-8.5V5L10 2z" stroke="#111111" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Answers grounded in your content</h3>
+        <p>Fin only answers from your help center, past conversations, and approved sources — with citations customers can trust.</p>
+      </div>
+      <div class="feature-card">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="10" r="4.5" stroke="#111111" stroke-width="1.5"/><circle cx="13.5" cy="10" r="4.5" stroke="#111111" stroke-width="1.5"/></svg></div>
+        <h3>Human handoff, done right</h3>
+        <p>When a conversation needs judgment, Fin summarizes everything and routes it to the right teammate with full context.</p>
+      </div>
+      <div class="feature-card">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15l4-6 3.5 3L17 5" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5h5v5" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Reporting you can act on</h3>
+        <p>See resolution rate, CSAT, and cost per conversation in one place — and prove Fin's impact to the whole company.</p>
+      </div>
+    </div>
+
+    <!-- pricing -->
+    <div class="pricing-head">
+      <h2>Pricing that scales with your team</h2>
+      <p>Start free, then pay for what you use. Every plan includes the full helpdesk.</p>
+      <div class="pricing-tabs">
+        <span class="pill-tab">Monthly</span>
+        <span class="pill-tab selected">Annual · save 20%</span>
+      </div>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="tier">Essential</div>
+        <div class="tier-desc">For small teams getting started with customer support.</div>
+        <div class="amount">$39<small> /seat/mo</small></div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Fin AI Agent at $0.99 per resolution</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Shared inbox &amp; ticketing</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Help center</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Public API &amp; webhooks</li>
+        </ul>
+        <button class="btn btn-secondary">Start with Essential</button>
+      </div>
+      <div class="price-card featured">
+        <div class="tier">Advanced</div>
+        <div class="tier-desc">For growing teams that need Fin, automation, and reporting.</div>
+        <div class="amount">$99<small> /seat/mo</small></div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Everything in Essential</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Fin AI Agent included workflows</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Advanced reporting &amp; CSAT</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Multiple inboxes &amp; SLAs</li>
+        </ul>
+        <button class="btn">Start with Advanced</button>
+      </div>
+      <div class="price-card">
+        <div class="tier">Expert</div>
+        <div class="tier-desc">For large support organizations with complex needs.</div>
+        <div class="amount">$139<small> /seat/mo</small></div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Everything in Advanced</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>SAML SSO &amp; audit log</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Hipaa-compliant workflows</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#111111" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>Dedicated success manager</li>
+        </ul>
+        <button class="btn btn-secondary">Talk to sales</button>
+      </div>
+    </div>
+
+    <!-- quote strip -->
+    <div class="quote-strip">
+      <blockquote>“Fin resolved 71% of our conversations last quarter. Our team finally spends its time on the questions that actually need a human.”</blockquote>
+      <div class="attr">
+        <div class="ava">JR</div>
+        <div>
+          <div class="name">Jordan Reyes</div>
+          <div class="role">Head of Customer Support, Northwind</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA banner -->
+    <div class="cta-banner">
+      <div>
+        <h2>Start resolving conversations today</h2>
+        <p>Join 25,000+ businesses using Intercom — with or without Fin.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-fin">Start free trial</button>
+        <button class="btn btn-secondary">Book a demo</button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq">
+      <h2 class="t-headline" style="margin-bottom:24px">Frequently asked questions</h2>
+      <div class="faq-row"><span class="q">How is Fin priced?</span><span class="plus">+</span></div>
+      <div class="faq-row"><span class="q">Can I try Intercom without Fin first?</span><span class="plus">+</span></div>
+      <div class="faq-row"><span class="q">What happens when Fin can't answer?</span><span class="plus">+</span></div>
+      <div class="faq-row"><span class="q">Do you offer startup discounts?</span><span class="plus">+</span></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div class="col">
+      <div class="wordmark">Intercom</div>
+      <div style="font-size:12px;color:var(--ink-subtle);max-width:240px">The AI-first customer service platform. San Francisco · Dublin · London · Sydney.</div>
+    </div>
+    <div class="col">
+      <h4>Products</h4>
+      <a href="#">Fin AI Agent</a><a href="#">Helpdesk</a><a href="#">Messenger</a><a href="#">Outbound</a><a href="#">Pricing</a>
+    </div>
+    <div class="col">
+      <h4>Company</h4>
+      <a href="#">About</a><a href="#">Customers</a><a href="#">Careers</a><a href="#">Newsroom</a><a href="#">Contact</a>
+    </div>
+    <div class="col">
+      <h4>Resources</h4>
+      <a href="#">Help center</a><a href="#">Developer docs</a><a href="#">Blog</a><a href="#">Research</a><a href="#">Status</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

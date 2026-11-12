@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mastercard — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;450;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — from design-md/mastercard/DESIGN.md
+   MarkForMC → Sofia Sans (450 body weight preserved)
+   ============================================================ */
+:root{
+  /* brand (logo only) */
+  --mc-red:#EB001B;
+  --mc-yellow:#F79E1B;
+  /* core */
+  --ink:#141413;
+  --charcoal:#262627;
+  --signal-orange:#CF4500;
+  --light-signal-orange:#F37338;
+  --clay-brown:#9A3A0A;
+  --canvas:#F3F0EE;
+  --lifted:#FCFBFA;
+  --white:#FFFFFF;
+  --soft-bone:#F4F4F4;
+  --slate:#696969;
+  --granite:#555555;
+  --graphite:#565656;
+  --dust-taupe:#D1CDC7;
+  --link-blue:#3860BE;
+  --ghost:#E8E2DA;
+
+  /* shadows — atmospheric cushioning only */
+  --shadow-nav:rgba(0,0,0,0.04) 0px 4px 24px 0px;
+  --shadow-elev:rgba(0,0,0,0.08) 0px 24px 48px 0px;
+  --shadow-deep:rgba(0,0,0,0.25) 0px 70px 110px 0px;
+
+  /* radii: 20 buttons / 40 stadium / 999 pill / 50% circle — no 8–12 middle ground */
+  --r-btn:20px;
+  --r-consent:24px;
+  --r-stadium:40px;
+  --r-pill:999px;
+
+  --font:'MarkForMC','Sofia Sans',Arial,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--canvas);
+  color:var(--ink);
+  font-size:16px;line-height:1.4;font-weight:450;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block}
+a{color:inherit;text-decoration:none;transition:color .15s}
+a:hover{color:var(--link-blue)}
+::selection{background:var(--light-signal-orange);color:#fff}
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  height:88px;padding:0 48px;
+  background:var(--canvas);
+}
+.sg-banner .sg-folder{
+  font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;color:var(--slate);margin-right:16px;
+}
+.sg-banner .sg-brand{
+  font-size:20px;font-weight:500;letter-spacing:-0.4px;display:flex;align-items:center;gap:12px;
+}
+.sg-banner .mc-mark{position:relative;width:36px;height:22px;flex:none}
+.sg-banner .mc-mark i{position:absolute;top:0;width:22px;height:22px;border-radius:50%}
+.sg-banner .mc-mark i:first-child{left:0;background:var(--mc-red)}
+.sg-banner .mc-mark i:last-child{right:0;background:var(--mc-yellow);mix-blend-mode:multiply}
+.sg-banner .sg-desc{font-size:13px;color:var(--slate);text-align:right;max-width:560px}
+@media(max-width:900px){.sg-banner .sg-desc{display:none}}
+
+/* ============================================================
+   SHOWCASE LAYOUT
+   ============================================================ */
+main{max-width:1280px;margin:0 auto;padding:0 48px}
+.sg-section-title{
+  font-size:36px;font-weight:500;line-height:1.22;letter-spacing:-0.72px;
+  padding:64px 0 24px;
+}
+.sg-block{
+  background:var(--lifted);
+  border-radius:var(--r-stadium);
+  padding:48px;margin-bottom:32px;
+  box-shadow:var(--shadow-elev);
+}
+.sg-block-label{
+  font-size:14px;font-weight:700;letter-spacing:0.56px;text-transform:uppercase;color:var(--slate);
+  margin-bottom:32px;display:flex;align-items:center;gap:8px;
+}
+.sg-block-label::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--light-signal-orange)}
+.sg-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+@media(max-width:1024px){.sg-grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.sg-grid-3{grid-template-columns:1fr}}
+
+/* 1. COLORS */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+@media(max-width:1024px){.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+.swatch .chip{height:72px;border-radius:20px}
+.swatch .name{font-size:14px;font-weight:500;margin-top:10px}
+.swatch .hex{font-family:ui-monospace,monospace;font-size:12px;color:var(--slate)}
+
+/* 2. TYPOGRAPHY */
+.specimen > div{padding:16px 0;border-bottom:1px solid rgba(20,20,19,0.08)}
+.specimen > div:last-child{border-bottom:none}
+.specimen .row{display:flex;align-items:baseline;gap:24px;flex-wrap:wrap}
+.specimen .tag{font-family:ui-monospace,monospace;font-size:12px;color:var(--slate);width:190px;flex:none}
+.t-h1{font-size:64px;font-weight:500;line-height:1.0;letter-spacing:-1.28px}
+.t-h2{font-size:36px;font-weight:500;line-height:1.22;letter-spacing:-0.72px}
+.t-h3{font-size:24px;font-weight:500;line-height:1.2;letter-spacing:-0.48px}
+.t-h4{font-size:14px;font-weight:700;line-height:1.3}
+.t-eyebrow{font-size:14px;font-weight:700;letter-spacing:0.56px;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px}
+.t-eyebrow::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--light-signal-orange)}
+.t-body{font-size:16px;font-weight:450;line-height:1.4}
+.t-nav{font-size:16px;font-weight:500;letter-spacing:-0.48px}
+.t-foot-link{font-size:14px;font-weight:450}
+.t-foot-head{font-size:12px;font-weight:700;letter-spacing:0.56px;text-transform:uppercase;color:var(--slate)}
+
+/* 3. BUTTONS */
+.btn-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font);font-size:16px;
+  border-radius:var(--r-btn);cursor:pointer;
+  transition:transform .1s ease,background .15s ease,color .15s ease;
+  border:1.5px solid transparent;
+}
+.btn:active{transform:scale(0.98)}
+.btn-ink{background:var(--ink);color:var(--canvas);border-color:var(--ink);padding:8px 24px;font-weight:500;letter-spacing:-0.32px}
+.btn-ink:hover{background:var(--charcoal);border-color:var(--charcoal);color:#fff}
+.btn-outline{background:var(--white);color:var(--ink);border-color:var(--ink);padding:6px 24px;font-weight:450;line-height:1.3}
+.btn-outline:hover{background:var(--soft-bone)}
+.btn-signal{background:var(--signal-orange);color:#fff;border:none;border-radius:var(--r-consent);padding:4px 30px;font-size:13px;font-weight:400;letter-spacing:0.13px}
+.btn-signal:hover{background:var(--clay-brown);color:#fff}
+.btn-satellite{
+  width:56px;height:56px;border-radius:50%;background:var(--white);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--ink);border:none;box-shadow:var(--shadow-nav);
+}
+.btn-satellite:hover{background:var(--soft-bone);color:var(--ink)}
+.btn-signal-sm{font-size:13px;padding:3px 20px;border-radius:var(--r-btn);background:var(--white);color:var(--ink);border:1px solid rgba(20,20,19,0.3)}
+.btn:disabled{background:var(--dust-taupe);border-color:var(--dust-taupe);color:var(--white);cursor:not-allowed}
+
+/* 4. INPUTS */
+.input-row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.field{display:flex;flex-direction:column;gap:8px;min-width:230px}
+.field label{font-size:14px;font-weight:700;letter-spacing:0.56px;text-transform:uppercase;color:var(--slate)}
+.input{
+  font-family:var(--font);font-size:16px;font-weight:450;
+  background:var(--white);color:var(--ink);
+  border:1px solid rgba(20,20,19,0.5);border-radius:var(--r-pill);
+  padding:12px 24px;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.input::placeholder{color:var(--dust-taupe)}
+.input:hover{border-color:var(--ink)}
+.input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(243,115,56,0.25)}
+.input.focus-look{border-color:var(--ink);box-shadow:0 0 0 3px rgba(243,115,56,0.25)}
+.input:disabled{background:var(--soft-bone);color:var(--dust-taupe);cursor:not-allowed}
+select.input{appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23696969' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 20px center;padding-right:44px}
+.switch-row{display:flex;align-items:center;gap:14px;padding-top:26px}
+.switch{position:relative;width:52px;height:30px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;border-radius:20px;border:1px solid #DDDDDD;background:var(--white);cursor:pointer;transition:background .15s}
+.switch .track::after{content:'';position:absolute;top:3px;left:4px;width:22px;height:22px;border-radius:50%;background:var(--dust-taupe);transition:transform .15s,background .15s}
+.switch input:checked + .track{border-color:var(--ink)}
+.switch input:checked + .track::after{transform:translateX(21px);background:var(--ink)}
+.checkbox{display:flex;align-items:center;gap:10px;padding-top:26px}
+.checkbox input{width:18px;height:18px;accent-color:var(--ink)}
+
+/* 5. CARDS */
+.card{background:var(--white);border-radius:var(--r-stadium);padding:40px}
+.card h3{font-size:24px;font-weight:500;letter-spacing:-0.48px;line-height:1.2;margin-bottom:12px}
+.card p{font-size:16px;font-weight:450;color:var(--graphite);margin-bottom:20px}
+.stat-card{background:var(--white);border-radius:var(--r-stadium);padding:40px;box-shadow:var(--shadow-elev)}
+.stat-card .big{font-size:56px;font-weight:500;letter-spacing:-1.12px;line-height:1.0}
+.stat-card .label{font-size:16px;font-weight:450;color:var(--slate);margin-top:10px}
+.stat-card .eyebrow{margin-bottom:16px}
+.chip-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--white);color:var(--ink);
+  border-radius:var(--r-pill);padding:8px 20px;
+  font-size:14px;font-weight:500;
+  box-shadow:var(--shadow-nav);
+}
+
+/* 6. BADGES */
+.badge-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;padding:8px 20px;border-radius:var(--r-pill)}
+.badge .dot{width:8px;height:8px;border-radius:50%}
+.badge-white{background:var(--white);color:var(--ink);box-shadow:var(--shadow-nav)}
+.badge-white .dot{background:var(--light-signal-orange)}
+.badge-outline{border:1px solid rgba(20,20,19,0.3);color:var(--ink)}
+.badge-outline .dot{background:var(--clay-brown)}
+.badge-ink{background:var(--ink);color:var(--canvas)}
+.badge-ink .dot{background:var(--light-signal-orange)}
+.badge-muted{background:var(--soft-bone);color:var(--slate)}
+.badge-signal{background:rgba(207,69,0,0.08);color:var(--signal-orange)}
+.badge-signal .dot{background:var(--signal-orange)}
+
+/* 7. NAVIGATION — floating pill */
+.topnav-wrap{background:var(--canvas);padding:24px 0 8px;margin-bottom:16px}
+.topnav{
+  background:var(--white);
+  border-radius:var(--r-pill);
+  box-shadow:var(--shadow-nav);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:16px 40px;
+}
+.topnav .logo{display:flex;align-items:center;gap:12px;font-weight:500;font-size:18px;letter-spacing:-0.36px}
+.topnav .mc-mark{position:relative;width:36px;height:22px;flex:none}
+.topnav .mc-mark i{position:absolute;top:0;width:22px;height:22px;border-radius:50%}
+.topnav .mc-mark i:first-child{left:0;background:var(--mc-red)}
+.topnav .mc-mark i:last-child{right:0;background:var(--mc-yellow);mix-blend-mode:multiply}
+.topnav ul{display:flex;list-style:none;gap:48px}
+.topnav ul a{font-size:16px;font-weight:500;letter-spacing:-0.48px;color:var(--ink)}
+.topnav ul a:hover{color:var(--link-blue)}
+.topnav .search{
+  width:48px;height:48px;border-radius:50%;border:1px solid rgba(20,20,19,0.3);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--white);
+}
+.topnav .search:hover{border-color:var(--ink)}
+@media(max-width:1024px){.topnav ul{display:none}}
+
+/* 8. TABLE */
+.table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.table th{
+  text-align:left;font-size:12px;font-weight:700;letter-spacing:0.56px;text-transform:uppercase;color:var(--slate);
+  padding:8px 24px;
+}
+.table td{font-size:16px;font-weight:450;padding:16px 24px;background:var(--white)}
+.table tr td:first-child{border-radius:var(--r-pill) 0 0 var(--r-pill)}
+.table tr td:last-child{border-radius:0 var(--r-pill) var(--r-pill) 0}
+.table .muted{color:var(--slate)}
+
+/* ============================================================
+   PRODUCT — Mastercard landing
+   ============================================================ */
+#product{padding-top:96px}
+
+/* hero */
+.hero{padding-bottom:128px}
+.hero .eyebrow{margin-bottom:24px}
+.hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:end;margin-bottom:64px}
+@media(max-width:1024px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{font-size:64px;font-weight:500;line-height:1.0;letter-spacing:-1.28px}
+@media(max-width:1024px){.hero h1{font-size:44px}}
+.hero .support{font-size:16px;font-weight:450;color:var(--graphite);max-width:360px}
+.hero .cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
+
+/* hero stadium media frame */
+.stadium{
+  border-radius:var(--r-stadium);overflow:hidden;position:relative;
+  background:
+    radial-gradient(ellipse 60% 80% at 75% 30%, rgba(243,115,56,0.25), transparent 60%),
+    radial-gradient(ellipse 50% 70% at 20% 80%, rgba(56,96,190,0.20), transparent 60%),
+    linear-gradient(120deg,#1c1b1a 0%, #2e2b28 100%);
+  min-height:420px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:48px;
+  box-shadow:var(--shadow-elev);
+}
+.stadium .chip-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.stadium .headline{font-size:24px;font-weight:500;letter-spacing:-0.48px;color:#fff;max-width:560px;line-height:1.2}
+.stadium .mc-circles{position:absolute;top:48px;right:48px}
+.stadium .mc-circles .mc-mark{position:relative;width:64px;height:40px}
+.stadium .mc-circles .mc-mark i{position:absolute;top:0;width:40px;height:40px;border-radius:50%}
+.stadium .mc-circles .mc-mark i:first-child{left:0;background:var(--mc-red)}
+.stadium .mc-circles .mc-mark i:last-child{right:0;background:var(--mc-yellow);mix-blend-mode:multiply}
+
+/* ghost watermark + circular portraits constellation */
+.services{position:relative;padding:64px 0 128px;overflow:hidden}
+.ghost{
+  position:absolute;top:24px;left:-40px;z-index:0;
+  font-size:128px;font-weight:500;letter-spacing:-2.56px;line-height:1.0;
+  color:var(--ghost);white-space:nowrap;user-select:none;pointer-events:none;
+}
+.constellation{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:120px}
+@media(max-width:1024px){.constellation{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.constellation{grid-template-columns:1fr}}
+.service{display:flex;flex-direction:column;align-items:center;text-align:center}
+.service:nth-child(2){transform:translateY(64px)}
+.service:nth-child(3){transform:translateY(20px)}
+.portrait-wrap{position:relative;margin-bottom:32px}
+.portrait{
+  width:280px;height:280px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-elev);
+}
+.portrait.p1{background:radial-gradient(circle at 65% 35%, #f8c890 0%, #e8935a 45%, var(--canvas) 78%)}
+.portrait.p2{background:radial-gradient(circle at 35% 30%, #9fb8e8 0%, #5679c4 45%, var(--canvas) 78%)}
+.portrait.p3{background:radial-gradient(circle at 60% 65%, #f3b0b0 0%, #c05a5a 45%, var(--canvas) 78%)}
+.satellite{
+  position:absolute;right:8px;bottom:24px;
+  width:56px;height:56px;border-radius:50%;background:var(--white);
+  display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink);
+  box-shadow:var(--shadow-nav);transition:transform .15s ease;
+}
+.satellite:hover{transform:scale(1.06)}
+.service .eyebrow{margin-bottom:12px}
+.service h3{font-size:24px;font-weight:500;letter-spacing:-0.48px;max-width:300px;line-height:1.2}
+
+/* features */
+.features{padding-bottom:128px}
+.sec-head{max-width:620px;margin-bottom:48px}
+.sec-head h2{font-size:36px;font-weight:500;line-height:1.22;letter-spacing:-0.72px;margin-bottom:12px}
+.sec-head p{font-size:16px;font-weight:450;color:var(--graphite)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+
+/* pricing tiers */
+.pricing{padding-bottom:128px}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+@media(max-width:1024px){.price-grid{grid-template-columns:1fr}}
+.price-card{background:var(--white);border-radius:var(--r-stadium);padding:40px;display:flex;flex-direction:column;box-shadow:var(--shadow-elev)}
+.price-card.featured{background:var(--ink);color:var(--canvas)}
+.price-card .tier{font-size:24px;font-weight:500;letter-spacing:-0.48px;margin-bottom:8px}
+.price-card .tier-desc{font-size:14px;font-weight:450;margin-bottom:24px;color:var(--slate)}
+.price-card.featured .tier-desc{color:rgba(243,240,238,0.6)}
+.price-card .amount{font-size:56px;font-weight:500;letter-spacing:-1.12px;line-height:1.0}
+.price-card .amount small{font-size:14px;font-weight:450;letter-spacing:0;color:var(--slate)}
+.price-card.featured .amount small{color:rgba(243,240,238,0.6)}
+.price-card ul{list-style:none;margin:24px 0 32px;flex:1}
+.price-card li{font-size:16px;font-weight:450;padding:8px 0;display:flex;gap:12px;align-items:flex-start}
+.price-card li svg{flex:none;margin-top:5px}
+.price-card.featured .btn{background:var(--canvas);color:var(--ink);border-color:var(--canvas)}
+.price-card.featured .btn:hover{background:var(--white)}
+
+/* testimonial */
+.testimonial{padding-bottom:128px}
+.quote-card{background:var(--white);border-radius:var(--r-stadium);padding:64px;box-shadow:var(--shadow-elev)}
+.quote-card blockquote{font-size:36px;font-weight:500;line-height:1.22;letter-spacing:-0.72px;max-width:900px;margin-bottom:32px}
+.quote-card .attr{display:flex;align-items:center;gap:20px}
+.quote-card .ava{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:16px;color:#fff}
+.quote-card .name{font-size:16px;font-weight:500}
+.quote-card .role{font-size:14px;font-weight:450;color:var(--slate)}
+
+/* CTA band */
+.cta-band{padding-bottom:128px}
+.cta-inner{
+  background:var(--ink);color:var(--canvas);
+  border-radius:var(--r-stadium);
+  padding:96px 64px;
+  display:flex;align-items:center;justify-content:space-between;gap:48px;
+  box-shadow:var(--shadow-deep);
+}
+@media(max-width:1024px){.cta-inner{flex-direction:column;align-items:flex-start;padding:64px 40px}}
+.cta-inner h2{font-size:36px;font-weight:500;line-height:1.22;letter-spacing:-0.72px;max-width:560px}
+.cta-inner p{font-size:16px;font-weight:450;color:rgba(243,240,238,0.7);margin-top:12px}
+.cta-inner .btn{background:var(--canvas);color:var(--ink);border-color:var(--canvas)}
+.cta-inner .btn:hover{background:var(--white)}
+
+/* footer */
+footer{background:var(--ink);color:#fff;padding:100px 48px 148px}
+.foot-inner{max-width:1280px;margin:0 auto}
+.foot-inner h2{font-size:36px;font-weight:500;line-height:1.22;letter-spacing:-0.72px;max-width:520px;margin-bottom:64px}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:48px;margin-bottom:64px}
+@media(max-width:1024px){.foot-grid{grid-template-columns:repeat(2,1fr)}}
+.foot-grid .col h4{font-size:12px;font-weight:700;letter-spacing:0.56px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px}
+.foot-grid .col a{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:450;padding:6px 0;color:#fff}
+.foot-grid .col a:hover{color:var(--light-signal-orange)}
+.foot-grid .col a .ext{font-size:11px;color:rgba(255,255,255,0.5)}
+.foot-divider{border:none;border-top:1px solid rgba(255,255,255,0.3);margin-bottom:32px}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.foot-bottom .legal{display:flex;gap:24px;font-size:12px;color:rgba(255,255,255,0.6);flex-wrap:wrap}
+.foot-bottom .legal a{color:rgba(255,255,255,0.6)}
+.foot-bottom .legal a:hover{color:#fff}
+.country-pill{
+  display:inline-flex;align-items:center;gap:12px;
+  background:transparent;color:#fff;
+  border:1px solid rgba(255,255,255,0.4);border-radius:var(--r-pill);
+  padding:10px 24px;font-family:var(--font);font-size:14px;font-weight:450;cursor:pointer;
+}
+.socials{display:flex;gap:16px}
+.socials a{
+  width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.4);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;
+}
+.socials a:hover{border-color:#fff;color:var(--light-signal-orange)}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div style="display:flex;align-items:center">
+    <span class="sg-folder">mastercard</span>
+    <span class="sg-brand"><span class="mc-mark"><i></i><i></i></span>Mastercard</span>
+  </div>
+  <div class="sg-desc">A warm editorial canvas of putty cream, extreme radii, circular portraits with satellite CTAs, and thin traced-orange orbits.</div>
+</header>
+
+<main>
+
+  <!-- ==================== COMPONENTS ==================== -->
+  <section id="components">
+    <h2 class="sg-section-title">Components</h2>
+
+    <!-- 1. Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#F3F0EE"></div><div class="name">canvas cream</div><div class="hex">#F3F0EE</div></div>
+        <div class="swatch"><div class="chip" style="background:#FCFBFA"></div><div class="name">lifted cream</div><div class="hex">#FCFBFA</div></div>
+        <div class="swatch"><div class="chip" style="background:#141413"></div><div class="name">ink black</div><div class="hex">#141413</div></div>
+        <div class="swatch"><div class="chip" style="background:#CF4500"></div><div class="name">signal orange</div><div class="hex">#CF4500</div></div>
+        <div class="swatch"><div class="chip" style="background:#F37338"></div><div class="name">light signal</div><div class="hex">#F37338</div></div>
+        <div class="swatch"><div class="chip" style="background:#9A3A0A"></div><div class="name">clay brown</div><div class="hex">#9A3A0A</div></div>
+        <div class="swatch"><div class="chip" style="background:#FFFFFF"></div><div class="name">white</div><div class="hex">#FFFFFF</div></div>
+        <div class="swatch"><div class="chip" style="background:#F4F4F4"></div><div class="name">soft bone</div><div class="hex">#F4F4F4</div></div>
+        <div class="swatch"><div class="chip" style="background:#696969"></div><div class="name">slate gray</div><div class="hex">#696969</div></div>
+        <div class="swatch"><div class="chip" style="background:#D1CDC7"></div><div class="name">dust taupe</div><div class="hex">#D1CDC7</div></div>
+        <div class="swatch"><div class="chip" style="background:#3860BE"></div><div class="name">link blue</div><div class="hex">#3860BE</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(90deg,#EB001B 50%,#F79E1B 50%)"></div><div class="name">mark (logo only)</div><div class="hex">#EB/#F7</div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-block-label">Typography — MarkForMC (Sofia Sans), weight 450 body, −2% headlines</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">H1 / 64 / 500 / 1:1</span><span class="t-h1">Payments that move people</span></div>
+        <div class="row"><span class="tag">H2 / 36 / 500</span><span class="t-h2">One connection, endless possibility</span></div>
+        <div class="row"><span class="tag">H3 / 24 / 500</span><span class="t-h3">Consumer payments, reimagined</span></div>
+        <div class="row"><span class="tag">H4 / 14 / 700</span><span class="t-h4">Small but mighty subheads</span></div>
+        <div class="row"><span class="tag">eyebrow / 14 / 700 / +4%</span><span class="t-eyebrow">SERVICES</span></div>
+        <div class="row"><span class="tag">body / 16 / 450</span><span class="t-body">We connect individuals, financial institutions, merchants and governments to power economies that work for everyone.</span></div>
+        <div class="row"><span class="tag">nav / 16 / 500 / −3%</span><span class="t-nav">For business · News and trends</span></div>
+        <div class="row"><span class="tag">footer link / 14 / 450</span><span class="t-foot-link">Privacy preferences</span></div>
+        <div class="row"><span class="tag">footer head / 12 / 700</span><span class="t-foot-head">Need help?</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons — 20px pills, satellite circles, orange reserved for consent</div>
+      <div class="btn-row" style="margin-bottom:24px">
+        <button class="btn btn-ink">Learn more</button>
+        <button class="btn btn-outline">Explore solutions</button>
+        <button class="btn btn-signal">Accept all cookies</button>
+        <button class="btn btn-satellite" aria-label="Open">→</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ink" style="transform:scale(0.97)">Pressed</button>
+        <button class="btn btn-ink" style="background:var(--charcoal);border-color:var(--charcoal);color:#fff">Hover state</button>
+        <button class="btn btn-signal-sm">Reject non-essential</button>
+        <button class="btn btn-ink" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs — pill fields with ink borders, orange focus glow</div>
+      <div class="input-row">
+        <div class="field">
+          <label>Email address</label>
+          <input class="input" type="text" placeholder="you@company.com">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="input focus-look" type="text" value="maria@priceless.org">
+        </div>
+        <div class="field">
+          <label>Region</label>
+          <select class="input">
+            <option>Asia Pacific</option>
+            <option selected>Europe</option>
+            <option>Latin America</option>
+            <option>North America</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input" type="text" value="Contact your account manager" disabled>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span style="font-size:14px">Paperless statements</span>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" checked id="cb"><label for="cb" style="font-size:14px">Send me Priceless offers</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">Cards — stadium corners, soft 48px halo shadows</div>
+      <div class="sg-grid-3">
+        <div class="card">
+          <span class="t-eyebrow" style="margin-bottom:16px">FOR CONSUMERS</span>
+          <h3>Everyday spending, elevated</h3>
+          <p>Tap to pay anywhere, track every purchase in real time, and unlock experiences only Priceless can deliver.</p>
+          <button class="btn btn-ink">Discover more</button>
+        </div>
+        <div class="card">
+          <span class="t-eyebrow" style="margin-bottom:16px">FOR BUSINESS</span>
+          <h3>Grow across 210+ countries</h3>
+          <p>Accept payments at home and abroad with one integration, and settle in more than 150 currencies.</p>
+          <button class="btn btn-outline">Talk to sales</button>
+        </div>
+        <div class="stat-card">
+          <span class="t-eyebrow" style="margin-bottom:16px">AT A GLANCE</span>
+          <div class="big">3.4B</div>
+          <div class="label">cards carrying the Mastercard mark worldwide</div>
+          <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+            <span class="chip-tag">210+ countries</span>
+            <span class="chip-tag">150+ currencies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">Badges, tags and pills</div>
+      <div class="badge-row">
+        <span class="badge badge-white"><span class="dot"></span>New for 2026</span>
+        <span class="badge badge-outline"><span class="dot"></span>Priceless</span>
+        <span class="badge badge-ink"><span class="dot"></span>Featured</span>
+        <span class="badge badge-muted">Institutional</span>
+        <span class="badge badge-signal"><span class="dot"></span>Privacy notice</span>
+        <span class="chip-tag">Story ↗</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block" style="padding:0 0 32px;box-shadow:none;background:transparent">
+      <div class="sg-block-label" style="padding:48px 48px 0">Navigation — floating white pill, 24px below the top</div>
+      <div class="topnav-wrap">
+        <nav class="topnav">
+          <div class="logo"><span class="mc-mark"><i></i><i></i></span>Mastercard</div>
+          <ul>
+            <li><a href="#">For you</a></li>
+            <li><a href="#">For business</a></li>
+            <li><a href="#">For the world</a></li>
+            <li><a href="#">For innovators</a></li>
+            <li><a href="#">News and trends</a></li>
+          </ul>
+          <button class="search" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#141413" stroke-width="1.5"/><path d="M12.5 12.5L16 16" stroke="#141413" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="sg-block">
+      <div class="sg-block-label">Report table — pill-shaped rows</div>
+      <table class="table">
+        <thead><tr><th>Report</th><th>Region</th><th>Published</th><th>Format</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Economic Outlook 2026</td><td class="muted">Global</td><td class="muted">Oct 2026</td><td class="muted">PDF · 48pp</td><td style="text-align:right"><button class="btn btn-signal-sm">Download</button></td></tr>
+          <tr><td>State of Commerce</td><td class="muted">EMEA</td><td class="muted">Sep 2026</td><td class="muted">PDF · 62pp</td><td style="text-align:right"><button class="btn btn-signal-sm">Download</button></td></tr>
+          <tr><td>New Payments Index</td><td class="muted">Asia Pacific</td><td class="muted">Aug 2026</td><td class="muted">Interactive</td><td style="text-align:right"><button class="btn btn-signal-sm">Explore</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT ==================== -->
+  <section id="product">
+    <!-- hero -->
+    <div class="hero">
+      <span class="t-eyebrow eyebrow">News and trends</span>
+      <div class="hero-grid">
+        <div>
+          <h1>Wherever you pay, we're already there</h1>
+          <div class="cta-row">
+            <button class="btn btn-ink">Explore solutions</button>
+            <button class="btn btn-outline">Find a card</button>
+          </div>
+        </div>
+        <p class="support">We power the economy behind everyday moments — connecting people, businesses and governments in more than 210 countries and territories.</p>
+      </div>
+
+      <!-- hero stadium frame -->
+      <div class="stadium">
+        <div class="mc-circles"><span class="mc-mark"><i></i><i></i></span></div>
+        <div class="chip-row">
+          <span class="chip-tag">Story</span>
+          <span class="chip-tag">Financial inclusion</span>
+        </div>
+        <div class="headline">One billion more people, one connected economy: inside our five-year plan to bring digital payments to every community.</div>
+      </div>
+    </div>
+
+    <!-- constellation services -->
+    <div class="services">
+      <div class="ghost" aria-hidden="true">What we do</div>
+      <!-- decorative orbital arcs -->
+      <svg style="position:absolute;inset:0;z-index:0;pointer-events:none" width="100%" height="100%" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M-50 420 C 250 300, 500 560, 800 430 S 1200 300, 1280 380" fill="none" stroke="#F37338" stroke-width="1.4" opacity="0.8"/>
+        <path d="M-50 560 C 300 480, 620 660, 980 520 S 1250 460, 1300 520" fill="none" stroke="#F37338" stroke-width="1.2" opacity="0.5"/>
+      </svg>
+
+      <div class="constellation">
+        <div class="service">
+          <div class="portrait-wrap">
+            <div class="portrait p1"><span style="font-size:56px">💳</span></div>
+            <button class="satellite" aria-label="Explore payments">→</button>
+          </div>
+          <span class="t-eyebrow">Payments</span>
+          <h3 style="margin-top:12px">Payment solutions for every way people shop</h3>
+        </div>
+        <div class="service">
+          <div class="portrait-wrap">
+            <div class="portrait p2"><span style="font-size:56px">🔐</span></div>
+            <button class="satellite" aria-label="Explore security">→</button>
+          </div>
+          <span class="t-eyebrow">Security</span>
+          <h3 style="margin-top:12px">Protection that travels with every transaction</h3>
+        </div>
+        <div class="service">
+          <div class="portrait-wrap">
+            <div class="portrait p3"><span style="font-size:56px">🌱</span></div>
+            <button class="satellite" aria-label="Explore inclusion">→</button>
+          </div>
+          <span class="t-eyebrow">Inclusion</span>
+          <h3 style="margin-top:12px">Bringing one billion people into the digital economy</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- features -->
+    <div class="features">
+      <div class="sec-head">
+        <span class="t-eyebrow" style="margin-bottom:16px">Why Mastercard</span>
+        <h2>Built on trust, engineered for what's next</h2>
+        <p>Six decades of network innovation, working quietly behind every tap, click and wave.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="card">
+          <h3>Accept payments anywhere</h3>
+          <p>One integration opens your storefront to billions of cardholders — online, in-app, and at the point of sale.</p>
+          <button class="btn btn-outline">Start accepting</button>
+        </div>
+        <div class="card">
+          <h3>AI-powered fraud defense</h3>
+          <p>Our Decision Intelligence platform scores every transaction in under 50 milliseconds, without adding friction.</p>
+          <button class="btn btn-outline">See how it works</button>
+        </div>
+        <div class="card">
+          <h3>Insights that grow revenue</h3>
+          <p>Test &amp; Learn analytics show you what actually drives your business — before you spend on it.</p>
+          <button class="btn btn-outline">Explore analytics</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- pricing / partnership tiers -->
+    <div class="pricing">
+      <div class="sec-head">
+        <span class="t-eyebrow" style="margin-bottom:16px">Partnerships</span>
+        <h2>Choose how you work with us</h2>
+        <p>From emerging fintechs to the world's largest banks.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="tier">Start Path</div>
+          <div class="tier-desc">For early-stage fintechs finding product-market fit.</div>
+          <div class="amount">Free<small> · application based</small></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#9A3A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Sandbox access to our APIs</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#9A3A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Mentorship from network experts</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#9A3A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Introductions to issuing partners</li>
+          </ul>
+          <button class="btn btn-outline">Apply now</button>
+        </div>
+        <div class="price-card featured">
+          <div class="tier">Issuer Partnership</div>
+          <div class="tier-desc">For banks and issuers launching Mastercard programs.</div>
+          <div class="amount">Custom<small> · volume based</small></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#F37338" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Full issuing &amp; processing stack</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#F37338" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Dedicated partnership team</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#F37338" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Co-branded marketing support</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#F37338" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Priceless program access</li>
+          </ul>
+          <button class="btn">Contact sales</button>
+        </div>
+        <div class="price-card">
+          <div class="tier">Enterprise</div>
+          <div class="tier-desc">For global merchants, acquirers and governments.</div>
+          <div class="amount">Custom<small> · enterprise</small></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#9A3A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Multi-market acceptance</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#9A3A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Advanced fraud &amp; auth services</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3 3 7-7" stroke="#9A3A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Consulting &amp; Test &amp; Learn</li>
+          </ul>
+          <button class="btn btn-outline">Talk to us</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- testimonial -->
+    <div class="testimonial">
+      <div class="quote-card">
+        <blockquote>“Inclusion is not a program for us — it is the product. Every connection we make adds another node to a truly global economy.”</blockquote>
+        <div class="attr">
+          <div class="ava" style="background:linear-gradient(135deg,#CF4500,#9A3A0A)">MA</div>
+          <div><div class="name">Michael Abrantes</div><div class="role">Chief Product Officer, Mastercard</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-band">
+      <div class="cta-inner">
+        <div>
+          <h2>We're always here when you need us</h2>
+          <p>Whether you're issuing your first card or scaling across continents — start the conversation.</p>
+        </div>
+        <button class="btn">Contact us</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <h2>We're always here when you need us</h2>
+    <div class="foot-grid">
+      <div class="col">
+        <h4>Need help?</h4>
+        <a href="#"><span>💬</span> Contact support</a>
+        <a href="#"><span>💳</span> Report a lost card</a>
+        <a href="#"><span>📍</span> Find an ATM</a>
+        <a href="#"><span>❓</span> Frequently asked questions</a>
+      </div>
+      <div class="col">
+        <h4>For you</h4>
+        <a href="#">Find a card <span class="ext">↗</span></a>
+        <a href="#">Priceless experiences <span class="ext">↗</span></a>
+        <a href="#">Card benefits</a>
+        <a href="#">Digital payments</a>
+      </div>
+      <div class="col">
+        <h4>For business</h4>
+        <a href="#">Accept payments</a>
+        <a href="#">Issuer solutions</a>
+        <a href="#">Analytics &amp; insights</a>
+        <a href="#">Partnerships</a>
+      </div>
+      <div class="col">
+        <h4>Company</h4>
+        <a href="#">About Mastercard</a>
+        <a href="#">Newsroom <span class="ext">↗</span></a>
+        <a href="#">Investor relations <span class="ext">↗</span></a>
+        <a href="#">Careers</a>
+      </div>
+    </div>
+    <hr class="foot-divider">
+    <div class="foot-bottom">
+      <div class="legal">
+        <span>© 2026 Mastercard</span>
+        <a href="#">Privacy notice</a>
+        <a href="#">Terms of use</a>
+        <a href="#">Cookie preferences</a>
+        <a href="#">Accessibility</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:24px">
+        <button class="country-pill">United States · English <span>▾</span></button>
+        <div class="socials">
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="X">x</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

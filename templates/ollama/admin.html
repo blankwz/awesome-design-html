@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ollama Admin — Model Registry Console</title>
+<style>
+:root{
+  --primary:#000000; --on-primary:#ffffff; --ink:#000000; --ink-deep:#090909;
+  --charcoal:#525252; --body:#737373; --mute:#a3a3a3;
+  --canvas:#ffffff; --surface-soft:#fafafa; --surface-dark:#171717;
+  --hairline:#e5e5e5; --hairline-strong:#d4d4d4;
+  --on-dark:#ffffff; --on-dark-mute:rgba(255,255,255,.7);
+  --success:#27c93f; --warning:#ffbd2e; --danger:#ff5f56;
+  --font-head:'Nunito','SF Pro Rounded',-apple-system,system-ui,sans-serif;
+  --font-ui:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-ui);color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+a{color:var(--ink);text-decoration:none}
+ul{list-style:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+
+/* ── sidebar ─────────────────────────────────────────────── */
+.side{border-right:1px solid var(--hairline);display:flex;flex-direction:column;padding:16px 12px;background:var(--canvas)}
+.side .brand{display:flex;align-items:center;gap:8px;padding:4px 10px 16px;font-family:var(--font-head);font-weight:600;font-size:16px}
+.side .brand svg{width:24px;height:24px}
+.side .group{font-size:12px;color:var(--mute);padding:18px 10px 6px}
+.side nav a{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 10px;border-radius:9999px;color:var(--ink)}
+.side nav a:hover{background:var(--surface-soft)}
+.side nav a.active{background:var(--ink);color:#fff}
+.side nav a .cnt{margin-left:auto;font-size:12px;background:var(--surface-soft);border-radius:9999px;padding:1px 8px;color:var(--body)}
+.side nav a.active .cnt{background:rgba(255,255,255,.18);color:#fff}
+.user-card{margin-top:auto;border:1px solid var(--hairline);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:9999px;background:var(--surface-soft);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex:none}
+.user-card .u-name{font-size:14px;font-weight:500}
+.user-card .u-role{font-size:12px;color:var(--body)}
+
+/* ── topbar ──────────────────────────────────────────────── */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{display:flex;align-items:center;gap:14px;padding:14px 32px;border-bottom:1px solid var(--hairline)}
+.crumb{font-size:14px;color:var(--body)}
+.crumb b{color:var(--ink);font-weight:500}
+.crumb i{font-style:normal;color:var(--mute);margin:0 6px}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--surface-soft);border-radius:9999px;height:36px;padding:0 16px;width:300px;color:var(--mute);font-size:14px}
+.nav-search input{border:none;background:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink)}
+.icon-circle{width:36px;height:36px;border-radius:9999px;background:var(--surface-soft);display:inline-flex;align-items:center;justify-content:center;position:relative}
+.icon-circle svg{width:17px;height:17px;stroke:var(--ink);fill:none;stroke-width:1.7}
+.icon-circle .dot{position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:9999px;background:var(--danger);border:2px solid var(--canvas)}
+.avatar.sm{width:36px;height:36px}
+
+/* content */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between}
+.page-head h1{font-family:var(--font-head);font-size:36px;font-weight:500;line-height:1.11}
+.page-head p{color:var(--body);font-size:14px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:9999px;height:36px;padding:0 20px;font-size:14px;font-weight:500}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-secondary{border:1px solid var(--hairline-strong)}
+.head-actions{display:flex;gap:8px}
+.badge{display:inline-flex;align-items:center;border-radius:9999px;padding:3px 10px;font-size:12px;font-weight:500}
+.badge::before{content:"";width:6px;height:6px;border-radius:9999px;margin-right:6px;background:currentColor}
+.b-success{background:#e8f9eb;color:#1a8a2c}
+.b-warning{background:#fff5d9;color:#8a6d0a}
+.b-danger{background:#feecec;color:#b23430}
+.b-neutral{background:var(--surface-soft);color:var(--body)}
+.cmdchip{font-family:var(--font-mono);font-size:14px;background:var(--surface-soft);border-radius:9999px;padding:4px 12px}
+
+/* ── KPI cards ───────────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border:1px solid var(--hairline);border-radius:12px;padding:24px}
+.kpi .k-label{font-size:12px;color:var(--body)}
+.kpi .k-value{font-family:var(--font-head);font-size:30px;font-weight:500;margin-top:6px}
+.kpi .k-delta{font-size:13px;margin-top:2px}
+.up{color:#1a8a2c} .down{color:#b23430}
+.kpi .k-delta span{color:var(--mute)}
+.spark{display:flex;align-items:flex-end;gap:4px;height:30px;margin-top:16px}
+.spark i{flex:1;background:var(--surface-soft);border-radius:9999px}
+.spark i.hi{background:var(--ink)}
+
+/* ── charts ──────────────────────────────────────────────── */
+.charts{display:grid;grid-template-columns:1.8fr 1fr;gap:16px}
+.panel{border:1px solid var(--hairline);border-radius:12px;padding:24px}
+.panel h3{font-family:var(--font-head);font-size:20px;font-weight:500}
+.panel .p-sub{font-size:14px;color:var(--body);margin:2px 0 20px}
+.bars{display:flex;align-items:flex-end;gap:12px;height:180px;border-bottom:1px solid var(--hairline)}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bcol .bar{width:100%;background:var(--surface-soft);border-radius:9999px 9999px 0 0}
+.bcol .bar.hi{background:var(--ink)}
+.bcol small{font-size:12px;color:var(--mute);padding-bottom:8px}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{width:140px;height:140px;border-radius:9999px;flex:none;position:relative;
+  background:conic-gradient(var(--ink) 0 52%,var(--mute) 52% 76%,var(--hairline-strong) 76% 90%,var(--warning) 90% 100%)}
+.donut::after{content:"41M";position:absolute;inset:34px;background:var(--canvas);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:16px}
+.legend{flex:1}
+.legend li{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px;color:var(--charcoal)}
+.legend i{width:12px;height:12px;border-radius:9999px;flex:none}
+.legend b{margin-left:auto;font-weight:500;color:var(--ink)}
+
+/* ── table ───────────────────────────────────────────────── */
+.table-card{border:1px solid var(--hairline);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{text-align:left;font-size:12px;color:var(--mute);padding:12px 16px;border-bottom:1px solid var(--hairline);font-weight:400}
+tbody td{padding:13px 16px;border-bottom:1px solid var(--hairline);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+.checkbox{width:16px;height:16px;border:1px solid var(--hairline-strong);border-radius:6px;display:inline-block;vertical-align:middle}
+.tm-name{font-weight:500}
+.tm-by{font-size:12px;color:var(--body)}
+td .amt{font-family:var(--font-mono);font-size:13px}
+.actions a{font-size:13px;color:var(--body);text-decoration:underline;margin-right:12px}
+tfoot td{padding:12px 16px;font-size:13px;color:var(--body)}
+.pager{display:flex;gap:6px;justify-content:flex-end}
+.pager button{min-width:30px;height:30px;border:1px solid var(--hairline);border-radius:9999px;font-size:13px}
+.pager button.cur{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* ── below row ───────────────────────────────────────────── */
+.below{display:grid;grid-template-columns:1.8fr 1fr;gap:16px;align-items:start}
+.feed li{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--hairline)}
+.feed li:last-child{border-bottom:none}
+.feed .f-dot{width:12px;height:12px;border-radius:9999px;flex:none;margin-top:5px}
+.feed .f-dot.ok{background:var(--success)}
+.feed .f-dot.warn{background:var(--warning)}
+.feed .f-dot.dgr{background:var(--danger)}
+.feed .f-dot.nt{background:var(--mute)}
+.feed p{font-size:14px;color:var(--charcoal)}
+.feed p b{font-weight:500;color:var(--ink)}
+.feed time{font-size:12px;color:var(--mute)}
+.quick label{display:block;font-size:14px;font-weight:500;margin:16px 0 6px}
+.quick input[type=text],.quick select{width:100%;height:40px;border:1px solid var(--hairline);border-radius:9999px;padding:0 16px;font-family:inherit;font-size:14px;outline:none;background:var(--canvas)}
+.quick input:focus,.quick select:focus{border-color:var(--ink)}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-top:16px}
+.switch{width:38px;height:22px;border-radius:9999px;background:var(--hairline);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:9999px;background:#fff;border:1px solid var(--hairline-strong)}
+.switch.on{background:var(--ink)}
+.switch.on::after{left:auto;right:3px}
+.quick .btn-primary{width:100%;margin-top:20px}
+
+@media (max-width:1023px){
+  .shell{grid-template-columns:1fr}.side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.below{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- sidebar -->
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 26 26" aria-hidden="true">
+        <ellipse cx="13" cy="17" rx="8.5" ry="7.5" fill="none" stroke="#000" stroke-width="1.8"/>
+        <circle cx="13" cy="8" r="4.6" fill="none" stroke="#000" stroke-width="1.8"/>
+        <circle cx="11.4" cy="7.6" r="0.9" fill="#000"/><circle cx="14.6" cy="7.6" r="0.9" fill="#000"/>
+        <path d="M9 24.5v-4M17 24.5v-4" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Registry Admin
+    </div>
+    <nav>
+      <p class="group">Overview</p>
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Usage analytics</a>
+      <p class="group">Registry</p>
+      <a href="#">Models <span class="cnt">10,482</span></a>
+      <a href="#">Submissions <span class="cnt">31</span></a>
+      <a href="#">Maintainers</a>
+      <a href="#">Quantizations</a>
+      <p class="group">Cloud</p>
+      <a href="#">Inference jobs</a>
+      <a href="#">Billing &amp; invoices</a>
+      <p class="group">Trust</p>
+      <a href="#">Abuse reports <span class="cnt">6</span></a>
+      <p class="group">System</p>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="user-card">
+      <span class="avatar">JL</span>
+      <div><p class="u-name">Joon Lee</p><p class="u-role">Registry Engineer</p></div>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <div class="main">
+    <header class="topbar">
+      <p class="crumb">Registry Admin <i>/</i> <b>Dashboard</b></p>
+      <label class="nav-search">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#a3a3a3" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/></svg>
+        <input type="search" placeholder="Search models, maintainers" aria-label="Search">
+      </label>
+      <button class="icon-circle" aria-label="Notifications, 2 unread">
+        <svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0v5l2 3H4l2-3V9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="avatar sm">JL</span>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Model registry &amp; cloud health · Oct 26 · all regions</p>
+        </div>
+        <div class="head-actions">
+          <button class="btn btn-secondary">Export metrics</button>
+          <button class="btn btn-primary">New announcement</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="k-label">Pulls (24h)</p>
+          <p class="k-value">41.2M</p>
+          <p class="k-delta up">↑ 6.4% <span>vs yesterday</span></p>
+          <div class="spark"><i style="height:44%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:60%"></i><i style="height:66%"></i><i style="height:74%"></i><i class="hi" style="height:92%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Cloud tokens (24h)</p>
+          <p class="k-value">8.9B</p>
+          <p class="k-delta up">↑ 12.1% <span>vs yesterday</span></p>
+          <div class="spark"><i style="height:40%"></i><i style="height:48%"></i><i style="height:56%"></i><i style="height:52%"></i><i style="height:64%"></i><i style="height:72%"></i><i class="hi" style="height:88%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Median cold start</p>
+          <p class="k-value">1.9s</p>
+          <p class="k-delta up">↓ 0.3s <span>vs last week</span></p>
+          <div class="spark"><i style="height:70%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:44%"></i><i class="hi" style="height:36%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Failed pulls</p>
+          <p class="k-value">0.04%</p>
+          <p class="k-delta up">↓ 0.01 pts <span>vs last week</span></p>
+          <div class="spark"><i style="height:64%"></i><i style="height:58%"></i><i style="height:60%"></i><i style="height:48%"></i><i style="height:42%"></i><i style="height:38%"></i><i class="hi" style="height:30%"></i></div>
+        </div>
+      </section>
+
+      <!-- charts -->
+      <section class="charts">
+        <div class="panel">
+          <h3>Pulls per month</h3>
+          <p class="p-sub">All models · billions of pulls · FY26</p>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:38%"></div><small>Nov</small></div>
+            <div class="bcol"><div class="bar" style="height:52%"></div><small>Dec</small></div>
+            <div class="bcol"><div class="bar" style="height:44%"></div><small>Jan</small></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div><small>Feb</small></div>
+            <div class="bcol"><div class="bar" style="height:54%"></div><small>Mar</small></div>
+            <div class="bcol"><div class="bar" style="height:66%"></div><small>Apr</small></div>
+            <div class="bcol"><div class="bar" style="height:62%"></div><small>May</small></div>
+            <div class="bcol"><div class="bar" style="height:74%"></div><small>Jun</small></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div><small>Jul</small></div>
+            <div class="bcol"><div class="bar" style="height:80%"></div><small>Aug</small></div>
+            <div class="bcol"><div class="bar" style="height:76%"></div><small>Sep</small></div>
+            <div class="bcol"><div class="bar hi" style="height:94%"></div><small>Oct</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Pulls by platform</h3>
+          <p class="p-sub">Last 30 days</p>
+          <div class="donut-wrap">
+            <div class="donut" role="img" aria-label="Donut chart: macOS 52%, Linux 24%, Windows 14%, Cloud 10%"></div>
+            <ul class="legend">
+              <li><i style="background:var(--ink)"></i>macOS<b>52%</b></li>
+              <li><i style="background:var(--mute)"></i>Linux<b>24%</b></li>
+              <li><i style="background:var(--hairline-strong)"></i>Windows<b>14%</b></li>
+              <li><i style="background:var(--warning)"></i>Cloud API<b>10%</b></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- table + side panel -->
+      <section class="below">
+        <div class="table-card">
+          <table>
+            <thead><tr>
+              <th style="width:36px"><span class="checkbox"></span></th>
+              <th>Model</th><th>Maintainer</th><th>Status</th><th>Pulls (30d)</th><th>Updated</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">llama3.2</p><p class="tm-by">meta · 3B–70B</p></td><td>Meta</td><td><span class="badge b-success">Live</span></td><td class="amt">62.1M</td><td>Oct 24</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">gpt-oss:20b</p><p class="tm-by">openai · MXFP4</p></td><td>OpenAI</td><td><span class="badge b-success">Live</span></td><td class="amt">48.9M</td><td>Oct 22</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">qwen3:32b</p><p class="tm-by">qwen · tools</p></td><td>Alibaba</td><td><span class="badge b-warning">Re-tagging</span></td><td class="amt">31.4M</td><td>Oct 21</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">deepseek-r1:70b</p><p class="tm-by">deepseek · reasoning</p></td><td>DeepSeek</td><td><span class="badge b-success">Live</span></td><td class="amt">27.8M</td><td>Oct 20</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">tiny-llama-agent</p><p class="tm-by">community · 1.1B</p></td><td>@lo-studio</td><td><span class="badge b-danger">Flagged</span></td><td class="amt">0.9M</td><td>Oct 19</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">nomic-embed-text</p><p class="tm-by">nomic-ai · embedding</p></td><td>Nomic AI</td><td><span class="badge b-success">Live</span></td><td class="amt">21.2M</td><td>Oct 17</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">mistral-small3.2</p><p class="tm-by">mistralai · vision</p></td><td>Mistral</td><td><span class="badge b-neutral">Deprecated 24B</span></td><td class="amt">8.4M</td><td>Oct 14</td><td class="actions"><a href="#">View</a><a href="#">Audit</a></td></tr>
+            </tbody>
+            <tfoot><tr>
+              <td colspan="5">Showing 1–7 of 10,482 models</td>
+              <td colspan="2"><div class="pager"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>…</button><button>1498</button><button>›</button></div></td>
+            </tr></tfoot>
+          </table>
+        </div>
+
+        <div class="panel quick">
+          <h3>Registry activity</h3>
+          <p class="p-sub">Last 6 hours</p>
+          <ul class="feed">
+            <li><span class="f-dot ok"></span><div><p><b>llama3.2:8b-q4</b> blob verified across 3 regions after mirror sync.</p><time>9 min ago</time></div></li>
+            <li><span class="f-dot dgr"></span><div><p><b>tiny-llama-agent</b> flagged for license mismatch — GPL blobs in MIT manifest.</p><time>34 min ago</time></div></li>
+            <li><span class="f-dot nt"></span><div><p><b>12 new models</b> submitted by verified maintainers.</p><time>1 hr ago</time></div></li>
+            <li><span class="f-dot warn"></span><div><p><b>Cloud capacity:</b> eu-west at 82% GPU utilization — autoscaling added 4 nodes.</p><time>2 hrs ago</time></div></li>
+            <li><span class="f-dot nt"></span><div><p><b>Announcement drafted:</b> new quantization tags go live Nov 2.</p><time>4 hrs ago</time></div></li>
+            <li><span class="f-dot ok"></span><div><p><b>Mirror check</b> passed in sa-east — 0 blob diffs.</p><time>5 hrs ago</time></div></li>
+          </ul>
+          <label>Mirror sync interval</label>
+          <select><option>Every 15 minutes</option><option>Hourly</option><option>Real-time</option></select>
+          <div class="toggle-row"><span>Auto-quarantine flagged blobs</span><span class="switch on"></span></div>
+          <div class="toggle-row"><span>Notify maintainers on re-tag</span><span class="switch"></span></div>
+          <button class="btn btn-primary">Save settings</button>
+        </div>
+      </section>
+
+      <!-- infra strip -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="k-label">Registry uptime (30d)</p>
+          <p class="k-value" style="font-size:24px">100%</p>
+          <p class="k-delta up">↑ stable <span>0 incidents</span></p>
+          <div class="spark"><i style="height:62%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:64%"></i><i style="height:66%"></i><i class="hi" style="height:70%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Blob cache hit</p>
+          <p class="k-value" style="font-size:24px">96.8%</p>
+          <p class="k-delta up">↑ 0.9 pts <span>vs last week</span></p>
+          <div class="spark"><i style="height:50%"></i><i style="height:54%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:56%"></i><i style="height:62%"></i><i style="height:60%"></i><i class="hi" style="height:68%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Cloud GPU utilization</p>
+          <p class="k-value" style="font-size:24px">74%</p>
+          <p class="k-delta up">↑ steady <span>18 nodes</span></p>
+          <div class="spark"><i style="height:44%"></i><i style="height:50%"></i><i style="height:48%"></i><i style="height:56%"></i><i style="height:54%"></i><i style="height:62%"></i><i style="height:60%"></i><i class="hi" style="height:68%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Next registry deploy</p>
+          <p class="k-value" style="font-size:24px">v0.42</p>
+          <p class="k-delta up">↑ Thu <span>resumable pulls GA</span></p>
+          <div class="spark"><i style="height:30%"></i><i style="height:38%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:66%"></i><i style="height:74%"></i><i class="hi" style="height:84%"></i></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</body>
+</html>

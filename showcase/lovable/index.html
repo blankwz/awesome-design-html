@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lovable — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,480;6..12,600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — from design-md/lovable/DESIGN.md
+   Camera Plain Variable → Nunito Sans (humanist, variable weights 400/480/600)
+   ============================================================ */
+:root{
+  --cream:#f7f4ed;
+  --charcoal:#1c1c1c;
+  --off-white:#fcfbf8;
+  --charcoal-83:rgba(28,28,28,0.83);
+  --charcoal-82:rgba(28,28,28,0.82);
+  --muted-gray:#5f5f5d;
+  --charcoal-40:rgba(28,28,28,0.4);
+  --charcoal-04:rgba(28,28,28,0.04);
+  --charcoal-03:rgba(28,28,28,0.03);
+  --border-light:#eceae4;
+  --ring-blue:rgba(59,130,246,0.5);
+
+  --inset-btn:
+    rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset,
+    rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset,
+    rgba(0,0,0,0.05) 0px 1px 2px 0px;
+  --focus-shadow:rgba(0,0,0,0.1) 0px 4px 12px;
+
+  --font:'Camera Plain Variable','Nunito Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--cream);
+  color:var(--charcoal);
+  font-size:16px;line-height:1.5;font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block}
+a{color:var(--charcoal);text-decoration:underline;text-underline-offset:2px;transition:opacity .15s}
+a:hover{opacity:0.7}
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  height:64px;padding:0 32px;
+  background:var(--cream);
+  border-bottom:1px solid var(--border-light);
+}
+.sg-banner .sg-folder{
+  font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;color:var(--muted-gray);
+  margin-right:16px;
+}
+.sg-banner .sg-brand{
+  font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--charcoal);
+  display:flex;align-items:center;gap:10px;
+}
+.sg-banner .sg-brand .mark{
+  width:24px;height:24px;border-radius:9999px;
+  background:var(--charcoal);display:flex;align-items:center;justify-content:center;
+}
+.sg-banner .sg-brand .mark::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--cream)}
+.sg-banner .sg-desc{font-size:13px;color:var(--muted-gray);text-align:right;max-width:560px}
+@media(max-width:900px){.sg-banner .sg-desc{display:none}}
+
+/* ============================================================
+   SHOWCASE LAYOUT
+   ============================================================ */
+main{max-width:1200px;margin:0 auto;padding:0 32px}
+.sg-section-title{
+  font-size:48px;font-weight:600;line-height:1.0;letter-spacing:-1.2px;
+  padding:64px 0 24px;
+}
+.sg-block{
+  background:var(--cream);
+  border:1px solid var(--border-light);
+  border-radius:16px;
+  padding:32px;margin-bottom:24px;
+}
+.sg-block-label{
+  font-size:14px;font-weight:400;color:var(--muted-gray);
+  margin-bottom:24px;
+}
+.sg-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:1024px){.sg-grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.sg-grid-3{grid-template-columns:1fr}}
+
+/* 1. COLORS */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+@media(max-width:1024px){.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+.swatch .chip{height:64px;border-radius:12px;border:1px solid var(--border-light)}
+.swatch .name{font-size:14px;font-weight:400;margin-top:8px}
+.swatch .hex{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted-gray)}
+
+/* 2. TYPOGRAPHY */
+.specimen > div{padding:16px 0;border-bottom:1px solid var(--border-light)}
+.specimen > div:last-child{border-bottom:none}
+.specimen .row{display:flex;align-items:baseline;gap:24px}
+.specimen .tag{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted-gray);width:180px;flex:none}
+.t-hero{font-size:60px;font-weight:600;line-height:1.1;letter-spacing:-1.5px}
+.t-hero-alt{font-size:60px;font-weight:480;line-height:1.0}
+.t-section{font-size:48px;font-weight:600;line-height:1.0;letter-spacing:-1.2px}
+.t-sub{font-size:36px;font-weight:600;line-height:1.1;letter-spacing:-0.9px}
+.t-card{font-size:20px;font-weight:400;line-height:1.25}
+.t-body-l{font-size:18px;font-weight:400;line-height:1.38}
+.t-body{font-size:16px;font-weight:400;line-height:1.5}
+.t-body-sm{font-size:14px;font-weight:400;line-height:1.5;color:var(--muted-gray)}
+.t-link{font-size:16px;font-weight:400;text-decoration:underline;text-underline-offset:2px}
+.t-caption{font-size:14px;font-weight:400;color:var(--muted-gray)}
+
+/* 3. BUTTONS */
+.btn-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font);font-size:16px;font-weight:400;
+  padding:8px 16px;border-radius:6px;border:1px solid transparent;
+  cursor:pointer;transition:opacity .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.btn:active{opacity:0.8}
+.btn-dark{background:var(--charcoal);color:var(--off-white);box-shadow:var(--inset-btn)}
+.btn-dark:hover{box-shadow:var(--inset-btn),var(--focus-shadow)}
+.btn-ghost{background:transparent;color:var(--charcoal);border-color:var(--charcoal-40)}
+.btn-ghost:hover{box-shadow:var(--focus-shadow)}
+.btn-cream{background:var(--cream);color:var(--charcoal)}
+.btn-cream:hover{background:var(--charcoal-04)}
+.btn-pill{background:var(--cream);color:var(--charcoal);border-radius:9999px;box-shadow:var(--inset-btn);opacity:0.5}
+.btn-pill:hover{opacity:0.8}
+.btn-sm{padding:6px 12px;font-size:14px}
+.btn-focus-look{box-shadow:var(--inset-btn),var(--focus-shadow)}
+.btn:disabled{background:var(--charcoal-04);color:var(--muted-gray);cursor:not-allowed;box-shadow:none}
+
+/* 4. INPUTS */
+.input-row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.field{display:flex;flex-direction:column;gap:8px;min-width:230px}
+.field label{font-size:14px;font-weight:400;color:var(--muted-gray)}
+.input{
+  font-family:var(--font);font-size:16px;
+  background:var(--cream);color:var(--charcoal);
+  border:1px solid var(--border-light);border-radius:6px;
+  padding:8px 12px;outline:none;
+  transition:box-shadow .15s,border-color .15s;
+}
+.input::placeholder{color:var(--muted-gray)}
+.input:focus{box-shadow:0 0 0 2px var(--ring-blue)}
+.input.focus-look{box-shadow:0 0 0 2px var(--ring-blue)}
+.input:disabled{color:var(--muted-gray);background:var(--charcoal-03);cursor:not-allowed}
+select.input{appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%235f5f5d' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.switch-row{display:flex;align-items:center;gap:12px;padding-top:26px}
+.switch{position:relative;width:40px;height:24px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;border-radius:9999px;background:var(--border-light);cursor:pointer;transition:background .15s}
+.switch .track::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:rgba(0,0,0,0.05) 0 1px 2px;transition:transform .15s}
+.switch input:checked + .track{background:var(--charcoal)}
+.switch input:checked + .track::after{transform:translateX(16px)}
+.checkbox{display:flex;align-items:center;gap:10px;padding-top:26px}
+.checkbox input{width:16px;height:16px;accent-color:var(--charcoal)}
+
+/* 5. CARDS */
+.card{background:var(--cream);border:1px solid var(--border-light);border-radius:12px;padding:24px;transition:border-color .15s}
+.card:hover{border-color:var(--charcoal-40)}
+.card .ico{
+  width:40px;height:40px;border-radius:9999px;background:var(--charcoal-04);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+.card h3{font-size:20px;font-weight:400;line-height:1.25;margin-bottom:8px}
+.card p{font-size:14px;color:var(--muted-gray)}
+.stat-card{background:var(--cream);border:1px solid var(--border-light);border-radius:12px;padding:24px}
+.stat-card .big{font-size:48px;font-weight:600;letter-spacing:-1.2px;line-height:1.0}
+.stat-card .label{font-size:16px;color:var(--muted-gray);margin-top:8px}
+.stat-card .sub{font-size:14px;color:var(--muted-gray);margin-top:4px}
+
+/* 6. BADGES */
+.badge-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:14px;font-weight:400;
+  padding:4px 12px;border-radius:9999px;
+}
+.badge .dot{width:6px;height:6px;border-radius:50%}
+.badge-soft{background:var(--charcoal-04);color:var(--charcoal-83)}
+.badge-outline{border:1px solid var(--border-light);color:var(--muted-gray);border-radius:6px}
+.badge-strong{border:1px solid var(--charcoal-40);color:var(--charcoal);border-radius:6px}
+.badge-dark{background:var(--charcoal);color:var(--off-white)}
+.badge-dark .dot{background:var(--cream)}
+.badge-soft .dot{background:var(--charcoal-40)}
+
+/* 7. NAVIGATION */
+.topnav{
+  display:flex;align-items:center;justify-content:space-between;
+  border:1px solid var(--border-light);border-radius:6px;
+  height:64px;padding:0 24px;margin-bottom:16px;background:var(--cream);
+}
+.topnav .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:18px;letter-spacing:-0.3px}
+.topnav .logo .mark{width:22px;height:22px;border-radius:9999px;background:var(--charcoal);display:flex;align-items:center;justify-content:center}
+.topnav .logo .mark::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--cream)}
+.topnav ul{display:flex;list-style:none;gap:28px}
+.topnav ul a{font-size:16px;color:var(--charcoal);text-decoration:none;padding:8px 0;transition:opacity .15s}
+.topnav ul a:hover{opacity:0.7}
+.topnav .actions{display:flex;gap:12px;align-items:center}
+@media(max-width:900px){.topnav ul{display:none}}
+
+/* 8. LIST ROWS */
+.row-list{border-top:1px solid var(--border-light)}
+.row-item{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:16px 0;border-bottom:1px solid var(--border-light);
+}
+.row-item .t{font-size:16px}
+.row-item .m{font-size:14px;color:var(--muted-gray)}
+.row-item .arr{color:var(--charcoal);text-decoration:none;font-size:16px}
+
+/* ============================================================
+   PRODUCT — Lovable AI app builder landing
+   ============================================================ */
+#product{padding:96px 0 0}
+.prod-hero{position:relative;text-align:center;padding:48px 0 64px;overflow:hidden}
+.prod-hero .wash{
+  position:absolute;inset:-40% -20% auto;height:130%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 30% 40% at 20% 30%, rgba(255,180,150,0.18), transparent 60%),
+    radial-gradient(ellipse 30% 40% at 80% 25%, rgba(150,180,255,0.16), transparent 60%),
+    radial-gradient(ellipse 26% 36% at 55% 15%, rgba(255,200,120,0.14), transparent 60%);
+  filter:blur(24px);
+}
+.prod-hero > *{position:relative;z-index:1}
+.prod-hero h1{
+  font-size:60px;font-weight:600;line-height:1.1;letter-spacing:-1.5px;
+  max-width:820px;margin:0 auto 20px;
+}
+@media(max-width:1024px){.prod-hero h1{font-size:44px}}
+.prod-hero .sub{
+  font-size:18px;line-height:1.38;color:var(--muted-gray);
+  max-width:520px;margin:0 auto 32px;
+}
+.prod-hero .cta-row{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
+.prod-hero .note{font-size:14px;color:var(--muted-gray)}
+
+/* AI chat prompt mock */
+.prompt-card{
+  max-width:720px;margin:48px auto 0;
+  background:var(--cream);border:1px solid var(--border-light);border-radius:16px;
+  padding:20px;box-shadow:var(--focus-shadow);text-align:left;
+}
+.prompt-card .fake-input{
+  display:flex;align-items:center;gap:12px;
+  background:var(--cream);border:1px solid var(--border-light);border-radius:12px;
+  padding:14px 16px;font-size:16px;color:var(--charcoal-82);
+}
+.prompt-card .fake-input .caret{width:1.5px;height:20px;background:var(--charcoal);display:inline-block;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.prompt-card .row2{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.sugg{display:flex;gap:8px;flex-wrap:wrap}
+.sugg span{
+  font-size:14px;color:var(--charcoal-82);
+  border:1px solid var(--border-light);border-radius:9999px;padding:6px 14px;
+}
+.prompt-actions{display:flex;gap:8px;align-items:center}
+.icon-pill{
+  width:36px;height:36px;border-radius:9999px;
+  background:var(--cream);box-shadow:var(--inset-btn);opacity:0.5;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .15s;
+}
+.icon-pill:hover{opacity:0.8}
+.icon-pill.dark{background:var(--charcoal);opacity:1}
+.icon-pill.dark svg{stroke:var(--off-white)}
+
+/* preview strip */
+.preview-strip{
+  max-width:920px;margin:24px auto 0;
+  border:1px solid var(--border-light);border-radius:12px;overflow:hidden;
+}
+.preview-strip .bar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border-light)}
+.preview-strip .bar i{width:8px;height:8px;border-radius:50%;background:var(--border-light)}
+.preview-strip .bar .url{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted-gray);margin-left:8px}
+.preview-strip .site{display:grid;grid-template-columns:1fr 1.3fr;background:var(--off-white)}
+@media(max-width:900px){.preview-strip .site{grid-template-columns:1fr}}
+.preview-strip .site .copy{padding:32px}
+.preview-strip .site .copy .t{font-size:24px;font-weight:600;letter-spacing:-0.5px;line-height:1.2;margin-bottom:12px}
+.preview-strip .site .copy .d{font-size:14px;color:var(--muted-gray);margin-bottom:20px}
+.preview-strip .site .copy .pill-btn{display:inline-block;background:var(--charcoal);color:var(--off-white);font-size:14px;border-radius:6px;padding:8px 16px;box-shadow:var(--inset-btn)}
+.preview-strip .site .art{background:linear-gradient(135deg,#efe9dd 0%,#f6efe4 50%,#e8ecf4 100%);min-height:200px;position:relative}
+.preview-strip .site .art::after{
+  content:'';position:absolute;inset:24px;border-radius:8px;
+  background:
+    linear-gradient(180deg, rgba(28,28,28,0.06) 0 12px, transparent 12px 40px, rgba(28,28,28,0.06) 40px 52px, transparent 52px 80px, rgba(28,28,28,0.06) 80px 92px),
+    radial-gradient(circle 40px at 80% 30%, rgba(28,28,28,0.08), transparent 70%);
+}
+
+/* stats bar */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  text-align:center;padding:80px 0 8px;
+}
+@media(max-width:900px){.stats-bar{grid-template-columns:1fr;gap:48px}}
+.stats-bar .n{font-size:48px;font-weight:600;letter-spacing:-1.2px;line-height:1.0}
+.stats-bar .l{font-size:16px;color:var(--muted-gray);margin-top:8px}
+
+/* logo strip */
+.logo-strip{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:12px;
+  padding:48px 0 8px;
+}
+@media(max-width:900px){.logo-strip{grid-template-columns:repeat(3,1fr)}}
+.logo-tile{
+  border:1px solid var(--border-light);border-radius:12px;padding:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:400;color:var(--muted-gray);
+}
+
+/* feature cards */
+.sec-head{max-width:600px;margin:0 auto 32px;text-align:center}
+.sec-head .eyebrow{font-size:14px;color:var(--muted-gray);margin-bottom:12px}
+.sec-head h2{font-size:48px;font-weight:600;line-height:1.0;letter-spacing:-1.2px;margin-bottom:12px}
+.sec-head p{font-size:18px;color:var(--muted-gray)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:32px 0 96px}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feature-card{background:var(--cream);border:1px solid var(--border-light);border-radius:12px;padding:24px;transition:border-color .15s}
+.feature-card:hover{border-color:var(--charcoal-40)}
+.feature-card h3{font-size:20px;font-weight:400;line-height:1.25;margin-bottom:8px}
+.feature-card p{font-size:14px;color:var(--muted-gray)}
+
+/* template gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:32px 0 96px}
+@media(max-width:1024px){.gallery{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.gallery{grid-template-columns:1fr}}
+.tpl-card{border:1px solid var(--border-light);border-radius:12px;overflow:hidden;transition:border-color .15s;cursor:pointer}
+.tpl-card:hover{border-color:var(--charcoal-40)}
+.tpl-card .art{height:150px;position:relative}
+.tpl-card .art.a1{background:linear-gradient(135deg,#f3e8e0,#e9eef5)}
+.tpl-card .art.a2{background:linear-gradient(135deg,#e8f0e4,#f5efe1)}
+.tpl-card .art.a3{background:linear-gradient(135deg,#ece4f2,#f2e9e2)}
+.tpl-card .art::after{
+  content:'';position:absolute;left:20px;right:20px;top:24px;bottom:24px;border-radius:6px;
+  background:
+    linear-gradient(180deg, rgba(28,28,28,0.07) 0 14px, transparent 14px 44px, rgba(28,28,28,0.07) 44px 58px),
+    radial-gradient(circle 26px at 85% 25%, rgba(28,28,28,0.09), transparent 70%);
+  border:1px solid var(--border-light);
+  background-color:var(--off-white);
+}
+.tpl-card .meta{padding:16px;display:flex;justify-content:space-between;align-items:center}
+.tpl-card .meta .t{font-size:16px}
+.tpl-card .meta .c{font-size:14px;color:var(--muted-gray)}
+
+/* testimonial */
+.quote-card{
+  border:1px solid var(--border-light);border-radius:16px;padding:40px;
+  margin-bottom:96px;max-width:760px;margin-left:auto;margin-right:auto;
+}
+.quote-card blockquote{font-size:24px;font-weight:480;line-height:1.35;letter-spacing:-0.4px;margin-bottom:24px}
+.quote-card .attr{display:flex;align-items:center;gap:16px}
+.quote-card .ava{width:44px;height:44px;border-radius:50%;background:var(--charcoal-04);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.quote-card .name{font-size:16px}
+.quote-card .role{font-size:14px;color:var(--muted-gray)}
+
+/* CTA band */
+.cta-band{
+  border:1px solid var(--border-light);border-radius:16px;
+  padding:80px 40px;text-align:center;margin-bottom:96px;
+  background:
+    radial-gradient(ellipse 50% 70% at 50% 120%, rgba(255,190,150,0.14), transparent 60%),
+    var(--cream);
+}
+.cta-band h2{font-size:48px;font-weight:600;line-height:1.0;letter-spacing:-1.2px;margin-bottom:12px}
+.cta-band p{font-size:18px;color:var(--muted-gray);margin-bottom:28px}
+
+/* footer */
+footer{border-top:1px solid var(--border-light);padding:64px 32px;border-radius:16px 16px 0 0}
+.foot-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+@media(max-width:900px){.foot-grid{grid-template-columns:repeat(2,1fr)}}
+.foot-grid .col h4{font-size:14px;font-weight:400;color:var(--muted-gray);margin-bottom:16px}
+.foot-grid .col a{display:block;font-size:14px;color:var(--charcoal-82);text-decoration:none;padding:5px 0}
+.foot-grid .col a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div style="display:flex;align-items:center">
+    <span class="sg-folder">lovable</span>
+    <span class="sg-brand"><span class="mark"></span>Lovable</span>
+  </div>
+  <div class="sg-desc">Warmth through restraint — a parchment-cream canvas, humanist type, and grays derived from one charcoal at varying opacities.</div>
+</header>
+
+<main>
+
+  <!-- ==================== COMPONENTS ==================== -->
+  <section id="components">
+    <h2 class="sg-section-title">Components</h2>
+
+    <!-- 1. Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens — all grays derived from #1c1c1c at opacity</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#f7f4ed"></div><div class="name">cream</div><div class="hex">#f7f4ed</div></div>
+        <div class="swatch"><div class="chip" style="background:#1c1c1c"></div><div class="name">charcoal</div><div class="hex">#1c1c1c</div></div>
+        <div class="swatch"><div class="chip" style="background:#fcfbf8"></div><div class="name">off-white</div><div class="hex">#fcfbf8</div></div>
+        <div class="swatch"><div class="chip" style="background:rgba(28,28,28,0.83)"></div><div class="name">charcoal 83%</div><div class="hex">α .83</div></div>
+        <div class="swatch"><div class="chip" style="background:#5f5f5d"></div><div class="name">muted gray</div><div class="hex">#5f5f5d</div></div>
+        <div class="swatch"><div class="chip" style="background:rgba(28,28,28,0.4)"></div><div class="name">charcoal 40%</div><div class="hex">α .40</div></div>
+        <div class="swatch"><div class="chip" style="background:#eceae4"></div><div class="name">border light</div><div class="hex">#eceae4</div></div>
+        <div class="swatch"><div class="chip" style="background:rgba(28,28,28,0.04)"></div><div class="name">charcoal 4%</div><div class="hex">α .04</div></div>
+        <div class="swatch"><div class="chip" style="background:rgba(28,28,28,0.03)"></div><div class="name">charcoal 3%</div><div class="hex">α .03</div></div>
+        <div class="swatch"><div class="chip" style="background:rgba(59,130,246,0.5)"></div><div class="name">ring blue</div><div class="hex">α .50</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#f3e8e0,#e9eef5)"></div><div class="name">hero wash</div><div class="hex">gradient</div></div>
+        <div class="swatch"><div class="chip" style="background:#f6efe4"></div><div class="name">wash tone</div><div class="hex">#f6efe4</div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-block-label">Typography — Camera Plain (humanist), weights 400 / 480 / 600 only</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">hero / 60 / 600</span><span class="t-hero">Build something Lovable</span></div>
+        <div class="row"><span class="tag">hero alt / 60 / 480</span><span class="t-hero-alt" style="font-size:44px">Ideas, shipped in minutes</span></div>
+        <div class="row"><span class="tag">section / 48 / 600</span><span class="t-section" style="font-size:40px">Describe it. Watch it appear.</span></div>
+        <div class="row"><span class="tag">sub / 36 / 600</span><span class="t-sub" style="font-size:28px">Your full-stack engineer</span></div>
+        <div class="row"><span class="tag">card title / 20 / 400</span><span class="t-card">Ship an MVP before lunch</span></div>
+        <div class="row"><span class="tag">body large / 18 / 400</span><span class="t-body-l">Lovable turns plain-language ideas into working web apps.</span></div>
+        <div class="row"><span class="tag">body / 16 / 400</span><span class="t-body">No setup, no boilerplate — just describe what you want to build.</span></div>
+        <div class="row"><span class="tag">body small / 14 / 400</span><span class="t-body-sm">Free to start. Publish when you're ready.</span></div>
+        <div class="row"><span class="tag">link / 16 / 400</span><span class="t-link">Read the documentation</span></div>
+        <div class="row"><span class="tag">caption / 14 / 400</span><span class="t-caption">Last edited 2 minutes ago</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons — the signature inset shadow on dark, 6px radius, active opacity 0.8</div>
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn btn-dark">Start building</button>
+        <button class="btn btn-ghost">Log in</button>
+        <button class="btn btn-cream">Documentation</button>
+        <button class="btn btn-pill">Voice</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-dark btn-sm">Small</button>
+        <button class="btn btn-dark btn-focus-look">Focus state</button>
+        <button class="btn btn-dark" style="opacity:0.8">Active state</button>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs — cream fields, #eceae4 borders, soft blue focus ring</div>
+      <div class="input-row">
+        <div class="field">
+          <label>Project name</label>
+          <input class="input" type="text" placeholder="my-startup-app">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="input focus-look" type="text" value="sunnyside-cafe">
+        </div>
+        <div class="field">
+          <label>Stack</label>
+          <select class="input">
+            <option>React + Tailwind</option>
+            <option selected>React + shadcn/ui</option>
+            <option>Vue + Vite</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input" type="text" value="Pro plan required" disabled>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span style="font-size:14px">Plan mode</span>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" checked id="cb"><label for="cb" style="font-size:14px">Auto-publish to lovable.app</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">Cards — #eceae4 borders, no shadows, 12px radius</div>
+      <div class="sg-grid-3">
+        <div class="card">
+          <div class="ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.8 4.4L15 8l-4.2 1.6L9 14l-1.8-4.4L3 8l4.2-1.6L9 2z" stroke="#1c1c1c" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+          <h3>Prompt to production</h3>
+          <p>Describe your app in plain language. Lovable writes the code, wires the database, and deploys with one click.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 12l4-4 3 2.5L15 5" stroke="#1c1c1c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 5h4v4" stroke="#1c1c1c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Own your code</h3>
+          <p>Every project is a real React codebase, synced to GitHub — export it, extend it, or hand it to your team.</p>
+        </div>
+        <div class="stat-card">
+          <div class="big">500K+</div>
+          <div class="label">apps built with Lovable</div>
+          <div class="sub">by makers in 120+ countries</div>
+          <div style="display:flex;gap:6px;margin-top:16px">
+            <span style="height:8px;flex:1;border-radius:9999px;background:var(--charcoal)"></span>
+            <span style="height:8px;flex:0.6;border-radius:9999px;background:var(--charcoal-40)"></span>
+            <span style="height:8px;flex:0.35;border-radius:9999px;background:var(--border-light)"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">Badges, tags and pills</div>
+      <div class="badge-row">
+        <span class="badge badge-dark"><span class="dot"></span>Live</span>
+        <span class="badge badge-soft"><span class="dot"></span>Building…</span>
+        <span class="badge badge-strong">Community favorite</span>
+        <span class="badge badge-outline">React · Tailwind</span>
+        <span class="badge badge-soft">v2.4</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation — fixed cream bar, dark inset-shadow CTA</div>
+      <nav class="topnav">
+        <div class="logo"><span class="mark"></span>Lovable</div>
+        <ul>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Learn</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Enterprise</a></li>
+        </ul>
+        <div class="actions">
+          <button class="btn btn-ghost btn-sm">Log in</button>
+          <button class="btn btn-dark btn-sm">Get started</button>
+        </div>
+      </nav>
+    </div>
+
+    <!-- 8. List rows -->
+    <div class="sg-block">
+      <div class="sg-block-label">Project list rows</div>
+      <div class="row-list">
+        <a class="row-item" href="#"><span class="t">sunnyside-cafe</span><span class="m">Edited 2 min ago · Public</span><span class="arr">→</span></a>
+        <a class="row-item" href="#"><span class="t">habit-tracker</span><span class="m">Edited yesterday · Private</span><span class="arr">→</span></a>
+        <a class="row-item" href="#"><span class="t">team-wiki</span><span class="m">Edited 3 days ago · Team</span><span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT ==================== -->
+  <section id="product">
+    <div class="prod-hero">
+      <div class="wash"></div>
+      <h1>Build something Lovable</h1>
+      <p class="sub">Create apps and websites by chatting with AI. Lovable is your full-stack engineer — from first prompt to deployed product.</p>
+      <div class="cta-row">
+        <button class="btn btn-dark">Start building free</button>
+        <button class="btn btn-ghost">Watch demo</button>
+      </div>
+      <div class="note">No credit card required · Your code, your GitHub</div>
+
+      <!-- AI chat prompt -->
+      <div class="prompt-card">
+        <div class="fake-input">A booking site for my yoga studio, with class schedule and Stripe checkout<span class="caret"></span></div>
+        <div class="row2">
+          <div class="sugg">
+            <span>Dashboard</span><span>Landing page</span><span>Internal tool</span><span>Prompt enhancer</span>
+          </div>
+          <div class="prompt-actions">
+            <div class="icon-pill"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="4" y="1.5" width="7" height="9" rx="3.5" stroke="#1c1c1c" stroke-width="1.3"/><path d="M2.5 7a5 5 0 0010 0M7.5 12v1.8" stroke="#1c1c1c" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+            <div class="icon-pill dark"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M7 2L3 6M7 2l4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- preview -->
+      <div class="preview-strip">
+        <div class="bar"><i></i><i></i><i></i><span class="url">sunnyside-cafe.lovable.app</span></div>
+        <div class="site">
+          <div class="copy">
+            <div class="t">Find your calm, one class at a time</div>
+            <div class="d">Yoga, pilates and breathwork in the heart of the city. Book your first class free.</div>
+            <span class="pill-btn">Book a class</span>
+          </div>
+          <div class="art"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-bar">
+      <div><div class="n">500K+</div><div class="l">apps created</div></div>
+      <div><div class="n">1.2M</div><div class="l">makers in the community</div></div>
+      <div><div class="n">~30s</div><div class="l">average time to first draft</div></div>
+    </div>
+
+    <!-- logos -->
+    <div class="logo-strip">
+      <div class="logo-tile">Phantom</div><div class="logo-tile">Klarna</div><div class="logo-tile">HubSpot</div>
+      <div class="logo-tile">Duolingo</div><div class="logo-tile">Zapier</div><div class="logo-tile">Figma</div>
+    </div>
+
+    <!-- features -->
+    <div class="sec-head">
+      <div class="eyebrow">WHY LOVABLE</div>
+      <h2>From idea to live app, without the setup</h2>
+      <p>Everything you need to ship real software — included by default.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feature-card">
+        <h3>Chat your way to a product</h3>
+        <p>Iterate by conversation. Ask for changes, fix bugs, or add features — Lovable edits the codebase and previews the result instantly.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Full-stack, batteries included</h3>
+        <p>Auth, database, file storage, and payments connect in a click — no servers to configure, no YAML to write.</p>
+      </div>
+      <div class="feature-card">
+        <h3>GitHub two-way sync</h3>
+        <p>Your project is a clean React + Tailwind repo. Push to GitHub, invite teammates, or take it in-house any time.</p>
+      </div>
+    </div>
+
+    <!-- template gallery -->
+    <div class="sec-head">
+      <div class="eyebrow">GALLERY</div>
+      <h2>Start from a community template</h2>
+      <p>Thousands of remixable projects, published by makers like you.</p>
+    </div>
+    <div class="gallery">
+      <div class="tpl-card">
+        <div class="art a1"></div>
+        <div class="meta"><span class="t">SaaS landing</span><span class="c">2.1K remixes</span></div>
+      </div>
+      <div class="tpl-card">
+        <div class="art a2"></div>
+        <div class="meta"><span class="t">Habit tracker</span><span class="c">1.4K remixes</span></div>
+      </div>
+      <div class="tpl-card">
+        <div class="art a3"></div>
+        <div class="meta"><span class="t">CRM dashboard</span><span class="c">980 remixes</span></div>
+      </div>
+    </div>
+
+    <!-- testimonial -->
+    <div class="quote-card">
+      <blockquote>“I described our internal tooling over a coffee break. By the afternoon the whole team was using it — and I still own every line of the code.”</blockquote>
+      <div class="attr">
+        <div class="ava">EW</div>
+        <div><div class="name">Elin Wahlberg</div><div class="role">Founder, Studio Norr</div></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-band">
+      <h2>Your idea is one prompt away</h2>
+      <p>Join over a million makers building with Lovable.</p>
+      <button class="btn btn-dark">Start building free</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div class="col">
+      <div style="display:flex;align-items:center;gap:10px;font-weight:600;font-size:18px;margin-bottom:16px">
+        <span class="mark" style="width:22px;height:22px;border-radius:9999px;background:var(--charcoal);display:inline-flex;align-items:center;justify-content:center"><span style="width:9px;height:9px;border-radius:50%;background:var(--cream)"></span></span>
+        Lovable
+      </div>
+      <div style="font-size:14px;color:var(--muted-gray);max-width:260px">Build apps and websites by chatting with AI.</div>
+    </div>
+    <div class="col">
+      <h4>Product</h4>
+      <a href="#">Gallery</a><a href="#">Pricing</a><a href="#">Enterprise</a><a href="#">Launchables</a><a href="#">Changelog</a>
+    </div>
+    <div class="col">
+      <h4>Resources</h4>
+      <a href="#">Documentation</a><a href="#">Learn</a><a href="#">Community</a><a href="#">Support</a><a href="#">Status</a>
+    </div>
+    <div class="col">
+      <h4>Company</h4>
+      <a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Terms</a><a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

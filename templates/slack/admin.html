@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hively Admin — Marketplace Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4a154b; --primary-deep:#481a54; --primary-press:#611f69; --primary-tint:#592466;
+  --on-primary:#ffffff; --ink:#1d1d1d; --ink-mute:#696969;
+  --link-blue:#1264a3; --link-hover:#3860be;
+  --canvas:#ffffff; --cream:#f4ede4; --lavender:#f9f0ff;
+  --surface-aubergine:#4a154b; --hairline:#e6e6e6;
+  --ok:#007a5a; --err:#cc4117; --warn:#8a6410; --on-aub-mute:#d9bdde;
+  --r-xs:2px; --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:90px;
+  --shadow-1:rgba(0,0,0,.1) 0 5px 20px 0;
+  --shadow-3:rgba(0,0,0,.2) 0 1px 10px 0;
+  --font:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--lavender);font-size:15px;line-height:1.5}
+a{color:var(--link-blue);text-decoration:none}
+a:hover{text-decoration:underline;color:var(--link-hover)}
+button{font-family:var(--font);cursor:pointer}
+.btn{border-radius:var(--r-pill);font-weight:700;font-size:14.4px;letter-spacing:.14px;border:none;display:inline-flex;align-items:center;gap:8px;padding:10px 22px;transition:background .15s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-press)}
+.btn-outline{background:var(--canvas);color:var(--primary);border:2px solid var(--primary);padding:8px 20px}
+.btn-outline:hover{background:var(--lavender)}
+
+/* ---------- Sidebar ---------- */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:264px;background:var(--surface-aubergine);color:var(--on-primary);display:flex;flex-direction:column;padding:24px 16px;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:21px;letter-spacing:-.4px;padding:0 8px 24px}
+.logo-mark{width:32px;height:32px;border-radius:var(--r-md);background:#fff;color:var(--primary);display:grid;place-items:center;font-weight:800}
+.side-group{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;color:var(--on-aub-mute);padding:18px 8px 8px}
+.side-item{display:flex;align-items:center;gap:12px;color:var(--on-aub-mute);padding:9px 12px;border-radius:var(--r-pill);font-size:15px;font-weight:600}
+.side-item:hover{background:var(--primary-tint);color:#fff;text-decoration:none}
+.side-item.active{background:#fff;color:var(--primary)}
+.side-item svg{flex:none}
+.side-badge{margin-left:auto;background:var(--err);color:#fff;border-radius:var(--r-pill);font-size:11.5px;font-weight:700;padding:2px 8px}
+.user-card{margin-top:auto;background:var(--primary-tint);border-radius:var(--r-lg);padding:14px;display:flex;gap:10px;align-items:center}
+.user-card .avatar{background:#fff;color:var(--primary);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px}
+.user-card b{display:block;font-size:14px}
+.user-card span{font-size:12.5px;color:var(--on-aub-mute)}
+.user-card button{margin-left:auto;background:none;border:none;color:var(--on-aub-mute);font-size:16px}
+
+/* ---------- Topbar ---------- */
+.main{margin-left:264px;padding:0 32px 48px}
+.topbar{display:flex;align-items:center;gap:18px;padding:20px 0;border-bottom:1px solid var(--hairline);position:sticky;top:0;background:var(--lavender);z-index:5}
+.crumb{font-size:14px;color:var(--ink-mute)}
+.crumb b{color:var(--ink);font-size:20px;font-weight:700;letter-spacing:-.2px;display:block;margin-top:2px}
+.top-search{flex:1;max-width:420px;margin-left:auto;position:relative}
+.top-search input{width:100%;border:1px solid var(--hairline);border-radius:var(--r-pill);padding:10px 16px 10px 40px;font-family:var(--font);font-size:14.5px;background:#fff}
+.top-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;border:1px solid var(--hairline);background:#fff;display:grid;place-items:center;color:var(--ink)}
+.icon-btn:hover{background:var(--cream)}
+.dot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--err);border:2px solid #fff}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+
+/* ---------- KPI cards ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:28px 0}
+.kpi{background:#fff;border:1px solid var(--hairline);border-radius:var(--r-xl);padding:22px 24px}
+.kpi .label{font-size:13px;font-weight:700;letter-spacing:.1px;color:var(--ink-mute)}
+.kpi .value{font-size:34px;font-weight:700;letter-spacing:-.5px;color:var(--primary);margin:6px 0 4px}
+.kpi .delta{font-size:13px;font-weight:700}
+.up{color:var(--ok)} .down{color:var(--err)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:12px}
+.spark i{flex:1;background:var(--lavender);border-radius:2px}
+.spark i.hi{background:var(--primary)}
+
+/* ---------- Charts row ---------- */
+.charts{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:28px}
+.panel{background:#fff;border:1px solid var(--hairline);border-radius:var(--r-xl);padding:24px}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+.panel-head h3{font-size:18px;font-weight:700;letter-spacing:-.02px}
+.panel-head a,.panel-head span{font-size:13px;color:var(--ink-mute)}
+.bars{display:flex;align-items:flex-end;gap:14px;height:170px;padding-top:8px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar i{width:100%;max-width:44px;background:var(--primary);border-radius:var(--r-md) var(--r-md) 4px 4px;display:block}
+.bar:nth-child(even) i{background:var(--primary-tint)}
+.bar b{font-size:12px;font-weight:600;color:var(--ink-mute)}
+.donut-wrap{display:flex;align-items:center;gap:26px}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut .center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut .center b{font-size:28px;font-weight:800;color:var(--primary)}
+.donut .center span{font-size:12px;color:var(--ink-mute);display:block}
+.legend{display:grid;gap:12px;font-size:14px;flex:1}
+.legend .row{display:flex;align-items:center;gap:10px}
+.legend .sw{width:12px;height:12px;border-radius:4px;flex:none}
+.legend .val{margin-left:auto;font-weight:700}
+
+/* ---------- Table ---------- */
+.table-wrap{background:#fff;border:1px solid var(--hairline);border-radius:var(--r-xl);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+thead th{text-align:left;font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute);padding:14px 18px;border-bottom:1px solid var(--hairline)}
+tbody td{padding:14px 18px;border-bottom:1px solid var(--hairline);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--lavender)}
+.tbl-name{display:flex;align-items:center;gap:12px}
+.tbl-name .art{width:36px;height:36px;border-radius:var(--r-md);flex:none}
+.tbl-name b{display:block;font-weight:700;font-size:14.5px}
+.tbl-name span{font-size:12.5px;color:var(--ink-mute)}
+.badge{display:inline-block;border-radius:var(--r-pill);font-size:12px;font-weight:700;letter-spacing:.1px;padding:4px 12px}
+.b-ok{background:#e2f4ee;color:var(--ok)}
+.b-warn{background:#f9eeda;color:var(--warn)}
+.b-err{background:#f9e2da;color:var(--err)}
+.b-mute{background:var(--lavender);color:var(--primary)}
+.money{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.date{color:var(--ink-mute);font-variant-numeric:tabular-nums}
+.row-actions{display:flex;gap:6px}
+.act{width:30px;height:30px;border-radius:50%;border:1px solid var(--hairline);background:#fff;display:grid;place-items:center;color:var(--ink-mute);font-size:13px}
+.act:hover{border-color:var(--primary);color:var(--primary)}
+.tfoot{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;font-size:13.5px;color:var(--ink-mute)}
+.pager{display:flex;gap:6px}
+.pager button{width:32px;height:32px;border-radius:var(--r-pill);border:1px solid var(--hairline);background:#fff;font-weight:700;color:var(--ink)}
+.pager button.on{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* ---------- Activity side panel ---------- */
+.layout{display:grid;grid-template-columns:1.9fr 1fr;gap:20px;align-items:start}
+.activity .item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hairline);font-size:14px}
+.activity .item:last-child{border:none}
+.a-dot{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+.activity .item p b{font-weight:700}
+.activity .item time{display:block;font-size:12px;color:var(--ink-mute);margin-top:2px}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1200px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts{grid-template-columns:1fr}
+  .layout{grid-template-columns:1fr}
+}
+@media(max-width:960px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:0 16px 40px}
+  thead th,tbody td{padding:10px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a class="logo" href="#"><span class="logo-mark">#</span>Hively Admin</a>
+  <div class="side-group">Overview</div>
+  <a class="side-item" href="#">▦ Dashboard</a>
+  <a class="side-item active" href="#">◉ Orders</a>
+  <a class="side-item" href="#">◈ Listings</a>
+  <div class="side-group">Customers</div>
+  <a class="side-item" href="#">☺ Workspaces</a>
+  <a class="side-item" href="#">✦ Sellers</a>
+  <a class="side-item" href="#">⚑ Reviews <span class="side-badge">14</span></a>
+  <div class="side-group">Insights</div>
+  <a class="side-item" href="#">◔ Analytics</a>
+  <a class="side-item" href="#">⇄ Payouts</a>
+  <div class="side-group">Console</div>
+  <a class="side-item" href="#">✎ Categories</a>
+  <a class="side-item" href="#">⚙ Settings</a>
+  <div class="user-card">
+    <span class="avatar">PN</span>
+    <div><b>Priya Natarajan</b><span>Marketplace ops</span></div>
+    <button aria-label="Menu">⋯</button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="crumb">Orders <b>Recent orders</b></div>
+    <div class="top-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" placeholder="Search orders, workspaces, invoices…" aria-label="Search">
+    </div>
+    <button class="btn btn-outline">Export CSV</button>
+    <button class="icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+    <div class="avatar">PN</div>
+  </div>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="label">GMV THIS MONTH</div>
+      <div class="value">$184,203</div>
+      <div class="delta up">↑ 12.4% vs Sep</div>
+      <div class="spark"><i style="height:40%"></i><i style="height:52%"></i><i style="height:46%"></i><i style="height:60%"></i><i style="height:55%"></i><i style="height:72%"></i><i class="hi" style="height:88%"></i><i style="height:66%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">ORDERS</div>
+      <div class="value">3,417</div>
+      <div class="delta up">↑ 8.1% vs Sep</div>
+      <div class="spark"><i style="height:35%"></i><i style="height:48%"></i><i style="height:58%"></i><i style="height:50%"></i><i style="height:64%"></i><i class="hi" style="height:80%"></i><i style="height:74%"></i><i style="height:62%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">REFUND RATE</div>
+      <div class="value">1.9%</div>
+      <div class="delta up">↓ 0.4 pts improved</div>
+      <div class="spark"><i style="height:80%"></i><i style="height:74%"></i><i style="height:70%"></i><i style="height:58%"></i><i style="height:52%"></i><i class="hi" style="height:44%"></i><i style="height:40%"></i><i style="height:38%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">ACTIVE LISTINGS</div>
+      <div class="value">2,412</div>
+      <div class="delta down">↓ 31 delisted</div>
+      <div class="spark"><i style="height:50%"></i><i style="height:55%"></i><i style="height:60%"></i><i class="hi" style="height:70%"></i><i style="height:58%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:48%"></i></div>
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="panel">
+      <div class="panel-head"><h3>Revenue by month</h3><span>FY 2026 · USD</span></div>
+      <div class="bars">
+        <div class="bar"><i style="height:42%"></i><b>Jan</b></div>
+        <div class="bar"><i style="height:50%"></i><b>Feb</b></div>
+        <div class="bar"><i style="height:46%"></i><b>Mar</b></div>
+        <div class="bar"><i style="height:58%"></i><b>Apr</b></div>
+        <div class="bar"><i style="height:54%"></i><b>May</b></div>
+        <div class="bar"><i style="height:66%"></i><b>Jun</b></div>
+        <div class="bar"><i style="height:61%"></i><b>Jul</b></div>
+        <div class="bar"><i style="height:74%"></i><b>Aug</b></div>
+        <div class="bar"><i style="height:70%"></i><b>Sep</b></div>
+        <div class="bar"><i style="height:84%"></i><b>Oct</b></div>
+        <div class="bar"><i style="height:78%"></i><b>Nov</b></div>
+        <div class="bar"><i style="height:92%"></i><b>Dec</b></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Sales by category</h3></div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg width="170" height="170" viewBox="0 0 170 170" style="transform:rotate(-90deg)">
+            <circle cx="85" cy="85" r="66" fill="none" stroke="#f0e6f2" stroke-width="26"/>
+            <circle cx="85" cy="85" r="66" fill="none" stroke="#4a154b" stroke-width="26" stroke-dasharray="187 415"/>
+            <circle cx="85" cy="85" r="66" fill="none" stroke="#8a5fa0" stroke-width="26" stroke-dasharray="108 415" stroke-dashoffset="-187"/>
+            <circle cx="85" cy="85" r="66" fill="none" stroke="#1264a3" stroke-width="26" stroke-dasharray="75 415" stroke-dashoffset="-295"/>
+            <circle cx="85" cy="85" r="66" fill="none" stroke="#007a5a" stroke-width="26" stroke-dasharray="45 415" stroke-dashoffset="-370"/>
+          </svg>
+          <div class="center"><div><b>3,417</b><span>orders · Oct</span></div></div>
+        </div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:#4a154b"></span>Standups &amp; HR<b class="val">45%</b></div>
+          <div class="row"><span class="sw" style="background:#8a5fa0"></span>Project tracking<b class="val">26%</b></div>
+          <div class="row"><span class="sw" style="background:#1264a3"></span>DevOps &amp; CI<b class="val">18%</b></div>
+          <div class="row"><span class="sw" style="background:#007a5a"></span>Support<b class="val">11%</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="layout">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+          <th>Order</th><th>Category</th><th>Status</th><th style="text-align:right">Amount</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#611f69,#b365a8)"></span><div><b>#HM-91482</b><span>Standup Bot · Meridian Labs</span></div></div></td>
+            <td>Standups</td>
+            <td><span class="badge b-ok">Paid</span></td>
+            <td class="money">$75.00</td><td class="date">Oct 24, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#1264a3,#7fb6e0)"></span><div><b>#HM-91481</b><span>Sprint Signals Pro · Parcelform</span></div></div></td>
+            <td>Project tracking</td>
+            <td><span class="badge b-warn">Refund requested</span></td>
+            <td class="money">$50.00</td><td class="date">Oct 24, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#007a5a,#5fc0a0)"></span><div><b>#HM-91477</b><span>Onboard Kit · Fernfield Health</span></div></div></td>
+            <td>HR</td>
+            <td><span class="badge b-ok">Paid</span></td>
+            <td class="money">$0.00</td><td class="date">Oct 23, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#cc4117,#eb9a6d)"></span><div><b>#HM-91470</b><span>Ticket Triage · Oslo Digital</span></div></div></td>
+            <td>Support</td>
+            <td><span class="badge b-ok">Paid</span></td>
+            <td class="money">$84.00</td><td class="date">Oct 23, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#481a54,#8a5fa0)"></span><div><b>#HM-91465</b><span>Pulse Survey · Beacon Rail</span></div></div></td>
+            <td>Standups</td>
+            <td><span class="badge b-err">Failed charge</span></td>
+            <td class="money">$120.00</td><td class="date">Oct 22, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#1d1d1d,#6e6e6e)"></span><div><b>#HM-91459</b><span>Deploy Notifier · Vantage OSS</span></div></div></td>
+            <td>DevOps</td>
+            <td><span class="badge b-mute">Trial</span></td>
+            <td class="money">$0.00</td><td class="date">Oct 22, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div class="tbl-name"><span class="art" style="background:linear-gradient(135deg,#e8a33d,#f4d29a)"></span><div><b>#HM-91452</b><span>Meeting Costs · Corvid &amp; Co</span></div></div></td>
+            <td>Analytics</td>
+            <td><span class="badge b-ok">Paid</span></td>
+            <td class="money">$90.00</td><td class="date">Oct 21, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tfoot">
+        <span>Showing 7 of 3,417 orders</span>
+        <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>488</button><button>›</button></div>
+      </div>
+    </div>
+
+    <aside class="panel activity">
+      <div class="panel-head"><h3>Recent activity</h3><a href="#">View all</a></div>
+      <div class="item"><span class="a-dot" style="background:#007a5a">DW</span><p><b>Dana Whitfield</b> approved listing <b>“Sprint Signals”</b> after security review.<time>12 min ago</time></p></div>
+      <div class="item"><span class="a-dot" style="background:#cc4117">!</span><p>Charge for <b>#HM-91465</b> failed — card declined (Beacon Rail).<time>1 hr ago</time></p></div>
+      <div class="item"><span class="a-dot" style="background:#1264a3">MC</span><p><b>Marcus Chen</b> published <b>Kudos Wall v3.2</b> to the marketplace.<time>3 hrs ago</time></p></div>
+      <div class="item"><span class="a-dot" style="background:#4a154b">PN</span><p><b>Priya Natarajan</b> updated the October payout batch (412 sellers).<time>Yesterday</time></p></div>
+      <div class="item"><span class="a-dot" style="background:#e8a33d">★</span><p><b>Ticket Triage</b> crossed 4.5★ with its 231st review.<time>Yesterday</time></p></div>
+    </aside>
+  </section>
+</main>
+
+</body>
+</html>

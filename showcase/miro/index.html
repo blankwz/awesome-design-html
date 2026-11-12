@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>miro — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* colors */
+    --c-primary:#1c1c1e; --c-on-primary:#ffffff; --c-charcoal:#2c2c34;
+    --c-brand-yellow:#ffd02f; --c-brand-yellow-deep:#fcb900;
+    --c-yellow-dark:#746019; --c-surface-yellow:#fff8e0;
+    --c-brand-blue:#4262ff; --c-blue-pressed:#2a41b6;
+    --c-coral-light:#ffc6c6; --c-coral-dark:#600000;
+    --c-rose-light:#fde0f0;
+    --c-teal-light:#c3faf5; --c-moss-dark:#187574;
+    --c-success-accent:#00b473;
+    --c-canvas:#ffffff; --c-surface:#f7f8fa;
+    --c-surface-pricing-featured:#f5f3ff;
+    --c-hairline:#e0e2e8; --c-hairline-soft:#eef0f3; --c-hairline-strong:#c7cad5;
+    --c-ink-deep:#050038; --c-ink:#1c1c1e; --c-slate:#555a6a; --c-steel:#6b6f7e;
+    --c-stone:#8e91a0; --c-muted:#a5a8b5;
+    --c-on-dark:#ffffff; --c-on-dark-muted:#a5a8b5; --c-footer-bg:#1c1c1e;
+    /* radii */
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-xxl:20px;
+    --r-xxxl:28px; --r-feature:32px; --r-full:9999px;
+    /* spacing */
+    --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:20px; --s-xl:24px;
+    --s-xxl:32px; --s-xxxl:40px; --s-section-sm:48px; --s-section:64px;
+    --s-section-lg:96px; --s-hero:120px;
+    /* type */
+    --font:'Noto Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);color:var(--c-ink);background:var(--c-canvas);font-size:16px;line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  .sg-container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+
+  /* ===== Banner ===== */
+  .sg-banner{background:var(--c-primary);color:var(--c-on-dark);position:sticky;top:0;z-index:50}
+  .sg-banner-inner{max-width:1280px;margin:0 auto;padding:var(--s-md) var(--s-xxl);display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap}
+  .sg-banner-left{display:flex;align-items:baseline;gap:var(--s-md)}
+  .sg-banner-folder{font-family:monospace;font-size:12px;color:var(--c-stone)}
+  .sg-banner-name{font-size:20px;font-weight:500;letter-spacing:-0.5px}
+  .sg-banner-desc{font-size:12px;color:var(--c-on-dark-muted)}
+
+  /* ===== Section scaffolding ===== */
+  .sg-section-label{font-size:14px;font-weight:600;color:var(--c-stone);text-transform:uppercase;letter-spacing:1px;margin:var(--s-section-lg) 0 var(--s-xl)}
+  .sg-section-label:first-child{margin-top:var(--s-section)}
+  .sg-sub{margin-bottom:var(--s-xxl)}
+  .sg-sub-label{font-size:13px;font-weight:500;color:var(--c-steel);margin-bottom:var(--s-base)}
+  .sg-panel{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);padding:var(--s-xl)}
+
+  /* ===== Colors ===== */
+  .swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s-md)}
+  .swatch{border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden}
+  .swatch-chip{height:64px}
+  .swatch-meta{padding:var(--s-sm) var(--s-md);font-size:12px}
+  .swatch-name{font-weight:600;display:block}
+  .swatch-hex{color:var(--c-steel);font-family:'SF Mono',Menlo,Consolas,monospace}
+
+  /* ===== Typography ===== */
+  .type-row{padding:var(--s-base) 0;border-bottom:1px solid var(--c-hairline-soft);display:flex;align-items:baseline;gap:var(--s mono}
+  .type-row{padding:var(--s-base) 0;border-bottom:1px solid var(--c-hairline-soft);display:flex;align-items:baseline;gap:var(--s-lg);flex-wrap:wrap}
+  .type-token{font-family:monospace;font-size:11px;color:var(--c-stone);min-width:190px;flex-shrink:0}
+  .t-hero{font-size:80px;font-weight:500;line-height:1.05;letter-spacing:-2px}
+  .t-display{font-size:60px;font-weight:500;line-height:1.1;letter-spacing:-1.5px}
+  .t-h1{font-size:48px;font-weight:500;line-height:1.15;letter-spacing:-1px}
+  .t-h2{font-size:36px;font-weight:500;line-height:1.2;letter-spacing:-0.5px}
+  .t-h3{font-size:28px;font-weight:500;line-height:1.25}
+  .t-h4{font-size:22px;font-weight:500;line-height:1.3}
+  .t-h5{font-size:18px;font-weight:500;line-height:1.4}
+  .t-sub{font-size:18px;font-weight:400;line-height:1.5;color:var(--c-slate)}
+  .t-body{font-size:16px;font-weight:400;line-height:1.5;color:#2c2c34}
+  .t-sm{font-size:14px;font-weight:400;line-height:1.5;color:var(--c-steel)}
+  .t-cap{font-size:13px;font-weight:400;line-height:1.4;color:var(--c-stone)}
+
+  /* ===== Buttons ===== */
+  .btn-row{display:flex;gap:var(--s-md);flex-wrap:wrap;align-items:center;margin-bottom:var(--s-lg)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;line-height:1.3;border-radius:var(--r-full);cursor:pointer;border:none;transition:background-color .18s ease,color .18s ease,border-color .18s ease;font-family:var(--font)}
+  .btn-primary{background:var(--c-primary);color:var(--c-on-primary);padding:12px 24px}
+  .btn-primary:hover{background:var(--c-charcoal)}
+  .btn-primary:disabled{background:var(--c-hairline);color:var(--c-muted);cursor:not-allowed}
+  .btn-yellow{background:var(--c-brand-yellow);color:var(--c-primary);padding:12px 24px}
+  .btn-yellow:hover{background:var(--c-brand-yellow-deep)}
+  .btn-blue{background:var(--c-brand-blue);color:var(--c-on-primary);padding:12px 24px}
+  .btn-blue:hover{background:var(--c-blue-pressed)}
+  .btn-secondary{background:transparent;color:var(--c-ink);padding:11px 23px;border:1px solid var(--c-hairline-strong)}
+  .btn-secondary:hover{background:rgba(5,0,56,0.04)}
+  .btn-on-dark{background:var(--c-on-dark);color:var(--c-primary);padding:12px 24px}
+  .btn-ghost{background:transparent;color:var(--c-ink);padding:8px 12px;border-radius:8px}
+  .btn-ghost:hover{background:var(--c-surface)}
+  .btn-link{background:transparent;color:var(--c-brand-blue);font-size:14px;font-weight:500;padding:0;text-decoration:underline;text-underline-offset:3px}
+  .btn-icon{width:36px;height:36px;border-radius:9999px;background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline);display:inline-flex;align-items:center;justify-content:center;font-size:15px}
+  .btn-lg{padding:14px 30px;font-size:15px}
+  .btn-sm{padding:10px 20px;font-size:13px}
+
+  /* ===== Inputs ===== */
+  .input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-xl)}
+  .field-label{display:block;font-size:14px;font-weight:500;margin-bottom:var(--s-xs)}
+  .text-input{width:100%;background:var(--c-canvas);color:var(--c-ink);font-size:16px;font-family:var(--font);border:1px solid var(--c-hairline-strong);border-radius:8px;padding:0 16px;height:44px;outline:none}
+  .text-input:focus{border:2px solid var(--c-brand-blue);padding:0 15px}
+  .text-input-error{border:1px solid #d45656}
+  .field-error{font-size:14px;color:#d45656;margin-top:4px}
+  .text-input:disabled{background:var(--c-surface);color:var(--c-muted);cursor:not-allowed}
+  select.text-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6f7e' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+  .search-pill{display:inline-flex;align-items:center;gap:var(--s-sm);background:var(--c-surface);color:var(--c-steel);font-size:14px;border-radius:8px;padding:0 16px;height:40px;width:100%;border:1px solid var(--c-hairline)}
+  .toggle{display:inline-flex;background:var(--c-surface);border-radius:9999px;padding:4px;font-size:14px;font-weight:500}
+  .toggle span{border-radius:9999px;padding:6px 16px;color:var(--c-steel);cursor:pointer}
+  .toggle .on{background:#ffffff;color:var(--c-ink);box-shadow:rgba(5,0,56,.06) 0 4px 12px}
+
+  /* ===== Cards ===== */
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg)}
+  .card-base{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);padding:var(--s-xl)}
+  .card-base h3{font-size:22px;font-weight:500;line-height:1.3;margin-bottom:var(--s-xs)}
+  .card-base p{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-base)}
+  .card-stat .num{font-size:64px;font-weight:500;letter-spacing:-1.5px;line-height:1.1}
+  .card-stat .lbl{font-size:14px;color:var(--c-steel)}
+  .pastel{border-radius:var(--r-xxxl);padding:var(--s-xxl);color:var(--c-ink)}
+  .pc-yellow{background:var(--c-brand-yellow)}
+  .pc-coral{background:var(--c-coral-light)}
+  .pc-teal{background:var(--c-teal-light)}
+  .pc-rose{background:var(--c-rose-light)}
+  .pastel h3{font-size:22px;font-weight:500;margin-bottom:var(--s-xs)}
+  .pastel p{font-size:14px;margin-bottom:var(--s-lg)}
+  .whiteboard{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);box-shadow:rgba(5,0,56,.08) 0 12px 32px -4px;overflow:hidden}
+  .wb-bar{display:flex;gap:8px;align-items:center;padding:var(--s-sm) var(--s-md);border-bottom:1px solid var(--c-hairline-soft)}
+  .wb-bar .dot{width:10px;height:10px;border-radius:9999px}
+  .wb-canvas{position:relative;min-height:260px;background-image:radial-gradient(var(--c-hairline) 1px,transparent 1px);background-size:24px 24px}
+  .sticky{position:absolute;border-radius:4px;padding:10px;font-size:12px;line-height:1.4;width:112px;box-shadow:rgba(5,0,56,.12) 0 4px 12px;color:#1c1c1e}
+  .cursor-tag{position:absolute;display:inline-flex;align-items:center;font-size:12px;font-weight:500;color:#fff;background:var(--c-brand-blue);padding:3px 10px;border-radius:2px 12px 12px 12px}
+  .cursor-tag::before{content:"";position:absolute;left:-5px;top:-5px;width:0;height:0;border:5px solid transparent;border-bottom-color:var(--c-brand-blue);transform:rotate(-20deg)}
+
+  /* ===== Badges ===== */
+  .badge{display:inline-flex;align-items:center;font-size:13px;font-weight:600;line-height:1.4;border-radius:9999px;padding:4px 10px}
+  .b-promo{background:var(--c-brand-yellow);color:var(--c-primary)}
+  .b-yellow{background:var(--c-surface-yellow);color:var(--c-yellow-dark)}
+  .b-purple{background:var(--c-surface-pricing-featured);color:var(--c-brand-blue)}
+  .b-coral{background:var(--c-coral-light);color:var(--c-coral-dark)}
+  .b-success{background:var(--c-success-accent);color:#fff}
+
+  /* ===== Navigation ===== */
+  .nav-demo{border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);overflow:hidden;margin-bottom:var(--s-lg)}
+  .promo-banner{background:var(--c-primary);color:var(--c-on-dark);font-size:14px;font-weight:500;padding:var(--s-sm) var(--s-md);text-align:center}
+  .promo-banner .pill{background:var(--c-brand-yellow);color:var(--c-primary);font-size:11px;font-weight:600;letter-spacing:0.5px;border-radius:9999px;padding:2px 8px;margin-left:var(--s-sm);text-transform:uppercase}
+  .topnav{background:var(--c-canvas);padding:0 var(--s-xl);height:64px;display:flex;align-items:center;gap:var(--s-xl);border-bottom:1px solid var(--c-hairline-soft)}
+  .brandmark{display:inline-flex;align-items:center;gap:8px;font-size:20px;font-weight:600;letter-spacing:-0.6px}
+  .brandmark .sq{width:26px;height:26px;border-radius:6px;background:var(--c-brand-yellow);display:inline-flex;align-items:center;justify-content:center;color:var(--c-primary);font-size:15px;font-weight:700}
+  .nav-links{display:flex;gap:var(--s-lg);font-size:14px;font-weight:500;color:var(--c-slate)}
+  .nav-links a:hover{color:var(--c-ink)}
+  .nav-cta{margin-left:auto;display:flex;gap:var(--s-md);align-items:center;font-size:14px;font-weight:500;color:var(--c-slate)}
+  .nav-cta a:hover{color:var(--c-ink)}
+
+  /* ===== Table ===== */
+  .cmp-table{width:100%;border-collapse:collapse;background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:8px;overflow:hidden;font-size:14px}
+  .cmp-table th{text-align:left;background:var(--c-surface);color:var(--c-steel);font-size:13px;font-weight:600;padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--c-hairline)}
+  .cmp-table td{padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--c-hairline-soft)}
+  .cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table .yes{color:var(--c-success-accent);font-weight:600}
+  .cmp-table .no{color:var(--c-muted)}
+
+  /* ================= PRODUCT LANDING ================= */
+  .lp-hero{padding:var(--s-hero) 0 var(--s-section-lg);text-align:center}
+  .lp-hero h1{font-size:80px;font-weight:500;line-height:1.05;letter-spacing:-2px;max-width:960px;margin:0 auto var(--s-lg)}
+  .lp-hero .sub{font-size:18px;color:var(--c-slate);max-width:640px;margin:0 auto var(--s-xxl)}
+  .lp-hero .cta-row{display:flex;gap:var(--s-md);justify-content:center;flex-wrap:wrap}
+  .hero-board{max-width:980px;margin:var(--s-xxl) auto 0}
+  .logo-strip{border-top:1px solid var(--c-hairline-soft);border-bottom:1px solid var(--c-hairline-soft);padding:var(--s-xl) 0}
+  .logo-strip .row{display:flex;justify-content:space-between;align-items:center;gap:var(--s-xl);flex-wrap:wrap;color:var(--c-steel);font-size:16px;font-weight:500}
+  .band-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap;margin-bottom:var(--s-xxl)}
+  .band-head h2{font-size:36px;font-weight:500;line-height:1.2;letter-spacing:-0.5px}
+  .band-head p{font-size:16px;color:var(--c-steel)}
+  .lp-band{padding:var(--s-section-lg) 0}
+  .feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-lg)}
+  .lp-band2{padding-bottom:var(--s-section-lg)}
+  .pastel-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+  .stats-band{border-top:1px solid var(--c-hairline-soft);border-bottom:1px solid var(--c-hairline-soft);padding:var(--s-section) 0}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);text-align:center}
+  .stats-row .num{font-size:64px;font-weight:500;letter-spacing:-1.5px;line-height:1.1}
+  .stats-row .num em{font-style:normal;color:var(--c-brand-blue)}
+  .stats-row .lbl{font-size:14px;color:var(--c-steel);margin-top:var(--s-xxs)}
+  .lp-pricing{padding:var(--s-section) 0}
+  .toggle-band{display:flex;justify-content:center;align-items:center;gap:var(--s-md);margin-bottom:var(--s-xxl)}
+  .tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+  .tier{background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-xl);padding:var(--s-xxl);display:flex;flex-direction:column}
+  .tier .name{font-size:22px;font-weight:500;margin-bottom:var(--s-xs)}
+  .tier .price{font-size:48px;font-weight:500;letter-spacing:-1px;line-height:1.15}
+  .tier .per{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-lg)}
+  .tier ul{list-style:none;margin-bottom:var(--s-xl)}
+  .tier li{font-size:14px;color:#2c2c34;padding:var(--s-xs) 0;display:flex;gap:var(--s-sm)}
+  .tier li::before{content:"✓";color:var(--c-success-accent);font-weight:600}
+  .tier-featured{background:var(--c-surface-pricing-featured);border:2px solid var(--c-brand-blue)}
+  .tier-dark{background:var(--c-primary);color:var(--c-on-dark)}
+  .tier-dark li{color:var(--c-on-dark-muted)}
+  .tier-dark li::before{content:"✓";color:var(--c-brand-yellow)}
+  .discount-pill{background:var(--c-brand-yellow);color:var(--c-primary);font-size:13px;font-weight:600;border-radius:6px;padding:2px 6px}
+  .story-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-lg);margin:var(--s-section) 0}
+  .story-card{border:1px solid var(--c-hairline-soft);border-radius:var(--r-xxxl);overflow:hidden}
+  .story-card .cover{height:180px;position:relative}
+  .story-card .body{padding:var(--s-xl)}
+  .story-card h4{font-size:22px;font-weight:500;margin-bottom:var(--s-xs)}
+  .story-card p{font-size:14px;color:var(--c-steel);margin-bottom:var(--s-lg)}
+  .faq-item{border-bottom:1px solid var(--c-hairline);padding:var(--s-xl) 0;display:flex;justify-content:space-between;gap:var(--s-lg)}
+  .faq-item h4{font-size:18px;font-weight:500;margin-bottom:var(--s-xs)}
+  .faq-item p{font-size:16px;color:var(--c-slate);max-width:640px}
+  .lp-cta{background:var(--c-primary);color:var(--c-on-dark);border-radius:var(--r-feature);padding:var(--s-section);text-align:center;margin:var(--s-section) 0}
+  .lp-cta h2{font-size:48px;font-weight:500;letter-spacing:-1px;line-height:1.15;margin-bottom:var(--s-md)}
+  .lp-cta p{font-size:18px;color:var(--c-on-dark-muted);margin-bottom:var(--s-xxl)}
+  .lp-cta .cta-row{display:flex;gap:var(--s-md);justify-content:center;flex-wrap:wrap}
+  .lp-footer{background:var(--c-footer-bg);color:var(--c-on-dark);padding:var(--s-section) 0 var(--s-xl)}
+  .lp-footer .cols{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--s-xl)}
+  .lp-footer h5{font-size:16px;font-weight:500;color:var(--c-on-dark);margin-bottom:var(--s-base)}
+  .lp-footer ul{list-style:none}
+  .lp-footer li{margin-bottom:var(--s-xxs)}
+  .lp-footer li a{font-size:14px;color:var(--c-on-dark-muted);display:inline-block;padding:4px 0}
+  .lp-footer li a:hover{color:#fff}
+  .lp-footer .legal{margin-top:var(--s-xl);padding-top:var(--s-lg);border-top:1px solid #2a2a2c;display:flex;justify-content:space-between;flex-wrap:wrap;font-size:12px;color:var(--c-muted)}
+
+  @media (max-width:900px){
+    .input-grid,.feature-grid,.tier-grid,.pastel-row,.story-grid,.stats-row{grid-template-columns:repeat(2,1fr)}
+    .lp-footer .cols{grid-template-columns:repeat(3,1fr)}
+    .t-hero,.lp-hero h1{font-size:48px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ BANNER ============ -->
+<header class="sg-banner">
+  <div class="sg-banner-inner">
+    <div class="sg-banner-left">
+      <span class="sg-banner-folder">miro</span>
+      <span class="sg-banner-name">Miro</span>
+    </div>
+    <span class="sg-banner-desc">The AI-powered visual workspace — black pills on white canvas, canary yellow spent on the wordmark, and pastel feature cards echoing the sticky-note palette.</span>
+  </div>
+</header>
+
+<main>
+<!-- ============ COMPONENTS ============ -->
+<section id="components" class="sg-container">
+  <h2 class="sg-section-label">Components</h2>
+
+  <!-- 1. Colors -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Color tokens</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-chip" style="background:#ffd02f"></div><div class="swatch-meta"><span class="swatch-name">brand-yellow</span><span class="swatch-hex">#FFD02F</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#1c1c1e"></div><div class="swatch-meta"><span class="swatch-name">primary / ink</span><span class="swatch-hex">#1C1C1E</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#4262ff"></div><div class="swatch-meta"><span class="swatch-name">brand-blue</span><span class="swatch-hex">#4262FF</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#ffc6c6"></div><div class="swatch-meta"><span class="swatch-name">coral-light</span><span class="swatch-hex">#FFC6C6</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#fde0f0"></div><div class="swatch-meta"><span class="swatch-name">rose-light</span><span class="swatch-hex">#FDE0F0</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#c3faf5"></div><div class="swatch-meta"><span class="swatch-name">teal-light</span><span class="swatch-hex">#C3FAF5</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#ffe6cd"></div><div class="swatch-meta"><span class="swatch-name">orange-light</span><span class="swatch-hex">#FFE6CD</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#f5f3ff"></div><div class="swatch-meta"><span class="swatch-name">pricing-featured</span><span class="swatch-hex">#F5F3FF</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#f7f8fa;border-bottom:1px solid #e0e2e8"></div><div class="swatch-meta"><span class="swatch-name">surface</span><span class="swatch-hex">#F7F8FA</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#050038"></div><div class="swatch-meta"><span class="swatch-name">ink-deep</span><span class="swatch-hex">#050038</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#00b473"></div><div class="swatch-meta"><span class="swatch-name">success-accent</span><span class="swatch-hex">#00B473</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#c7cad5"></div><div class="swatch-meta"><span class="swatch-name">hairline-strong</span><span class="swatch-hex">#C7CAD5</span></div></div>
+    </div>
+  </div>
+
+  <!-- 2. Typography -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Typography specimen — Roobert PRO (Noto Sans fallback), weights 400/500/600 only</div>
+    <div class="sg-panel">
+      <div class="type-row"><span class="type-token">hero-display · 80 / 500 / -2px</span><span class="t-hero">See how teams get great done</span></div>
+      <div class="type-row"><span class="type-token">display-lg · 60 / 500 / -1.5px</span><span class="t-display">The Innovation Workspace</span></div>
+      <div class="type-row"><span class="type-token">heading-1 · 48 / 500 / -1px</span><span class="t-h1">One shared space for every team</span></div>
+      <div class="type-row"><span class="type-token">heading-2 · 36 / 500 / -0.5px</span><span class="t-h2">AI Workflows for product teams</span></div>
+      <div class="type-row"><span class="type-token">heading-3 · 28 / 500 / 1.25</span><span class="t-h3">AI Workflows for product teams</span></div>
+      <div class="type-row"><span class="type-token">heading-4 · 22 / 500 / 1.30</span><span class="t-h4">Diagramming, unburdened</span></div>
+      <div class="type-row"><span class="type-token">heading-5 · 18 / 500 / 1.40</span><span class="t-h5">What is Miro AI?</span></div>
+      <div class="type-row"><span class="type-token">subtitle · 18 / 400 / 1.50</span><span class="t-sub">Diagram, workshop, plan and build together — in one visual canvas.</span></div>
+      <div class="type-row"><span class="type-token">body-md · 16 / 400 / 1.50</span><span class="t-body">Miro boards bring sticky notes, diagrams, docs and AI sidekicks onto a single infinite canvas your whole team can edit at once.</span></div>
+      <div class="type-row"><span class="type-token">caption · 13 / 400 / 1.40</span><span class="t-cap">Prices shown per member, billed annually. 30-day money-back guarantee.</span></div>
+    </div>
+  </div>
+
+  <!-- 3. Buttons -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Buttons — black pill primary; yellow reserved for brand-emphasis moments</div>
+    <div class="sg-panel">
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started free</button>
+        <button class="btn btn-primary" style="background:#2c2c34">Primary pressed</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-yellow">Try Miro AI</button>
+        <button class="btn btn-blue">Watch demo</button>
+        <button class="btn btn-secondary">Book a demo</button>
+        <button class="btn btn-ghost">Skip</button>
+        <button class="btn btn-link">See pricing &rarr;</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-lg">Sign up — it's free</button>
+        <button class="btn btn-on-dark">Get started free</button>
+        <button class="btn btn-icon" aria-label="Undo">↺</button>
+        <button class="btn btn-icon" aria-label="More">⋯</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Inputs -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Inputs — 44px fields, blue focus ring, pill filter dropdowns</div>
+    <div class="sg-panel">
+      <div class="input-grid">
+        <div>
+          <label class="field-label" for="em">Work email</label>
+          <input class="text-input" id="em" type="email" placeholder="you@company.com">
+        </div>
+        <div>
+          <label class="field-label" for="emf">Focused input</label>
+          <input class="text-input" id="emf" style="border:2px solid var(--c-brand-blue);padding:0 15px" value="Design sprint — Week 2" readonly>
+        </div>
+        <div>
+          <label class="field-label" for="tpl">Board template</label>
+          <select class="text-input" id="tpl"><option>Customer journey map</option><option>Retrospective</option><option>Product roadmap</option></select>
+        </div>
+        <div>
+          <label class="field-label">Error state</label>
+          <input class="text-input text-input-error" value="miro@@team" readonly>
+          <div class="field-error">Enter a valid team name.</div>
+        </div>
+        <div>
+          <label class="field-label" for="dis">Disabled</label>
+          <input class="text-input" id="dis" value="Admin-managed setting" disabled>
+        </div>
+        <div>
+          <label class="field-label">Search pill</label>
+          <div class="search-pill"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#6b6f7e" stroke-width="1.6"/><path d="M11 11l3.4 3.4" stroke="#6b6f7e" stroke-width="1.6" stroke-linecap="round"/></svg>Search boards and templates</div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:var(--s-xl);margin-bottom:0">
+        <span class="badge" style="background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline-strong);font-weight:500">Industry: All</span>
+        <span class="badge" style="background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline-strong);font-weight:500">Use case: All</span>
+        <span class="toggle"><span>Monthly</span><span class="on">Annual</span></span>
+        <span class="discount-pill">Save 15%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Cards -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Cards — white card-base beside pastel feature cards (28px corners)</div>
+    <div class="card-grid" style="margin-bottom:var(--s-xl)">
+      <div class="card-base">
+        <h3>AI sidekicks</h3>
+        <p>Generate, summarize and cluster sticky notes with an assistant that understands your board.</p>
+        <a class="btn btn-secondary btn-sm" href="#">Explore AI</a>
+      </div>
+      <div class="card-base">
+        <h3>Diagramming</h3>
+        <p>Smart shapes, connectors and shape-packs that keep architecture maps tidy as they grow.</p>
+        <a class="btn btn-secondary btn-sm" href="#">Start a diagram</a>
+      </div>
+      <div class="card-stat" style="padding:var(--s-lg)">
+        <div class="num">100M<em>+</em></div>
+        <div class="lbl">users around the world run their best work through Miro</div>
+      </div>
+    </div>
+    <div class="pastel-row">
+      <div class="pastel pc-yellow">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="4" width="20" height="20" rx="4" fill="#1c1c1e"/><path d="M9 14h10M9 10h10M9 18h6" stroke="#ffd02f" stroke-width="2" stroke-linecap="round"/></svg>
+        <h3>Brainstorm</h3><p>Cluster ideas with AI, then vote on the winners together.</p>
+      </div>
+      <div class="pastel pc-coral">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="#1c1c1e" stroke-width="2"/><path d="M14 8v6l4 3" stroke="#1c1c1e" stroke-width="2" stroke-linecap="round"/></svg>
+        <h3>Workshops</h3><p>Timers, voting and breakouts for sessions that actually end on time.</p>
+      </div>
+      <div class="pastel pc-teal">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="5" y="5" width="18" height="18" rx="3" stroke="#1c1c1e" stroke-width="2"/><path d="M5 11h18M11 11v12" stroke="#1c1c1e" stroke-width="2"/></svg>
+        <h3>Kanban</h3><p>Track work where the thinking already happens — on the canvas.</p>
+      </div>
+      <div class="pastel pc-rose">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 21l6-9 4 5 3-4 5 8" stroke="#1c1c1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="8" r="2.5" stroke="#1c1c1e" stroke-width="2"/></svg>
+        <h3>Customer journeys</h3><p>Map every touchpoint and pin research next to it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Badges -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Badges — yellow promo, tag chips in yellow/purple/coral, success pill</div>
+    <div class="btn-row">
+      <span class="badge b-promo">Limited offer</span>
+      <span class="badge b-yellow">New in AI</span>
+      <span class="badge b-purple">AI agent</span>
+      <span class="badge b-coral">Beta</span>
+      <span class="badge b-success">Connected</span>
+    </div>
+  </div>
+
+  <!-- 7. Navigation -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Navigation — promo strip with yellow inline pill, white marketing nav</div>
+    <div class="nav-demo">
+      <div class="promo-banner">Frontier is where the world's best teams meet — get your spot.<span class="pill">Get your spot</span></div>
+      <div class="topnav">
+        <span class="brandmark"><span class="sq">M</span>miro</span>
+        <div class="nav-links"><a href="#">Product</a><a href="#">Solutions</a><a href="#">Resources</a><a href="#">Pricing</a></div>
+        <div class="nav-cta">
+          <a href="#">Login</a>
+          <a href="#">Contact sales</a>
+          <button class="btn btn-primary btn-sm">Get started free</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Whiteboard mockup + table -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Whiteboard mockup (signature component) + pricing comparison rows</div>
+    <div class="whiteboard" style="margin-bottom:var(--s-xl)">
+      <div class="wb-bar">
+        <span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span>
+        <span style="font-size:13px;color:var(--c-steel);margin-left:var(--s-sm)">Sprint 24 Retro — shared board</span>
+        <span style="margin-left:auto;display:flex;gap:6px">
+          <span class="cursor-tag" style="position:static">Ana</span>
+          <span class="cursor-tag" style="position:static;background:#0fbcb0">Jonas</span>
+        </span>
+      </div>
+      <div class="wb-canvas">
+        <div class="sticky" style="left:6%;top:12%;background:#ffd02f">"Flaky CI on the billing suite"</div>
+        <div class="sticky" style="left:24%;top:30%;background:#ffc6c6">"Onboarding copy needs a rewrite"</div>
+        <div class="sticky" style="left:44%;top:10%;background:#c3faf5">"Ship dark mode by Friday"</div>
+        <div class="sticky" style="left:64%;top:34%;background:#fde0f0">"Docs search still misses aliases"</div>
+        <div class="sticky" style="left:14%;top:58%;background:#ffe6cd">"Add SLO dashboard link"</div>
+        <div class="sticky" style="left:40%;top:60%;background:#f5f3ff">"Great demo at the QBR 🎉"</div>
+        <span class="cursor-tag" style="left:30%;top:78%">Ana</span>
+        <span class="cursor-tag" style="left:72%;top:12%;background:#0fbcb0">Jonas</span>
+      </div>
+    </div>
+    <table class="cmp-table">
+      <thead><tr><th>Capability</th><th>Free</th><th>Starter</th><th>Business</th><th>Enterprise</th></tr></thead>
+      <tbody>
+        <tr><td>Editable boards</td><td>3</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>AI sidekicks &amp; summarization</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>Guest collaborators</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>SSO / SCIM</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ FINISHED PRODUCT ============ -->
+<section id="product">
+  <div class="sg-container lp-hero">
+    <div class="lp-eyebrow" style="display:inline-flex;align-items:center;gap:8px;background:var(--c-surface-yellow);color:var(--c-yellow-dark);font-size:13px;font-weight:600;border-radius:9999px;padding:4px 12px;margin-bottom:var(--s-lg)">New · Miro AI Sidekicks</div>
+    <h1>See how teams get great done</h1>
+    <p class="sub">The visual workspace where sticky notes, diagrams, docs and AI meet — one canvas from first idea to shipped roadmap.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href="#">Get started free</a>
+      <a class="btn btn-secondary btn-lg" href="#">Book a demo</a>
+    </div>
+    <div class="hero-board">
+      <div class="whiteboard">
+        <div class="wb-bar">
+          <span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span>
+          <span style="font-size:13px;color:var(--c-steel);margin-left:var(--s-sm)">Product kickoff — Q3 planning</span>
+          <span style="margin-left:auto;display:flex;gap:6px">
+            <span class="cursor-tag" style="position:static">Ana</span>
+            <span class="cursor-tag" style="position:static;background:#0fbcb0">Jonas</span>
+            <span class="cursor-tag" style="position:static;background:#ff9999">Priya</span>
+          </span>
+        </div>
+        <div class="wb-canvas" style="min-height:320px">
+          <div class="sticky" style="left:5%;top:10%;background:#ffd02f">"Self-serve onboarding funnel"</div>
+          <div class="sticky" style="left:23%;top:28%;background:#ffc6c6">"Pricing page A/B test"</div>
+          <div class="sticky" style="left:41%;top:8%;background:#c3faf5">"Cut time-to-first-board to 60s"</div>
+          <div class="sticky" style="left:60%;top:30%;background:#fde0f0">"Enterprise SSO requests rising"</div>
+          <div class="sticky" style="left:78%;top:12%;background:#ffe6cd">"Mobile canvas perf budget"</div>
+          <div class="sticky" style="left:12%;top:62%;background:#f5f3ff">"AI cluster → vote → roadmap"</div>
+          <div class="sticky" style="left:36%;top:64%;background:#ffd02f">"Template gallery refresh"</div>
+          <div class="sticky" style="left:60%;top:64%;background:#c3faf5">"Integrations: Jira, Linear, Figma"</div>
+          <span class="cursor-tag" style="left:28%;top:46%">Ana</span>
+          <span class="cursor-tag" style="left:52%;top:52%;background:#0fbcb0">Jonas</span>
+          <span class="cursor-tag" style="left:80%;top:48%;background:#ff9999">Priya</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="logo-strip">
+    <div class="sg-container row">
+      <span>Delta</span><span>Okta</span><span>Cisco</span><span>Databricks</span><span>Wework</span><span>HP</span><span>Euromonitor</span>
+    </div>
+  </div>
+
+  <div class="sg-container lp-band">
+    <div class="band-head"><h2>Innovation at the speed of your team</h2><p>Where distributed teams make their best work happen</p></div>
+    <div class="feature-grid">
+      <div class="card-base">
+        <h3>Brainstorm &amp; ideate</h3>
+        <p>Stickies, voting and AI clustering turn a wall of opinions into a ranked shortlist in minutes.</p>
+        <a class="btn btn-link" href="#">Explore brainstorming &rarr;</a>
+      </div>
+      <div class="card-base">
+        <h3>Diagram complex systems</h3>
+        <p>Smart connectors and shape libraries keep architecture and process maps legible at any scale.</p>
+        <a class="btn btn-link" href="#">Explore diagramming &rarr;</a>
+      </div>
+      <div class="card-base">
+        <h3>Run workshops that land</h3>
+        <p>Timers, breakouts and facilitation superpowers for sessions people don't dread.</p>
+        <a class="btn btn-link" href="#">Explore workshops &rarr;</a>
+      </div>
+      <div class="card-base">
+        <h3>Plan and track work</h3>
+        <p>Kanban, timeline and roadmap views live on the same canvas as the thinking behind them.</p>
+        <a class="btn btn-link" href="#">Explore planning &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container lp-band2">
+    <div class="band-head"><h2 style="font-size:28px">Made for every team</h2><p>Pastel feature cards echoing the sticky-note palette</p></div>
+    <div class="pastel-row">
+      <div class="pastel pc-yellow"><h3>Product</h3><p>Roadmaps, specs and user story maps in one shared canvas.</p></div>
+      <div class="pastel pc-coral"><h3>Engineering</h3><p>Architecture reviews and retros with diagrams that stay current.</p></div>
+      <div class="pastel pc-teal"><h3>Design</h3><p>Moodboards, flows and critique — Figma embeds included.</p></div>
+      <div class="pastel pc-rose"><h3>Marketing</h3><p>Campaign planning and content calendars everyone can see.</p></div>
+    </div>
+  </div>
+
+  <div class="stats-band">
+    <div class="sg-container">
+      <div class="stats-row">
+        <div><div class="num">100M<em>+</em></div><div class="lbl">users worldwide</div></div>
+        <div><div class="num">250K+</div><div class="lbl">companies, from startups to Fortune 100</div></div>
+        <div><div class="num">200+</div><div class="lbl">countries and regions served</div></div>
+        <div><div class="num">#1</div><div class="lbl">whiteboard on G2, five years running</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container lp-pricing" id="pricing">
+    <div style="text-align:center;margin-bottom:var(--s-xxl)">
+      <h2 class="t-h1" style="margin-bottom:var(--s-sm)">Plans for every stage</h2>
+      <p class="t-sub">Start free, upgrade when the whole team joins.</p>
+    </div>
+    <div class="toggle-band">
+      <span class="toggle"><span>Monthly</span><span class="on">Annual</span></span>
+      <span class="discount-pill">Save 15%</span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier">
+        <div class="name">Free</div>
+        <div class="price">$0</div>
+        <div class="per">Up to 3 boards</div>
+        <ul><li>Core templates</li><li>Guest collaborators</li><li>5 AI credits</li></ul>
+        <a class="btn btn-secondary" style="width:100%;margin-top:auto" href="#">Sign up free</a>
+      </div>
+      <div class="tier tier-featured">
+        <div style="margin-bottom:var(--s-xs)"><span class="badge b-purple">Most popular</span></div>
+        <div class="name">Business</div>
+        <div class="price">$15</div>
+        <div class="per">Per member / month, billed annually</div>
+        <ul><li>Unlimited boards</li><li>AI Sidekicks &amp; summarization</li><li>Advanced facilitation</li><li>SSO via Google &amp; Okta</li></ul>
+        <a class="btn btn-blue" style="width:100%;margin-top:auto" href="#">Start 30-day trial</a>
+      </div>
+      <div class="tier">
+        <div class="name">Starter</div>
+        <div class="price">$8</div>
+        <div class="per">Per member / month, billed annually</div>
+        <ul><li>Unlimited boards</li><li>Custom templates</li><li>Voting &amp; timers</li></ul>
+        <a class="btn btn-secondary" style="width:100%;margin-top:auto" href="#">Choose Starter</a>
+      </div>
+      <div class="tier tier-dark">
+        <div class="name">Enterprise</div>
+        <div class="price">Custom</div>
+        <div class="per" style="color:var(--c-on-dark-muted)">Security, scale and control</div>
+        <ul><li>SSO / SCIM &amp; audit logs</li><li>Domain management</li><li>Dedicated CSM</li></ul>
+        <a class="btn btn-on-dark" style="width:100%;margin-top:auto" href="#">Contact sales</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="cover" style="background:linear-gradient(135deg,#050038,#4262ff)"></div>
+        <div class="body">
+          <h4>Okta cut workshop prep from days to hours</h4>
+          <p>1,200 employees co-facilitate planning rituals across nine time zones in Miro.</p>
+          <a class="btn btn-link" href="#">Read the story &rarr;</a>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="cover" style="background:linear-gradient(135deg,#187574,#c3faf5)"></div>
+        <div class="body">
+          <h4>Databricks runs architecture reviews on one canvas</h4>
+          <p>Diagrams stay attached to the decisions, so reviews start where the last one ended.</p>
+          <a class="btn btn-link" href="#">Read the story &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div style="max-width:760px;margin:0 auto var(--s-section)">
+      <div class="faq-item"><div><h4>Is there a free plan?</h4><p>Yes — three editable boards, unlimited viewers and core templates, forever.</p></div><span style="color:var(--c-steel)">⌄</span></div>
+      <div class="faq-item"><div><h4>Can I try AI Sidekicks before paying?</h4><p>Every new workspace gets AI credits to test clustering, summaries and image generation.</p></div><span style="color:var(--c-steel)">⌄</span></div>
+      <div class="faq-item"><div><h4>How does Miro handle security?</h4><p>SOC 2 Type II, GDPR, SSO/SCIM on Enterprise, and board-level sharing controls.</p></div><span style="color:var(--c-steel)">⌄</span></div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-cta">
+      <h2>Bring your team to the canvas</h2>
+      <p>Free forever for small teams. No credit card required.</p>
+      <div class="cta-row">
+        <a class="btn btn-yellow btn-lg" href="#">Get started free</a>
+        <a class="btn btn-secondary btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)" href="#">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lp-footer">
+    <div class="sg-container">
+      <div class="cols">
+        <div><h5>Product</h5><ul><li><a href="#">AI Sidekicks</a></li><li><a href="#">Diagramming</a></li><li><a href="#">Workshops</a></li><li><a href="#">Templates</a></li><li><a href="#">Apps &amp; integrations</a></li></ul></div>
+        <div><h5>Solutions</h5><ul><li><a href="#">Product</a></li><li><a href="#">Engineering</a></li><li><a href="#">Design</a></li><li><a href="#">Agile</a></li></ul></div>
+        <div><h5>Tools</h5><ul><li><a href="#">Online whiteboard</a></li><li><a href="#">Mind map</a></li><li><a href="#">Flowchart</a></li><li><a href="#">Wireframe</a></li></ul></div>
+        <div><h5>Resources</h5><ul><li><a href="#">Academy</a></li><li><a href="#">Community</a></li><li><a href="#">Blog</a></li><li><a href="#">Help center</a></li></ul></div>
+        <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Customers</a></li><li><a href="#">Newsroom</a></li></ul></div>
+        <div><h5>Plans</h5><ul><li><a href="#">Free</a></li><li><a href="#">Starter</a></li><li><a href="#">Business</a></li><li><a href="#">Enterprise</a></li></ul></div>
+      </div>
+      <div class="legal">
+        <span>&copy; 2026 Miro. All rights reserved.</span>
+        <span>Privacy &middot; Terms &middot; Cookie settings &middot; App Store &middot; Google Play</span>
+      </div>
+    </div>
+  </footer>
+</section>
+</main>
+</body>
+</html>

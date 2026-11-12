@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lamborghini — Reserve Your Super Sports Vehicle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000000; --charcoal:#202020; --dark-iron:#181818; --near-white:#F8F8F8;
+  --gold:#FFC000; --gold-dark:#917300; --gold-text:#FFCE3E;
+  --white:#FFFFFF; --smoke:#F5F5F5; --ash:#7D7D7D; --steel:#969696; --shadow-gray:#313131;
+  --teal:#1EAEDB; --link-blue:#3860BE; --cyan:#29ABE2;
+  --font:'Archivo','Roboto','Helvetica Neue',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+h1,h2,h3{text-transform:uppercase;font-weight:400}
+
+/* ---------- nav ---------- */
+.topnav{position:sticky;top:0;z-index:50;background:var(--black);height:64px;display:flex;align-items:center}
+.topnav .wrap{display:flex;align-items:center;width:100%;gap:24px}
+.menu{display:flex;align-items:center;gap:8px;font-size:14px;text-transform:uppercase;letter-spacing:.2px;cursor:pointer}
+.menu .bars{display:flex;flex-direction:column;gap:4px}
+.menu .bars i{width:18px;height:2px;background:#fff;display:block}
+.logo-shield{margin:0 auto}
+.top-actions{display:flex;gap:18px;align-items:center}
+.icon-btn{position:relative;width:40px;height:40px;border:0;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;border-radius:0}
+.icon-btn:hover{background:var(--charcoal)}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--gold);border-radius:2px}
+/* buttons — zero radius */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:400;padding:14px 24px;border:0;cursor:pointer;border-radius:0}
+.btn-gold{background:var(--gold);color:var(--black);text-transform:uppercase;letter-spacing:.5px}
+.btn-gold:hover{background:var(--gold-dark);color:#fff}
+.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5);opacity:.7;font-size:14.4px;text-transform:uppercase;letter-spacing:.2px;padding:13px 24px}
+.btn-ghost:hover{background:var(--teal);opacity:1;border-color:var(--teal)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:72vh;min-height:480px;border-bottom:1px solid var(--charcoal);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 90% 60% at 50% 0%, #2b2313 0%, transparent 60%),
+  radial-gradient(ellipse 70% 50% at 80% 100%, #14181d 0%, transparent 55%),
+  linear-gradient(180deg,#0a0a0a 0%,#000 100%)}
+.hero-wedge{position:absolute;left:50%;bottom:-6%;transform:translateX(-50%) rotate(-4deg);width:140%;height:46%;
+  background:linear-gradient(100deg,#0d0d0d 0%,#1c1c1c 35%,#3a2a05 52%,#1c1c1c 68%,#0d0d0d 100%);opacity:.9}
+.hero-wedge.two{transform:translateX(-46%) rotate(3deg);height:34%;bottom:-4%;background:linear-gradient(80deg,#000 0%,#232323 45%,#4a3608 55%,#232323 70%,#000 100%);opacity:.7}
+.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.hero-kicker{font-size:10px;letter-spacing:2.25px;text-transform:uppercase;color:var(--ash);margin-bottom:18px}
+.hero h1{font-size:96px;line-height:.92;letter-spacing:0}
+.hero .sub{margin-top:16px;color:var(--ash);font-size:18px;max-width:520px}
+.hero .cta-row{display:flex;gap:16px;margin-top:32px}
+.hero-progress{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--charcoal)}
+.hero-progress i{display:block;width:38%;height:100%;background:#fff}
+.hero-hex{position:absolute;right:40px;bottom:28px;width:48px;height:54px;color:#fff;opacity:.7}
+.hexagon{display:grid;place-items:center;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);border:0}
+.hero-hex .hexagon{width:48px;height:54px;background:transparent;box-shadow:inset 0 0 0 2px #fff}
+.hero-hex i{width:10px;height:14px;background:#fff;display:block;margin-left:6px}
+
+/* ---------- section head ---------- */
+.section{padding:56px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;border-bottom:1px solid var(--charcoal);padding-bottom:16px}
+.sec-head h2{font-size:40px;line-height:1.15}
+.sec-head p{color:var(--ash);font-size:14px}
+.sec-head a{color:var(--ash);font-size:14px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--shadow-gray)}
+.sec-head a:hover{color:var(--link-blue)}
+
+/* ---------- filter strip ---------- */
+.filters{display:flex;gap:0;border-bottom:1px solid var(--charcoal);margin-bottom:32px}
+.fbtn{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--ash);font-size:13px;letter-spacing:.2px;text-transform:uppercase;padding:14px 20px;cursor:pointer}
+.fbtn:hover{color:#fff}
+.fbtn.active{color:var(--gold-text);border-bottom-color:var(--gold)}
+
+/* ---------- model grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:var(--charcoal);display:flex;flex-direction:column}
+.card .art{height:150px;position:relative;overflow:hidden;border-bottom:1px solid var(--shadow-gray)}
+.tag{position:absolute;top:10px;left:10px;font-size:10px;letter-spacing:.96px;text-transform:uppercase;padding:5px 8px;border-radius:2px;background:var(--steel);color:#fff}
+.tag.gold{background:var(--gold);color:var(--black)}
+.card-body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card-body h3{font-size:20px;letter-spacing:.5px}
+.card-body .meta{font-size:13px;color:var(--ash)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px}
+.rating{font-size:12px;color:var(--ash)}
+.rating .stars{color:var(--gold-text);letter-spacing:2px}
+.price{font-size:14px;color:var(--smoke)}
+.price small{display:block;font-size:10px;color:var(--ash);text-align:right;letter-spacing:.225px;text-transform:uppercase}
+/* artwork: angular vehicle silhouettes on dark stage */
+.stage{background:linear-gradient(180deg,#101010 0%,#1a1a1a 70%,#000 100%)}
+.body{position:absolute;left:12%;right:12%;bottom:26px;height:34%;
+  background:linear-gradient(100deg,#262626,#3d3d3d 45%,#191919 75%);
+  clip-path:polygon(6% 100%,16% 30%,42% 26%,58% 4%,86% 22%,100% 100%)}
+.body:before{content:"";position:absolute;left:20%;right:24%;top:6px;height:38%;
+  background:linear-gradient(120deg,#0c1418,#1d3038);clip-path:polygon(10% 100%,38% 0,90% 20%,100% 100%)}
+.wheel{position:absolute;bottom:14px;width:26px;height:26px;border-radius:50%;background:#000;border:4px solid #2e2e2e}
+.wheel.l{left:16%}.wheel.r{right:16%}
+.spotlight{position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:80%;height:120%;
+  background:radial-gradient(ellipse at center,rgba(255,192,0,.14) 0%,transparent 60%)}
+.stage.goldbody .body{background:linear-gradient(100deg,#7a5c00,#c99500 45%,#5c4400 75%)}
+.stage.whitebody .body{background:linear-gradient(100deg,#cfcfcf,#f2f2f2 45%,#9a9a9a 75%)}
+.stage.tealbody .body{background:linear-gradient(100deg,#0e4a5c,#1e8aa8 45%,#0a3542 75%)}
+.gridlines{position:absolute;inset:0;background:
+  linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px) 0 0/100% 34px,
+  linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/34px 100%}
+
+/* ---------- featured configurator ---------- */
+.featured{margin-top:56px;background:var(--charcoal);display:grid;grid-template-columns:1.2fr .8fr;border:1px solid var(--shadow-gray)}
+.gallery{padding:24px;border-right:1px solid var(--shadow-gray)}
+.gallery-main{height:360px;position:relative;overflow:hidden;background:linear-gradient(180deg,#0c0c0c,#000 85%)}
+.gallery-main .body{height:42%;bottom:40px}
+.gallery-main .wheel{width:40px;height:40px;border-width:6px;bottom:20px}
+.thumbs{display:flex;gap:10px;margin-top:12px}
+.thumb{flex:1;height:56px;background:linear-gradient(180deg,#101010,#000);border:1px solid var(--shadow-gray);cursor:pointer;position:relative}
+.thumb.active{border-color:var(--gold)}
+.thumb i{position:absolute;left:30%;right:30%;bottom:22%;height:26%;background:#4a4a4a;clip-path:polygon(6% 100%,16% 30%,42% 26%,58% 4%,86% 22%,100% 100%)}
+.thumb.t2 i{background:#c99500}.thumb.t3 i{background:#cfcfcf}.thumb.t4 i{background:#1e8aa8}
+.config{padding:24px}
+.config .kicker{font-size:10px;letter-spacing:2.25px;text-transform:uppercase;color:var(--ash)}
+.config h2{font-size:44px;line-height:1.15;margin-top:8px}
+.config .price-line{display:flex;align-items:baseline;gap:10px;margin-top:8px}
+.config .price-line b{font-size:24px;color:var(--gold-text);font-weight:400}
+.config .price-line span{font-size:13px;color:var(--ash)}
+.opt-label{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ash);margin:20px 0 10px}
+.opts{display:flex;gap:10px}
+.opt{background:transparent;border:1px solid var(--shadow-gray);color:var(--ash);font-size:13px;letter-spacing:.2px;text-transform:uppercase;padding:12px 14px;cursor:pointer}
+.opt:hover{color:#fff;border-color:var(--steel)}
+.opt.active{background:var(--gold);border-color:var(--gold);color:var(--black)}
+.swatches{display:flex;gap:10px}
+.swatch{width:36px;height:36px;border:1px solid var(--shadow-gray);cursor:pointer;position:relative}
+.swatch.active{outline:2px solid var(--gold);outline-offset:2px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--shadow-gray);margin-right:12px}
+.qty button{width:42px;height:46px;background:transparent;border:0;color:#fff;font-size:16px;cursor:pointer}
+.qty button:hover{background:var(--dark-iron)}
+.qty span{width:52px;text-align:center;font-size:15px}
+.buy-row{display:flex;align-items:center;margin-top:24px}
+.spec-strip{display:flex;gap:0;margin-top:24px;border-top:1px solid var(--shadow-gray)}
+.spec{flex:1;padding:14px 8px 0;border-right:1px solid var(--shadow-gray);text-align:center}
+.spec:last-child{border-right:0}
+.spec b{display:block;font-size:20px;font-weight:400;color:var(--gold-text)}
+.spec span{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ash)}
+.review-block{margin-top:20px;border-top:1px solid var(--shadow-gray);padding-top:16px}
+.review-block p{color:var(--smoke);font-size:15px}
+.review-block .who{margin-top:10px;font-size:12px;color:var(--ash);text-transform:uppercase;letter-spacing:1px}
+
+/* ---------- reservation summary ---------- */
+.reservation{display:grid;grid-template-columns:1fr 400px;gap:24px;margin-top:56px}
+.res-list{background:var(--dark-iron);border:1px solid var(--shadow-gray);padding:8px 20px}
+.res-row{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--shadow-gray)}
+.res-row:last-child{border-bottom:0}
+.res-art{width:72px;height:44px;background:linear-gradient(180deg,#101010,#000);position:relative;flex:none;border:1px solid var(--shadow-gray)}
+.res-art i{position:absolute;left:26%;right:26%;bottom:20%;height:30%;background:#4a4a4a;clip-path:polygon(6% 100%,16% 30%,42% 26%,58% 4%,86% 22%,100% 100%)}
+.res-row h4{font-size:15px;text-transform:uppercase;letter-spacing:.5px}
+.res-row p{font-size:12px;color:var(--ash)}
+.res-row .p{margin-left:auto;text-align:right}
+.res-row .p b{font-size:15px;font-weight:400;color:var(--gold-text)}
+.res-row .p span{display:block;font-size:11px;color:var(--ash);text-transform:uppercase;letter-spacing:1px}
+.summary{background:var(--dark-iron);border:1px solid var(--shadow-gray);padding:24px;align-self:start}
+.summary h3{font-size:20px;letter-spacing:1px}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--ash);margin-top:14px}
+.sum-row.total{border-top:1px solid var(--shadow-gray);padding-top:16px;margin-top:16px;color:#fff}
+.sum-row.total b{font-size:20px;font-weight:400;color:var(--gold-text)}
+.summary .btn{width:100%;margin-top:20px}
+.summary .note{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--steel);text-align:center;margin-top:12px}
+
+/* ---------- footer ---------- */
+footer{background:var(--dark-iron);border-top:1px solid var(--shadow-gray);margin-top:56px;padding:56px 0 32px}
+.foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px}
+.foot-grid h5{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--steel);margin-bottom:14px;font-weight:400}
+.foot-grid a{display:block;font-size:14px;color:var(--ash);padding:6px 0}
+.foot-grid a:hover{color:var(--link-blue)}
+.newsletter{display:flex;margin-top:16px;max-width:340px}
+.newsletter input{flex:1;background:transparent;border:1px solid var(--shadow-gray);border-right:0;padding:12px 14px;font:inherit;font-size:14px;color:#fff;outline:0;border-radius:0}
+.newsletter input::placeholder{color:var(--steel)}
+.newsletter .btn-gold{padding:12px 20px;font-size:13px}
+.foot-base{display:flex;align-items:center;justify-content:space-between;margin-top:48px;padding-top:20px;border-top:1px solid var(--shadow-gray);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--steel)}
+.socials{display:flex;gap:12px}
+.socials a{width:36px;height:36px;border:1px solid rgba(255,255,255,.5);opacity:.5;display:grid;place-items:center;color:#fff;border-radius:0}
+.socials a:hover{background:var(--teal);opacity:1;border-color:var(--teal)}
+
+@media (max-width:1180px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:72px}}
+@media (max-width:1024px){
+  .featured,.reservation{grid-template-columns:1fr}
+  .gallery{border-right:0;border-bottom:1px solid var(--shadow-gray)}
+  .hero h1{font-size:54px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:960px){.wrap{padding:0 20px}}
+</style>
+</head>
+<body>
+
+<!-- nav -->
+<header class="topnav">
+  <div class="wrap">
+    <div class="menu"><span class="bars"><i></i><i></i><i></i></span> Menu</div>
+    <a class="logo-shield" href="#" aria-label="Lamborghini">
+      <svg width="34" height="44" viewBox="0 0 34 44" fill="none">
+        <path d="M17 1L33 9v16c0 9-7 15-16 18C8 40 1 34 1 25V9z" stroke="#fff" stroke-width="1.5"/>
+        <path d="M6 22l4-6 3 4 3-8 4 8 3-4 5 6H6z" fill="#FFC000"/>
+      </svg>
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Saved">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="icon-btn" aria-label="Account">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-wedge"></div>
+  <div class="hero-wedge two"></div>
+  <div class="hero-inner">
+    <p class="hero-kicker">Squadra Corse · Model Year 2027 allocation now open</p>
+    <h1>Temerario</h1>
+    <p class="sub">The new V8 hybrid hyper-sport. 920 CV. Reserve your build slot at Sant'Agata Bolognese.</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="#config">Start configuration</a>
+      <a class="btn btn-ghost" href="#models">View the range</a>
+    </div>
+  </div>
+  <div class="hero-progress"><i></i></div>
+  <div class="hero-hex"><span class="hexagon"><i></i></span></div>
+</section>
+
+<main class="wrap">
+  <!-- models -->
+  <section class="section" id="models">
+    <div class="sec-head">
+      <h2>The range</h2>
+      <a href="#">Full model index →</a>
+    </div>
+    <div class="filters">
+      <button class="fbtn active">All models</button>
+      <button class="fbtn">Hybrid V8</button>
+      <button class="fbtn">V12</button>
+      <button class="fbtn">Super SUV</button>
+      <button class="fbtn">Few-off</button>
+      <button class="fbtn">Collezione</button>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="art stage"><span class="tag gold">New</span><div class="spotlight"></div><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Temerario</h3><p class="meta">Hybrid V8 · 920 CV · 343 km/h</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 5.0</span><span class="price">€362,146<small>from · excl. taxes</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage goldbody"><span class="tag">Limited</span><div class="spotlight"></div><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Revuelto</h3><p class="meta">V12 hybrid · 1,015 CV · 350 km/h</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 5.0</span><span class="price">€608,358<small>from · excl. taxes</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage whitebody"><div class="gridlines"></div><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Huracán STJ</h3><p class="meta">V10 · 640 CV · 10 units worldwide</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9</span><span class="price">Sold out<small>last units · 2024</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage"><span class="tag">Sale · Collezione</span><div class="spotlight"></div><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Urus SE</h3><p class="meta">Plug-in hybrid · 800 CV · 0–100 in 3.4s</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.7</span><span class="price">€254,907<small>from · excl. taxes</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage tealbody"><span class="tag gold">Track</span><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Huracán STO</h3><p class="meta">V10 · 640 CV · track-homologated</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9</span><span class="price">€438,664<small>from · excl. taxes</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage whitebody"><span class="tag">Few-off</span><div class="gridlines"></div><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Countach LPI 800-4</h3><p class="meta">V12 hybrid · 814 CV · 112 units</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 5.0</span><span class="price">On request<small>allocation only</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage goldbody"><div class="spotlight"></div><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Urus Performante</h3><p class="meta">Twin-turbo V8 · 666 CV · Rally mode</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.8</span><span class="price">€236,215<small>from · excl. taxes</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art stage"><span class="tag gold">Esperienza</span><div class="body"></div><span class="wheel l"></span><span class="wheel r"></span></div>
+        <div class="card-body">
+          <h3>Esperienza Accademia</h3><p class="meta">Two-day track program · Imola</p>
+          <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9</span><span class="price">€14,800<small>per driver</small></span></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- featured configurator -->
+    <section class="featured" id="config">
+      <div class="gallery">
+        <div class="gallery-main">
+          <div class="spotlight"></div>
+          <div class="body" style="background:linear-gradient(100deg,#7a5c00,#FFC000 45%,#5c4400 75%)"></div>
+          <span class="wheel l"></span><span class="wheel r"></span>
+        </div>
+        <div class="thumbs">
+          <span class="thumb active"><i style="background:#c99500"></i></span>
+          <span class="thumb t2"><i></i></span>
+          <span class="thumb t3"><i></i></span>
+          <span class="thumb t4"><i></i></span>
+        </div>
+      </div>
+      <div class="config">
+        <p class="kicker">Ad Personam Studio · Build slot 2027-Q2</p>
+        <h2>Temerario</h2>
+        <div class="price-line"><b>€362,146</b><span>base · excl. taxes and delivery</span></div>
+        <p class="opt-label">Exterior color</p>
+        <div class="swatches">
+          <span class="swatch active" style="background:linear-gradient(100deg,#7a5c00,#FFC000)" title="Giallo Ignoto"></span>
+          <span class="swatch" style="background:#1a1a1a" title="Nero Nemesis"></span>
+          <span class="swatch" style="background:#e8e8e8" title="Bianco Icarus"></span>
+          <span class="swatch" style="background:#1e8aa8" title="Blu Marinus"></span>
+          <span class="swatch" style="background:#7d7d7d" title="Grigio Titans"></span>
+        </div>
+        <p class="opt-label">Wheels</p>
+        <div class="opts">
+          <button class="opt active">21″ Artemis</button>
+          <button class="opt">21″ Loge</button>
+          <button class="opt">Forged carbon</button>
+        </div>
+        <p class="opt-label">Build slots</p>
+        <div class="buy-row">
+          <div class="qty">
+            <button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button>
+          </div>
+          <button class="btn btn-gold">Reserve · €25,000</button>
+          <button class="btn btn-ghost">Save build</button>
+        </div>
+        <div class="spec-strip">
+          <div class="spec"><b>920 CV</b><span>Combined power</span></div>
+          <div class="spec"><b>2.7s</b><span>0–100 km/h</span></div>
+          <div class="spec"><b>343+</b><span>Top speed km/h</span></div>
+          <div class="spec"><b>V8</b><span>Twin-turbo hybrid</span></div>
+        </div>
+        <div class="review-block">
+          <p>"Allocation holders describe the Temerario's debut lap at Imola as the loudest agreement in automotive history."</p>
+          <p class="who">— Corriere Motori, first drive · Sept 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- reservation summary -->
+    <section class="reservation">
+      <div class="res-list">
+        <div class="res-row">
+          <span class="res-art"><i style="background:#c99500"></i></span>
+          <div><h4>Temerario build slot</h4><p>2027-Q2 · Giallo Ignoto · 21″ Artemis</p></div>
+          <div class="p"><b>€25,000</b><span>refundable deposit</span></div>
+        </div>
+        <div class="res-row">
+          <span class="res-art"><i style="background:#4a4a4a"></i></span>
+          <div><h4>Esperienza Accademia — Imola</h4><p>Two-day program · 1 driver · June 2027</p></div>
+          <div class="p"><b>€14,800</b><span>experience</span></div>
+        </div>
+        <div class="res-row">
+          <span class="res-art"><i style="background:#7d7d7d"></i></span>
+          <div><h4>Squadra Corse garage tour</h4><p>Sant'Agata Bolognese · 90 minutes</p></div>
+          <div class="p"><b>€480</b><span>per guest</span></div>
+        </div>
+      </div>
+      <aside class="summary">
+        <h3>Your reservation</h3>
+        <div class="sum-row"><span>Build slot deposit</span><span>€25,000.00</span></div>
+        <div class="sum-row"><span>Esperienza Accademia</span><span>€14,800.00</span></div>
+        <div class="sum-row"><span>Garage tour</span><span>€480.00</span></div>
+        <div class="sum-row"><span>Registration fee</span><span>€0.00</span></div>
+        <div class="sum-row total"><span>Total due today</span><b>€40,280.00</b></div>
+        <button class="btn btn-gold">Confirm reservation</button>
+        <p class="note">Deposit fully refundable before production lock</p>
+      </aside>
+    </section>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <svg width="30" height="38" viewBox="0 0 34 44" fill="none" style="margin-bottom:14px">
+          <path d="M17 1L33 9v16c0 9-7 15-16 18C8 40 1 34 1 25V9z" stroke="#fff" stroke-width="1.5"/>
+          <path d="M6 22l4-6 3 4 3-8 4 8 3-4 5 6H6z" fill="#FFC000"/>
+        </svg>
+        <p style="font-size:14px;color:var(--ash);max-width:280px">Automobili Lamborghini S.p.A. — Sant'Agata Bolognese, since 1963.</p>
+        <div class="newsletter">
+          <input type="email" placeholder="Email address">
+          <button class="btn btn-gold">Subscribe</button>
+        </div>
+      </div>
+      <div>
+        <h5>Vehicles</h5>
+        <a href="#">Temerario</a><a href="#">Revuelto</a><a href="#">Urus SE</a><a href="#">Few-off</a>
+      </div>
+      <div>
+        <h5>Ownership</h5>
+        <a href="#">Ad Personam</a><a href="#">Esperienza</a><a href="#">Polo Storico</a><a href="#">Locator</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="#">Squadra Corse</a><a href="#">Museum</a><a href="#">Careers</a><a href="#">News</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Automobili Lamborghini · Privacy · Cookie · Legal</span>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="X"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L6 22H2.9l7.5-8.6L2.5 2H9l4.5 6.6L18.9 2z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C16.6 4 12 4 12 4s-4.6 0-7.8.2c-.4.1-1.4.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 9.4.8 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.9.2 7.6.2 7.6.2s4.6 0 7.8-.3c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 15.3V8.7l6.2 3.3-6.2 3.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

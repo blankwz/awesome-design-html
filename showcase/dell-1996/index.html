@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dell 1996 — Design Showcase</title>
+<style>
+:root{
+  /* colors */
+  --primary:#e91d2a;
+  --on-primary:#ffffff;
+  --canvas:#ffffff;
+  --surface:#ffffff;
+  --ink:#000000;
+  --frame-ink:#000000;
+  --yellow-sticker:#fcc20f;
+  --purple-stripe:#6a26a4;
+  --link:#0000ee;
+  --tint-olive:#8e8a25;
+  --tint-sage:#b3bd95;
+  --tint-salmon:#d77a7a;
+  --tint-peach:#e6915d;
+  --tint-lime:#c0d4a7;
+  --tint-sky:#9ab6c8;
+  --tint-steel:#a5b8c0;
+  --tint-periwinkle:#8c9ae0;
+  --green-rule:#4a7c3f;
+  /* radii */
+  --r-none:0px; --r-full:9999px;
+  /* spacing */
+  --s-xxs:2px; --s-xs:4px; --s-s:6px; --s-sm:8px; --s-m:10px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-xxl:24px;
+  --sec-sm:32px; --sec:40px; --sec-lg:48px;
+  /* type */
+  --f-display:'Arial Black','Arial Bold',Arial,Helvetica,sans-serif;
+  --f-ui:Helvetica,Arial,'Segoe UI',sans-serif;
+  --f-body:'Times New Roman',Times,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#c8c8c8;font-family:var(--f-body);color:var(--ink)}
+a{color:var(--link);text-decoration:underline}
+.page-wrap{max-width:820px;margin:24px auto;padding:0 12px}
+
+/* ============ Banner ============ */
+.sg-banner{max-width:820px;margin:12px auto 0;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:var(--frame-ink);color:var(--canvas)}
+.sg-banner .sg-id{font-family:var(--f-ui);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#888}
+.sg-banner .sg-brand{font-family:var(--f-display);font-size:14px;color:#fff;margin-left:10px;text-transform:uppercase}
+.sg-banner .sg-desc{font-size:11px;color:#aaa;font-family:var(--f-body);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ============ Page frame ============ */
+.frame{border:8px solid var(--frame-ink);background:var(--canvas);margin-top:12px}
+
+/* top banner */
+.top-banner{background:var(--frame-ink);color:var(--canvas);padding:12px 16px;display:flex;align-items:center;gap:16px}
+.top-banner .tagline{flex:1}
+.top-banner .tagline .h{font-family:var(--f-ui);font-size:16px;font-weight:700;text-transform:uppercase;line-height:1.2}
+.top-banner .tagline .sub{font-size:12px;color:#bbb;font-family:var(--f-body);margin-top:2px}
+.buy-sticker{display:inline-block;background:var(--yellow-sticker);border:1px solid var(--ink);padding:4px 8px;
+  font-family:var(--f-ui);font-size:12px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.buy-sticker .a{color:var(--purple-stripe);font-size:10px;text-transform:lowercase}
+.phone-callout{font-family:var(--f-ui);font-size:16px;font-weight:700;color:var(--primary);background:var(--frame-ink);padding:4px 8px;white-space:nowrap}
+
+/* ============ Components ============ */
+#components{padding:var(--sec) 16px;background:var(--canvas)}
+.sec-label{font-family:var(--f-ui);font-size:12px;font-weight:700;text-transform:uppercase;color:#555;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:20px}
+.block{margin-bottom:36px}
+
+/* eyebrow blocks */
+.eyebrow{font-family:var(--f-display);font-size:36px;font-weight:900;line-height:1.0;text-transform:uppercase;padding:24px 16px;border:1px solid var(--ink);margin-bottom:8px}
+
+/* swatch grid — period style */
+.swatch-grid{display:flex;flex-wrap:wrap;gap:8px}
+.swatch{border:1px solid var(--ink);width:130px}
+.swatch .chip{height:44px;border-bottom:1px solid var(--ink)}
+.swatch .meta{padding:4px 8px;background:var(--canvas)}
+.swatch .meta .name{font-family:var(--f-ui);font-size:11px;font-weight:700;text-transform:uppercase}
+.swatch .meta .hex{font-family:var(--f-ui);font-size:10px;color:#444}
+
+/* typography specimen */
+.type-spec{border:1px solid var(--ink);padding:16px;background:var(--canvas)}
+.type-row{padding:10px 0;border-bottom:1px solid #999}
+.type-row:last-child{border-bottom:none}
+.type-token{font-family:var(--f-ui);font-size:10px;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:4px}
+.t-display{font-family:var(--f-display);font-size:36px;font-weight:900;line-height:1.0;text-transform:uppercase}
+.t-h1{font-family:var(--f-display);font-size:24px;font-weight:900;line-height:1.05}
+.t-h2{font-family:var(--f-ui);font-size:16px;font-weight:700;line-height:1.2}
+.t-h3{font-family:var(--f-ui);font-size:14px;font-weight:700;line-height:1.2}
+.t-body{font-family:var(--f-body);font-size:14px;line-height:1.4}
+.t-body-sm{font-family:var(--f-body);font-size:12px;line-height:1.4}
+.t-caption{font-family:var(--f-body);font-size:11px;line-height:1.35;color:#444}
+
+/* buttons */
+.btn{display:inline-block;font-family:var(--f-ui);font-size:12px;font-weight:700;line-height:1;text-transform:uppercase;
+  border:1px solid var(--ink);padding:6px 16px;cursor:pointer;text-decoration:none;border-radius:0}
+.btn-primary{background:var(--frame-ink);color:#fff}
+.btn-secondary{background:var(--canvas);color:var(--ink)}
+.btn-text{background:none;border:none;color:var(--link);font-family:var(--f-body);font-size:14px;font-weight:400;text-transform:none;text-decoration:underline;padding:0;cursor:pointer}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* inputs */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px}
+.field label{display:block;font-family:var(--f-ui);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.input,.select{width:100%;background:var(--canvas);color:var(--ink);font-family:var(--f-body);font-size:14px;
+  border:1px solid var(--ink);border-radius:0;padding:4px 6px;outline:none}
+.input:focus,.select:focus{background:#ffffcc}
+.input:disabled{background:#eee;color:#888;cursor:not-allowed}
+.check{font-family:var(--f-body);font-size:14px}
+.check input{margin-right:4px}
+
+/* ribbon cards */
+.ribbon{border:1px solid var(--ink);margin-bottom:16px}
+.ribbon-title{background:var(--canvas);border-bottom:1px solid var(--ink);padding:6px 12px;
+  font-family:var(--f-ui);font-size:14px;font-weight:700;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+.ribbon-body{padding:12px 16px;display:flex;gap:16px;align-items:center}
+.ribbon-body .copy{flex:1;font-family:var(--f-body);font-size:14px;line-height:1.4}
+.ribbon-body .copy b{font-family:var(--f-ui);font-size:12px;text-transform:uppercase}
+.price{font-family:var(--f-ui);font-size:12px;font-weight:700;white-space:nowrap}
+.photo-notch{width:120px;height:82px;flex-shrink:0;border:1px solid var(--ink);filter:drop-shadow(2px 2px 0 #000);
+  display:flex;align-items:center;justify-content:center;font-family:var(--f-ui);font-size:10px;font-weight:700;text-transform:uppercase;color:#222;position:relative}
+.new-burst{display:inline-block;background:var(--yellow-sticker);border:1px solid var(--ink);padding:4px 8px;
+  font-family:var(--f-ui);font-size:12px;font-weight:700;transform:rotate(-12deg);margin-right:8px}
+
+/* badges / stickers */
+.sticker{display:inline-block;border:1px solid var(--ink);padding:4px 8px;font-family:var(--f-ui);font-size:12px;font-weight:700;text-transform:uppercase}
+.sticker-yellow{background:var(--yellow-sticker);color:var(--ink)}
+.sticker-white{background:var(--canvas);color:var(--ink)}
+.cert-seal{width:72px;height:72px;border-radius:var(--r-full);background:var(--primary);color:var(--canvas);border:3px double var(--canvas);outline:1px solid var(--ink);
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  font-family:var(--f-ui);font-size:8px;font-weight:700;text-transform:uppercase;line-height:1.3}
+
+/* nav — icon-label */
+.icon-nav{border:1px solid var(--ink);background:var(--canvas);padding:8px;display:flex;justify-content:space-around;align-items:flex-end}
+.icon-item{text-align:center;padding:8px;min-width:80px}
+.icon-item .ic{font-size:22px;line-height:1;display:block;margin-bottom:6px}
+.icon-item .lb{font-family:var(--f-ui);font-size:12px;font-weight:700;text-transform:uppercase}
+.icon-rule{height:2px;background:var(--green-rule);margin:0 16px}
+
+/* table */
+.data-table{width:100%;border-collapse:collapse;border:1px solid var(--ink);background:var(--canvas)}
+.data-table th{background:var(--canvas);border:1px solid var(--ink);padding:6px 12px;font-family:var(--f-ui);font-size:11px;font-weight:700;text-transform:uppercase;text-align:left}
+.data-table td{border:1px solid var(--ink);padding:6px 12px;font-family:var(--f-body);font-size:12px}
+
+/* ============ Product ============ */
+#product{background:var(--canvas);border-top:1px solid var(--ink)}
+.left-rail{width:26%}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ink);margin-bottom:16px}
+.home-cell{padding:10px 8px;text-align:center;border:.5px solid #999}
+.home-cell a{font-family:var(--f-ui);font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink);text-decoration:none;display:block}
+.home-cell a:hover{text-decoration:underline}
+.cta-block-red{background:var(--primary);color:var(--on-primary);border:1px solid var(--ink);padding:16px;font-family:var(--f-body);font-size:14px;line-height:1.4}
+.cta-block-red .go{margin-top:12px;display:inline-block}
+
+.two-col{display:flex;gap:16px;padding:var(--sec) 16px}
+.two-col .main{flex:1}
+.side{width:200px;flex-shrink:0}
+.side .cert-wrap{text-align:center;padding:16px;border:1px solid var(--ink);margin-bottom:16px}
+.side .note{font-family:var(--f-body);font-size:11px;line-height:1.35;color:#333;border:1px solid var(--ink);padding:12px;background:var(--tint-lime)}
+
+/* footer */
+.footer-band{border-top:1px solid var(--ink);padding:16px;background:var(--canvas)}
+.legal{text-align:center;padding:12px 16px 20px}
+.legal p{font-family:var(--f-body);font-size:11px;line-height:1.35;color:#333;margin-top:6px}
+
+@media (max-width:900px){
+  .page-wrap{margin:8px auto}
+  .frame{border-width:4px}
+  .two-col{flex-direction:column}
+  .left-rail,.side{width:100%}
+  .home-grid{grid-template-columns:1fr 1fr}
+  .top-banner{flex-wrap:wrap}
+  .eyebrow{font-size:24px}
+  .ribbon-body .photo-notch{display:none}
+  .input-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+<header class="sg-banner">
+  <div><span class="sg-id">dell-1996</span><span class="sg-brand">Dell Computer</span></div>
+  <div class="sg-desc">Catalog-era enterprise web: black page frame, flat ribbon cards, Times Roman body, GIF stickers.</div>
+</header>
+
+<div class="frame">
+  <!-- top banner -->
+  <div class="top-banner">
+    <div class="tagline">
+      <div class="h">Build your own computer. Online.</div>
+      <div class="sub">Configure it. Price it. Order it. Direct from Dell.</div>
+    </div>
+    <a class="buy-sticker" href="#">BUY <span class="a">a</span> DELL</a>
+    <div class="phone-callout">1-800-213-DELL</div>
+  </div>
+
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components">
+    <div class="sec-label">Components — the 1996 vocabulary</div>
+
+    <!-- Colors -->
+    <div class="block">
+      <div class="sec-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#e91d2a"></div><div class="meta"><div class="name">Dell Red</div><div class="hex">#E91D2A</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#fcc20f"></div><div class="meta"><div class="name">Sticker Yellow</div><div class="hex">#FCC20F</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#6a26a4"></div><div class="meta"><div class="name">Purple Stripe</div><div class="hex">#6A26A4</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><div class="name">Frame Ink</div><div class="hex">#000000</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#0000ee"></div><div class="meta"><div class="name">Link Blue</div><div class="hex">#0000EE</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#8e8a25"></div><div class="meta"><div class="name">Tint Olive</div><div class="hex">#8E8A25</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#b3bd95"></div><div class="meta"><div class="name">Tint Sage</div><div class="hex">#B3BD95</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#d77a7a"></div><div class="meta"><div class="name">Tint Salmon</div><div class="hex">#D77A7A</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#e6915d"></div><div class="meta"><div class="name">Tint Peach</div><div class="hex">#E6915D</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#c0d4a7"></div><div class="meta"><div class="name">Tint Lime</div><div class="hex">#C0D4A7</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#9ab6c8"></div><div class="meta"><div class="name">Tint Sky</div><div class="hex">#9AB6C8</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#a5b8c0"></div><div class="meta"><div class="name">Tint Steel</div><div class="hex">#A5B8C0</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#8c9ae0"></div><div class="meta"><div class="name">Tint Periwinkle</div><div class="hex">#8C9AE0</div></div></div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="block">
+      <div class="sec-label">Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><div class="type-token">display · Arial Black 36/900</div><div class="t-display">Dimension Desktops</div></div>
+        <div class="type-row"><div class="type-token">heading-1 · Arial Black 24/900</div><div class="t-h1">Reliable PC's for High-Performance Computing.</div></div>
+        <div class="type-row"><div class="type-token">heading-2 · Helvetica 16/700</div><div class="t-h2">BUILD YOUR OWN COMPUTER. ONLINE.</div></div>
+        <div class="type-row"><div class="type-token">heading-3 · Helvetica 14/700</div><div class="t-h3">OPTIPLEX GX PRO</div></div>
+        <div class="type-row"><div class="type-token">body · Times Roman 14</div><div class="t-body">At Dell, we build every system to order — you choose the processor, the memory, and the drive, and we ship it within five business days.</div></div>
+        <div class="type-row"><div class="type-token">body-sm · Times 12</div><div class="t-body-sm">This site is best viewed with browser versions 3.0 and higher.</div></div>
+        <div class="type-row"><div class="type-token">caption · Times 11</div><div class="t-caption">Copyright 1996 Dell Computer Corporation. All rights reserved. <a href="#">(Terms of Use)</a></div></div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="block">
+      <div class="sec-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Configure &amp; Buy</button>
+        <button class="btn btn-secondary">Compare Models</button>
+        <button class="btn btn-text">More about Dell's award-winning service and support</button>
+        <button class="btn btn-secondary" disabled style="background:#eee;color:#888;cursor:not-allowed">Back Order</button>
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="block">
+      <div class="sec-label">Inputs</div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Search this site:</label>
+          <input class="input" type="text" placeholder="Enter keywords">
+        </div>
+        <div class="field">
+          <label>Zip code (for shipping):</label>
+          <input class="input" type="text" value="78701" style="background:#ffffcc">
+        </div>
+        <div class="field">
+          <label>Product line:</label>
+          <select class="select"><option>Dimension Desktops</option><option>OptiPlex Desktops</option><option>Latitude Notebooks</option><option>PowerEdge Servers</option></select>
+        </div>
+        <div class="field">
+          <label>Account number (locked):</label>
+          <input class="input" type="text" value="DL-4471002" disabled>
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label class="check"><input type="checkbox" checked> Send me the quarterly Dell catalog by mail</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ribbon cards -->
+    <div class="block">
+      <div class="sec-label">Ribbon cards — one tint per product line</div>
+
+      <div class="eyebrow" style="background:var(--tint-olive)">Dimension Desktops</div>
+      <div class="ribbon">
+        <div class="ribbon-title"><span>DIMENSION XPS <span class="new-burst">NEW!</span></span><span class="price">from $2,499</span></div>
+        <div class="ribbon-body" style="background:var(--tint-peach)">
+          <div class="copy"><b>The flagship.</b> Pentium 200 MHz, 32 MB EDO memory, 6-speed CD-ROM, and a 17-inch Trinitron monitor. Built to order, shipped in five days.</div>
+          <div class="photo-notch" style="background:linear-gradient(#3b3b46,#14141a)">P200<br>MINITOWER</div>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="background:var(--tint-salmon)">OptiPlex Desktop Systems</div>
+      <div class="ribbon">
+        <div class="ribbon-title"><span>OPTIPLEX GX PRO</span><span class="price">from $1,899</span></div>
+        <div class="ribbon-body" style="background:var(--tint-salmon)">
+          <div class="copy"><b>For corporate networks.</b> Managed boot ROM, DMI-compliant desktop management, and three-year next-business-day on-site service standard.</div>
+          <div class="photo-notch" style="background:linear-gradient(#454550,#1a1a22)">GX PRO<br>DESKTOP</div>
+        </div>
+      </div>
+      <div class="ribbon">
+        <div class="ribbon-title"><span>OPTIPLEX GS SERIES</span><span class="price">from $1,499</span></div>
+        <div class="ribbon-body" style="background:var(--tint-lime)">
+          <div class="copy"><b>Value without compromise.</b> Same tool-free chassis and managed software image as the GX Pro — priced for fleet rollout.</div>
+          <div class="photo-notch" style="background:linear-gradient(#3f4048,#16161c)">GS<br>DESKTOP</div>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="background:var(--tint-steel);font-size:24px">Latitude Notebooks · PowerEdge Servers</div>
+      <div class="ribbon">
+        <div class="ribbon-title"><span>LATITUDE LM SERIES</span><span class="price">from $2,199</span></div>
+        <div class="ribbon-body" style="background:var(--tint-sage)">
+          <div class="copy"><b>Takes the office anywhere.</b> 12.1-inch active-matrix display, interchangeable media bays, and up to six hours of battery.</div>
+          <div class="photo-notch" style="background:linear-gradient(#4a4c58,#1c1d24)">LM<br>NOTEBOOK</div>
+        </div>
+      </div>
+      <div class="ribbon">
+        <div class="ribbon-title"><span>POWEREDGE 2100 SERVER</span><span class="price">from $4,299</span></div>
+        <div class="ribbon-body" style="background:var(--tint-periwinkle)">
+          <div class="copy"><b>The workgroup workhorse.</b> Dual Pentium Pro, ECC memory, RAID-capable drive bays, and Novell / Windows NT certification out of the box.</div>
+          <div class="photo-notch" style="background:linear-gradient(#39394a,#15151e)">2100<br>SERVER</div>
+        </div>
+      </div>
+      <div class="ribbon">
+        <div class="ribbon-title"><span>DELLWARE SOFTWARE &amp; PERIPHERALS</span><span class="price">factory installed</span></div>
+        <div class="ribbon-body" style="background:var(--tint-sky)">
+          <div class="copy"><b>Arrives ready to run.</b> Microsoft Office, modems, tape backup, and networking kits — installed and tested before the box ships.</div>
+          <div class="photo-notch" style="background:linear-gradient(#40444c,#181a1e)">DELLWARE<br>PACK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stickers / badges -->
+    <div class="block">
+      <div class="sec-label">Stickers, badges &amp; seals</div>
+      <div class="btn-row" style="align-items:center">
+        <span class="sticker sticker-yellow">NEW!</span>
+        <span class="sticker sticker-white">BEST VALUE</span>
+        <span class="sticker sticker-yellow">FREE UPGRADE TO 32MB</span>
+        <span class="sticker sticker-white">3-YEAR WARRANTY</span>
+        <div class="cert-seal">
+          <span>PC MAGAZINE</span>
+          <span style="font-size:6px">SERVICE · RELIABILITY</span>
+          <span style="font-size:6px">READERS' CHOICE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="block">
+      <div class="sec-label">Icon-label navigation</div>
+      <div class="icon-nav">
+        <div class="icon-item"><span class="ic">👓</span><span class="lb">Find</span></div>
+        <div class="icon-item"><span class="ic">🏠</span><span class="lb">Home</span></div>
+        <div class="icon-item"><span class="ic">🛒</span><span class="lb">Online Store</span></div>
+        <div class="icon-item"><span class="ic">🔧</span><span class="lb">Service &amp; Support</span></div>
+      </div>
+      <div class="icon-rule"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="block">
+      <div class="sec-label">Configure &amp; price table</div>
+      <table class="data-table">
+        <tr><th>Model</th><th>Processor</th><th>Memory</th><th>Hard Drive</th><th>Price</th></tr>
+        <tr><td>Dimension XPS</td><td>Pentium 200 MHz</td><td>32 MB EDO</td><td>3.2 GB SCSI</td><td>$2,499</td></tr>
+        <tr><td>OptiPlex GX Pro</td><td>Pentium Pro 180 MHz</td><td>32 MB ECC</td><td>2.1 GB Fast SCSI</td><td>$1,899</td></tr>
+        <tr><td>Latitude LM</td><td>Pentium 133 MHz</td><td>16 MB EDO</td><td>1.3 GB IDE</td><td>$2,199</td></tr>
+        <tr><td>PowerEdge 2100</td><td>Dual Pentium Pro</td><td>64 MB ECC</td><td>4.3 GB x 2 RAID</td><td>$4,299</td></tr>
+      </table>
+    </div>
+
+  </section>
+
+  <!-- ================= FINISHED PRODUCT ================= -->
+  <section id="product">
+    <div class="two-col">
+      <!-- left rail -->
+      <div class="left-rail">
+        <div class="home-grid">
+          <div class="home-cell"><a href="#">Online Store</a></div>
+          <div class="home-cell"><a href="#">Service &amp; Support</a></div>
+          <div class="home-cell"><a href="#">Why Dell?</a></div>
+          <div class="home-cell"><a href="#">Government</a></div>
+          <div class="home-cell"><a href="#">Worldwide</a></div>
+          <div class="home-cell"><a href="#">Order Status</a></div>
+          <div class="home-cell"><a href="#">Company Info</a></div>
+          <div class="home-cell"><a href="#">U.S. Careers</a></div>
+        </div>
+        <div class="cta-block-red">
+          At Dell.com, we'll help you find the right system, configure it, price it, and order it — direct from the factory, with no middleman markup.
+          <div class="go"><button class="btn btn-primary">Enter the Online Store</button></div>
+        </div>
+        <p class="t-caption" style="margin-top:12px">Dell Direct. Built to order in Austin, Texas — <a href="#">read how direct works</a>.</p>
+      </div>
+
+      <!-- main column -->
+      <div class="main">
+        <div class="eyebrow" style="background:var(--tint-olive)">Dimension Desktops</div>
+        <div class="ribbon">
+          <div class="ribbon-title"><span>DIMENSION XPS <span class="new-burst">NEW!</span></span><span class="price">from $2,499</span></div>
+          <div class="ribbon-body" style="background:var(--tint-peach)">
+            <div class="copy"><b>Our fastest home system ever.</b> Pentium 200 MHz, 32 MB EDO memory, 6-speed CD-ROM, 33.6 fax modem, and a 17-inch Trinitron monitor — configured your way on every order.</div>
+            <div class="photo-notch" style="background:linear-gradient(#3b3b46,#14141a)">P200<br>MINI TOWER</div>
+          </div>
+        </div>
+        <div class="ribbon">
+          <div class="ribbon-title"><span>DIMENSION XPS PRO <span class="sticker sticker-yellow" style="transform:rotate(-8deg);margin-left:6px">BEST VALUE</span></span><span class="price">from $2,899</span></div>
+          <div class="ribbon-body" style="background:var(--tint-steel)">
+            <div class="copy"><b>For the power user.</b> Pentium Pro 200, 64 MB EDO, 4.3 GB Ultra-wide SCSI, and the works — bundled home software from Dellware, installed at the factory.</div>
+            <div class="photo-notch" style="background:linear-gradient(#42454e,#191b20)">P PRO<br>XPS</div>
+          </div>
+        </div>
+
+        <div class="eyebrow" style="background:var(--tint-salmon)">OptiPlex Desktop Systems</div>
+        <div class="ribbon">
+          <div class="ribbon-title"><span>OPTIPLEX GX PRO</span><span class="price">from $1,899</span></div>
+          <div class="ribbon-body" style="background:var(--tint-salmon)">
+            <div class="copy"><b>Network-ready out of the box.</b> DMI 2.0 desktop management, integrated Ethernet, and a single software image you can roll out to a hundred desks by Friday.</div>
+            <div class="photo-notch" style="background:linear-gradient(#454550,#1a1a22)">GX PRO<br>DESKTOP</div>
+          </div>
+        </div>
+
+        <div class="eyebrow" style="background:var(--tint-steel);font-size:24px">PowerEdge Servers</div>
+        <div class="ribbon">
+          <div class="ribbon-title"><span>POWEREDGE 2100 <span class="new-burst">NEW!</span></span><span class="price">from $4,299</span></div>
+          <div class="ribbon-body" style="background:var(--tint-periwinkle)">
+            <div class="copy"><b>Run your whole department.</b> Dual Pentium Pro processing, ECC memory, hot-plug RAID storage, and certified support for Windows NT Server and Novell NetWare.</div>
+            <div class="photo-notch" style="background:linear-gradient(#39394a,#15151e)">2100<br>SERVER</div>
+          </div>
+        </div>
+
+        <p class="t-body" style="margin-top:16px">Every Dell system ships with a three-year limited warranty and one year of <a href="#">24-hour technical support from Dell's award-winning service and support teams</a>. Order online, or call <b>1-800-213-DELL</b> — operators are standing by, 24 hours a day.</p>
+      </div>
+
+      <!-- right side rail -->
+      <div class="side">
+        <div class="cert-wrap">
+          <div class="cert-seal" style="margin:0 auto 8px">
+            <span>PC MAGAZINE</span>
+            <span style="font-size:6px">SERVICE · RELIABILITY</span>
+            <span style="font-size:6px">READERS' CHOICE</span>
+          </div>
+          <p class="t-caption">Voted best service &amp; reliability, three years running.</p>
+        </div>
+        <div class="note">
+          <b style="font-family:var(--f-ui);font-size:11px;text-transform:uppercase">Note:</b><br>
+          Prices shown reflect a 3% discount for cash or certified check. Lease options available for qualified businesses. Specifications subject to change without notice.
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer-band">
+      <div class="icon-nav" style="border:none;padding:8px 0">
+        <div class="icon-item"><span class="ic">👓</span><span class="lb">Find</span></div>
+        <div class="icon-item"><span class="ic">🏠</span><span class="lb">Home</span></div>
+        <div class="icon-item"><span class="ic">🛒</span><span class="lb">Online Store</span></div>
+        <div class="icon-item"><span class="ic">🔧</span><span class="lb">Service &amp; Support</span></div>
+      </div>
+      <div class="icon-rule"></div>
+      <div class="legal">
+        <a href="#">Copyright</a> &nbsp; <a href="#">(Terms of Use)</a>
+        <p>This site is best viewed with browser versions 3.0 and higher, at 800 × 600 resolution.</p>
+        <p>© 1996 Dell Computer Corporation. All rights reserved. Microsoft, Windows NT and Novell NetWare are trademarks of their respective owners.</p>
+      </div>
+    </div>
+  </section>
+</div><!-- /frame -->
+
+</div>
+</body>
+</html>

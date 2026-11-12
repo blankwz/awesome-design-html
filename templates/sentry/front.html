@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentri — Integration Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#150f23;
+  --ink-deep:#1f1633;
+  --on-primary:#ffffff;
+  --accent-lime:#c2ef4e;
+  --accent-pink:#fa7faa;
+  --accent-violet:#6a5fc1;
+  --accent-violet-deep:#422082;
+  --accent-violet-mid:#79628c;
+  --canvas-dark:#1f1633;
+  --canvas-light:#ffffff;
+  --night:#150f23;
+  --hairline-violet:#362d59;
+  --hairline-cool:#cfcfdb;
+  --hairline-cloud:#e5e7eb;
+  --on-dark-muted:rgba(255,255,255,0.72);
+  --on-dark-faint:rgba(255,255,255,0.18);
+  --success:#7edb8f;
+  --warning:#f2c94c;
+  --danger:#fa7faa;
+  --neutral:#bdb8c0;
+  --sans:'Rubik',-apple-system,system-ui,sans-serif;
+  --display:'Space Grotesk','Rubik',sans-serif;
+  --mono:'Monaco','Menlo',monospace;
+  --r-xs:4px;--r-sm:6px;--r-md:8px;--r-lg:10px;--r-xl:12px;--r-xxl:18px;--r-full:9999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas-dark);color:var(--on-primary);font-family:var(--sans);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.container{max-width:1152px;margin:0 auto;padding:0 24px}
+
+/* ===== Nav ===== */
+.nav{background:var(--canvas-dark);border-bottom:1px solid var(--hairline-violet)}
+.nav-inner{max-width:1152px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:28px}
+.logo{font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-0.3px;display:flex;align-items:center;gap:10px}
+.logo .glyph{width:28px;height:28px;background:var(--accent-lime);border-radius:var(--r-md);position:relative}
+.logo .glyph::after{content:"";position:absolute;left:8px;top:6px;width:4px;height:10px;background:var(--primary);border-radius:2px;box-shadow:8px 0 0 var(--primary)}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:16px;font-weight:500;color:var(--on-primary)}
+.nav-links a:hover{color:var(--accent-lime)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.search{display:flex;align-items:center;gap:8px;background:var(--night);border:1px solid var(--hairline-violet);border-radius:var(--r-sm);height:38px;padding:0 12px;width:220px}
+.search svg{flex:none;stroke:var(--on-dark-muted)}
+.search input{background:none;border:none;outline:none;color:#fff;font-family:var(--sans);font-size:15px;width:100%}
+.search input::placeholder{color:var(--on-dark-muted)}
+.icon-btn{position:relative;width:38px;height:38px;border-radius:var(--r-xl);background:var(--on-dark-faint);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;border:none}
+.icon-btn .badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:var(--r-full);background:var(--accent-pink);color:var(--primary);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:0.2px;text-transform:uppercase;height:42px;padding:12px 16px;border-radius:var(--r-md);cursor:pointer;border:none}
+.btn-inverted{background:#fff;color:var(--ink-deep);box-shadow:0 0 8px 6px rgba(21,15,35,0.9)}
+.btn-inverted:hover{background:var(--hairline-cloud)}
+.btn-ghost{background:var(--on-dark-faint);color:#fff;border-radius:var(--r-xl);height:40px;padding:8px 18px}
+.btn-ghost:hover{background:rgba(255,255,255,0.28)}
+
+/* ===== Hero ===== */
+.hero{position:relative;padding:96px 0 72px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.14) 1px,transparent 1px);background-size:26px 26px;opacity:.35;pointer-events:none}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(66,32,130,0.55),transparent 70%);pointer-events:none}
+.hero .container{position:relative}
+.eyebrow{font-size:15px;font-weight:500;text-transform:uppercase;letter-spacing:0.2px;color:var(--accent-violet-mid);margin-bottom:18px}
+.hero h1{font-family:var(--display);font-size:64px;font-weight:700;line-height:1.15;letter-spacing:0;max-width:820px}
+.chip-lime{display:inline-block;background:var(--accent-lime);color:var(--ink-deep);border-radius:var(--r-xs);padding:0 12px}
+.hero p{font-size:16px;line-height:2.0;color:var(--on-dark-muted);max-width:560px;margin-top:22px}
+.hero-cta{display:flex;gap:14px;margin-top:32px;align-items:center}
+.hero .sticker{
+  position:absolute;right:40px;top:60px;width:120px;height:120px;
+  transform:rotate(8deg);
+}
+.sticker .astro{width:100%;height:100%;border-radius:38% 62% 55% 45%/50% 42% 58% 50%;background:var(--accent-pink);border:3px solid #fff;position:relative}
+.sticker .astro::before{content:"";position:absolute;left:22px;top:38px;width:16px;height:16px;border-radius:50%;background:var(--primary);box-shadow:34px 0 0 var(--primary)}
+.sticker .astro::after{content:"";position:absolute;left:34px;top:78px;width:40px;height:8px;border-radius:6px;background:var(--primary)}
+
+/* ===== Filter pills ===== */
+.filter-row{border-top:1px solid var(--hairline-violet);border-bottom:1px solid var(--hairline-violet);padding:14px 0}
+.filter-inner{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.token{
+  font-size:14px;font-weight:500;letter-spacing:0.2px;text-transform:uppercase;
+  color:#fff;background:var(--accent-violet-mid);border:1px solid #5a4870;
+  border-radius:var(--r-xl);padding:8px 16px;cursor:pointer;
+}
+.token:hover{background:var(--accent-violet-deep)}
+.token.active{background:var(--accent-lime);color:var(--ink-deep);border-color:var(--accent-lime)}
+.token-count{margin-left:auto;font-size:14px;color:var(--on-dark-muted)}
+
+/* ===== Grid ===== */
+.library{padding:64px 0}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:24px}
+.section-head h2{font-family:var(--display);font-size:32px;font-weight:700}
+.section-head a{margin-left:auto;font-size:15px;font-weight:500;text-transform:uppercase;letter-spacing:0.2px;color:var(--accent-lime)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.int-card{
+  background:var(--night);border:1px solid var(--hairline-violet);
+  border-radius:var(--r-xl);padding:24px;cursor:pointer;
+  display:flex;flex-direction:column;
+}
+.int-card:hover{border-color:var(--accent-violet)}
+.int-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.int-ico{width:44px;height:44px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:18px;color:var(--primary)}
+.pill{font-size:10px;font-weight:600;letter-spacing:0.25px;text-transform:uppercase;background:var(--night);border:1px solid var(--hairline-violet);color:var(--on-dark-muted);border-radius:var(--r-xs);padding:4px 8px}
+.int-card h3{font-family:var(--display);font-size:22px;font-weight:700}
+.int-card p{font-size:14px;color:var(--on-dark-muted);margin-top:8px;line-height:1.5}
+.int-meta{display:flex;align-items:center;gap:10px;margin-top:18px}
+.stars{color:var(--accent-lime);font-size:13px;letter-spacing:2px}
+.rating{font-size:14px;color:var(--on-dark-muted)}
+.price{margin-left:auto;font-size:16px;font-weight:600;color:#fff}
+.price.free{color:var(--accent-lime)}
+
+/* ===== Featured detail ===== */
+.featured{
+  background:var(--ink-deep);border-radius:var(--r-xxl);padding:40px;
+  display:grid;grid-template-columns:1.2fr 1fr;gap:40px;margin-bottom:64px;position:relative;overflow:hidden;
+}
+.featured::after{content:"";position:absolute;top:-140px;left:-100px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(66,32,130,0.5),transparent 70%);pointer-events:none}
+.featured-left{position:relative}
+.ui-mock{background:var(--night);border:1px solid var(--hairline-violet);border-radius:var(--r-xxl);padding:20px;transform:rotate(-1.5deg)}
+.ui-mock .bar{height:12px;border-radius:6px;background:rgba(255,255,255,0.1);margin-bottom:12px}
+.ui-mock .bar.hl{background:var(--accent-lime);width:45%}
+.spark-row{display:flex;gap:8px;align-items:flex-end;height:90px;margin-top:18px}
+.spark-row i{flex:1;border-radius:6px 6px 0 0;background:var(--hairline-violet)}
+.spark-row i.err{background:var(--accent-pink)}
+.featured-right{position:relative}
+.featured-right h2{font-family:var(--display);font-size:38px;font-weight:700;line-height:1.15}
+.featured-right .lede{font-size:16px;line-height:2.0;color:var(--on-dark-muted);margin-top:14px}
+.opt-group{margin-top:24px}
+.opt-label{font-size:15px;font-weight:500;text-transform:uppercase;letter-spacing:0.2px;color:var(--on-dark-muted);margin-bottom:10px}
+.opt-row{display:flex;gap:8px;flex-wrap:wrap}
+.opt{background:var(--night);border:1px solid var(--hairline-violet);color:var(--on-dark-muted);border-radius:var(--r-md);padding:10px 14px;font-size:14px;font-weight:500;cursor:pointer}
+.opt.active{border-color:var(--accent-lime);color:#fff}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--hairline-violet);border-radius:var(--r-md);height:42px;margin-top:8px;background:var(--night)}
+.qty button{width:42px;height:100%;background:none;border:none;color:var(--on-dark-muted);font-size:16px;cursor:pointer}
+.qty span{width:48px;text-align:center;font-size:15px;font-weight:600;color:#fff}
+.buy-row{display:flex;align-items:center;gap:16px;margin-top:28px;flex-wrap:wrap}
+.price-xl{font-family:var(--display);font-size:40px;font-weight:700}
+.review{margin-top:26px;border-top:1px solid var(--hairline-violet);padding-top:20px}
+.review .r{display:flex;gap:12px;margin-top:14px}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--accent-violet-deep);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex:none}
+.review p{font-size:14px;color:var(--on-dark-muted);line-height:1.5}
+.review .who{font-size:14px;color:var(--accent-violet-mid);margin-top:4px}
+
+/* ===== Cart ===== */
+.cart-section{padding-bottom:64px}
+.cart-grid{display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start}
+.cart-list{background:var(--night);border:1px solid var(--hairline-violet);border-radius:var(--r-xl);overflow:hidden}
+.cart-item{display:flex;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--hairline-violet)}
+.cart-item:last-child{border-bottom:none}
+.ci-ico{width:42px;height:42px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:15px;color:var(--primary);flex:none}
+.ci-info{flex:1}
+.ci-name{font-size:16px;font-weight:600;color:#fff}
+.ci-var{font-size:14px;color:var(--on-dark-muted);margin-top:2px}
+.ci-price{font-size:15px;font-weight:600;color:#fff}
+.ci-x{color:var(--accent-violet-mid);background:none;border:none;font-size:18px;cursor:pointer}
+.ci-x:hover{color:var(--accent-pink)}
+.summary{background:var(--night);border:1px solid var(--hairline-violet);border-radius:var(--r-xl);padding:28px;position:sticky;top:88px}
+.summary h3{font-family:var(--display);font-size:24px;font-weight:700;margin-bottom:18px}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--on-dark-muted);padding:7px 0}
+.sum-row.total{border-top:1px solid var(--hairline-violet);margin-top:10px;padding-top:14px;color:#fff;font-size:20px;font-weight:600}
+.summary .btn{width:100%;margin-top:14px}
+.summary .note{font-size:14px;color:var(--accent-violet-mid);text-align:center;margin-top:12px}
+
+/* ===== Footer ===== */
+footer{background:var(--canvas-light);color:var(--ink-deep);padding:0 0 32px}
+.squiggle{display:block;width:100%;height:14px}
+.foot-grid{max-width:1152px;margin:0 auto;padding:40px 24px 0;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.foot-brand p{font-size:14px;color:#5a5568;max-width:300px;margin-top:14px;line-height:1.6}
+.newsletter{display:flex;gap:8px;margin-top:16px}
+.newsletter input{flex:1;background:#fff;border:1px solid var(--hairline-cool);border-radius:var(--r-sm);height:42px;padding:0 12px;color:var(--ink-deep);font-family:var(--sans);font-size:15px;outline:none}
+.newsletter input::placeholder{color:#9a95a8}
+.newsletter .btn{height:42px;padding:8px 16px;background:var(--primary);color:#fff}
+.foot-col h4{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.2px;margin-bottom:14px}
+.foot-col a{display:block;font-size:14px;color:#5a5568;padding:5px 0}
+.foot-col a:hover{color:var(--accent-violet)}
+.foot-bottom{max-width:1152px;margin:0 auto;padding:24px;display:flex;align-items:center;gap:20px;font-size:14px;color:#5a5568}
+.socials{margin-left:auto;display:flex;gap:10px}
+.socials span{width:34px;height:34px;border-radius:var(--r-full);background:var(--ink-deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+
+@media(max-width:1024px){
+  .nav-links,.hero .sticker{display:none}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .featured,.cart-grid{grid-template-columns:1fr}
+  .hero h1{font-size:44px}
+}
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#"><span class="glyph"></span>sentri</a>
+    <nav class="nav-links">
+      <a href="#">Integrations</a>
+      <a href="#">Alerts</a>
+      <a href="#">Pricing</a>
+      <a href="#">Docs</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search 220+ integrations">
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="badge">2</span>
+      </button>
+      <button class="icon-btn" aria-label="Cart">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+        <span class="badge">3</span>
+      </button>
+      <button class="btn btn-inverted">GET STARTED</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="sticker"><div class="astro"></div></div>
+    <div class="eyebrow">Integration marketplace</div>
+    <h1>Ship alerts to <span class="chip-lime">everywhere</span> your team already lives.</h1>
+    <p>One-click integrations for chat, ticketing, on-call and observability. Every plugin is tested against the Sentri SDK and ships with a health dashboard of its own.</p>
+    <div class="hero-cta">
+      <button class="btn btn-inverted">BROWSE INTEGRATIONS</button>
+      <button class="btn btn-ghost">GET A DEMO</button>
+    </div>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filter-row">
+  <div class="container filter-inner">
+    <span class="token active">ALL</span>
+    <span class="token">CHAT</span>
+    <span class="token">TICKETING</span>
+    <span class="token">ON-CALL</span>
+    <span class="token">APM</span>
+    <span class="token">LOGS</span>
+    <span class="token-count">Showing 6 of 224</span>
+  </div>
+</div>
+
+<!-- GRID -->
+<section class="library container">
+  <div class="section-head">
+    <h2>Installed most this month</h2>
+    <a href="#">VIEW ALL →</a>
+  </div>
+  <div class="grid">
+
+    <div class="int-card">
+      <div class="int-top"><span class="int-ico" style="background:var(--accent-lime)">SL</span><span class="pill">v3.4</span><span class="pill">CHAT</span></div>
+      <h3>Slack Alerts+</h3>
+      <p>Rich alert cards with ack buttons, inline event timelines, and per-channel severity routing.</p>
+      <div class="int-meta"><span class="stars">★★★★★</span><span class="rating">4.9 (1.2k)</span><span class="price">Free</span></div>
+    </div>
+
+    <div class="int-card">
+      <div class="int-top"><span class="int-ico" style="background:var(--accent-pink)">PD</span><span class="pill">v2.1</span><span class="pill">ON-CALL</span></div>
+      <h3>PagerBridge</h3>
+      <p>Two-way sync with your on-call rotations. Escalation policies trigger straight from alert rules.</p>
+      <div class="int-meta"><span class="stars">★★★★★</span><span class="rating">4.8 (860)</span><span class="price">$19/mo</span></div>
+    </div>
+
+    <div class="int-card">
+      <div class="int-top"><span class="int-ico" style="background:#9dd1ff">JR</span><span class="pill">v4.0</span><span class="pill">TICKETING</span></div>
+      <h3>Jira Issue Sync</h3>
+      <p>Auto-file bugs with full stack traces attached, and close the loop when the fix deploys.</p>
+      <div class="int-meta"><span class="stars">★★★★☆</span><span class="rating">4.7 (2.1k)</span><span class="price">Free</span></div>
+    </div>
+
+    <div class="int-card">
+      <div class="int-top"><span class="int-ico" style="background:var(--accent-violet-mid)">GH</span><span class="pill">NEW</span><span class="pill">TICKETING</span></div>
+      <h3>GitHub Autolink</h3>
+      <p>Links every alert frame to the exact commit, and annotates PRs with crash counts.</p>
+      <div class="int-meta"><span class="stars">★★★★★</span><span class="rating">4.9 (540)</span><span class="price">$9/mo</span></div>
+    </div>
+
+    <div class="int-card">
+      <div class="int-top"><span class="int-ico" style="background:#ffd9a0">AM</span><span class="pill">v1.8</span><span class="pill">APM</span></div>
+      <h3>AWS CloudWatch</h3>
+      <p>Pulls CloudWatch metrics next to your error streams so you can see cause and effect at once.</p>
+      <div class="int-meta"><span class="stars">★★★★☆</span><span class="rating">4.6 (980)</span><span class="price">Free</span></div>
+    </div>
+
+    <div class="int-card">
+      <div class="int-top"><span class="int-ico" style="background:#c9b8ff">NZ</span><span class="pill">v2.5</span><span class="pill">LOGS</span></div>
+      <h3>NewLog Streamer</h3>
+      <p>Streams normalized log context into every alert — 200 lines around the crash, always.</p>
+      <div class="int-meta"><span class="stars">★★★★★</span><span class="rating">4.8 (1.5k)</span><span class="price">$14/mo</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="container">
+  <div class="featured">
+    <div class="featured-left">
+      <div class="ui-mock">
+        <div class="bar hl"></div>
+        <div class="bar" style="width:80%"></div>
+        <div class="bar" style="width:65%"></div>
+        <div class="spark-row">
+          <i style="height:40%"></i><i style="height:55%"></i><i class="err" style="height:90%"></i><i style="height:48%"></i><i style="height:60%"></i><i style="height:35%"></i><i class="err" style="height:75%"></i><i style="height:52%"></i>
+        </div>
+      </div>
+    </div>
+    <div class="featured-right">
+      <div><span class="pill" style="background:var(--accent-lime);color:var(--ink-deep);border-color:var(--accent-lime)">FEATURED</span> <span class="pill">v3.4</span></div>
+      <h2 style="margin-top:14px">Slack Alerts+ — the alert inbox your channel deserves</h2>
+      <p class="lede">Alert cards with resolve buttons, thread-linked event timelines, and severity routing that actually respects your channel naming. Mediated by Sentri, billed once, deployed org-wide in 4 minutes.</p>
+      <div class="opt-group">
+        <div class="opt-label">Plan</div>
+        <div class="opt-row">
+          <span class="opt active">Free — 1 workspace</span>
+          <span class="opt">Team — $19/mo</span>
+          <span class="opt">Enterprise</span>
+        </div>
+      </div>
+      <div class="opt-group">
+        <div class="opt-label">Seats</div>
+        <div class="qty">
+          <button aria-label="Decrease">−</button>
+          <span>1</span>
+          <button aria-label="Increase">+</button>
+        </div>
+      </div>
+      <div class="buy-row">
+        <span class="price-xl">Free</span>
+        <button class="btn btn-inverted">ADD TO CART</button>
+        <button class="btn btn-ghost">VIEW DOCS</button>
+      </div>
+      <div class="review">
+        <div class="r">
+          <div class="avatar">HN</div>
+          <div>
+            <p>We cut our mean-time-to-ack from 14 minutes to 90 seconds. The inline resolve button is the whole product as far as I'm concerned.</p>
+            <div class="who">Hana Nguyen — SRE lead, Parcelbird</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CART -->
+<section class="container cart-section">
+  <div class="cart-grid">
+    <div>
+      <div class="section-head"><h2>Your cart</h2><a href="#">CLEAR ALL</a></div>
+      <div class="cart-list">
+        <div class="cart-item">
+          <span class="ci-ico" style="background:var(--accent-lime)">SL</span>
+          <div class="ci-info">
+            <div class="ci-name">Slack Alerts+</div>
+            <div class="ci-var">Team plan · 1 workspace · monthly</div>
+          </div>
+          <span class="ci-price">$19.00</span>
+          <button class="ci-x" aria-label="Remove">×</button>
+        </div>
+        <div class="cart-item">
+          <span class="ci-ico" style="background:var(--accent-pink)">PD</span>
+          <div class="ci-info">
+            <div class="ci-name">PagerBridge</div>
+            <div class="ci-var">Team plan · up to 3 rotations</div>
+          </div>
+          <span class="ci-price">$19.00</span>
+          <button class="ci-x" aria-label="Remove">×</button>
+        </div>
+        <div class="cart-item">
+          <span class="ci-ico" style="background:#c9b8ff">GH</span>
+          <div class="ci-info">
+            <div class="ci-name">GitHub Autolink</div>
+            <div class="ci-var">Team plan · org-wide</div>
+          </div>
+          <span class="ci-price">$9.00</span>
+          <button class="ci-x" aria-label="Remove">×</button>
+        </div>
+      </div>
+    </div>
+    <aside class="summary">
+      <h3>Order summary</h3>
+      <div class="sum-row"><span>Subscriptions (3)</span><span>$47.00/mo</span></div>
+      <div class="sum-row"><span>Bundle discount</span><span>−$4.70</span></div>
+      <div class="sum-row"><span>Tax (est. 8%)</span><span>$3.38</span></div>
+      <div class="sum-row total"><span>Due today</span><span>$45.68</span></div>
+      <button class="btn btn-inverted" style="margin-top:16px">CHECKOUT</button>
+      <div class="note">Billed through Sentri. Cancel any time, keep your config exports.</div>
+    </aside>
+  </div>
+</section>
+
+<!-- FOOTER (light polarity) -->
+<footer>
+  <svg class="squiggle" viewBox="0 0 1152 14" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 7 Q 24 0 48 7 T 96 7 T 144 7 T 192 7 T 240 7 T 288 7 T 336 7 T 384 7 T 432 7 T 480 7 T 528 7 T 576 7 T 624 7 T 672 7 T 720 7 T 768 7 T 816 7 T 864 7 T 912 7 T 960 7 T 1008 7 T 1056 7 T 1104 7 T 1152 7" fill="none" stroke="#c2ef4e" stroke-width="3"/>
+  </svg>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" style="color:var(--ink-deep)" href="#"><span class="glyph"></span>sentri</a>
+      <p>Observability with a personality. Track every error, alert every channel, and keep the on-call rotation humane.</p>
+      <div class="newsletter">
+        <input type="email" placeholder="Work email">
+        <button class="btn">SUBSCRIBE</button>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Product</h4>
+      <a href="#">Integrations</a>
+      <a href="#">Error monitoring</a>
+      <a href="#">Performance</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div class="foot-col">
+      <h4>Developers</h4>
+      <a href="#">Documentation</a>
+      <a href="#">SDKs</a>
+      <a href="#">Status</a>
+      <a href="#">Changelog</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Sentri Labs, Inc.</span>
+    <div class="socials"><span>X</span><span>GH</span><span>DC</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

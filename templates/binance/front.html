@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binance — Buy, Trade &amp; Hold 350+ Cryptocurrencies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#fcd535; --primary-active:#f0b90b; --primary-disabled:#3a3a1f;
+  --ink:#181a20; --body:#eaecef; --body-on-light:#181a20;
+  --muted:#707a8a; --muted-strong:#929aa5;
+  --hl-light:#eaecef; --hl-dark:#2b3139; --border-strong:#cdd1d6;
+  --canvas-light:#ffffff; --canvas-dark:#0b0e11;
+  --card-dark:#1e2329; --elev-dark:#2b3139;
+  --soft-light:#fafafa; --strong-light:#f5f5f5;
+  --on-primary:#181a20; --on-dark:#ffffff;
+  --up:#0ecb81; --down:#f6465d; --turq:#2dbdb6; --info:#3b82f6;
+  --r-xs:2px; --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:12px; --r-pill:9999px;
+  --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px; --sp-section:80px;
+  --nova:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --plex:'IBM Plex Mono','Inter',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--nova);background:var(--canvas-dark);color:var(--body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--nova);cursor:pointer;border:none;background:none}
+.num{font-family:var(--plex);font-weight:500;letter-spacing:0}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.up{color:var(--up)}
+.down{color:var(--down)}
+
+/* ===== TOP NAV ===== */
+.nav{height:64px;background:var(--canvas-dark);position:sticky;top:0;z-index:60}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:32px}
+.wordmark{font-size:20px;font-weight:700;letter-spacing:-.2px;color:var(--primary);display:flex;align-items:center;gap:8px}
+.wordmark svg{width:26px;height:26px}
+.menu{display:flex;gap:24px}
+.menu a{font-size:14px;font-weight:500;color:var(--body)}
+.menu a:hover,.menu a.on{color:var(--primary)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.lang{font-size:14px;font-weight:500;color:var(--muted-strong)}
+.login{font-size:14px;font-weight:600;color:var(--body)}
+.btn-primary{display:inline-block;background:var(--primary);color:var(--on-primary);font-size:14px;font-weight:600;border-radius:var(--r-md);padding:11px 24px;height:40px;line-height:1.3}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-primary.pill{border-radius:var(--r-pill);padding:13px 32px;height:auto}
+.btn-secondary{display:inline-block;background:var(--card-dark);color:var(--on-dark);font-size:14px;font-weight:600;border-radius:var(--r-md);padding:11px 24px}
+.bell{position:relative;color:var(--muted-strong)}
+.bell .dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:9999px;background:var(--down);border:2px solid var(--canvas-dark)}
+
+/* ===== HERO ===== */
+.hero{padding:var(--sp-section) 0 48px;background:var(--canvas-dark)}
+.hero .kick{display:inline-flex;align-items:center;gap:8px;background:var(--card-dark);border-radius:var(--r-pill);padding:6px 16px;font-size:13px;color:var(--primary);font-weight:500}
+.hero h1{font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px;color:var(--on-dark);margin-top:20px;max-width:760px}
+.hero h1 .y{color:var(--primary);font-family:var(--plex);font-weight:700}
+.hero .sub{font-size:16px;color:var(--muted-strong);margin-top:16px;max-width:560px}
+.hero .ctarow{display:flex;gap:16px;margin-top:32px;align-items:center}
+.trustrow{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap}
+.tbadge{display:flex;align-items:center;gap:12px;background:var(--card-dark);border-radius:var(--r-lg);padding:16px 20px}
+.tbadge .n1{font-size:16px;font-weight:600;color:var(--primary);font-family:var(--plex)}
+.tbadge span{font-size:16px;font-weight:600;color:var(--on-dark)}
+
+/* ===== MARKETS GRID ===== */
+.section{padding:48px 0}
+.sechead{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+h2{font-size:24px;font-weight:600;line-height:1.3;color:var(--on-dark)}
+.tabs{display:flex;gap:8px}
+.tab{font-size:14px;font-weight:500;color:var(--muted);border-radius:var(--r-md);padding:8px 16px}
+.tab:hover{color:var(--body)}
+.tab.on{background:var(--card-dark);color:var(--primary);font-weight:600}
+.coingrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.ccard{background:var(--card-dark);border-radius:var(--r-xl);padding:24px;display:block;border:1px solid transparent}
+.ccard:hover{border-color:var(--hl-dark)}
+.ccard .top{display:flex;align-items:center;gap:12px}
+.coin{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex:none}
+.ccard .sym{font-size:16px;font-weight:600;color:var(--on-dark)}
+.ccard .name{font-size:13px;color:var(--muted)}
+.ccard .price{font-size:20px;font-weight:700;color:var(--on-dark);margin-top:16px}
+.ccard .chg{font-size:14px;margin-top:4px;display:flex;align-items:center;gap:4px}
+.ccard .spark{margin-top:14px;height:40px}
+.ccard .spark svg{width:100%;height:100%}
+.ccard .tagrow{margin-top:14px;display:flex;gap:6px}
+.mtag{font-size:12px;font-weight:500;border-radius:var(--r-xs);padding:2px 8px;background:var(--elev-dark);color:var(--muted-strong)}
+.mtag.hot{background:rgba(252,213,53,.14);color:var(--primary)}
+
+/* ===== BUY SECTION (light transactional) ===== */
+.buy{background:var(--canvas-light);color:var(--body-on-light);padding:var(--sp-section) 0}
+.buy h2{color:var(--ink)}
+.buygrid{display:grid;grid-template-columns:1.4fr .9fr;gap:24px;align-items:start}
+.pricecard{background:var(--canvas-light);border:1px solid var(--hl-light);border-radius:var(--r-lg);padding:24px}
+.pricecard .pair{display:flex;align-items:baseline;gap:16px}
+.pricecard .px{font-size:40px;font-weight:700;font-family:var(--plex);letter-spacing:-.3px}
+.pricecard .chg{font-size:14px;font-weight:500}
+.chart{height:260px;margin-top:20px;border-radius:var(--r-lg);background:var(--strong-light);position:relative;overflow:hidden}
+.chart svg{position:absolute;inset:0;width:100%;height:100%}
+.tfrow{display:flex;gap:8px;margin-top:16px}
+.tf{font-size:13px;font-weight:500;color:var(--muted);border-radius:var(--r-md);padding:5px 12px}
+.tf.on{background:var(--strong-light);color:var(--ink);font-weight:600}
+.convtable{margin-top:20px;border-top:1px solid var(--hl-light);padding-top:12px}
+.convrow{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:var(--body-on-light)}
+.convrow .num{font-weight:500}
+.amountcard{background:var(--canvas-light);border:1px solid var(--hl-light);border-radius:var(--r-lg);padding:24px;box-shadow:rgba(24,26,32,.06) 0 4px 20px}
+.amountcard .lbl{font-size:13px;color:var(--muted);font-weight:500}
+.amtbox{display:flex;align-items:center;gap:12px;border:1px solid var(--hl-light);border-radius:var(--r-md);padding:10px 16px;margin-top:8px}
+.amtbox input{border:none;outline:none;flex:1;font-family:var(--plex);font-size:32px;font-weight:700;color:var(--ink);min-width:0}
+.cursel{display:flex;align-items:center;gap:8px;background:var(--strong-light);border-radius:var(--r-md);padding:8px 14px;font-size:14px;font-weight:600;color:var(--ink)}
+.amtbox2{margin-top:12px}
+.amtbox2 .amtbox input{font-size:20px}
+.estrow{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);padding:7px 0}
+.estrow .v{color:var(--ink);font-weight:500}
+.estrow.tot{border-top:1px solid var(--hl-light);margin-top:8px;padding-top:12px}
+.estrow.tot .v{font-size:18px;font-weight:700;font-family:var(--plex)}
+.payrow{display:flex;gap:8px;margin:14px 0}
+.pay{flex:1;text-align:center;border:1px solid var(--hl-light);border-radius:var(--r-md);padding:10px;font-size:13px;font-weight:600;color:var(--body-on-light)}
+.pay.sel{border:2px solid var(--primary-active);padding:9px}
+.amountcard .btn-primary{display:block;width:100%;text-align:center;margin-top:16px}
+.amountcard .fine{font-size:13px;color:var(--muted);margin-top:12px;text-align:center}
+.stepsrow{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.step{background:var(--canvas-light);border:1px solid var(--hl-light);border-radius:var(--r-lg);padding:24px}
+.step .n{width:32px;height:32px;border-radius:9999px;background:rgba(252,213,53,.2);color:#8a6d00;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step h3{font-size:16px;font-weight:600;color:var(--ink);margin-top:12px}
+.step p{font-size:14px;color:var(--muted);margin-top:6px}
+
+/* ===== SAFU BAND ===== */
+.safu{background:var(--canvas-dark);padding:var(--sp-section) 0}
+.safu h2{font-size:48px;font-weight:700;line-height:1.1;letter-spacing:-.5px;color:var(--primary)}
+.safu .lead{font-size:16px;color:var(--muted-strong);margin-top:12px;max-width:560px}
+.statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.stat .v{font-size:40px;font-weight:700;font-family:var(--plex);letter-spacing:-.3px;color:var(--primary)}
+.stat .l{font-size:14px;color:var(--muted-strong);margin-top:6px}
+
+/* ===== CTA BAND ===== */
+.ctaband{padding:0 0 var(--sp-section)}
+.ctaband .box{background:var(--card-dark);border-radius:var(--r-xl);padding:48px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.ctaband h2{font-size:32px;font-weight:600;line-height:1.2;max-width:520px}
+.ctaband p{color:var(--muted-strong);margin-top:8px}
+
+/* ===== FOOTER (light on dark page) ===== */
+footer{background:var(--soft-light);color:var(--body-on-light);padding:64px 0}
+.fcols{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.fcol h5{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px}
+.fcol a{display:block;font-size:14px;color:var(--muted);padding:4px 0}
+.fcol a:hover{color:var(--ink)}
+.legal{border-top:1px solid var(--hl-light);margin-top:48px;padding-top:24px;display:flex;justify-content:space-between;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+@media (max-width:1128px){.coingrid{grid-template-columns:repeat(2,1fr)}.buygrid{grid-template-columns:1fr}}
+@media (max-width:960px){
+  .menu{display:none}
+  .hero h1{font-size:36px}
+  .safu h2{font-size:32px}
+  .statrow{grid-template-columns:1fr}
+  .stepsrow{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="wordmark" href="#">
+      <svg viewBox="0 0 32 32"><g fill="#fcd535"><rect x="13.8" y="2" width="4.4" height="4.4" transform="rotate(45 16 4.2)"/><rect x="6.9" y="8.9" width="4.4" height="4.4" transform="rotate(45 9.1 11.1)"/><rect x="20.7" y="8.9" width="4.4" height="4.4" transform="rotate(45 22.9 11.1)"/><rect x="13.8" y="15.8" width="4.4" height="4.4" transform="rotate(45 16 18)"/><rect x="6.9" y="22.7" width="4.4" height="4.4" transform="rotate(45 9.1 24.9)"/><rect x="20.7" y="22.7" width="4.4" height="4.4" transform="rotate(45 22.9 24.9)"/><rect x="13.8" y="25.6" width="4.4" height="4.4" transform="rotate(45 16 27.8)"/></g></svg>
+      BINANCE
+    </a>
+    <div class="menu">
+      <a href="#" class="on">Buy Crypto</a><a href="#">Markets</a><a href="#">Trade</a><a href="#">Futures</a><a href="#">Earn</a><a href="#">Square</a><a href="#">Campaigns</a>
+    </div>
+    <div class="nav-right">
+      <span class="lang">EN / USD</span>
+      <a class="bell" href="#" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 9a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="dot"></span></a>
+      <a class="login" href="#">Log In</a>
+      <a class="btn-primary" href="#">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kick">◆ #1 crypto exchange by trading volume</span>
+    <h1><span class="y">316,258,026</span> USERS TRUST US</h1>
+    <p class="sub">Buy, trade, and hold 350+ cryptocurrencies on the world's most liquid exchange. Bank-grade custody, 0.1% spot fees, and instant deposits.</p>
+    <div class="ctarow">
+      <a class="btn-primary pill" href="#buy">Get started</a>
+      <a class="btn-secondary" href="#">View markets</a>
+    </div>
+    <div class="trustrow">
+      <div class="tbadge"><span class="n1">No.1</span><span>Trading Volume</span></div>
+      <div class="tbadge"><span class="n1">No.1</span><span>Customer Service</span></div>
+      <div class="tbadge"><span class="n1">No.1</span><span>Security Track Record</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sechead">
+      <h2>Popular cryptocurrencies</h2>
+      <div class="tabs">
+        <button class="tab on">Popular</button>
+        <button class="tab">New listing</button>
+        <button class="tab">Top gainers</button>
+        <button class="tab">Top volume</button>
+      </div>
+    </div>
+    <div class="coingrid">
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#f7931a">₿</span><div><div class="sym">BTC/USDT</div><div class="name">Bitcoin</div></div></div>
+        <div class="price num">$79,065.04</div>
+        <div class="chg up">▲ +0.45%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 30 20 26 40 32 60 20 80 24 100 14 120 18 140 8 160 12" fill="none" stroke="#0ecb81" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag hot">Hot</span><span class="mtag">Large cap</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#627eea">Ξ</span><div><div class="sym">ETH/USDT</div><div class="name">Ethereum</div></div></div>
+        <div class="price num">$3,412.88</div>
+        <div class="chg up">▲ +1.82%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 26 20 30 40 22 60 26 80 18 100 22 120 12 140 16 160 6" fill="none" stroke="#0ecb81" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag">Smart chain</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#26a17b">₮</span><div><div class="sym">USDT/USD</div><div class="name">TetherUS</div></div></div>
+        <div class="price num">$1.000</div>
+        <div class="chg up">▲ +0.01%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 20 40 20 80 19 120 21 160 20" fill="none" stroke="#707a8a" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag">Stablecoin</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#f0b90b">B</span><div><div class="sym">BNB/USDT</div><div class="name">BNB</div></div></div>
+        <div class="price num">$624.16</div>
+        <div class="chg down">▼ −0.63%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 12 20 16 40 10 60 18 80 14 100 24 120 20 140 28 160 26" fill="none" stroke="#f6465d" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag">Exchange token</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#9945ff">S</span><div><div class="sym">SOL/USDT</div><div class="name">Solana</div></div></div>
+        <div class="price num">$186.42</div>
+        <div class="chg up">▲ +4.17%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 34 20 30 40 32 60 24 80 26 100 16 120 18 140 8 160 4" fill="none" stroke="#0ecb81" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag hot">Top gainer</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#23292f">X</span><div><div class="sym">XRP/USDT</div><div class="name">XRP</div></div></div>
+        <div class="price num">$2.3187</div>
+        <div class="chg down">▼ −1.24%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 10 20 14 40 12 60 20 80 16 100 26 120 22 140 30 160 28" fill="none" stroke="#f6465d" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag">Large cap</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#f3ba2f">D</span><div><div class="sym">DOGE/USDT</div><div class="name">Dogecoin</div></div></div>
+        <div class="price num">$0.3742</div>
+        <div class="chg up">▲ +2.91%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 30 20 28 40 32 60 22 80 25 100 14 120 20 140 10 160 8" fill="none" stroke="#0ecb81" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag">Meme</span></div>
+      </a>
+      <a class="ccard" href="#">
+        <div class="top"><span class="coin" style="background:#2dbdb6">A</span><div><div class="sym">ADA/USDT</div><div class="name">Cardano</div></div></div>
+        <div class="price num">$0.8216</div>
+        <div class="chg up">▲ +0.88%</div>
+        <div class="spark"><svg viewBox="0 0 160 40" preserveAspectRatio="none"><path d="M0 24 20 26 40 20 60 24 80 18 100 20 120 14 140 16 160 10" fill="none" stroke="#0ecb81" stroke-width="2"/></svg></div>
+        <div class="tagrow"><span class="mtag">New listing</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="buy" id="buy">
+  <div class="wrap">
+    <div class="buygrid">
+      <div>
+        <div class="pricecard">
+          <div class="pair">
+            <span class="px">$79,065.04</span>
+            <span class="chg up">▲ +$354.11 (+0.45%) past 24h</span>
+          </div>
+          <div class="chart">
+            <svg viewBox="0 0 640 260" preserveAspectRatio="none">
+              <path d="M0 200 L60 180 L110 210 L170 160 L230 175 L290 130 L350 150 L410 100 L470 120 L530 70 L590 90 L640 55" fill="none" stroke="#0ecb81" stroke-width="2.5"/>
+              <path d="M0 200 L60 180 L110 210 L170 160 L230 175 L290 130 L350 150 L410 100 L470 120 L530 70 L590 90 L640 55 V260 H0 Z" fill="rgba(14,203,129,.08)"/>
+            </svg>
+          </div>
+          <div class="tfrow">
+            <button class="tf">24H</button><button class="tf on">1W</button><button class="tf">1M</button><button class="tf">3M</button><button class="tf">1Y</button><button class="tf">ALL</button>
+          </div>
+          <div class="convtable">
+            <div class="convrow"><span class="num">1 BTC</span><span class="num">$79,065.04</span></div>
+            <div class="convrow"><span class="num">0.5 BTC</span><span class="num">$39,532.52</span></div>
+            <div class="convrow"><span class="num">0.1 BTC</span><span class="num">$7,906.50</span></div>
+            <div class="convrow"><span class="num">0.01 BTC</span><span class="num">$790.65</span></div>
+          </div>
+        </div>
+        <div class="stepsrow">
+          <div class="step"><span class="n">1</span><h3>Enter amount</h3><p>Pay with card, bank transfer, or your USD balance — minimum $15.</p></div>
+          <div class="step"><span class="n">2</span><h3>Confirm order</h3><p>Review the live rate and 0.1% fee, then confirm in one tap.</p></div>
+          <div class="step"><span class="n">3</span><h3>Receive crypto</h3><p>BTC lands in your Spot wallet in seconds. Trade or hold it there.</p></div>
+        </div>
+      </div>
+      <aside class="amountcard">
+        <p class="lbl">You pay</p>
+        <div class="amtbox">
+          <input type="text" value="1,000.00">
+          <span class="cursel">$ USD ▾</span>
+        </div>
+        <p class="lbl" style="margin-top:12px">You receive</p>
+        <div class="amtbox amtbox2">
+          <input type="text" value="0.012642">
+          <span class="cursel"><span class="coin" style="width:22px;height:22px;font-size:10px;background:#f7931a">₿</span> BTC ▾</span>
+        </div>
+        <div style="margin-top:16px">
+          <div class="estrow"><span>Rate</span><span class="v num">1 BTC = $79,065.04</span></div>
+          <div class="estrow"><span>Transaction fee (0.1%)</span><span class="v num">$1.00</span></div>
+          <div class="estrow"><span>Network fee</span><span class="v num">$0.00</span></div>
+          <div class="estrow tot"><span>Total cost</span><span class="v">$1,001.00</span></div>
+        </div>
+        <p class="lbl" style="margin-top:14px">Payment method</p>
+        <div class="payrow">
+          <button class="pay sel">VISA ••4471</button>
+          <button class="pay">Bank transfer</button>
+        </div>
+        <a class="btn-primary" href="#">Confirm order</a>
+        <p class="fine">Rate locks for 60 seconds · Funds are SAFU</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="safu">
+  <div class="wrap">
+    <h2>FUNDS ARE SAFU</h2>
+    <p class="lead">Proof of reserves, 1:1 asset backing, and a $1B Secure Asset Fund for Users — verified on-chain, always.</p>
+    <div class="statrow">
+      <div class="stat"><div class="v">612,890 BTC</div><div class="l">Total BTC reserves held in custody</div></div>
+      <div class="stat"><div class="v">7,488,223</div><div class="l">Users protected by SAFU since 2018</div></div>
+      <div class="stat"><div class="v">$429,423,449</div><div class="l">Current size of the Secure Asset Fund</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="ctaband">
+  <div class="wrap">
+    <div class="box">
+      <div>
+        <h2>Secure, low-fee trading on Binance</h2>
+        <p>0.1% spot fees, deep liquidity on 2,400+ pairs, and 24/7 support in 40 languages.</p>
+      </div>
+      <a class="btn-primary pill" href="#">Create free account</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fcol"><h5>Community</h5><a href="#">Global</a><a href="#">X (Twitter)</a><a href="#">Telegram</a><a href="#">Reddit</a><a href="#">Discord</a></div>
+      <div class="fcol"><h5>About Us</h5><a href="#">About Binance</a><a href="#">Careers</a><a href="#">Newsroom</a><a href="#">Security</a><a href="#">Law enforcement</a></div>
+      <div class="fcol"><h5>Products</h5><a href="#">Exchange</a><a href="#">Earn</a><a href="#">Futures</a><a href="#">Launchpad</a><a href="#">NFT</a></div>
+      <div class="fcol"><h5>Business</h5><a href="#">Institutional</a><a href="#">VIP Services</a><a href="#">Listing</a><a href="#">Affiliate</a><a href="#">APIs</a></div>
+      <div class="fcol"><h5>Service</h5><a href="#">Support Center</a><a href="#">Fees</a><a href="#">Trading Rules</a><a href="#">Bug Bounty</a><a href="#">Status</a></div>
+      <div class="fcol"><h5>Learn</h5><a href="#">Academy</a><a href="#">Research</a><a href="#">Blog</a><a href="#">Glossary</a><a href="#">FAQ</a></div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Binance Holdings Ltd. · Terms of Use · Privacy Policy · Risk Disclosure · Cookies</span>
+      <span>English (US) · USD</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

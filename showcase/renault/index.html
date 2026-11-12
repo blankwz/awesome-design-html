@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renault — Design System Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --primary:#ffed00;
+  --primary-deep:#e6d200;
+  --on-primary:#000000;
+  --ink:#000000;
+  --body:#222222;
+  --charcoal:#333333;
+  --mute:#666666;
+  --ash:#8a8a8a;
+  --stone:#c4c4c4;
+  --on-dark:#ffffff;
+  --on-dark-mute:rgba(255,255,255,0.72);
+  --canvas:#ffffff;
+  --surface-soft:#f7f7f7;
+  --surface-dark:#000000;
+  --surface-deep:#111111;
+  --hairline:#f2f2f2;
+  --hairline-strong:#000000;
+  --divider-dark:rgba(255,255,255,0.16);
+  --error:#be6464;
+  --warning:#f0ad4e;
+  --success:#8dc572;
+  --info:#337ab7;
+  /* type */
+  --font:'Inter Tight','NouvelR',Manrope,-apple-system,'Segoe UI',Arial,sans-serif;
+  /* radius */
+  --r-xs:2px; --r-sm:3px; --r-md:4px; --r-pill:46px; --r-full:9999px;
+  /* spacing */
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:20px;
+  --sp-xl:24px; --sp-xxl:32px; --sp-xxxl:40px; --sp-section:80px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font);
+  background:var(--canvas);
+  color:var(--body);
+  font-size:16px;line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+svg{display:block;}
+
+/* ============ banner ============ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  background:var(--canvas);
+  border-bottom:1px solid var(--hairline-strong);
+  height:60px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+}
+.sg-banner-left{display:flex;align-items:center;gap:14px;}
+.sg-folder{
+  font-family:ui-monospace,monospace;font-size:11px;color:var(--mute);
+  border:1px solid var(--stone);padding:3px 10px;border-radius:var(--r-xs);
+}
+.sg-brand{font-weight:700;font-size:18px;color:var(--ink);display:flex;align-items:center;gap:10px;letter-spacing:.2px;}
+.sg-desc{font-size:13px;color:var(--mute);max-width:520px;text-align:right;}
+@media(max-width:900px){.sg-desc{display:none;}}
+
+main{max-width:1440px;margin:0 auto;padding:0 24px;}
+.sg-shell{max-width:1280px;margin:0 auto;}
+
+.sg-section{padding:var(--sp-section) 0 0;}
+.sg-label{
+  font-family:ui-monospace,monospace;font-size:11px;font-weight:700;color:var(--ink);
+  text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px;
+}
+.sg-h2{font-size:32px;font-weight:700;line-height:0.95;color:var(--ink);margin-bottom:32px;}
+.sg-block{margin-bottom:48px;}
+
+/* ============ buttons ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:14.4px;font-weight:700;line-height:1;letter-spacing:0.144px;
+  border-radius:var(--r-xs);padding:0 24px;height:48px;
+  transition:background .15s ease;
+}
+.btn-primary{background:var(--primary);color:var(--on-primary);}
+.btn-primary:hover{background:var(--primary-deep);}
+.btn-primary.pressed{background:var(--primary-deep);}
+.btn-secondary-dark{background:var(--surface-dark);color:var(--on-dark);}
+.btn-outline-dark{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong);}
+.btn-outline-light{background:var(--surface-dark);color:var(--on-dark);border:1px solid var(--on-dark);}
+.btn-pill{
+  font-size:13px;font-weight:600;letter-spacing:0.13px;line-height:1.2;
+  background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong);
+  border-radius:var(--r-pill);height:36px;padding:0 16px;
+}
+.btn-icon{
+  width:40px;height:40px;padding:0;border-radius:var(--r-xs);
+  border:1px solid var(--hairline-strong);color:var(--ink);
+  display:inline-flex;align-items:center;justify-content:center;background:var(--canvas);
+}
+.btn-disabled{background:var(--surface-soft);color:var(--stone);cursor:not-allowed;}
+.btn-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+
+/* ============ swatches ============ */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px;}
+.swatch{border-radius:0;overflow:hidden;border:1px solid var(--hairline-strong);}
+.swatch-chip{height:72px;border-bottom:1px solid var(--hairline-strong);}
+.swatch-meta{padding:10px 12px;background:var(--canvas);}
+.swatch-name{font-size:12px;font-weight:700;color:var(--ink);font-family:ui-monospace,monospace;}
+.swatch-hex{font-size:12px;color:var(--mute);font-family:ui-monospace,monospace;}
+
+/* ============ typography ============ */
+.type-spec{background:var(--canvas);border:1px solid var(--hairline-strong);padding:32px;display:flex;flex-direction:column;gap:20px;}
+.type-row{display:flex;align-items:baseline;gap:24px;border-bottom:1px solid var(--hairline);padding-bottom:16px;}
+.type-row:last-child{border-bottom:none;padding-bottom:0;}
+.type-token{flex:0 0 200px;font-family:ui-monospace,monospace;font-size:11px;color:var(--mute);}
+.t-display-xl{font-size:56px;font-weight:700;line-height:0.95;color:var(--ink);}
+.t-display-lg{font-size:40px;font-weight:700;line-height:0.95;color:var(--ink);}
+.t-heading-lg{font-size:24px;font-weight:700;line-height:0.95;color:var(--ink);}
+.t-subtitle{font-size:19.2px;font-weight:600;line-height:1.3;color:var(--ink);}
+.t-body-md{font-size:16px;line-height:1.4;color:var(--body);}
+.t-body-sm{font-size:14px;line-height:1.57;color:var(--charcoal);}
+.t-overline{font-size:10px;font-weight:700;line-height:1.45;text-transform:uppercase;color:var(--mute);}
+.t-button-md{font-size:14.4px;font-weight:700;letter-spacing:0.144px;color:var(--ink);}
+
+/* ============ inputs ============ */
+.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.text-input{
+  width:100%;height:48px;background:var(--canvas);
+  border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;
+  padding:0 16px;font-size:16px;color:var(--ink);font-family:inherit;
+}
+.text-input::placeholder{color:var(--ash);}
+.text-input:focus{outline:none;border-bottom:2px solid var(--ink);}
+.select-input{
+  width:100%;height:48px;background:var(--canvas);
+  border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;
+  padding:0 16px;font-size:16px;font-family:inherit;appearance:none;color:var(--ink);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;
+}
+.input-disabled{
+  width:100%;height:48px;background:var(--surface-soft);
+  border-bottom:1px solid var(--stone);border-radius:0;
+  padding:0 16px;font-size:16px;color:var(--ash);
+}
+
+/* ============ cards / tiles ============ */
+.tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.promo-tile{padding:32px;border-radius:0;display:flex;flex-direction:column;justify-content:space-between;min-height:220px;}
+.promo-light{background:var(--canvas);border:1px solid var(--hairline-strong);}
+.promo-dark{background:var(--surface-dark);color:var(--on-dark);}
+.promo-yellow{background:var(--primary);color:var(--on-primary);}
+.promo-tile h3{font-size:24px;font-weight:700;line-height:0.95;}
+.promo-tile .arrow{margin-top:20px;}
+/* vehicle art */
+.vehicle-card{background:var(--canvas);border-radius:0;position:relative;}
+.v-art{aspect-ratio:4/3;position:relative;overflow:hidden;}
+.v-art .ground{position:absolute;bottom:0;left:0;right:0;height:22%;background:var(--surface-soft);}
+.car{position:absolute;bottom:16%;left:10%;width:80%;height:34%;}
+.car .body{
+  position:absolute;inset:0;border-radius:42% 46% 8px 8px / 90% 90% 6px 6px;
+}
+.car .cab{
+  position:absolute;left:22%;right:22%;bottom:70%;height:85%;
+  border-radius:38% 42% 0 0 / 100% 100% 0 0;
+}
+.car .wheel{
+  position:absolute;bottom:-14%;width:22%;aspect-ratio:1;border-radius:50%;
+  background:#111;border:4px solid #3a3a3a;
+}
+.car .wheel::after{content:"";position:absolute;inset:26%;border-radius:50%;background:#8a8a8a;}
+.car .w1{left:8%;}
+.car .w2{right:8%;}
+.v-yellow .body,.v-yellow .cab{background:#ffed00;}
+.v-black .body,.v-black .cab{background:#111;}
+.v-grey .body,.v-grey .cab{background:#c4c4c4;}
+.v-white .body,.v-white .cab{background:#f2f2f2;border:1px solid #ddd;}
+.v-info .body,.v-info .cab{background:#337ab7;}
+.v-meta{padding:16px 0 0;}
+.v-name{font-size:20px;font-weight:700;line-height:0.95;color:var(--ink);}
+.v-sub{font-size:14px;color:var(--mute);margin-top:6px;}
+.badge-new{
+  position:absolute;left:0;bottom:12px;z-index:2;
+  background:var(--primary);color:var(--on-primary);
+  font-size:14.4px;font-weight:700;letter-spacing:0.144px;
+  border-radius:var(--r-full);padding:6px 14px;
+}
+
+/* ============ badges / chips ============ */
+.chip-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.sub-nav-pill{
+  font-size:13px;font-weight:600;letter-spacing:0.13px;color:var(--ink);
+  background:var(--canvas);border:1px solid var(--hairline-strong);
+  border-radius:var(--r-pill);padding:8px 16px;
+}
+.sub-nav-pill-active{background:var(--ink);color:var(--on-dark);}
+.tag{font-size:12px;font-weight:700;border-radius:var(--r-md);padding:4px 10px;display:inline-flex;align-items:center;}
+.tag-success{background:#eef7e8;color:#4d7a33;}
+.tag-warning{background:#fdf3e3;color:#9c6a1a;}
+.tag-error{background:#f9e9e9;color:#8f4444;}
+.tag-info{background:#e7f0f8;color:#2a5d8f;}
+
+/* ============ navigation ============ */
+.nav-demo{
+  background:var(--canvas);border-bottom:1px solid var(--hairline);
+  height:60px;display:flex;align-items:center;gap:28px;padding:0 20px;
+}
+.nav-logo{display:flex;align-items:center;}
+.nav-links{display:flex;gap:24px;font-size:14.4px;font-weight:700;letter-spacing:0.144px;color:var(--ink);}
+.nav-links span:hover{color:var(--mute);}
+@media(max-width:900px){.nav-links{display:none;}}
+
+/* diamond logo */
+.diamond{display:inline-block;}
+
+/* ============ configurator ============ */
+.config-row{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:24px 0;border-bottom:1px solid var(--hairline);font-size:16px;color:var(--body);
+}
+.config-row .lbl{font-weight:700;color:var(--ink);}
+.swatch-dot{width:56px;height:56px;border-radius:var(--r-full);border:1px solid var(--hairline);}
+.swatch-dot.active{outline:1px solid var(--hairline-strong);outline-offset:3px;}
+
+/* ============ table ============ */
+.sg-table{width:100%;border-collapse:collapse;background:var(--canvas);}
+.sg-table th{text-align:left;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mute);padding:14px 20px;border-bottom:1px solid var(--hairline-strong);}
+.sg-table td{padding:14px 20px;font-size:14px;color:var(--body);border-bottom:1px solid var(--hairline);}
+
+/* ================================================================
+   PRODUCT SECTION
+================================================================ */
+.product{margin:var(--sp-section) 0 64px;border:1px solid var(--hairline-strong);}
+.p-nav{
+  background:var(--canvas);height:60px;display:flex;align-items:center;gap:32px;
+  padding:0 40px;border-bottom:1px solid var(--hairline);
+}
+.p-nav .links{display:flex;gap:28px;font-size:14.4px;font-weight:700;letter-spacing:0.144px;color:var(--ink);}
+/* hero */
+.p-hero{background:var(--surface-dark);color:var(--on-dark);position:relative;overflow:hidden;}
+.p-hero .mesh{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 65% at 72% 30%, rgba(126,69,171,0.55), transparent 65%),
+    radial-gradient(ellipse 45% 55% at 30% 75%, rgba(244,120,120,0.28), transparent 65%),
+    radial-gradient(ellipse 35% 40% at 88% 85%, rgba(255,237,0,0.30), transparent 60%);
+}
+.p-hero .inner{
+  position:relative;max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center;
+  padding:96px 48px;
+}
+@media(max-width:900px){.p-hero .inner{grid-template-columns:1fr;}}
+.p-hero .overline{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--primary);margin-bottom:16px;}
+.p-hero h1{font-size:56px;font-weight:700;line-height:0.95;color:var(--on-dark);}
+.p-hero p{font-size:19.2px;font-weight:600;line-height:1.3;color:var(--on-dark-mute);margin:20px 0 32px;max-width:420px;}
+.p-hero .car-stage{position:relative;height:320px;}
+.p-hero .car-stage .glowline{
+  position:absolute;bottom:24%;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+}
+/* sub-nav pills */
+.p-subnav{display:flex;gap:12px;flex-wrap:wrap;padding:20px 40px;border-bottom:1px solid var(--hairline);}
+/* range grid */
+.p-range{padding:80px 40px;max-width:1280px;margin:0 auto;}
+.p-range h2{font-size:40px;font-weight:700;line-height:0.95;color:var(--ink);margin-bottom:40px;}
+.p-vehicle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+@media(max-width:1024px){.p-vehicle-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.p-vehicle-grid{grid-template-columns:1fr;}}
+/* yellow band */
+.p-yellow-band{background:var(--primary);color:var(--on-primary);padding:80px 48px;}
+.p-yellow-band .inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;}
+@media(max-width:900px){.p-yellow-band .inner{grid-template-columns:1fr;}}
+.p-yellow-band h2{font-size:56px;font-weight:700;line-height:0.95;}
+.p-yellow-band p{font-size:19.2px;font-weight:600;line-height:1.3;margin:20px 0 32px;max-width:480px;}
+/* dark band */
+.p-dark-band{background:var(--surface-dark);color:var(--on-dark);padding:80px 40px;}
+.p-dark-band .inner{max-width:1280px;margin:0 auto;}
+.p-dark-band h2{font-size:40px;font-weight:700;line-height:0.95;margin-bottom:40px;}
+.p-tile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+@media(max-width:768px){.p-tile-grid{grid-template-columns:1fr;}}
+/* quote */
+.p-quote{padding:80px 40px;max-width:860px;margin:0 auto;text-align:center;}
+.p-quote blockquote{font-size:32px;font-weight:700;line-height:0.95;color:var(--ink);}
+.p-quote cite{display:block;margin-top:20px;font-size:14px;color:var(--mute);font-style:normal;}
+/* CTA band */
+.p-cta{background:var(--surface-deep);color:var(--on-dark);padding:56px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.p-cta h2{font-size:32px;font-weight:700;line-height:0.95;}
+/* footer */
+.p-footer{background:var(--surface-dark);color:var(--on-dark);padding:64px 40px 32px;border-top:1px solid var(--divider-dark);}
+.p-footer .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:1280px;margin:0 auto 40px;}
+@media(max-width:768px){.p-footer .cols{grid-template-columns:repeat(2,1fr);}}
+.p-footer h4{font-size:14.4px;font-weight:700;letter-spacing:0.144px;margin-bottom:14px;}
+.p-footer ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.p-footer a{font-size:14px;color:var(--on-dark-mute);}
+.p-footer a:hover{color:var(--on-dark);text-decoration:underline;}
+.p-footer .bottom{max-width:1280px;margin:0 auto;padding-top:20px;border-top:1px solid var(--divider-dark);display:flex;justify-content:space-between;font-size:12px;color:var(--on-dark-mute);}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-banner-left">
+    <span class="sg-folder">renault</span>
+    <span class="sg-brand">
+      <svg class="diamond" width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="#000" stroke-width="2.2"><path d="M16 3 L28 16 L16 29 L4 16 Z"/><path d="M16 9.5 L22.5 16 L16 22.5 L9.5 16 Z"/></svg>
+      RENAULT
+    </span>
+  </div>
+  <span class="sg-desc">Black-and-white canvas, a flat diamond mark, NouvelR at weight 700 with 0.95 line-height, and one Sunlight Yellow accent.</span>
+</header>
+
+<main>
+  <!-- ==================== COMPONENTS ==================== -->
+  <section id="components" class="sg-section">
+    <div class="sg-shell">
+    <div class="sg-label">Components</div>
+    <h2 class="sg-h2">Catalogue precision, mass-market confidence</h2>
+
+    <!-- 1. Colors -->
+    <div class="sg-block">
+      <div class="sg-label">01 — Color tokens</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-chip" style="background:#ffed00"></div><div class="swatch-meta"><div class="swatch-name">primary</div><div class="swatch-hex">#ffed00</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#e6d200"></div><div class="swatch-meta"><div class="swatch-name">primary-deep</div><div class="swatch-hex">#e6d200</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#000000"></div><div class="swatch-meta"><div class="swatch-name">ink / surface-dark</div><div class="swatch-hex">#000000</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#111111"></div><div class="swatch-meta"><div class="swatch-name">surface-deep</div><div class="swatch-hex">#111111</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#222222"></div><div class="swatch-meta"><div class="swatch-name">body</div><div class="swatch-hex">#222222</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#666666"></div><div class="swatch-meta"><div class="swatch-name">mute</div><div class="swatch-hex">#666666</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#8a8a8a"></div><div class="swatch-meta"><div class="swatch-name">ash</div><div class="swatch-hex">#8a8a8a</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#c4c4c4"></div><div class="swatch-meta"><div class="swatch-name">stone</div><div class="swatch-hex">#c4c4c4</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#f7f7f7;border-bottom:1px solid #000"></div><div class="swatch-meta"><div class="swatch-name">surface-soft</div><div class="swatch-hex">#f7f7f7</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#ffffff;border-bottom:1px solid #000"></div><div class="swatch-meta"><div class="swatch-name">canvas</div><div class="swatch-hex">#ffffff</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#be6464"></div><div class="swatch-meta"><div class="swatch-name">error</div><div class="swatch-hex">#be6464</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#8dc572"></div><div class="swatch-meta"><div class="swatch-name">success</div><div class="swatch-hex">#8dc572</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#337ab7"></div><div class="swatch-meta"><div class="swatch-name">info</div><div class="swatch-hex">#337ab7</div></div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-label">02 — Typography specimen · NouvelR (Inter Tight substitute)</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="type-token">display-xl · 56/700/0.95</span><span class="t-display-xl">E-TECH<br>ELEKTRİKLİ</span></div>
+        <div class="type-row"><span class="type-token">display-lg · 40/700/0.95</span><span class="t-display-lg">YENİ RENAULT 5</span></div>
+        <div class="type-row"><span class="type-token">heading-lg · 24/700/0.95</span><span class="t-heading-lg">Hibrit araç modelleri</span></div>
+        <div class="type-row"><span class="type-token">subtitle · 19.2/600/1.3</span><span class="t-subtitle">Keşfet, yapılandır ve bugün test sürüşüne çık.</span></div>
+        <div class="type-row"><span class="type-token">body-md · 16/400/1.4</span><span class="t-body-md">Renault'un yeni nesil elektrikli ve hibrit modelleri, uzun menzil ve hızlı şarj desteğiyle her güzergâha hazır.</span></div>
+        <div class="type-row"><span class="type-token">overline · 10/700/UPPER</span><span class="t-overline">Kampanya · Sınırlı süreli</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-label">03 — Buttons</div>
+      <div class="btn-row" style="margin-bottom:16px;">
+        <button class="btn btn-primary">Konfigüratörü başlat</button>
+        <button class="btn btn-primary pressed">Pressed</button>
+        <button class="btn btn-secondary-dark">Hemen randevu al</button>
+        <button class="btn btn-outline-dark">Modeller</button>
+        <button class="btn btn-disabled">Stokta yok</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+        <button class="btn btn-outline-light">Tüm kampanyalar</button>
+        <button class="btn btn-pill">Servis &amp; randevu</button>
+        <button class="btn btn-pill">Kampanyalar</button>
+        <button class="btn btn-icon" aria-label="Previous">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button class="btn btn-icon" aria-label="Next">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-label">04 — Inputs</div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Ad Soyad</label>
+          <input class="text-input" type="text" placeholder="Adınızı girin">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="text-input" type="text" value="mehdemir@ornek.com" style="border-bottom:2px solid #000;">
+        </div>
+        <div class="field">
+          <label>Şehir</label>
+          <select class="select-input"><option>İstanbul</option><option>Ankara</option><option>İzmir</option><option>Bursa</option></select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input-disabled" type="text" value="MyRenault-001" disabled>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-label">05 — Promo tiles &amp; vehicle cards</div>
+      <div class="tile-grid" style="margin-bottom:24px;">
+        <div class="promo-tile promo-light">
+          <div>
+            <div class="t-overline">Kampanya</div>
+            <h3 style="margin-top:8px;">Binek araç satış kampanyaları</h3>
+          </div>
+          <svg class="arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="promo-tile promo-dark">
+          <div>
+            <div class="t-overline" style="color:var(--on-dark-mute);">Ticari</div>
+            <h3 style="margin-top:8px;">Ticari araç satış kampanyaları</h3>
+          </div>
+          <svg class="arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="promo-tile promo-yellow">
+          <div>
+            <div class="t-overline">Renault 5</div>
+            <h3 style="margin-top:8px;">PARLAK SARI. Geri döndü.</h3>
+          </div>
+          <svg class="arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+      <div class="p-vehicle-grid">
+        <div class="vehicle-card">
+          <div class="v-art"><span class="badge-new">YENİ</span>
+            <div class="ground"></div>
+            <div class="car v-yellow"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Renault 5 E-Tech</div><div class="v-sub">Elektrikli · 410 km menzil</div></div>
+        </div>
+        <div class="vehicle-card">
+          <div class="v-art">
+            <div class="ground"></div>
+            <div class="car v-black"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Austral</div><div class="v-sub">Hibrit · 145 hp</div></div>
+        </div>
+        <div class="vehicle-card">
+          <div class="v-art">
+            <div class="ground"></div>
+            <div class="car v-grey"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Clio</div><div class="v-sub">Benzin · E-Tech hibrit</div></div>
+        </div>
+        <div class="vehicle-card">
+          <div class="v-art">
+            <div class="ground"></div>
+            <div class="car v-info"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Megane E-Tech</div><div class="v-sub">Elektrikli · 470 km menzil</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-label">06 — Badges &amp; tags</div>
+      <div class="chip-row">
+        <span class="badge-new" style="position:static;">YENİ</span>
+        <span class="badge-new" style="position:static;background:var(--surface-dark);color:var(--on-dark);">ELEKTRİKLİ</span>
+        <span class="tag tag-success">Stokta</span>
+        <span class="tag tag-warning">Sınırlı sayıda</span>
+        <span class="tag tag-error">Test sürüşü dolu</span>
+        <span class="tag tag-info">Hibrit</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block">
+      <div class="sg-label">07 — Navigation</div>
+      <div class="nav-demo">
+        <span class="nav-logo">
+          <svg class="diamond" width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="#000" stroke-width="2.2"><path d="M16 3 L28 16 L16 29 L4 16 Z"/><path d="M16 9.5 L22.5 16 L16 22.5 L9.5 16 Z"/></svg>
+        </span>
+        <div class="nav-links"><span>Modeller</span><span>Hizmetler</span><span>Renault Yaşamı</span><span>MyRenault</span></div>
+        <div style="margin-left:auto;display:flex;gap:14px;align-items:center;">
+          <button class="btn btn-pill" style="height:32px;padding:0 12px;">TR · EN</button>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Configurator + table -->
+    <div class="sg-block" style="display:grid;grid-template-columns:1.2fr 1fr;gap:32px;">
+      <div>
+        <div class="sg-label">08a — Configurator rows</div>
+        <div class="config-row">
+          <span class="lbl">Renk seçenekleri</span>
+          <span style="display:flex;gap:10px;">
+            <span class="swatch-dot active" style="background:#ffed00;"></span>
+            <span class="swatch-dot" style="background:#111;"></span>
+            <span class="swatch-dot" style="background:#c4c4c4;"></span>
+            <span class="swatch-dot" style="background:#f7f7f7;"></span>
+          </span>
+        </div>
+        <div class="config-row"><span class="lbl">Kasa tipi</span><span>Hatchback · 5 kapı</span></div>
+        <div class="config-row"><span class="lbl">Motor seçimi</span><span>E-Tech 40 · 120 hp</span></div>
+        <div class="config-row" style="border-bottom:none;"><span class="lbl">Jant</span><span>18" elmas kesim</span></div>
+      </div>
+      <div>
+        <div class="sg-label">08b — Table</div>
+        <table class="sg-table">
+          <thead><tr><th>Model</th><th>Menzil</th><th>Fiyat</th></tr></thead>
+          <tbody>
+            <tr><td><strong>R5 E-Tech</strong></td><td>410 km</td><td>₺1.299.000</td></tr>
+            <tr><td><strong>Megane E-Tech</strong></td><td>470 km</td><td>₺1.849.000</td></tr>
+            <tr><td><strong>Austral Hibrit</strong></td><td>1.100 km</td><td>₺1.599.000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT ==================== -->
+  <section id="product" class="product">
+    <nav class="p-nav">
+      <span class="nav-logo">
+        <svg class="diamond" width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#000" stroke-width="2.2"><path d="M16 3 L28 16 L16 29 L4 16 Z"/><path d="M16 9.5 L22.5 16 L16 22.5 L9.5 16 Z"/></svg>
+      </span>
+      <div class="links"><span>Modeller</span><span>Elektrikli</span><span>Hizmetler</span><span>Renault Yaşamı</span><span>MyRenault</span></div>
+      <div style="margin-left:auto;display:flex;gap:16px;align-items:center;">
+        <button class="btn btn-outline-dark" style="height:40px;">Randevu al</button>
+        <button class="btn btn-primary" style="height:40px;">Test sürüşü</button>
+      </div>
+    </nav>
+
+    <!-- dark hero with atmospheric mesh -->
+    <div class="p-hero">
+      <div class="mesh"></div>
+      <div class="inner">
+        <div>
+          <div class="overline">Yeni · Elektrikli</div>
+          <h1>SCENIC<br>E-TECH<br>ELEKTRİKLİ</h1>
+          <p>Aile boyutunda elektrik. 615 km menzil, 39 dakikada %80 şarj.</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <button class="btn btn-primary">Konfigüratörü başlat</button>
+            <button class="btn btn-outline-light">Detayları gör</button>
+          </div>
+        </div>
+        <div class="car-stage">
+          <div class="glowline"></div>
+          <div class="car v-yellow" style="width:72%;left:14%;bottom:18%;">
+            <div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sub-nav pills -->
+    <div class="p-subnav">
+      <button class="btn btn-pill sub-nav-pill-active">Modeller</button>
+      <button class="btn btn-pill">Elektrikli geçiş</button>
+      <button class="btn btn-pill">Servis &amp; randevu</button>
+      <button class="btn btn-pill">Kampanyalar</button>
+      <button class="btn btn-pill">İkinci el</button>
+    </div>
+
+    <!-- white range catalogue -->
+    <div class="p-range">
+      <h2>Model yelpazesi</h2>
+      <div class="p-vehicle-grid">
+        <div class="vehicle-card">
+          <div class="v-art"><span class="badge-new">YENİ</span>
+            <div class="ground"></div>
+            <div class="car v-yellow"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Renault 5 E-Tech</div><div class="v-sub">Elektrikli · 410 km · 120 hp</div></div>
+        </div>
+        <div class="vehicle-card">
+          <div class="v-art">
+            <div class="ground"></div>
+            <div class="car v-white"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Clio</div><div class="v-sub">E-Tech hibrit · 145 hp</div></div>
+        </div>
+        <div class="vehicle-card">
+          <div class="v-art">
+            <div class="ground"></div>
+            <div class="car v-grey"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Austral</div><div class="v-sub">Hibrit · hybrid 200</div></div>
+        </div>
+        <div class="vehicle-card">
+          <div class="v-art">
+            <div class="ground"></div>
+            <div class="car v-black"><div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span></div>
+          </div>
+          <div class="v-meta"><div class="v-name">Megane E-Tech</div><div class="v-sub">Elektrikli · 470 km</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- yellow accent band -->
+    <div class="p-yellow-band">
+      <div class="inner">
+        <div>
+          <div class="t-overline" style="margin-bottom:16px;">Renault 5 · ikonun dönüşü</div>
+          <h2>PARLAK SARI.<br>TAM SENİN.</h2>
+          <p>1972'de şehirleri fetheden tasarım, tamamen elektrikli olarak geri döndü. Sınırlı sayıda Sunlight Yellow üretimi.</p>
+          <button class="btn btn-secondary-dark">Şimdi keşfet</button>
+        </div>
+        <div style="position:relative;height:280px;">
+          <div class="car v-black" style="width:86%;left:7%;bottom:12%;">
+            <div class="cab"></div><div class="body"></div><span class="wheel w1"></span><span class="wheel w2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- dark storytelling band -->
+    <div class="p-dark-band">
+      <div class="inner">
+        <h2>Elektrikli geleceğe geçiş</h2>
+        <div class="p-tile-grid">
+          <div class="promo-tile promo-dark" style="border:1px solid var(--divider-dark);">
+            <div>
+              <div class="t-overline" style="color:var(--on-dark-mute);">Rehber</div>
+              <h3 style="margin-top:8px;">Evde şarj kurulumu 3 adımda</h3>
+              <p style="font-size:14px;color:var(--on-dark-mute);margin-top:12px;">Wallbox seçiminden montaja kadar her şey dahil.</p>
+            </div>
+            <svg class="arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div class="promo-tile promo-dark" style="border:1px solid var(--divider-dark);">
+            <div>
+              <div class="t-overline" style="color:var(--on-dark-mute);">Finansman</div>
+              <h3 style="margin-top:8px;">Aylık 14.900 ₺'den başlayan planlar</h3>
+              <p style="font-size:14px;color:var(--on-dark-mute);margin-top:12px;">Takas, kredi ve sigortayı tek pakette hesapla.</p>
+            </div>
+            <svg class="arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- quote -->
+    <div class="p-quote">
+      <blockquote>“Yeni 5'i sürdükten sonra şehir arabası tanımım değişti.”</blockquote>
+      <cite>Autocar Türkiye — 2026 Yılın Şehir Otomobili</cite>
+    </div>
+
+    <!-- CTA -->
+    <div class="p-cta">
+      <h2>Hayalindeki yapılandırmayı oluştur</h2>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <button class="btn btn-primary">Konfigüratörü başlat</button>
+        <button class="btn btn-outline-light">Bayi bul</button>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="p-footer">
+      <div class="cols">
+        <div><h4>Modeller</h4><ul><li><a href="#">Binek araçlar</a></li><li><a href="#">Ticari araçlar</a></li><li><a href="#">Elektrikli</a></li></ul></div>
+        <div><h4>Hizmetler</h4><ul><li><a href="#">Servis &amp; randevu</a></li><li><a href="#">Yedek parça</a></li><li><a href="#">Uzun yol desteği</a></li></ul></div>
+        <div><h4>Renault Yaşamı</h4><ul><li><a href="#">Kampanyalar</a></li><li><a href="#">Etkinlikler</a></li><li><a href="#">Mobilite</a></li></ul></div>
+        <div><h4>Kurumsal</h4><ul><li><a href="#">Hakkımızda</a></li><li><a href="#">Sürdürülebilirlik</a></li><li><a href="#">Kariyer</a></li></ul></div>
+      </div>
+      <div class="bottom">
+        <span>© 2026 Renault Türkiye</span>
+        <span>Kullanım koşulları · KVKK · Çerezler</span>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

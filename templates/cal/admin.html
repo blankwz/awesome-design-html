@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cal.com — Admin Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#111111; --primary-active:#242424; --primary-disabled:#e5e7eb;
+  --ink:#111111; --body:#374151; --muted:#6b7280; --muted-soft:#898989;
+  --hairline:#e5e7eb; --hairline-soft:#f3f4f6;
+  --canvas:#ffffff; --surface-soft:#f8f9fa; --surface-card:#f5f5f5; --surface-strong:#e5e7eb;
+  --surface-dark:#101010; --surface-dark-elevated:#1a1a1a;
+  --on-primary:#ffffff; --on-dark:#ffffff; --on-dark-soft:#a1a1aa;
+  --accent:#3b82f6; --success:#10b981; --warning:#f59e0b; --error:#ef4444;
+  --badge-orange:#fb923c; --badge-pink:#ec4899; --badge-violet:#8b5cf6; --badge-emerald:#34d399;
+  --font-sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --r-md:8px; --r-lg:12px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px;
+  --shadow-1:0 1px 2px rgba(0,0,0,0.05); --shadow-2:0 4px 12px rgba(0,0,0,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--surface-soft);color:var(--body);font-family:var(--font-sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-sans)}
+h1,h2,h3{color:var(--ink);letter-spacing:-0.02em}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* sidebar */
+.side{background:var(--canvas);border-right:1px solid var(--hairline);padding:var(--sp-md);display:flex;flex-direction:column;gap:var(--sp-xs)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;color:var(--ink);padding:var(--sp-sm) var(--sp-md) var(--sp-lg)}
+.logo .dot{width:22px;height:22px;border-radius:var(--r-pill);background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.m-label{font-size:12px;font-weight:500;color:var(--muted-soft);padding:var(--sp-md) var(--sp-md) var(--sp-xs);text-transform:uppercase;letter-spacing:.4px}
+.menu a{display:flex;align-items:center;gap:var(--sp-sm);padding:9px var(--sp-md);border-radius:var(--r-md);color:var(--muted);font-weight:500}
+.menu a .ico{width:18px;text-align:center;font-style:normal}
+.menu a:hover{background:var(--surface-soft);color:var(--ink)}
+.menu a.active{background:var(--surface-card);color:var(--ink);font-weight:600}
+.menu a .cnt{margin-left:auto;background:var(--primary);color:#fff;border-radius:var(--r-pill);font-size:11px;font-weight:600;padding:1px 8px}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm);background:var(--surface-card);border-radius:var(--r-lg)}
+.ava{width:36px;height:36px;border-radius:var(--r-pill);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.user-card .nm{font-weight:600;color:var(--ink);font-size:13px}
+.user-card .rl{font-size:12px;color:var(--muted)}
+
+/* topbar */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--canvas);border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-lg)}
+.crumb{font-size:14px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:600}
+.search{margin-left:auto;position:relative}
+.search input{height:40px;width:280px;border:1px solid var(--hairline);border-radius:var(--r-md);padding:0 14px 0 36px;font-size:14px;background:var(--surface-soft);font-family:var(--font-sans)}
+.search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted-soft)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-pill);background:var(--canvas);border:1px solid var(--hairline);color:var(--ink)}
+.bell{position:relative}
+.bell .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--error);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* content */
+.content{padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-lg)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-md)}
+.page-head h1{font-size:24px;font-weight:600}
+.page-head .btn-row{display:flex;gap:var(--sp-sm)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 20px;background:var(--primary);color:#fff;border:1px solid var(--primary);border-radius:var(--r-md);font-size:14px;font-weight:600}
+.btn--secondary{background:var(--canvas);color:var(--ink);border-color:var(--hairline)}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.kpi{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-md)}
+.kpi .lbl{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:var(--sp-xxs,4px)}
+.kpi .val{font-size:26px;font-weight:600;color:var(--ink);letter-spacing:-0.02em}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+.delta{font-size:13px;font-weight:600}
+.up{color:var(--success)} .down{color:var(--error)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:6px;border-radius:3px;background:var(--surface-strong)}
+.spark i.hot{background:#c7c7c7}
+.spark i.y{background:var(--primary)}
+
+/* charts */
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-md)}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.card h3{font-size:16px;font-weight:600;margin-bottom:var(--sp-md)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:190px;border-bottom:1px solid var(--hairline)}
+.bcol{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:60%;background:var(--surface-strong);border-radius:6px 6px 0 0}
+.bcol.hot .bar{background:var(--primary)}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-size:11px;color:var(--muted)}
+.donut-wrap{display:flex;gap:var(--sp-lg);align-items:center}
+.donut{position:relative;width:168px;height:168px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-size:22px;font-weight:600;color:var(--ink)}
+.donut .center .t{font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--body)}
+.leg i{width:10px;height:10px;border-radius:3px;flex:none}
+.leg .pct{margin-left:auto;font-weight:600;color:var(--ink)}
+
+/* table + panel */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-md);align-items:start}
+.table-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden}
+.tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline)}
+.tc-head h3{font-size:16px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--hairline);background:var(--surface-soft)}
+td{padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--hairline-soft);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.cell-name{font-weight:600;color:var(--ink)}
+.cell-sub{font-size:12px;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:500;white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:500;border-radius:var(--r-pill);padding:3px 10px}
+.badge.success{background:#ecfdf5;color:#047857}
+.badge.warning{background:#fffbeb;color:#b45309}
+.badge.danger{background:#fef2f2;color:#b91c1c}
+.badge.neutral{background:var(--surface-card);color:var(--muted)}
+.badge.violet{background:#f5f3ff;color:#6d28d9}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--surface-strong);border-radius:var(--r-xs,4px);background:var(--canvas);vertical-align:middle}
+input[type=checkbox]:checked{background:var(--primary);border-color:var(--primary)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+.row-actions button{border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-md);font-size:12px;font-weight:500;color:var(--muted);padding:5px 10px}
+.row-actions button:hover{color:var(--ink);border-color:var(--ink)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg)}
+.pager .info{font-size:13px;color:var(--muted)}
+.pg{display:flex;gap:6px}
+.pg button{min-width:32px;height:32px;border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-md);font-size:13px;color:var(--muted)}
+.pg button.cur{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* activity */
+.feed-item{display:flex;gap:var(--sp-sm);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline-soft)}
+.feed-item:last-child{border-bottom:0}
+.feed-item p{font-size:13px;color:var(--body)}
+.feed-item p b{color:var(--ink);font-weight:600}
+.feed-item .time{font-size:12px;color:var(--muted-soft);margin-top:2px}
+.quick{margin-top:var(--sp-md);padding-top:var(--sp-md);border-top:1px solid var(--hairline)}
+.quick label{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--body);padding:6px 0}
+.toggle{appearance:none;width:36px;height:20px;border-radius:var(--r-pill);background:var(--surface-strong);position:relative;transition:background .15s}
+.toggle:checked{background:var(--primary)}
+.quick .btn{width:100%;margin-top:var(--sp-sm)}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .search input{width:160px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#"><span class="dot">C</span>Cal.com</a>
+    <nav class="menu">
+      <p class="m-label">Workspace</p>
+      <a href="#" class="active"><span class="ico">◈</span>Dashboard</a>
+      <a href="#"><span class="ico">▤</span>Bookings<span class="cnt">12</span></a>
+      <a href="#"><span class="ico">▦</span>Event types</a>
+      <a href="#"><span class="ico">▣</span>Marketplace installs</a>
+      <p class="m-label">People</p>
+      <a href="#"><span class="ico">◍</span>Teams</a>
+      <a href="#"><span class="ico">◎</span>Members</a>
+      <p class="m-label">Insight</p>
+      <a href="#"><span class="ico">▥</span>Analytics</a>
+      <a href="#"><span class="ico">⚙</span>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="ava" style="background:var(--badge-orange)">SR</div>
+      <div><div class="nm">Sofia Reyes</div><div class="rl">Workspace admin</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Dashboard / <b>Overview</b></span>
+      <div class="search"><input type="search" placeholder="Search bookings, members…" aria-label="Search"></div>
+      <button class="icon-btn bell" aria-label="Notifications">◔<span class="dot">5</span></button>
+      <div class="ava" style="background:var(--badge-orange)">SR</div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Good morning, Sofia</h1>
+          <p style="color:var(--muted);font-size:14px">Here's how Fieldstone's scheduling is going this week.</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn--secondary btn">Export CSV</button>
+          <button class="btn">New event type</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <p class="lbl">Bookings this week</p>
+          <div class="val">186</div>
+          <div class="row"><span class="delta up">▲ 12.4%</span>
+            <div class="spark"><i style="height:30%"></i><i style="height:45%"></i><i class="hot" style="height:55%"></i><i style="height:40%"></i><i style="height:65%"></i><i class="y" style="height:90%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Show rate</p>
+          <div class="val">94.2%</div>
+          <div class="row"><span class="delta up">▲ 1.8%</span>
+            <div class="spark"><i style="height:55%"></i><i style="height:60%"></i><i class="hot" style="height:70%"></i><i style="height:65%"></i><i style="height:80%"></i><i class="y" style="height:95%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">No-shows</p>
+          <div class="val">11</div>
+          <div class="row"><span class="delta down">▼ 3.1%</span>
+            <div class="spark"><i style="height:80%"></i><i style="height:70%"></i><i class="hot" style="height:60%"></i><i style="height:50%"></i><i style="height:40%"></i><i class="y" style="height:30%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Round-robin load</p>
+          <div class="val">82%</div>
+          <div class="row"><span class="delta up">▲ 4.5%</span>
+            <div class="spark"><i style="height:40%"></i><i style="height:50%"></i><i class="hot" style="height:45%"></i><i style="height:60%"></i><i style="height:75%"></i><i class="y" style="height:85%"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3>Bookings by month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:40%"></div></div>
+            <div class="bcol"><div class="bar" style="height:52%"></div></div>
+            <div class="bcol"><div class="bar" style="height:45%"></div></div>
+            <div class="bcol"><div class="bar" style="height:60%"></div></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div></div>
+            <div class="bcol"><div class="bar" style="height:66%"></div></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div></div>
+            <div class="bcol"><div class="bar" style="height:72%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:86%"></div></div>
+            <div class="bcol"><div class="bar" style="height:63%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:96%"></div></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div></div>
+          </div>
+          <div class="blabels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+        </div>
+        <div class="card">
+          <h3>Bookings by event type</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="168" height="168" viewBox="0 0 168 168">
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#e5e7eb" stroke-width="15"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#111111" stroke-width="15" stroke-dasharray="141 261" stroke-dashoffset="0"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#8b5cf6" stroke-width="15" stroke-dasharray="78 324" stroke-dashoffset="-146"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#34d399" stroke-width="15" stroke-dasharray="52 350" stroke-dashoffset="-229"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#fb923c" stroke-width="15" stroke-dasharray="39 363" stroke-dashoffset="-286"/>
+              </svg>
+              <div class="center"><span class="v">742</span><span class="t">bookings</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#111111"></i>Discovery call<span class="pct">42%</span></div>
+              <div class="leg"><i style="background:#8b5cf6"></i>Sales demo<span class="pct">23%</span></div>
+              <div class="leg"><i style="background:#34d399"></i>Customer sync<span class="pct">16%</span></div>
+              <div class="leg"><i style="background:#fb923c"></i>Onboarding<span class="pct">12%</span></div>
+              <div class="leg"><i style="background:#e5e7eb"></i>Other<span class="pct">7%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head"><h3>Upcoming bookings</h3><button class="btn--secondary btn" style="height:32px;padding:0 14px;font-size:13px">View all</button></div>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Invitee</th><th>Event type</th><th>Owner</th><th>Status</th><th>Amount</th><th>When</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Dana Kim</div><div class="cell-sub">Fieldstone Inc.</div></td>
+                <td>Sales demo</td><td>A. Osei</td>
+                <td><span class="badge success">Confirmed</span></td>
+                <td class="num">—</td><td class="num">Tue 10:30am</td>
+                <td><div class="row-actions"><button>Reschedule</button><button>Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Marcus Bell</div><div class="cell-sub">Harbor &amp; Lane</div></td>
+                <td>Discovery call</td><td>Round-robin</td>
+                <td><span class="badge success">Confirmed</span></td>
+                <td class="num">$0</td><td class="num">Tue 1:00pm</td>
+                <td><div class="row-actions"><button>Reschedule</button><button>Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Priya Nair</div><div class="cell-sub">Loomstate</div></td>
+                <td>Paid consult</td><td>S. Reyes</td>
+                <td><span class="badge warning">Payment pending</span></td>
+                <td class="num">$150</td><td class="num">Wed 9:00am</td>
+                <td><div class="row-actions"><button>Reschedule</button><button>Invoice</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Jonah Weiss</div><div class="cell-sub">Ferrostat</div></td>
+                <td>Onboarding</td><td>T. Aliyev</td>
+                <td><span class="badge neutral">Awaiting invitee</span></td>
+                <td class="num">—</td><td class="num">Wed 3:30pm</td>
+                <td><div class="row-actions"><button>Reschedule</button><button>Remind</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Elena Sokolova</div><div class="cell-sub">Brightpath</div></td>
+                <td>Customer sync</td><td>Round-robin</td>
+                <td><span class="badge danger">Cancelled</span></td>
+                <td class="num">—</td><td class="num">Thu 11:00am</td>
+                <td><div class="row-actions"><button>Rebook</button><button>Notes</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Omar Haddad</div><div class="cell-sub">Civiq</div></td>
+                <td>Sales demo</td><td>A. Osei</td>
+                <td><span class="badge violet">Rescheduled</span></td>
+                <td class="num">—</td><td class="num">Fri 2:00pm</td>
+                <td><div class="row-actions"><button>Reschedule</button><button>Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">June Park</div><div class="cell-sub">Halcyon Labs</div></td>
+                <td>Discovery call</td><td>Round-robin</td>
+                <td><span class="badge success">Confirmed</span></td>
+                <td class="num">$0</td><td class="num">Fri 4:00pm</td>
+                <td><div class="row-actions"><button>Reschedule</button><button>Cancel</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span class="info">Showing 1–7 of 186 bookings</span>
+            <div class="pg"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recent activity</h3>
+          <div class="feed-item"><div class="ava" style="background:var(--badge-emerald);width:28px;height:28px;font-size:11px">DK</div><div><p><b>Dana Kim</b> confirmed the Fieldstone demo via the router.</p><p class="time">14 minutes ago</p></div></div>
+          <div class="feed-item"><div class="ava" style="background:var(--badge-violet);width:28px;height:28px;font-size:11px">WF</div><div><p><b>No-show Rescue Flow</b> sent 3 reminders automatically.</p><p class="time">1 hour ago</p></div></div>
+          <div class="feed-item"><div class="ava" style="background:var(--badge-pink);width:28px;height:28px;font-size:11px">AO</div><div><p><b>A. Osei</b> reached 40 bookings this month — highest on the team.</p><p class="time">3 hours ago</p></div></div>
+          <div class="feed-item"><div class="ava" style="background:var(--badge-orange);width:28px;height:28px;font-size:11px">SR</div><div><p><b>Sofia Reyes</b> installed <b>CRM Sync Bundle</b> on the workspace.</p><p class="time">Yesterday</p></div></div>
+          <div class="quick">
+            <p style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">Quick settings</p>
+            <label>Auto-confirm bookings <input type="checkbox" class="toggle" checked></label>
+            <label>Slack digests <input type="checkbox" class="toggle" checked></label>
+            <label>Require payment up front <input type="checkbox" class="toggle"></label>
+            <button class="btn">Save preferences</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDNIGHT ROOM — Store Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#121212; --surface:#181818; --surface-2:#1f1f1f; --card:#252525; --card-alt:#272727;
+  --text:#ffffff; --sub:#b3b3b3; --bright:#fdfdfd;
+  --green:#1ed760; --green-border:#1db954;
+  --neg:#f3727f; --warn:#ffa42b; --info:#539df5;
+  --border-gray:#4d4d4d; --border-light:#7c7c7c; --light-surface:#eeeeee;
+  --shadow-card:rgba(0,0,0,.3) 0px 8px 8px;
+  --shadow-dialog:rgba(0,0,0,.5) 0px 8px 24px;
+  --inset-border:rgb(18,18,18) 0px 1px 0px, rgb(124,124,124) 0px 0px 0px 1px inset;
+  --r-badge:2px; --r-input:4px; --r-card:8px; --r-panel:12px; --r-pill-lg:100px; --r-pill:9999px; --r-circle:50%;
+  --font:'Figtree','Helvetica Neue',helvetica,arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.4}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font);cursor:pointer}
+
+/* ---------- pills + circles ---------- */
+.btn{border-radius:var(--r-pill);border:none;font-weight:700;font-size:13px;letter-spacing:.14px;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;transition:transform .1s,background .15s}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#3be477}
+.btn-dark{background:var(--surface-2);color:#fff}
+.btn-dark:hover{background:#2a2a2a}
+.caps{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--sub)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- sidebar ---------- */
+.sidebar{position:fixed;inset:0 auto 0 0;width:250px;background:#000;display:flex;flex-direction:column;padding:22px 12px;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;padding:6px 10px 22px}
+.logo-mark{width:32px;height:32px;border-radius:var(--r-circle);background:var(--green);color:#000;display:grid;place-items:center;font-size:16px}
+.side-item{display:flex;align-items:center;gap:12px;color:var(--sub);padding:10px 14px;border-radius:var(--r-input);font-size:14px;font-weight:400}
+.side-item:hover{color:#fff}
+.side-item.active{color:#fff;font-weight:700;background:var(--surface-2)}
+.side-badge{margin-left:auto;background:var(--green);color:#000;border-radius:var(--r-pill);font-size:10.5px;font-weight:700;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+.side-badge.warn{background:var(--warn)}
+.user-card{margin-top:auto;background:var(--surface);border-radius:var(--r-panel);padding:14px;display:flex;gap:10px;align-items:center}
+.avatar{width:38px;height:38px;border-radius:var(--r-circle);background:linear-gradient(135deg,#539df5,#1ed760);color:#000;display:grid;place-items:center;font-weight:700;font-size:13px}
+.user-card b{display:block;font-size:13.5px}
+.user-card span{font-size:12px;color:var(--sub)}
+.user-card button{margin-left:auto;background:none;border:none;color:var(--sub);font-size:16px}
+
+/* ---------- topbar ---------- */
+.main{margin-left:250px;padding:0 24px 48px}
+.topbar{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid #232323;position:sticky;top:0;background:var(--bg);z-index:5}
+.crumb{font-size:12px;color:var(--sub)}
+.crumb b{display:block;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.2px;margin-top:2px}
+.top-search{flex:1;max-width:400px;margin-left:auto;position:relative}
+.top-search input{width:100%;background:var(--surface-2);color:#fff;border:none;border-radius:var(--r-pill-lg);padding:11px 18px 11px 42px;font-size:13.5px;font-family:var(--font);box-shadow:var(--inset-border)}
+.top-search input::placeholder{color:var(--sub)}
+.top-search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--sub)}
+.circ{width:42px;height:42px;border-radius:var(--r-circle);background:var(--surface-2);border:none;color:var(--sub);display:grid;place-items:center}
+.circ:hover{color:#fff;background:#2a2a2a}
+.bell{position:relative}
+.bell .dot{position:absolute;top:4px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--green);border:2px solid var(--bg)}
+.avatar.top{width:42px;height:42px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+.kpi{background:var(--surface);border-radius:var(--r-card);padding:20px 22px}
+.kpi .label{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--sub)}
+.kpi .value{font-size:30px;font-weight:700;margin:8px 0 4px}
+.kpi .delta{font-size:12.5px;font-weight:700}
+.up{color:var(--green)} .down{color:var(--neg)} .flat{color:var(--warn)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:12px}
+.spark i{flex:1;background:#2a2a2a;border-radius:1px}
+.spark i.hi{background:var(--green)}
+
+/* ---------- charts ---------- */
+.charts{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:24px}
+.panel{background:var(--surface);border-radius:var(--r-card);padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
+.panel-head h3{font-size:17px;font-weight:700}
+.panel-head span{font-size:12px;color:var(--sub)}
+.bars{display:flex;align-items:flex-end;gap:12px;height:160px;padding-top:6px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar i{width:100%;max-width:40px;background:var(--green);border-radius:4px 4px 0 0;display:block}
+.bar:nth-child(even) i{background:#3a3a3a}
+.bar b{font-size:11px;font-weight:400;color:var(--sub)}
+.donut-wrap{display:flex;align-items:center;gap:22px}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut .center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut .center b{font-size:24px;font-weight:700}
+.donut .center span{font-size:11px;color:var(--sub);display:block}
+.legend{display:grid;gap:11px;font-size:13.5px;flex:1}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--sub)}
+.legend .sw{width:12px;height:12px;border-radius:3px;flex:none}
+.legend .val{margin-left:auto;font-weight:700;color:#fff}
+
+/* ---------- table ---------- */
+.layout{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start}
+.table-wrap{background:var(--surface);border-radius:var(--r-card);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{text-align:left;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--sub);padding:13px 16px;border-bottom:1px solid #2a2a2a}
+tbody td{padding:12px 16px;border-bottom:1px solid #232323;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+.tbl-name b{display:block;font-size:13.5px;font-weight:700}
+.tbl-name span{font-size:12px;color:var(--sub)}
+.badge{display:inline-block;border-radius:var(--r-badge);font-size:10.5px;font-weight:600;letter-spacing:.3px;text-transform:capitalize;padding:4px 9px}
+.b-ok{background:rgba(30,215,96,.16);color:var(--green)}
+.b-warn{background:rgba(255,164,43,.16);color:var(--warn)}
+.b-err{background:rgba(243,114,127,.16);color:var(--neg)}
+.b-mute{background:rgba(83,157,245,.16);color:var(--info)}
+.money{text-align:right;font-weight:700}
+.date{color:var(--sub)}
+.row-actions{display:flex;gap:6px}
+.act{width:28px;height:28px;border-radius:var(--r-circle);border:none;background:var(--surface-2);color:var(--sub);display:grid;place-items:center;font-size:12px}
+.act:hover{color:#fff;background:#2a2a2a}
+.tfoot{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:12.5px;color:var(--sub)}
+.pager{display:flex;gap:6px}
+.pager button{width:30px;height:30px;border-radius:var(--r-pill);border:none;background:var(--surface-2);color:#fff;font-weight:700;font-size:12px}
+.pager button.on{background:#fff;color:#000}
+
+/* ---------- activity ---------- */
+.activity .item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #232323;font-size:13.5px}
+.activity .item:last-child{border:none}
+.a-dot{width:32px;height:32px;border-radius:var(--r-circle);flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#000}
+.activity time{display:block;font-size:11.5px;color:var(--sub);margin-top:2px}
+
+/* ---------- responsive ---------- */
+@media(max-width:1200px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.layout{grid-template-columns:1fr}
+}
+@media(max-width:960px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:0 14px 40px}
+  thead th,tbody td{padding:9px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a class="logo" href="#"><span class="logo-mark">♪</span>MR Store Admin</a>
+  <div class="caps" style="padding:8px 14px 4px">Overview</div>
+  <a class="side-item" href="#">▦ Dashboard</a>
+  <a class="side-item active" href="#">◉ Orders</a>
+  <a class="side-item" href="#">◈ Products</a>
+  <div class="caps" style="padding:16px 14px 4px">Fans</div>
+  <a class="side-item" href="#">☺ Customers</a>
+  <a class="side-item" href="#">✉ Preorders</a>
+  <a class="side-item" href="#">⚑ Reviews <span class="side-badge">9</span></a>
+  <div class="caps" style="padding:16px 14px 4px">Insights</div>
+  <a class="side-item" href="#">◔ Analytics</a>
+  <a class="side-item" href="#">⇄ Inventory <span class="side-badge warn">3</span></a>
+  <div class="caps" style="padding:16px 14px 4px">Settings</div>
+  <a class="side-item" href="#">⚙ Store settings</a>
+  <div class="user-card">
+    <span class="avatar">SK</span>
+    <div><b>Sasha Kim</b><span>Merch manager</span></div>
+    <button aria-label="Menu">⋯</button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="crumb">Store · Orders <b>Order queue</b></div>
+    <div class="top-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" placeholder="Search orders or customers" aria-label="Search">
+    </div>
+    <button class="btn btn-dark">Export</button>
+    <button class="circ bell" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+    <div class="avatar top">SK</div>
+  </div>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="label">Store revenue · Oct</div>
+      <div class="value num">$61,840</div>
+      <div class="delta up">↑ 14.2% vs Sep</div>
+      <div class="spark"><i style="height:36%"></i><i style="height:48%"></i><i style="height:44%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:72%"></i><i class="hi" style="height:88%"></i><i style="height:66%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Orders</div>
+      <div class="value num">1,467</div>
+      <div class="delta up">↑ 9.6% vs Sep</div>
+      <div class="spark"><i style="height:32%"></i><i style="height:46%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:64%"></i><i class="hi" style="height:82%"></i><i style="height:70%"></i><i style="height:58%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Vinyl share</div>
+      <div class="value num">58%</div>
+      <div class="delta up">↑ 3 pts vs Sep</div>
+      <div class="spark"><i style="height:44%"></i><i style="height:50%"></i><i style="height:48%"></i><i style="height:58%"></i><i style="height:62%"></i><i class="hi" style="height:76%"></i><i style="height:70%"></i><i style="height:74%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Open support</div>
+      <div class="value num">23</div>
+      <div class="delta down">↓ 5 closed today</div>
+      <div class="spark"><i style="height:78%"></i><i style="height:70%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:50%"></i><i class="hi" style="height:42%"></i><i style="height:36%"></i><i style="height:30%"></i></div>
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="panel">
+      <div class="panel-head"><h3>Store revenue by month</h3><span>2026 · USD</span></div>
+      <div class="bars">
+        <div class="bar"><i style="height:38%"></i><b>Jan</b></div>
+        <div class="bar"><i style="height:46%"></i><b>Feb</b></div>
+        <div class="bar"><i style="height:42%"></i><b>Mar</b></div>
+        <div class="bar"><i style="height:55%"></i><b>Apr</b></div>
+        <div class="bar"><i style="height:50%"></i><b>May</b></div>
+        <div class="bar"><i style="height:63%"></i><b>Jun</b></div>
+        <div class="bar"><i style="height:58%"></i><b>Jul</b></div>
+        <div class="bar"><i style="height:71%"></i><b>Aug</b></div>
+        <div class="bar"><i style="height:67%"></i><b>Sep</b></div>
+        <div class="bar"><i style="height:82%"></i><b>Oct</b></div>
+        <div class="bar"><i style="height:75%"></i><b>Nov</b></div>
+        <div class="bar"><i style="height:90%"></i><b>Dec</b></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Sales by format</h3><span>Oct</span></div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)">
+            <circle cx="80" cy="80" r="62" fill="none" stroke="#2a2a2a" stroke-width="24"/>
+            <circle cx="80" cy="80" r="62" fill="none" stroke="#1ed760" stroke-width="24" stroke-dasharray="180 390"/>
+            <circle cx="80" cy="80" r="62" fill="none" stroke="#539df5" stroke-width="24" stroke-dasharray="94 390" stroke-dashoffset="-180"/>
+            <circle cx="80" cy="80" r="62" fill="none" stroke="#ffa42b" stroke-width="24" stroke-dasharray="70 390" stroke-dashoffset="-274"/>
+            <circle cx="80" cy="80" r="62" fill="none" stroke="#f3727f" stroke-width="24" stroke-dasharray="46 390" stroke-dashoffset="-344"/>
+          </svg>
+          <div class="center"><div><b class="num">1,467</b><span>Orders · Oct</span></div></div>
+        </div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:#1ed760"></span>Vinyl<b class="val num">46%</b></div>
+          <div class="row"><span class="sw" style="background:#539df5"></span>Apparel<b class="val num">24%</b></div>
+          <div class="row"><span class="sw" style="background:#ffa42b"></span>Cassettes &amp; CDs<b class="val num">18%</b></div>
+          <div class="row"><span class="sw" style="background:#f3727f"></span>Prints &amp; other<b class="val num">12%</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="layout">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+          <th>Order</th><th>Format</th><th>Status</th><th style="text-align:right">Total</th><th>Placed</th><th>Actions</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20714</b><span>Afterglow Deluxe 2LP · Noa Mesfun</span></div></td>
+            <td>Vinyl</td>
+            <td><span class="badge b-ok">Shipped</span></td>
+            <td class="money num">$48.00</td><td class="date num">Oct 24, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20713</b><span>Night Drive Tee ×2 · Theo Rask</span></div></td>
+            <td>Apparel</td>
+            <td><span class="badge b-ok">Shipped</span></td>
+            <td class="money num">$76.00</td><td class="date num">Oct 24, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20709</b><span>Ember Sessions Signed · Ines Duarte</span></div></td>
+            <td>Vinyl</td>
+            <td><span class="badge b-warn">Packing</span></td>
+            <td class="money num">$55.00</td><td class="date num">Oct 23, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20704</b><span>Gold Hour 7″ Preorder · Piet Vos</span></div></td>
+            <td>Vinyl</td>
+            <td><span class="badge b-mute">Preorder</span></td>
+            <td class="money num">$18.00</td><td class="date num">Oct 23, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20698</b><span>Violet Static Cassette · Hana Ito</span></div></td>
+            <td>Cassette</td>
+            <td><span class="badge b-err">Refunded</span></td>
+            <td class="money num">$16.00</td><td class="date num">Oct 22, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20691</b><span>Blue Hour Hoodie · Callum Reid</span></div></td>
+            <td>Apparel</td>
+            <td><span class="badge b-ok">Shipped</span></td>
+            <td class="money num">$72.00</td><td class="date num">Oct 22, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td class="tbl-name"><div><b>MR-20685</b><span>Tour Poster 2026 · Mara Silva</span></div></td>
+            <td>Prints</td>
+            <td><span class="badge b-warn">Packing</span></td>
+            <td class="money num">$26.00</td><td class="date num">Oct 21, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tfoot">
+        <span>Showing 7 of 1,467 orders</span>
+        <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>210</button><button>›</button></div>
+      </div>
+    </div>
+
+    <aside class="panel activity">
+      <div class="panel-head"><h3>Recent activity</h3><span>Live</span></div>
+      <div class="item"><span class="a-dot" style="background:#1ed760">✓</span><div><b>MR-20714</b> handed to carrier — Rotterdam warehouse.<time>18 min ago</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#ffa42b">!</span><div><b>Eclipse marble</b> stock down to 212 copies — restock flagged.<time>1 hr ago</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#539df5">★</span><div>New 5★ review on <b>Ember Sessions Signed</b>.<time>3 hrs ago</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#f3727f">R</span><div><b>MR-20698</b> refunded — wrong variant shipped.<time>Yesterday</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#1ed760">+</span><div><b>Gold Hour 7″</b> preorder count passed 1,100 of 1,500.<time>Yesterday</time></div></div>
+    </aside>
+  </section>
+</main>
+
+</body>
+</html>

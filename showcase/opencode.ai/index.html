@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>opencode.ai — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --c-primary:#201d1d;
+  --c-on-primary:#fdfcfc;
+  --c-ink:#201d1d;
+  --c-ink-deep:#0f0000;
+  --c-charcoal:#302c2c;
+  --c-body:#424245;
+  --c-mute:#646262;
+  --c-stone:#6e6e73;
+  --c-ash:#9a9898;
+  --c-canvas:#fdfcfc;
+  --c-surface-soft:#f8f7f7;
+  --c-surface-card:#f1eeee;
+  --c-surface-dark:#201d1d;
+  --c-surface-dark-elevated:#302c2c;
+  --c-hairline:rgba(15,0,0,0.12);
+  --c-hairline-strong:#646262;
+  --c-on-dark:#fdfcfc;
+  --c-on-dark-mute:#9a9898;
+  --c-accent:#007aff;
+  --c-warning:#ff9f0a;
+  --c-danger:#ff3b30;
+  --c-success:#30d158;
+  /* rounded */
+  --r-none:0px; --r-sm:4px; --r-full:9999px;
+  /* spacing */
+  --s-xxs:1px; --s-xs:4px; --s-sm:8px; --s-md:12px;
+  --s-lg:16px; --s-xl:24px; --s-xxl:32px; --s-section:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Berkeley Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono','Courier New',monospace;
+  color:var(--c-ink);
+  background:var(--c-canvas);
+  font-size:16px;line-height:1.5;
+}
+/* ═══ banner ═══ */
+.sg-banner{
+  background:var(--c-surface-dark);
+  color:var(--c-on-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;
+}
+.sg-banner .sg-left{display:flex;align-items:center;gap:16px;}
+.sg-banner .sg-folder{font-size:13px;color:var(--c-on-dark-mute);}
+.sg-banner .sg-brand{
+  font-size:16px;font-weight:700;color:var(--c-on-dark);
+  letter-spacing:0;
+}
+.sg-banner .sg-desc{
+  font-size:13px;color:var(--c-on-dark-mute);
+  max-width:600px;text-align:right;
+}
+main{max-width:960px;margin:0 auto;padding:0 24px;}
+.sg-section-title{
+  font-size:16px;font-weight:700;color:var(--c-ink);
+  border-bottom:1px solid var(--c-hairline);
+  padding-bottom:var(--s-sm);
+  margin-bottom:var(--s-section);
+}
+.sg-block-label{
+  font-size:16px;font-weight:700;
+  margin-bottom:var(--s-md);
+}
+.sg-block{margin-bottom:var(--s-section);}
+/* ── color tokens ── */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--s-md);}
+.swatch{border:1px solid var(--c-hairline);overflow:hidden;}
+.swatch .chip{height:56px;}
+.swatch .meta{padding:8px 10px;background:var(--c-canvas);border-top:1px solid var(--c-hairline);}
+.swatch .name{font-size:12px;font-weight:500;}
+.swatch .hex{font-size:12px;color:var(--c-mute);}
+/* ── typography ── */
+.type-spec{border-top:1px solid var(--c-hairline);}
+.type-row{
+  padding:var(--s-md) 0;
+  border-bottom:1px solid var(--c-hairline);
+  display:flex;align-items:baseline;gap:var(--s-xl);flex-wrap:wrap;
+}
+.type-row .tag{font-size:12px;color:var(--c-mute);min-width:210px;}
+.t-display{font-size:38px;font-weight:700;line-height:1.5;}
+.t-h-md{font-size:16px;font-weight:700;}
+.t-body{font-size:16px;font-weight:400;line-height:1.5;}
+.t-body-strong{font-size:16px;font-weight:500;line-height:1.5;}
+.t-caption{font-size:14px;line-height:2;color:var(--c-mute);}
+.t-btn{font-size:16px;font-weight:500;line-height:2;}
+/* ── buttons ── */
+.btn-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;text-decoration:none;
+  font:500 16px/2 'Berkeley Mono','JetBrains Mono',ui-monospace,monospace;
+  border-radius:var(--r-sm);
+  padding:2px 20px;height:36px;
+}
+.btn-primary{background:var(--c-primary);color:var(--c-on-primary);}
+.btn-primary:hover{background:var(--c-ink-deep);}
+.btn-primary.pressed{background:var(--c-ink-deep);outline:1px solid var(--c-ash);outline-offset:3px;}
+.btn-secondary{background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline-strong);}
+.btn-secondary:hover{background:var(--c-surface-soft);}
+.btn-disabled{background:var(--c-surface-card);color:var(--c-ash);cursor:not-allowed;}
+/* ── tabs ── */
+.tab-strip{display:flex;border-bottom:1px solid var(--c-hairline-strong);gap:var(--s-xs);}
+.tab{
+  background:transparent;border:none;cursor:pointer;
+  font:500 16px/2 'Berkeley Mono','JetBrains Mono',monospace;
+  color:var(--c-mute);padding:8px 16px;border-radius:0;
+}
+.tab.active{color:var(--c-ink);border-bottom:2px solid var(--c-ash);padding-bottom:6px;}
+/* ── inputs ── */
+.input-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.text-input{
+  background:var(--c-surface-soft);color:var(--c-ink);
+  font:400 16px/1.5 'Berkeley Mono','JetBrains Mono',monospace;
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-sm);
+  padding:6px 12px;height:40px;width:260px;outline:none;
+}
+.text-input.focus{background:var(--c-canvas);border-color:var(--c-ink);}
+.textarea{
+  background:var(--c-surface-soft);color:var(--c-ink);
+  font:400 16px/1.5 'Berkeley Mono','JetBrains Mono',monospace;
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-sm);
+  padding:12px;width:100%;max-width:480px;height:96px;resize:vertical;outline:none;
+}
+.install-snippet{
+  display:inline-flex;align-items:center;gap:var(--s-lg);
+  background:var(--c-surface-card);
+  border-radius:var(--r-sm);
+  padding:12px 16px;
+  font-size:16px;
+}
+.install-snippet .copy{color:var(--c-mute);font-size:13px;}
+/* ── TUI mockup ── */
+.hero-tui{
+  background:var(--c-surface-dark);
+  color:var(--c-on-dark);
+  padding:64px 32px;
+  border-radius:0;
+}
+.ascii-wm{
+  font-family:'Berkeley Mono','JetBrains Mono',monospace;
+  font-size:12px;line-height:1.15;
+  white-space:pre;
+  color:var(--c-on-dark);
+}
+.tui-prompt-row{
+  background:var(--c-surface-dark-elevated);
+  color:var(--c-on-dark);
+  border-radius:var(--r-sm);
+  padding:8px 12px;
+  margin-top:var(--s-xl);
+  font-size:16px;
+  display:flex;gap:var(--s-md);flex-wrap:wrap;align-items:center;
+}
+.tui-prompt-row .pipe{color:var(--c-accent);}
+.tui-prompt-row .model{color:var(--c-ash);}
+.tui-hints{
+  margin-top:var(--s-xl);
+  font-size:14px;color:var(--c-ash);
+  display:flex;gap:var(--s-xl);flex-wrap:wrap;
+}
+.tui-hints kbd{
+  background:var(--c-surface-dark-elevated);
+  padding:2px 6px;border-radius:var(--r-sm);
+  font:inherit;font-size:12px;
+}
+/* ── ascii chart tiles ── */
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md);}
+.chart-tile{
+  border:1px solid var(--c-hairline);
+  padding:16px;
+}
+.chart-tile pre{font-size:9px;line-height:1.2;color:var(--c-body);white-space:pre;margin-bottom:var(--s-md);}
+.chart-tile .cap{font-size:14px;line-height:2;color:var(--c-mute);}
+/* ── badges ── */
+.badge-row{display:flex;gap:var(--s-sm);flex-wrap:wrap;align-items:center;}
+.badge-news{
+  display:inline-flex;align-items:center;
+  background:var(--c-surface-dark);color:var(--c-on-dark);
+  font-size:14px;line-height:2;
+  padding:2px 8px;border-radius:var(--r-sm);
+}
+.badge-soft{
+  display:inline-flex;align-items:center;
+  background:var(--c-surface-card);color:var(--c-ink);
+  font-size:14px;padding:2px 8px;border-radius:var(--r-sm);
+}
+.badge-section-label{font-size:16px;font-weight:700;}
+/* ── list rows ── */
+.list-row{
+  padding:8px 0;
+  font-size:16px;color:var(--c-body);
+  display:flex;gap:var(--s-md);
+}
+.list-row .marker{color:var(--c-ink);font-weight:500;white-space:nowrap;}
+.list-row b{color:var(--c-ink);font-weight:500;}
+.faq-row{
+  padding:12px 0;
+  border-bottom:1px solid var(--c-hairline);
+  font-size:16px;
+}
+.faq-row .q{display:flex;gap:var(--s-md);}
+.faq-row .toggle{font-weight:500;}
+.faq-row .a{color:var(--c-body);margin:var(--s-xs) 0 0 calc(16px + var(--s-md));}
+.testimonial-row{
+  background:var(--c-surface-soft);
+  border-radius:var(--r-sm);
+  padding:16px 20px;
+  font-size:16px;color:var(--c-body);
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s-lg);
+}
+.testimonial-row .avatar{width:32px;height:32px;border-radius:var(--r-full);background:var(--c-surface-dark-elevated);}
+.testimonial-row .who{font-weight:500;color:var(--c-ink);}
+.testimonial-row .role{color:var(--c-mute);font-size:14px;}
+.testimonial-row .qt{margin-top:var(--s-xs);}
+/* ── nav ── */
+.nav-demo{border-bottom:1px solid var(--c-hairline);padding-bottom:0;}
+.primary-nav{
+  background:var(--c-canvas);color:var(--c-ink);
+  height:56px;display:flex;align-items:center;gap:var(--s-xl);
+}
+.primary-nav .wm{font-size:9px;line-height:1.1;white-space:pre;}
+.primary-nav .links{display:flex;gap:var(--s-lg);font-size:16px;font-weight:500;margin-left:auto;}
+.primary-nav .links a{color:var(--c-ink);text-decoration:none;}
+.primary-nav .links .cnt{color:var(--c-mute);font-weight:400;}
+/* ── table ── */
+.data-table{width:100%;border-collapse:collapse;font-size:16px;}
+.data-table th{
+  text-align:left;font-size:16px;font-weight:500;color:var(--c-ink);
+  padding:8px 12px;border-bottom:1px solid var(--c-hairline-strong);
+}
+.data-table td{padding:8px 12px;border-bottom:1px solid var(--c-hairline);color:var(--c-body);}
+.data-table td.b{color:var(--c-ink);font-weight:500;}
+/* ═══ product ═══ */
+#product{margin-top:var(--s-section);}
+.news-line{display:flex;align-items:center;gap:var(--s-md);margin-bottom:var(--s-lg);}
+.news-line span.plain{font-size:16px;color:var(--c-body);}
+.hero-h1{font-size:38px;font-weight:700;line-height:1.5;margin-bottom:var(--s-lg);}
+.hero-sub{font-size:16px;color:var(--c-body);max-width:560px;margin-bottom:var(--s-xl);}
+.install-tabs{margin:var(--s-xl) 0 var(--s-lg);}
+.product-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-xxl);align-items:start;}
+.section-rule{border:none;border-top:1px solid var(--c-hairline);margin:var(--s-section) 0;}
+.fig-cap{font-size:14px;line-height:2;color:var(--c-mute);}
+.cta-dark{
+  background:var(--c-surface-dark);color:var(--c-on-dark);
+  padding:48px 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-xl);flex-wrap:wrap;
+}
+.cta-dark h2{font-size:38px;font-weight:700;line-height:1.5;}
+footer.sg-footer{
+  border-top:1px solid var(--c-hairline);
+  padding:32px 0;
+}
+.sg-footer .links-row{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border-bottom:1px solid var(--c-hairline);
+}
+.sg-footer .links-row a{
+  font-size:14px;line-height:2;color:var(--c-body);text-decoration:none;
+  padding:12px 0;text-align:center;
+  border-right:1px solid var(--c-hairline);
+}
+.sg-footer .links-row a:last-child{border-right:none;}
+.sg-footer .links-row a:hover{color:var(--c-ink);background:var(--c-surface-soft);}
+.sg-footer .legal{
+  display:flex;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap;
+  padding-top:var(--s-md);
+  font-size:14px;line-height:2;color:var(--c-mute);
+}
+.sg-footer .legal a{color:var(--c-mute);text-decoration:none;}
+@media (max-width:900px){
+  .chart-grid{grid-template-columns:1fr;}
+  .product-split{grid-template-columns:1fr;}
+  .primary-nav .links{display:none;}
+  .sg-footer .links-row{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-folder">$ opencode.ai</span>
+    <span class="sg-brand">[ OpenCode ]</span>
+  </div>
+  <div class="sg-desc">A terminal-native marketing system in 100% Berkeley Mono — manpage typography, ASCII bracket markers, one dark TUI mockup.</div>
+</header>
+
+<main>
+  <!-- ═══════════ COMPONENTS ═══════════ -->
+  <section id="components" style="padding-top:var(--s-section);">
+    <div class="sg-section-title">## Components</div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#201d1d"></div><div class="meta"><div class="name">Ink</div><div class="hex">#201D1D</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#fdfcfc;border-bottom:1px solid rgba(15,0,0,.12)"></div><div class="meta"><div class="name">Canvas Cream</div><div class="hex">#FDFCFC</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f1eeee"></div><div class="meta"><div class="name">Surface Card</div><div class="hex">#F1EEEE</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#302c2c"></div><div class="meta"><div class="name">Dark Elevated</div><div class="hex">#302C2C</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#424245"></div><div class="meta"><div class="name">Body</div><div class="hex">#424245</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#9a9898"></div><div class="meta"><div class="name">Ash</div><div class="hex">#9A9898</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#007aff"></div><div class="meta"><div class="name">Accent (in-TUI)</div><div class="hex">#007AFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ff3b30"></div><div class="meta"><div class="name">Danger (in-TUI)</div><div class="hex">#FF3B30</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#30d158"></div><div class="meta"><div class="name">Success (in-TUI)</div><div class="hex">#30D158</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ff9f0a"></div><div class="meta"><div class="name">Warning (in-TUI)</div><div class="hex">#FF9F0A</div></div></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="tag">display-xl · 38/700/1.5</span><span class="t-display">The open source AI coding agent</span></div>
+        <div class="type-row"><span class="tag">heading-md · 16/700</span><span class="t-h-md">## What is OpenCode?</span></div>
+        <div class="type-row"><span class="tag">body-md · 16/400</span><span class="t-body">OpenCode is an open source agent that lives in your terminal and helps you write code.</span></div>
+        <div class="type-row"><span class="tag">body-strong · 16/500</span><span class="t-body-strong">Model-agnostic. Client-agnostic.</span></div>
+        <div class="type-row"><span class="tag">caption-md · 14/400/2.0</span><span class="t-caption">Fig 1. 150K GitHub stars &nbsp;&nbsp; Fig 2. 850 contributors</span></div>
+        <div class="type-row"><span class="tag">button-md · 16/500/2.0</span><span class="t-btn">Download</span></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Download</button>
+        <button class="btn btn-primary pressed">Pressed</button>
+        <button class="btn btn-secondary">Read docs →</button>
+        <button class="btn btn-disabled">Disabled</button>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Inputs &amp; install tabs</div>
+      <div class="input-row" style="margin-bottom:var(--s-lg);">
+        <input class="text-input" placeholder="Full name">
+        <input class="text-input focus" value="dev@company.com">
+        <span class="install-snippet">curl -fsSL https://opencode.ai/install | bash <span class="copy">⧉</span></span>
+      </div>
+      <div class="tab-strip" style="max-width:480px;">
+        <button class="tab active">curl</button>
+        <button class="tab">npm</button>
+        <button class="tab">bun</button>
+        <button class="tab">brew</button>
+        <button class="tab">yay</button>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Hero TUI mockup</div>
+      <div class="hero-tui">
+        <div class="ascii-wm">
+ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌
+ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌
+ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘
+ O P E N C O D E</div>
+        <div class="tui-prompt-row">
+          <span class="pipe">&#9474;</span>
+          <span>Build</span>
+          <span class="model">[Claude Opus 4.5]</span>
+          <span class="model">OpenCode Zen</span>
+        </div>
+        <div class="tui-hints">
+          <span><kbd>tab</kbd> switch agent</span>
+          <span><kbd>ctrl-p</kbd> commands</span>
+        </div>
+        <div style="margin-top:var(--s-lg);font-size:14px;color:var(--c-ash);">
+          <span style="color:#30d158;">●</span> connected &nbsp;
+          <span style="color:#ff9f0a;">●</span> 3 tools ready &nbsp;
+          <span style="color:#007aff;">●</span> model: opus
+        </div>
+      </div>
+      <div style="margin-top:var(--s-md);font-size:14px;line-height:2;color:var(--c-mute);">
+        The single dark surface on the page. Reserved for the product speaking for itself.
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Chart tiles</div>
+      <div class="chart-grid">
+        <div class="chart-tile">
+          <pre>
+      ▅
+    ▅ █
+  ▅ █ █   ▅
+▅ █ █ █ ▅ █ █
+1k  25k  70k  150k</pre>
+          <div class="cap">Fig 1. 150K GitHub stars</div>
+        </div>
+        <div class="chart-tile">
+          <pre>
+        ▅
+  ▅   ▅ █
+▅ █ ▅ █ █ ▅
+2   90  300 850</pre>
+          <div class="cap">Fig 2. 850 contributors</div>
+        </div>
+ <div class="chart-tile">
+          <pre>
+          ▅
+      ▅ ▅ █
+  ▅ ▅ █ █ █ ▅
+0.5M  2M  4M  6.5M</pre>
+          <div class="cap">Fig 3. 6.5M monthly devs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Badges &amp; list rows</div>
+      <div class="badge-row" style="margin-bottom:var(--s-lg);">
+        <span class="badge-news">NEWS</span>
+        <span class="badge-news">BETA</span>
+        <span class="badge-soft">v1.0</span>
+        <span class="badge-soft">MIT</span>
+        <span class="badge-section-label">[x] shipped</span>
+      </div>
+      <div class="list-row"><span class="marker">[+]</span><span><b>LSP enabled</b> &nbsp;&nbsp; Automatically loads the right LSPs for the IDE</span></div>
+      <div class="list-row"><span class="marker">[+]</span><span><b>Multi-session</b> &nbsp; Run parallel agents on separate worktrees</span></div>
+      <div class="list-row"><span class="marker">[-]</span><span><b>Client-agnostic</b> TUI, IDE extension or headless mode</span></div>
+      <div class="list-row"><span class="marker">[x]</span><span><b>Shareable</b> &nbsp;&nbsp;&nbsp; Link to any session with one command</span></div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Testimonial row</div>
+      <div class="testimonial-row">
+        <div class="avatar"></div>
+        <div>
+          <div class="who">Priya N. — Staff Engineer, Platform team</div>
+          <div class="qt">"It's the first agent that treats my terminal as the primary interface, not an afterthought."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## Navigation</div>
+      <div class="nav-demo">
+        <nav class="primary-nav">
+          <span class="wm">▛▀▀▀▜
+▌ ▄▄ ▐
+▙▄▄▄▟</span>
+          <div class="links">
+            <a href="#">GitHub <span class="cnt">[150K]</span></a>
+            <a href="#">Docs</a>
+            <a href="#">Zen</a>
+            <a href="#">Go</a>
+            <a href="#">Enterprise</a>
+            <button class="btn btn-primary" style="margin-left:16px;">Download</button>
+          </div>
+          <div style="flex:0 0 auto;"></div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">## FAQ rows &amp; table</div>
+      <div class="faq-row">
+        <div class="q"><span class="toggle">−</span><span>Is OpenCode really free?</span></div>
+        <div class="a">Yes — the client is open source under MIT. Bring your own model or subscribe to OpenCode Zen.</div>
+      </div>
+      <div class="faq-row">
+        <div class="q"><span class="toggle">+</span><span>Which providers are supported?</span></div>
+        <div class="a">All major providers plus local models via Ollama.</div>
+      </div>
+      <table class="data-table" style="margin-top:var(--s-section);">
+        <thead><tr><th>Surface</th><th>Requirement</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="b">TUI</td><td>Any terminal, macOS / Linux / Windows</td><td class="b">stable</td></tr>
+          <tr><td class="b">IDE extension</td><td>VS Code, JetBrains</td><td class="b">beta</td></tr>
+          <tr><td class="b">Headless SDK</td><td>Node 18+</td><td class="b">stable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ PRODUCT ═══════════ -->
+  <section id="product">
+    <div class="sg-section-title">## Finished Product</div>
+
+    <div class="news-line">
+      <span class="badge-news">NEWS</span>
+      <span class="plain">OpenCode Zen is live — a curated model subscription for the agent.</span>
+    </div>
+
+    <h1 class="hero-h1">The open source<br>AI coding agent</h1>
+    <p class="hero-sub">OpenCode runs in your terminal, speaks LSP, and works with the models you already pay for.</p>
+
+    <div class="install-tabs">
+      <div class="tab-strip" style="max-width:440px;">
+        <button class="tab active">curl</button>
+        <button class="tab">npm</button>
+        <button class="tab">bun</button>
+        <button class="tab">brew</button>
+      </div>
+      <span class="install-snippet">curl -fsSL https://opencode.ai/install | bash <span class="copy">⧉</span></span>
+    </div>
+
+    <div class="hero-tui" style="margin-top:var(--s-xl);">
+      <div class="ascii-wm">
+ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌ ▐▛███▜▌
+ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌ ▐▌   ▐▌
+ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘ ▝▘   ▝▘
+ O P E N C O D E</div>
+      <div class="tui-prompt-row">
+        <span class="pipe">&#9474;</span>
+        <span>Build</span>
+        <span class="model">[Claude Opus 4.5]</span>
+        <span class="model">OpenCode Zen</span>
+      </div>
+      <div class="tui-hints">
+        <span><kbd>tab</kbd> switch agent</span>
+        <span><kbd>ctrl-p</kbd> commands</span>
+      </div>
+      <div style="margin-top:var(--s-lg);font-size:14px;color:var(--c-ash);">
+        <span style="color:#30d158;">●</span> connected &nbsp;
+        <span style="color:#ff9f0a;">●</span> 3 tools ready &nbsp;
+        <span style="color:#007aff;">●</span> model: opus
+      </div>
+    </div>
+
+    <div class="chart-grid" style="margin-top:var(--s-xl);">
+      <div class="chart-tile">
+        <pre>
+      ▅
+    ▅ █
+  ▅ █ █   ▅
+▅ █ █ █ ▅ █ █
+1k  25k  70k  150k</pre>
+        <div class="cap">Fig 1. 150K GitHub stars</div>
+      </div>
+      <div class="chart-tile">
+        <pre>
+        ▅
+  ▅   ▅ █
+▅ █ ▅ █ █ ▅
+2   90  300 850</pre>
+        <div class="cap">Fig 2. 850 contributors</div>
+      </div>
+      <div class="chart-tile">
+        <pre>
+          ▅
+      ▅ ▅ █
+  ▅ ▅ █ █ █ ▅
+0.5M  2M  4M  6.5M</pre>
+        <div class="cap">Fig 3. 6.5M monthly devs</div>
+      </div>
+    </div>
+
+    <hr class="section-rule">
+
+    <div class="sg-block-label">## What is OpenCode?</div>
+    <div style="margin-top:var(--s-md);">
+      <div class="list-row"><span class="marker">[+]</span><span><b>LSP enabled</b> &nbsp;&nbsp; Automatically loads the right LSPs for your stack</span></div>
+      <div class="list-row"><span class="marker">[+]</span><span><b>Multi-session</b> &nbsp; Run parallel agents on separate worktrees</span></div>
+      <div class="list-row"><span class="marker">[+]</span><span><b>Provider-agnostic</b> &nbsp; 75+ models via Zen or your own keys</span></div>
+      <div class="list-row"><span class="marker">[-]</span><span><b>Client-agnostic</b> &nbsp; TUI, IDE extension or headless</span></div>
+      <div class="list-row"><span class="marker">[x]</span><span><b>Shareable</b> &nbsp;&nbsp;&nbsp; Link to any session with one command</span></div>
+    </div>
+
+    <hr class="section-rule">
+
+    <div class="product-split">
+      <div>
+        <div class="sg-block-label">## Built for privacy first</div>
+        <p style="font-size:16px;color:var(--c-body);line-height:1.5;">No telemetry. No central servers. Your code never leaves your machine unless you send it to a provider yourself. MIT licensed — audit every line.</p>
+        <div class="list-row"><span class="marker">[x]</span><span><b>Local-first</b> &nbsp;&nbsp; Runs entirely on your hardware</span></div>
+        <div class="list-row"><span class="marker">[x]</span><span><b>Open source</b> &nbsp; Every commit public since day one</span></div>
+      </div>
+      <div class="testimonial-row">
+        <div class="avatar"></div>
+        <div>
+          <div class="who">Priya N. — Staff Engineer, Platform team</div>
+          <div class="qt">"It's the first agent that treats my terminal as the primary interface, not an afterthought. I run four sessions across four worktrees before lunch."</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-rule">
+
+    <div class="sg-block-label">## FAQ</div>
+    <div style="margin-top:var(--s-md);">
+      <div class="faq-row">
+        <div class="q"><span class="toggle">−</span><span>Is OpenCode really free?</span></div>
+        <div class="a">Yes — the client is open source under MIT. Bring your own model or subscribe to OpenCode Zen.</div>
+      </div>
+      <div class="faq-row">
+        <div class="q"><span class="toggle">+</span><span>Which providers are supported?</span></div>
+        <div class="a">All major providers, plus any local model via Ollama.</div>
+      </div>
+      <div class="faq-row">
+        <div class="q"><span class="toggle">+</span><span>Does it work with my editor?</span></div>
+        <div class="a">TUI everywhere, plus VS Code and JetBrains extensions, and a headless SDK for automation.</div>
+      </div>
+    </div>
+
+    <div class="cta-dark" style="margin-top:var(--s-section);">
+      <h2>Install in 30 seconds.</h2>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+        <span class="install-snippet" style="background:#302c2c;color:#fdfcfc;">curl -fsSL https://opencode.ai/install | bash</span>
+        <button class="btn btn-secondary" style="background:transparent;color:#fdfcfc;border-color:#9a9898;">Read docs →</button>
+      </div>
+    </div>
+
+    <footer class="sg-footer">
+      <div class="links-row">
+        <a href="#">GitHub [150K]</a>
+        <a href="#">Docs</a>
+        <a href="#">Changelog</a>
+        <a href="#">Discord</a>
+        <a href="#">X</a>
+      </div>
+      <div class="legal">
+        <span>©2026 Anomaly</span>
+        <span><a href="#">Brand</a> · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">English ▼</a></span>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

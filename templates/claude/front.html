@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude — Skills Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#cc785c; --primary-active:#a9583e; --primary-disabled:#e6dfd8;
+  --ink:#141413; --body:#3d3d3a; --body-strong:#252523; --muted:#6c6a64; --muted-soft:#8e8b82;
+  --hairline:#e6dfd8; --hairline-soft:#ebe6df;
+  --canvas:#faf9f5; --surface-soft:#f5f0e8; --surface-card:#efe9de; --surface-cream-strong:#e8e0d2;
+  --surface-dark:#181715; --surface-dark-elevated:#252320; --surface-dark-soft:#1f1e1b;
+  --on-primary:#ffffff; --on-dark:#faf9f5; --on-dark-soft:#a09d96;
+  --accent-teal:#5db8a6; --accent-amber:#e8a55a;
+  --success:#5db872; --warning:#d4a017; --error:#c64545;
+  --font-serif:"Cormorant Garamond",Tiempos,Garamond,serif;
+  --font-sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px; --sp-section:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-sans)}
+h1,h2{font-family:var(--font-serif);font-weight:400;color:var(--ink)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--sp-lg)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);border-radius:var(--r-md);font-size:14px;font-weight:500}
+.btn:active{background:var(--primary-active);border-color:var(--primary-active)}
+.btn--secondary{background:var(--canvas);color:var(--ink);border-color:var(--hairline)}
+.btn--on-dark{background:var(--surface-dark-elevated);color:var(--on-dark);border-color:transparent}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-pill);background:var(--canvas);border:1px solid var(--hairline);color:var(--ink)}
+.coral-link{color:var(--primary);font-weight:500}
+.coral-link:hover{text-decoration:underline}
+
+/* nav */
+.topnav{height:64px;display:flex;align-items:center;gap:var(--sp-lg)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;color:var(--ink)}
+.spike{width:20px;height:20px;flex:none}
+.navlinks{display:flex;gap:var(--sp-md)}
+.navlinks a{font-size:14px;font-weight:500;color:var(--muted);padding:8px 10px;border-radius:var(--r-md)}
+.navlinks a.active{background:var(--surface-card);color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.bag{position:relative}
+.bag .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* tabs */
+.tabs{display:inline-flex;gap:6px}
+.tabs button{background:transparent;border:0;color:var(--muted);font-size:14px;font-weight:500;padding:8px 14px;border-radius:var(--r-md)}
+.tabs button.active{background:var(--surface-card);color:var(--ink)}
+
+/* hero */
+.hero{padding:var(--sp-section) 0 var(--sp-xl)}
+.hero-grid{display:grid;grid-template-columns:6fr 6fr;gap:var(--sp-xl);align-items:center}
+.hero h1{font-size:60px;line-height:1.05;letter-spacing:-0.02em;margin-bottom:var(--sp-md)}
+.hero .sub{font-size:18px;color:var(--muted);max-width:480px;margin-bottom:var(--sp-lg)}
+.hero .cta-row{display:flex;align-items:center;gap:var(--sp-md)}
+.hero-card{background:var(--surface-dark);border-radius:var(--r-xl);padding:var(--sp-lg);color:var(--on-dark)}
+.hero-card .win{display:flex;align-items:center;gap:6px;margin-bottom:var(--sp-md)}
+.hero-card .win i{width:10px;height:10px;border-radius:50%;background:var(--surface-dark-elevated);font-style:normal}
+.hero-card .win i.g{background:var(--accent-teal)}
+.hero-card .code{background:var(--surface-dark-soft);border-radius:var(--r-md);padding:var(--sp-md);font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--on-dark-soft);overflow-x:auto;white-space:pre}
+.hero-card .code .k{color:var(--accent-amber)}
+.hero-card .code .s{color:var(--accent-teal)}
+.hero-card .status{display:flex;align-items:center;gap:8px;margin-top:var(--sp-md);font-size:13px;color:var(--on-dark-soft)}
+.hero-card .status .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent-teal)}
+
+/* gallery head */
+.g-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-md);padding:var(--sp-lg) 0;border-top:1px solid var(--hairline-soft)}
+.g-head h2{font-size:36px}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);padding:var(--sp-sm) 0 var(--sp-section)}
+.skill{background:var(--surface-card);border-radius:var(--r-lg);padding:var(--sp-lg);transition:transform .12s}
+.skill:hover{transform:translateY(-2px)}
+.skill .art{height:110px;border-radius:var(--r-md);margin-bottom:var(--sp-md);position:relative;overflow:hidden}
+.sa1{background:linear-gradient(140deg,#efe9de,#e8e0d2)}
+.sa2{background:linear-gradient(140deg,#181715,#252320)}
+.sa3{background:linear-gradient(140deg,#efe9de,#faf9f5);border:1px solid var(--hairline)}
+.sa4{background:linear-gradient(140deg,#cc785c,#a9583e)}
+.sa5{background:linear-gradient(140deg,#e8a55a,#efe9de)}
+.sa6{background:linear-gradient(140deg,#5db8a6,#1f1e1b)}
+.sa7{background:linear-gradient(140deg,#efe9de,#e8e0d2)}
+.sa8{background:linear-gradient(140deg,#252320,#181715)}
+.skill .art svg{position:absolute;inset:0;margin:auto;width:44px;height:44px}
+.badge-pill{display:inline-block;font-size:13px;font-weight:500;background:var(--surface-cream-strong);color:var(--ink);border-radius:var(--r-pill);padding:4px 12px;margin-bottom:var(--sp-sm)}
+.badge-coral{display:inline-block;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:var(--primary);color:var(--on-primary);border-radius:var(--r-pill);padding:4px 12px;margin-bottom:var(--sp-sm)}
+.skill h3{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.skill .by{font-size:13px;color:var(--muted);margin-bottom:var(--sp-sm)}
+.meta-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)}
+.stars{color:var(--accent-amber);letter-spacing:1px}
+.stars b{color:var(--ink);font-weight:500;margin-left:4px;letter-spacing:0}
+.price{font-weight:600;color:var(--ink)}
+.price.free{color:var(--success)}
+
+/* detail row */
+.detail{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xl);margin-bottom:var(--sp-section)}
+.stage{background:var(--surface-dark);border-radius:var(--r-xl);padding:var(--sp-lg);color:var(--on-dark)}
+.stage .code{background:var(--surface-dark-soft);border-radius:var(--r-md);padding:var(--sp-md);font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--on-dark-soft);overflow-x:auto;white-space:pre;margin-top:var(--sp-md)}
+.stage .code .k{color:var(--accent-amber)} .stage .code .s{color:var(--accent-teal)}
+.thumbs{display:flex;gap:var(--sp-sm);margin-top:var(--sp-md)}
+.thumb{flex:1;height:64px;border-radius:var(--r-md);background:var(--surface-dark-elevated);border:2px solid transparent}
+.thumb.active{border-color:var(--primary)}
+.d-info h2{font-size:36px;margin-bottom:var(--sp-xxs)}
+.d-info .byline{font-size:14px;color:var(--muted);margin-bottom:var(--sp-md)}
+.d-info .desc{margin-bottom:var(--sp-lg)}
+.opt-label{font-size:13px;font-weight:600;color:var(--ink);margin:var(--sp-md) 0 var(--sp-sm)}
+.opt-row{display:flex;gap:var(--sp-sm);flex-wrap:wrap}
+.opt{border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-md);padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted)}
+.opt.active{border-color:var(--primary);color:var(--ink)}
+.qty{display:inline-flex;align-items:center;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);height:40px}
+.qty button{width:40px;height:100%;background:transparent;border:0;font-size:15px;color:var(--ink)}
+.qty span{width:44px;text-align:center;font-size:14px;font-weight:600;color:var(--ink)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-xl)}
+.buy-row .big{font-family:var(--font-serif);font-size:28px;color:var(--ink)}
+.review{background:var(--surface-card);border-radius:var(--r-lg);padding:var(--sp-md);margin-top:var(--sp-sm)}
+.review .top{display:flex;align-items:center;gap:var(--sp-sm);margin-bottom:var(--sp-xxs)}
+.review .ava{width:36px;height:36px;border-radius:var(--r-pill);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500}
+.review .who{font-size:14px;font-weight:600;color:var(--ink)}
+.review .role{font-size:12px;color:var(--muted)}
+.review p{font-size:14px}
+
+/* cart */
+.cart{background:var(--surface-soft);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.cart h3{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:var(--sp-md)}
+.ci{display:flex;gap:var(--sp-sm);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline-soft);align-items:center}
+.ci .art{width:52px;height:52px;border-radius:var(--r-md);flex:none}
+.ci .n{font-size:14px;font-weight:600;color:var(--ink)}
+.ci .m{font-size:12px;color:var(--muted)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:600;color:var(--ink)}
+.sum{margin-top:var(--sp-md);font-size:14px}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0;color:var(--body)}
+.sum .r.total{border-top:1px solid var(--hairline);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:600;color:var(--ink)}
+.cart .btn{width:100%;margin-top:var(--sp-md)}
+.cart-note{font-size:12px;color:var(--muted-soft);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* cta band */
+.cta-band{background:var(--primary);color:var(--on-primary);border-radius:var(--r-lg);padding:64px;text-align:center;margin-bottom:var(--sp-section)}
+.cta-band h2{color:#fff;font-size:32px;margin-bottom:var(--sp-sm)}
+.cta-band p{color:rgba(255,255,255,.85);margin-bottom:var(--sp-lg)}
+.cta-band .btn{background:var(--canvas);color:var(--ink);border-color:var(--canvas)}
+
+/* footer */
+footer{background:var(--surface-dark);color:var(--on-dark-soft);padding:64px 0}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);padding-bottom:var(--sp-xl);border-bottom:1px solid var(--surface-dark-elevated)}
+.foot-grid h4{color:var(--on-dark);font-size:14px;font-weight:600;margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;padding:6px 0}
+.foot-grid a:hover{color:var(--on-dark)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--sp-lg);gap:var(--sp-md);flex-wrap:wrap}
+.legal{font-size:14px}
+.newsletter{display:flex;gap:var(--sp-sm)}
+.newsletter input{background:var(--surface-dark-elevated);border:1px solid var(--surface-dark-elevated);border-radius:var(--r-md);height:40px;padding:0 14px;color:var(--on-dark);font-size:14px;width:260px;font-family:var(--font-sans)}
+.newsletter input::placeholder{color:var(--on-dark-soft)}
+
+@media (max-width:960px){
+  .hero-grid,.detail,.duo{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:36px}
+  .navlinks{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap topnav">
+  <a class="logo" href="#">
+    <svg class="spike" viewBox="0 0 24 24" fill="#141413" aria-hidden="true">
+      <path d="M12 1l1.2 7.2L18 4.5l-3.3 6.1L22 12l-7.3 1.4L18 19.5l-4.8-3.7L12 23l-1.2-7.2L6 19.5l3.3-6.1L2 12l7.3-1.4L6 4.5l4.8 3.7z"/>
+    </svg>
+    Claude
+  </a>
+  <nav class="navlinks">
+    <a href="#">Product</a><a href="#" class="active">Skills Gallery</a><a href="#">Solutions</a><a href="#">Pricing</a><a href="#">Research</a>
+  </nav>
+  <div class="nav-right">
+    <a class="btn--secondary btn" href="#">Sign in</a>
+    <button class="icon-btn bag" aria-label="Cart">▤<span class="dot">2</span></button>
+    <div style="width:36px;height:36px;border-radius:9999px;background:var(--surface-cream-strong);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500">MW</div>
+  </div>
+</div>
+
+<section class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1>Skills, built for deep work</h1>
+      <p class="sub">Install curated skills and agents from the gallery — research pipelines, writing desks, code reviewers — and put Claude to work in minutes.</p>
+      <div class="cta-row">
+        <a class="btn" href="#gallery">Browse the gallery</a>
+        <a class="coral-link" href="#featured">See this week's pick →</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="win"><i class="g"></i><i></i><i></i><span style="font-size:12px;color:var(--on-dark-soft);margin-left:6px">claude — skill install</span></div>
+      <div class="code"><span class="k">$</span> claude skill install research-analyst
+
+  <span class="s">✓</span> research-analyst v2.4 installed
+  <span class="s">✓</span> connected: web search · file vault
+  <span class="s">→</span> run with: /research "topic"</div>
+      <div class="status"><span class="pulse"></span>Ready · 3 tools connected · 14k installs</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="gallery">
+  <div class="g-head">
+    <h2>The gallery</h2>
+    <input type="search" placeholder="Search skills, agents…" aria-label="Search"
+      style="height:40px;border:1px solid var(--hairline);border-radius:var(--r-md);padding:0 14px;font-size:14px;width:300px;background:var(--canvas);font-family:var(--font-sans)">
+  </div>
+  <div class="tabs">
+    <button class="active">All</button>
+    <button>Research</button>
+    <button>Writing</button>
+    <button>Code</button>
+    <button>Analysis</button>
+    <button>Automation</button>
+  </div>
+
+  <div class="grid">
+    <article class="skill">
+      <div class="art sa2"><svg viewBox="0 0 24 24" fill="#faf9f5"><path d="M12 1l1.2 7.2L18 4.5l-3.3 6.1L22 12l-7.3 1.4L18 19.5l-4.8-3.7L12 23l-1.2-7.2L6 19.5l3.3-6.1L2 12l7.3-1.4L6 4.5l4.8 3.7z"/></svg></div>
+      <span class="badge-coral">Featured</span>
+      <h3>Research Analyst</h3>
+      <p class="by">by Anthropic Community</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.9</b></span><span class="price free">Free</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa1"><svg viewBox="0 0 24 24" fill="#6c6a64"><path d="M5 3h14v3H5zM5 8h9v3H5zM5 13h14v3H5zM5 18h9v3H5z"/></svg></div>
+      <span class="badge-pill">Writing</span>
+      <h3>Longform Editor</h3>
+      <p class="by">by Meridian Press</p>
+      <div class="meta-row"><span class="stars">★★★★☆<b>4.7</b></span><span class="price">$12</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa3"><svg viewBox="0 0 24 24" fill="#cc785c"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
+      <span class="badge-pill">Code</span>
+      <h3>PR Reviewer</h3>
+      <p class="by">by Foundry Works</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.8</b></span><span class="price free">Free</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa4"><svg viewBox="0 0 24 24" fill="#faf9f5"><path d="M4 20V10h4v10H4zm6 0V4h4v16h-4zm6 0v-7h4v7h-4z"/></svg></div>
+      <span class="badge-pill">Analysis</span>
+      <h3>Data Storyteller</h3>
+      <p class="by">by Northlight Studio</p>
+      <div class="meta-row"><span class="stars">★★★★☆<b>4.6</b></span><span class="price">$18</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa5"><svg viewBox="0 0 24 24" fill="#252523"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg></div>
+      <span class="badge-pill">Automation</span>
+      <h3>Inbox Triage Agent</h3>
+      <p class="by">by Quietdesk</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.9</b></span><span class="price">$24</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa6"><svg viewBox="0 0 24 24" fill="#faf9f5"><path d="M12 3C7 3 3 7 3 12s4 9 9 9 9-4 9-9-4-9-9-9zm0 4a5 5 0 110 10 5 5 0 010-10z"/></svg></div>
+      <span class="badge-pill">Research</span>
+      <h3>Literature Mapper</h3>
+      <p class="by">by Atheneum Lab</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.8</b></span><span class="price">$15</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa7"><svg viewBox="0 0 24 24" fill="#6c6a64"><path d="M4 5h16v2H4zm0 6h10v2H4zm0 6h16v2H4z"/></svg></div>
+      <span class="badge-pill">Writing</span>
+      <h3>Meeting Scribe</h3>
+      <p class="by">by Cadence Team</p>
+      <div class="meta-row"><span class="stars">★★★★☆<b>4.5</b></span><span class="price free">Free</span></div>
+    </article>
+    <article class="skill">
+      <div class="art sa8"><svg viewBox="0 0 24 24" fill="#e8a55a"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></div>
+      <span class="badge-pill">Automation</span>
+      <h3>Pipeline Watchdog</h3>
+      <p class="by">by Signal Nine</p>
+      <div class="meta-row"><span class="stars">★★★★★<b>4.7</b></span><span class="price">$20</span></div>
+    </article>
+  </div>
+
+  <div class="duo" id="featured">
+    <div class="detail">
+      <div>
+        <div class="stage">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--on-dark-soft)"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent-teal)"></span>research-analyst · running</div>
+          <div class="code"><span class="k">/research</span> <span class="s">"on-device inference market, 2024–2026"</span>
+
+  <span class="s">✓</span> scanned 42 sources · 9 papers · 4 filings
+  <span class="s">✓</span> built comparison matrix (18 rows)
+  <span class="s">→</span> drafting brief… </div>
+          <div class="thumbs">
+            <div class="thumb active"></div>
+            <div class="thumb"></div>
+            <div class="thumb"></div>
+          </div>
+        </div>
+      </div>
+      <div class="d-info">
+        <h2>Research Analyst</h2>
+        <div class="byline"><span class="stars">★★★★★<b>4.9</b></span> &nbsp;·&nbsp; 14,208 installs &nbsp;·&nbsp; by Anthropic Community</div>
+        <p class="desc">A deep-research desk for Claude: multi-source scanning, claim extraction, comparison matrices, and a sourced brief in your house style. Runs entirely inside your workspace with your file vault.</p>
+        <p class="opt-label">Plan</p>
+        <div class="opt-row">
+          <button class="opt">Solo</button>
+          <button class="opt active">Team · seats included</button>
+          <button class="opt">Enterprise</button>
+        </div>
+        <p class="opt-label">Sources</p>
+        <div class="opt-row">
+          <button class="opt active">Web + file vault</button>
+          <button class="opt">File vault only</button>
+        </div>
+        <div class="buy-row">
+          <div class="qty"><button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button></div>
+          <span class="big">$18 / mo</span>
+          <a class="btn" href="#cart">Add to workspace</a>
+        </div>
+        <div class="review">
+          <div class="top"><div class="ava" style="background:var(--accent-teal)">JL</div><div><div class="who">June Lee</div><div class="role">Research lead, Halcyon</div></div><span class="stars" style="margin-left:auto">★★★★★</span></div>
+          <p>"Replaced a week of desk research with an afternoon — and the briefs cite everything."</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="cart" id="cart">
+      <h3>Your workspace</h3>
+      <div class="ci"><div class="art sa2"></div><div><div class="n">Research Analyst</div><div class="m">Team · monthly</div></div><span class="p">$18</span></div>
+      <div class="ci"><div class="art sa5"></div><div><div class="n">Inbox Triage Agent</div><div class="m">Team · monthly</div></div><span class="p">$24</span></div>
+      <div class="ci"><div class="art sa3"></div><div><div class="n">PR Reviewer</div><div class="m">Free skill</div></div><span class="p">$0</span></div>
+      <div class="sum">
+        <div class="r"><span>Subtotal</span><span>$42</span></div>
+        <div class="r"><span>Tax (8%)</span><span>$3.36</span></div>
+        <div class="r total"><span>Total / month</span><span>$45.36</span></div>
+      </div>
+      <a class="btn" href="#">Install to workspace</a>
+      <p class="cart-note">Billed monthly · Remove skills anytime</p>
+    </aside>
+  </div>
+
+  <div class="cta-band">
+    <h2>Put Claude to work this afternoon</h2>
+    <p>Every skill is reviewable, versioned, and yours to modify.</p>
+    <a class="btn" href="#gallery">Browse the gallery</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Product</h4><a href="#">Claude models</a><a href="#">Skills Gallery</a><a href="#">Claude Code</a><a href="#">API</a></div>
+      <div><h4>Solutions</h4><a href="#">AI agents</a><a href="#">Coding</a><a href="#">Customer support</a><a href="#">Education</a></div>
+      <div><h4>Research</h4><a href="#">Publications</a><a href="#">Interpretability</a><a href="#">Alignment</a><a href="#">Safety</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">News</a><a href="#">Policies</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Anthropic PBC. All rights reserved.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Email address" aria-label="Email address">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

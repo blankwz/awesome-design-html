@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clay — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CLAY — playful GTM data-orchestration system
+   Cream canvas · saturated feature cards · 3D claymation feel
+   ============================================================ */
+:root {
+  /* colors */
+  --c-primary: #0a0a0a;
+  --c-primary-active: #1f1f1f;
+  --c-primary-disabled: #e5e5e5;
+  --c-ink: #0a0a0a;
+  --c-body: #3a3a3a;
+  --c-body-strong: #1a1a1a;
+  --c-muted: #6a6a6a;
+  --c-muted-soft: #9a9a9a;
+  --c-hairline: #e5e5e5;
+  --c-hairline-soft: #f0f0f0;
+  --c-canvas: #fffaf0;
+  --c-surface-soft: #faf5e8;
+  --c-surface-card: #f5f0e0;
+  --c-surface-strong: #ebe6d6;
+  --c-surface-dark: #0a1a1a;
+  --c-surface-dark-elevated: #1a2a2a;
+  --c-on-primary: #ffffff;
+  --c-on-dark: #ffffff;
+  --c-on-dark-soft: #a0a0a0;
+  --c-brand-pink: #ff4d8b;
+  --c-brand-teal: #1a3a3a;
+  --c-brand-lavender: #b8a4ed;
+  --c-brand-peach: #ffb084;
+  --c-brand-ochre: #e8b94a;
+  --c-brand-mint: #a4d4c5;
+  --c-brand-coral: #ff6b5a;
+  --c-success: #22c55e;
+  --c-warning: #f59e0b;
+  --c-error: #ef4444;
+
+  --f-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-display: "Plain Black", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --r-xs: 6px; --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px;
+  --r-pill: 9999px; --r-full: 9999px;
+
+  --s-xxs: 4px; --s-xs: 8px; --s-sm: 12px; --s-md: 16px;
+  --s-lg: 24px; --s-xl: 32px; --s-xxl: 48px; --s-section: 96px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--c-canvas);
+  color: var(--c-body);
+  font-family: var(--f-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,h4 { color: var(--c-ink); }
+
+/* ---------- type tokens ---------- */
+.t-display-xl { font-family: var(--f-display); font-size: 72px; font-weight: 500; line-height: 1.0; letter-spacing: -2.5px; color: var(--c-ink); }
+.t-display-lg { font-family: var(--f-display); font-size: 56px; font-weight: 500; line-height: 1.05; letter-spacing: -2px; color: var(--c-ink); }
+.t-display-md { font-family: var(--f-display); font-size: 40px; font-weight: 500; line-height: 1.1; letter-spacing: -1px; color: var(--c-ink); }
+.t-display-sm { font-family: var(--f-display); font-size: 32px; font-weight: 500; line-height: 1.15; letter-spacing: -0.5px; color: var(--c-ink); }
+.t-title-lg   { font-family: var(--f-sans); font-size: 24px; font-weight: 600; line-height: 1.3; letter-spacing: -0.3px; color: var(--c-ink); }
+.t-title-md   { font-family: var(--f-sans); font-size: 18px; font-weight: 600; line-height: 1.4; color: var(--c-ink); }
+.t-title-sm   { font-family: var(--f-sans); font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--c-ink); }
+.t-body-md    { font-size: 16px; font-weight: 400; line-height: 1.55; color: var(--c-body); }
+.t-body-sm    { font-size: 14px; font-weight: 400; line-height: 1.55; }
+.t-caption    { font-size: 13px; font-weight: 500; line-height: 1.4; }
+.t-caption-up { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.t-button     { font-size: 14px; font-weight: 600; }
+.t-nav        { font-size: 14px; font-weight: 500; }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--s-xl); }
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; padding: 0 var(--s-lg);
+  background: var(--c-canvas);
+  border-bottom: 1px solid var(--c-hairline-soft);
+}
+.sg-banner .sg-id { display: flex; align-items: center; gap: var(--s-md); }
+.sg-banner .sg-folder { font-size: 13px; font-weight: 500; color: var(--c-muted); }
+.sg-banner .sg-brand { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 18px; font-weight: 500; letter-spacing: -0.8px; color: var(--c-ink); }
+.sg-banner .sg-blob { width: 18px; height: 18px; border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%; background: var(--c-brand-pink); }
+.sg-banner .sg-desc { font-size: 13px; font-weight: 500; color: var(--c-muted); }
+@media (max-width: 900px) { .sg-banner .sg-desc { display: none; } }
+
+/* ============================================================
+   COMPONENTS SECTION
+   ============================================================ */
+#components { padding: var(--s-xxl) 0 var(--s-section); }
+.sg-section-label { font-size: 13px; font-weight: 500; color: var(--c-muted); margin-bottom: var(--s-xl); }
+.sg-block { margin-bottom: var(--s-section); }
+.sg-block-title { display: flex; align-items: baseline; gap: var(--s-md); margin-bottom: var(--s-lg); }
+.sg-block-title .num { font-size: 13px; font-weight: 500; color: var(--c-muted-soft); }
+.sg-block-title h3 { font-family: var(--f-display); font-size: 32px; font-weight: 500; letter-spacing: -0.5px; }
+.sg-block-title .rule { flex: 1; height: 1px; background: var(--c-hairline-soft); }
+
+/* color tokens */
+.swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-md); }
+.swatch { border: 1px solid var(--c-hairline-soft); border-radius: var(--r-lg); overflow: hidden; background: #fff; }
+.swatch .chip { height: 64px; }
+.swatch .meta { padding: var(--s-sm) var(--s-md); }
+.swatch .name { font-size: 12px; font-weight: 600; color: var(--c-ink); margin-bottom: 2px; }
+.swatch .hex { font-size: 11px; font-weight: 500; color: var(--c-muted); }
+
+/* typography specimen */
+.specimen .row { display: grid; grid-template-columns: 220px 1fr; gap: var(--s-lg); padding: var(--s-lg) 0; border-bottom: 1px solid var(--c-hairline-soft); align-items: baseline; }
+.specimen .row:last-child { border-bottom: none; }
+.specimen .tok { font-size: 12px; font-weight: 500; color: var(--c-muted); }
+
+/* buttons */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-md); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 12px 20px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  font-family: var(--f-sans); border: 1px solid transparent;
+}
+.btn-primary { background: var(--c-primary); color: var(--c-on-primary); }
+.btn-primary:hover { background: var(--c-primary-active); }
+.btn-primary.is-active { background: var(--c-primary-active); }
+.btn-disabled { background: var(--c-primary-disabled); color: var(--c-muted); cursor: not-allowed; }
+.btn-secondary { background: var(--c-canvas); color: var(--c-ink); border-color: var(--c-hairline); }
+.btn-secondary:hover { background: var(--c-surface-soft); }
+.btn-on-color { background: #ffffff; color: var(--c-ink); }
+.btn-ghost { background: transparent; color: var(--c-ink); padding: 12px 12px; }
+.btn-ghost:hover { background: var(--c-surface-card); }
+.btn-icon { width: 44px; height: 44px; padding: 0; border-radius: var(--r-full); background: var(--c-canvas); border-color: var(--c-hairline); color: var(--c-ink); }
+.btn-icon svg { width: 16px; height: 16px; }
+
+/* inputs */
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-lg); max-width: 720px; }
+.field label { display: block; font-size: 13px; font-weight: 600; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.field input, .field select {
+  width: 100%; height: 44px; padding: 12px 16px;
+  background: #ffffff; border: 1px solid var(--c-hairline); border-radius: var(--r-md);
+  color: var(--c-ink); font-family: var(--f-sans); font-size: 16px; outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field input::placeholder { color: var(--c-muted-soft); }
+.field input:focus { border-color: var(--c-ink); box-shadow: 0 0 0 3px rgba(10,10,10,0.06); }
+.field input:disabled { background: var(--c-surface-soft); color: var(--c-muted); cursor: not-allowed; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%236a6a6a' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+
+/* cards */
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-lg); }
+.feature-card { border-radius: var(--r-xl); padding: var(--s-xl); min-height: 240px; display: flex; flex-direction: column; }
+.feature-card h4 { margin-bottom: var(--s-xs); }
+.feature-card p { font-size: 14px; line-height: 1.55; margin-bottom: var(--s-lg); }
+.feature-card .mock { margin-top: auto; background: rgba(255,255,255,0.9); border-radius: var(--r-md); padding: var(--s-md); }
+.card-pink { background: var(--c-brand-pink); color: #fff; }
+.card-pink h4 { color: #fff; }
+.card-pink p { color: rgba(255,255,255,0.88); }
+.card-teal { background: var(--c-brand-teal); color: #fff; }
+.card-teal h4 { color: #fff; }
+.card-teal p { color: rgba(255,255,255,0.82); }
+.card-lavender { background: var(--c-brand-lavender); }
+.card-lavender p { color: rgba(10,10,10,0.72); }
+.card-peach { background: var(--c-brand-peach); }
+.card-peach p { color: rgba(10,10,10,0.72); }
+.card-ochre { background: var(--c-brand-ochre); }
+.card-ochre p { color: rgba(10,10,10,0.72); }
+.card-cream { background: var(--c-surface-card); }
+.card-cream p { color: var(--c-muted); }
+
+.mock-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.mock-line p { font-size: 12px; font-weight: 600; margin: 0 !important; }
+.mock-line .bar { width: 64px; height: 8px; border-radius: var(--r-pill); }
+.mock-log { font-size: 11px; font-weight: 500; margin: 0 !important; }
+
+/* badges */
+.badge-row { display: flex; flex-wrap: wrap; gap: var(--s-sm); align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--r-pill); font-size: 13px; font-weight: 500; background: var(--c-surface-card); color: var(--c-ink); }
+.badge.mint { background: var(--c-brand-mint); color: #12332b; }
+.badge.coral { background: var(--c-brand-coral); color: #fff; }
+.badge.ochre { background: var(--c-brand-ochre); color: #4a3608; }
+
+/* nav */
+.nav-demo { border: 1px solid var(--c-hairline-soft); border-radius: var(--r-lg); background: #fffdf6; }
+.topnav { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 var(--s-xl); }
+.topnav .logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 20px; font-weight: 500; letter-spacing: -0.8px; color: var(--c-ink); }
+.topnav .menu { display: flex; gap: var(--s-xl); }
+.topnav .menu a { font-size: 14px; font-weight: 500; color: var(--c-body); text-decoration: none; }
+.topnav .right { display: flex; align-items: center; gap: var(--s-md); }
+.topnav .signin { font-size: 14px; font-weight: 600; color: var(--c-ink); text-decoration: none; }
+.tabs { display: flex; gap: var(--s-xs); margin-top: var(--s-lg); }
+.tab { padding: 8px 16px; border-radius: var(--r-pill); font-size: 14px; font-weight: 500; color: var(--c-muted); text-decoration: none; }
+.tab.active { background: var(--c-surface-card); color: var(--c-ink); }
+
+/* expert card */
+.expert-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-lg); }
+.expert-card { background: #fffdf6; border: 1px solid var(--c-hairline-soft); border-radius: var(--r-lg); padding: var(--s-lg); }
+.expert-card .avatar { width: 44px; height: 44px; border-radius: var(--r-full); margin-bottom: var(--s-md); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; }
+.expert-card p.name { font-size: 15px; font-weight: 600; color: var(--c-ink); }
+.expert-card p.role { font-size: 13px; color: var(--c-muted); margin-bottom: var(--s-md); }
+.expert-card a { font-size: 13px; font-weight: 600; color: var(--c-ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============================================================
+   PRODUCT SECTION
+   ============================================================ */
+#product { border-top: 1px solid var(--c-hairline-soft); }
+.site-nav { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1280px; margin: 0 auto; padding: 0 var(--s-xl); }
+.site-nav .logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 20px; font-weight: 500; letter-spacing: -0.8px; color: var(--c-ink); }
+.site-nav .menu { display: flex; gap: var(--s-xl); }
+.site-nav .menu a { font-size: 14px; font-weight: 500; color: var(--c-body); text-decoration: none; }
+.site-nav .right { display: flex; align-items: center; gap: var(--s-md); }
+.site-nav .signin { font-size: 14px; font-weight: 600; color: var(--c-ink); text-decoration: none; }
+
+.hero { display: grid; grid-template-columns: 7fr 5fr; gap: var(--s-xxl); align-items: center; max-width: 1280px; margin: 0 auto; padding: var(--s-section) var(--s-xl); }
+.hero h1 { margin-bottom: var(--s-lg); }
+.hero .sub { font-size: 18px; color: var(--c-muted); margin-bottom: var(--s-xl); max-width: 480px; }
+.hero .cta-row { display: flex; gap: var(--s-md); align-items: center; }
+
+/* claymation-style illustration card — CSS 3D-ish blobs */
+.hero-illu { background: var(--c-surface-soft); border-radius: var(--r-xl); aspect-ratio: 4/4.4; position: relative; overflow: hidden; }
+.hero-illu .sun { position: absolute; top: 10%; left: 14%; width: 88px; height: 88px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #ffd98c, var(--c-brand-ochre) 70%); box-shadow: 0 14px 24px rgba(232,185,74,0.35); }
+.hero-illu .m1 { position: absolute; bottom: -6%; left: -12%; width: 62%; height: 58%; border-radius: 48% 52% 8% 8% / 88% 92% 10% 10%; background: linear-gradient(160deg, #c99ae0, var(--c-brand-lavender) 55%, #9a82cf); box-shadow: 0 18px 32px rgba(184,164,237,0.4); }
+.hero-illu .m2 { position: absolute; bottom: -10%; right: -14%; width: 70%; height: 66%; border-radius: 50% 50% 8% 8% / 90% 86% 12% 12%; background: linear-gradient(200deg, #ffc89e, var(--c-brand-peach) 55%, #f2915c); box-shadow: 0 18px 32px rgba(255,176,132,0.4); }
+.hero-illu .hill { position: absolute; bottom: -16%; left: 8%; right: 8%; height: 34%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: linear-gradient(180deg, var(--c-brand-mint), #8ac4b2); }
+.hero-illu .blob { position: absolute; width: 54px; height: 54px; border-radius: 54% 46% 60% 40% / 48% 56% 44% 52%; background: radial-gradient(circle at 30% 28%, #ff7ea6, var(--c-brand-pink) 70%); box-shadow: 0 12px 20px rgba(255,77,139,0.35); top: 46%; left: 58%; }
+.hero-illu .blob.b2 { width: 34px; height: 34px; top: 30%; right: 16%; background: radial-gradient(circle at 30% 28%, #57b09a, #2f6f5e 75%); box-shadow: 0 10px 18px rgba(26,58,58,0.3); }
+.hero-illu .blob.b3 { width: 26px; height: 26px; top: 20%; left: 40%; background: radial-gradient(circle at 30% 28%, #ffb084, #ef8f56 75%); box-shadow: 0 8px 14px rgba(255,140,90,0.3); }
+
+.logos { padding: var(--s-xl) 0; border-top: 1px solid var(--c-hairline-soft); border-bottom: 1px solid var(--c-hairline-soft); }
+.logos .inner { max-width: 1280px; margin: 0 auto; padding: 0 var(--s-xl); display: flex; align-items: center; justify-content: space-between; gap: var(--s-xl); flex-wrap: wrap; }
+.logos p { font-size: 13px; font-weight: 500; color: var(--c-muted-soft); }
+.logos .lg { font-family: var(--f-display); font-size: 17px; font-weight: 500; letter-spacing: -0.4px; color: var(--c-muted); }
+
+.section { padding: var(--s-section) 0; max-width: 1280px; margin: 0 auto; padding-left: var(--s-xl); padding-right: var(--s-xl); }
+.section-head { max-width: 640px; margin-bottom: var(--s-xxl); }
+.section-head .kick { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-md); }
+.section-head h2 { margin-bottom: var(--s-md); }
+.section-head p { font-size: 16px; color: var(--c-muted); }
+
+.band-cream { background: var(--c-surface-soft); }
+
+.mockup-card { background: #fffdf6; border: 1px solid var(--c-hairline-soft); border-radius: var(--r-lg); padding: var(--s-lg); }
+.claygent { max-width: 760px; margin: 0 auto; }
+.claygent .cg-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-md); }
+.claygent .cg-head .l { display: flex; align-items: center; gap: 8px; }
+.claygent .cg-head .dot { width: 12px; height: 12px; border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%; background: var(--c-brand-pink); }
+.claygent .cg-head p { font-size: 14px; font-weight: 600; color: var(--c-ink); }
+.claygent .cg-head .status { font-size: 12px; font-weight: 600; color: #15803d; background: #e8faf0; border-radius: var(--r-pill); padding: 3px 10px; }
+.claygent .cg-log { background: var(--c-surface-soft); border-radius: var(--r-md); padding: var(--s-md); font-size: 13px; line-height: 1.7; color: var(--c-body); margin-bottom: var(--s-md); }
+.claygent .cg-log b { color: var(--c-ink); font-weight: 600; }
+.claygent table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.claygent th { text-align: left; font-weight: 600; color: var(--c-muted); padding: 8px 10px; border-bottom: 1px solid var(--c-hairline-soft); }
+.claygent td { padding: 8px 10px; border-bottom: 1px solid var(--c-hairline-soft); color: var(--c-body-strong); }
+.claygent td .pill { font-size: 11px; font-weight: 600; border-radius: var(--r-pill); padding: 2px 8px; }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-lg); }
+.tier { background: #fffdf6; border: 1px solid var(--c-hairline-soft); border-radius: var(--r-lg); padding: var(--s-xl); display: flex; flex-direction: column; }
+.tier .plan { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.tier .price { font-family: var(--f-display); font-size: 32px; font-weight: 500; letter-spacing: -0.5px; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.tier .price span { font-family: var(--f-sans); font-size: 14px; font-weight: 400; color: var(--c-muted); letter-spacing: 0; }
+.tier .desc { font-size: 14px; color: var(--c-muted); margin-bottom: var(--s-lg); }
+.tier ul { list-style: none; margin-bottom: var(--s-xl); flex: 1; }
+.tier li { display: flex; gap: var(--s-xs); font-size: 14px; color: var(--c-body); margin-bottom: var(--s-xs); }
+.tier li svg { width: 14px; height: 14px; margin-top: 4px; flex-shrink: 0; stroke: var(--c-success); }
+.tier.featured { background: var(--c-brand-teal); border-color: var(--c-brand-teal); }
+.tier.featured .plan, .tier.featured .price { color: #fff; }
+.tier.featured .price span, .tier.featured .desc { color: rgba(255,255,255,0.7); }
+.tier.featured li { color: rgba(255,255,255,0.85); }
+.tier.featured li svg { stroke: var(--c-brand-mint); }
+
+.testimonials { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-lg); }
+.t-card { background: var(--c-surface-card); border-radius: var(--r-lg); padding: var(--s-lg); }
+.t-card blockquote { font-size: 16px; line-height: 1.55; color: var(--c-ink); margin-bottom: var(--s-lg); }
+.t-card .who { display: flex; align-items: center; gap: var(--s-sm); }
+.t-card .avatar { width: 36px; height: 36px; border-radius: var(--r-full); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+.t-card .who p { font-size: 14px; font-weight: 600; color: var(--c-ink); }
+.t-card .who span { font-size: 13px; color: var(--c-muted); display: block; }
+
+.cta-band { background: var(--c-surface-soft); border-radius: var(--r-xl); padding: 80px; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 7fr 5fr; gap: var(--s-xxl); align-items: center; }
+.cta-wrap { padding: 0 var(--s-xl) var(--s-section); }
+.cta-band h2 { margin-bottom: var(--s-md); }
+.cta-band p { font-size: 16px; color: var(--c-muted); margin-bottom: var(--s-xl); max-width: 440px; }
+.cta-illu { position: relative; height: 220px; overflow: hidden; border-radius: var(--r-lg); background: linear-gradient(180deg, #fdf1d8, #f7e3ba); }
+.cta-illu .sun { position: absolute; top: 14%; left: 20%; width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #ffe3a3, var(--c-brand-ochre) 72%); }
+.cta-illu .m1 { position: absolute; bottom: -20%; left: -8%; width: 55%; height: 70%; border-radius: 48% 52% 8% 8% / 88% 92% 10% 10%; background: linear-gradient(160deg, #8ac4b2, var(--c-brand-mint)); }
+.cta-illu .m2 { position: absolute; bottom: -24%; right: -6%; width: 60%; height: 76%; border-radius: 50% 50% 8% 8% / 90% 86% 12% 12%; background: linear-gradient(200deg, #c99ae0, var(--c-brand-lavender)); }
+.cta-illu .blob { position: absolute; width: 36px; height: 36px; top: 40%; right: 34%; border-radius: 54% 46% 60% 40% / 48% 56% 44% 52%; background: radial-gradient(circle at 30% 28%, #ff7ea6, var(--c-brand-pink) 70%); }
+
+.footer { background: var(--c-surface-soft); padding: 80px 0 var(--s-xl); }
+.footer .inner { max-width: 1280px; margin: 0 auto; padding: 0 var(--s-xl); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: var(--s-xl); margin-bottom: var(--s-xxl); }
+.footer .f-logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 19px; font-weight: 500; letter-spacing: -0.8px; color: var(--c-ink); margin-bottom: var(--s-md); }
+.footer .f-note { font-size: 14px; color: var(--c-muted); max-width: 260px; }
+.footer h5 { font-size: 13px; font-weight: 600; color: var(--c-ink); margin-bottom: var(--s-md); }
+.footer ul { list-style: none; }
+.footer li { margin-bottom: var(--s-xs); }
+.footer a { font-size: 14px; color: var(--c-muted); text-decoration: none; }
+.footer a:hover { color: var(--c-ink); }
+.footer-legal { display: flex; justify-content: space-between; padding-top: var(--s-xl); border-top: 1px solid var(--c-hairline-soft); }
+.footer-legal p { font-size: 13px; color: var(--c-muted-soft); }
+.footer-mountains { height: 120px; margin-top: var(--s-xxl); position: relative; overflow: hidden; border-radius: var(--r-lg); }
+.footer-mountains .fm { position: absolute; bottom: -30%; width: 34%; height: 110%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.footer-mountains .a { left: -6%; background: linear-gradient(180deg, #c99ae0, var(--c-brand-lavender)); }
+.footer-mountains .b { left: 30%; background: linear-gradient(180deg, #ffc89e, var(--c-brand-peach)); }
+.footer-mountains .c { left: 66%; background: linear-gradient(180deg, #ffd98c, var(--c-brand-ochre)); }
+
+@media (max-width: 900px) {
+  .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+  .specimen .row { grid-template-columns: 1fr; gap: var(--s-xs); }
+  .card-grid, .form-grid, .pricing-grid, .expert-row, .testimonials { grid-template-columns: 1fr; }
+  .hero, .cta-band { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .t-display-xl { font-size: 40px; }
+  .site-nav .menu { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">clay</span>
+    <span class="sg-brand"><span class="sg-blob"></span>Clay</span>
+  </div>
+  <span class="sg-desc">Playful GTM data orchestration — cream canvas, saturated feature cards, claymation warmth</span>
+</header>
+
+<main>
+  <section id="components">
+    <div class="wrap">
+      <p class="sg-section-label">Components — Clay Design System</p>
+
+      <!-- 1. Color tokens -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">01</span><h3>Color Tokens</h3><span class="rule"></span></div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="chip" style="background:#0a0a0a"></div><div class="meta"><p class="name">Primary</p><p class="hex">#0A0A0A</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#fffaf0"></div><div class="meta"><p class="name">Canvas Cream</p><p class="hex">#FFFAF0</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#faf5e8"></div><div class="meta"><p class="name">Surface Soft</p><p class="hex">#FAF5E8</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#f5f0e0"></div><div class="meta"><p class="name">Surface Card</p><p class="hex">#F5F0E0</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ff4d8b"></div><div class="meta"><p class="name">Brand Pink</p><p class="hex">#FF4D8B</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#1a3a3a"></div><div class="meta"><p class="name">Brand Teal</p><p class="hex">#1A3A3A</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#b8a4ed"></div><div class="meta"><p class="name">Brand Lavender</p><p class="hex">#B8A4ED</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ffb084"></div><div class="meta"><p class="name">Brand Peach</p><p class="hex">#FFB084</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#e8b94a"></div><div class="meta"><p class="name">Brand Ochre</p><p class="hex">#E8B94A</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#a4d4c5"></div><div class="meta"><p class="name">Brand Mint</p><p class="hex">#A4D4C5</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ff6b5a"></div><div class="meta"><p class="name">Brand Coral</p><p class="hex">#FF6B5A</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#e5e5e5"></div><div class="meta"><p class="name">Hairline</p><p class="hex">#E5E5E5</p></div></div>
+        </div>
+      </div>
+
+      <!-- 2. Typography -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">02</span><h3>Typography</h3><span class="rule"></span></div>
+        <div class="specimen">
+          <div class="row"><span class="tok">display-xl · Plain Black 72/500/-2.5px</span><p class="t-display-xl">Go to market with unique data</p></div>
+          <div class="row"><span class="tok">display-lg · Plain Black 56/500/-2px</span><p class="t-display-lg">Waterfall enrichment that actually works</p></div>
+          <div class="row"><span class="tok">display-md · Plain Black 40/500/-1px</span><p class="t-display-md">Meet Claygent</p></div>
+          <div class="row"><span class="tok">display-sm · Plain Black 32/500/-0.5px</span><p class="t-display-sm">Your growth ideas, realized</p></div>
+          <div class="row"><span class="tok">title-lg · Inter 24/600</span><p class="t-title-lg">Enterprise</p></div>
+          <div class="row"><span class="tok">title-md · Inter 18/600</span><p class="t-title-md">Research any account in seconds</p></div>
+          <div class="row"><span class="tok">body-md · Inter 16/400</span><p class="t-body-md">Clay combines 75+ data providers, AI research agents and your own CRM into one spreadsheet-like workspace — so every outbound message starts from something true.</p></div>
+          <div class="row"><span class="tok">caption-uppercase · Inter 12/600/1.5px</span><p class="t-caption-up" style="color:var(--c-muted)">Featured · Growth</p></div>
+        </div>
+      </div>
+
+      <!-- 3. Buttons -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">03</span><h3>Buttons</h3><span class="rule"></span></div>
+        <div class="btn-row">
+          <button class="btn btn-primary">Try Clay free</button>
+          <button class="btn btn-primary is-active">Start building</button>
+          <button class="btn btn-disabled" disabled>Enterprise only</button>
+          <button class="btn btn-secondary">Book a demo</button>
+          <button class="btn btn-on-color">Open table</button>
+          <button class="btn btn-ghost">Sign in</button>
+          <button class="btn btn-icon" aria-label="Next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></button>
+        </div>
+      </div>
+
+      <!-- 4. Inputs -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">04</span><h3>Inputs</h3><span class="rule"></span></div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="em">Work email</label>
+            <input id="em" type="email" placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="em2">Work email — focused</label>
+            <input id="em2" type="email" value="noor@pipeline.co" style="border-color:#0a0a0a">
+          </div>
+          <div class="field">
+            <label for="crm">CRM</label>
+            <select id="crm">
+              <option>Salesforce</option>
+              <option>HubSpot</option>
+              <option>Pipedrive</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="plan">Current plan — disabled</label>
+            <input id="plan" value="Growth (billed annually)" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Cards — the saturated brand palette -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">05</span><h3>Feature Cards — Saturated Palette</h3><span class="rule"></span></div>
+        <div class="card-grid">
+          <div class="feature-card card-pink">
+            <h4 class="t-title-md">Outbound sequencer</h4>
+            <p>Push enriched, personalized rows straight into your sequences — never a "quick question about your role" again.</p>
+            <div class="mock">
+              <div class="mock-line"><p>Step 1 · Email</p><span class="bar" style="background:var(--c-brand-pink)"></span></div>
+              <div class="mock-line"><p>Step 2 · LinkedIn</p><span class="bar" style="background:var(--c-brand-peach)"></span></div>
+            </div>
+          </div>
+          <div class="feature-card card-teal">
+            <h4 class="t-title-md">Claygent — AI research agent</h4>
+            <p>An agent that browses the web for every account in your table and writes back structured answers.</p>
+            <div class="mock">
+              <p class="mock-log" style="color:#1a3a3a">→ researching acme.co… done (4.2s)</p>
+              <p class="mock-log" style="color:#1a3a3a">→ summarizing tech stack… done (6.8s)</p>
+            </div>
+          </div>
+          <div class="feature-card card-lavender">
+            <h4 class="t-title-md">Waterfall enrichment</h4>
+            <p>Chain 75+ providers in order and pay only for the rows that come back filled.</p>
+          </div>
+        </div>
+        <div class="card-grid" style="margin-top:var(--s-lg)">
+          <div class="feature-card card-peach">
+            <h4 class="t-title-md">CRM sync</h4>
+            <p>Two-way sync keeps Salesforce and HubSpot fresh without a rev-ops ticket.</p>
+          </div>
+          <div class="feature-card card-ochre">
+            <h4 class="t-title-md">Experts marketplace</h4>
+            <p> Hire vetted Clay specialists to build your dream workflow in days.</p>
+          </div>
+          <div class="feature-card card-cream">
+            <h4 class="t-title-md">Signals</h4>
+            <p>Hiring spikes, funding rounds and tech changes — routed to the right rep automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Badges -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">06</span><h3>Badges &amp; Pills</h3><span class="rule"></span></div>
+        <div class="badge-row">
+          <span class="badge">Product update</span>
+          <span class="badge mint">Enriched · 98%</span>
+          <span class="badge coral">New</span>
+          <span class="badge ochre">Experts</span>
+          <span class="badge">Enterprise-ready</span>
+        </div>
+      </div>
+
+      <!-- 7. Navigation -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">07</span><h3>Navigation</h3><span class="rule"></span></div>
+        <div class="nav-demo">
+          <nav class="topnav">
+            <div class="logo"><span class="sg-blob" style="width:16px;height:16px;border-radius:46% 54% 58% 42% / 52% 44% 56% 48%;background:var(--c-brand-pink)"></span>Clay</div>
+            <div class="menu">
+              <a href="#">Product</a><a href="#">Solutions</a><a href="#">Resources</a><a href="#">Pricing</a><a href="#">Customers</a>
+            </div>
+            <div class="right">
+              <a class="signin" href="#">Sign in</a>
+              <a class="btn btn-primary" href="#" style="height:40px;padding:10px 16px;font-size:13px">Try free</a>
+            </div>
+          </nav>
+        </div>
+        <div class="tabs">
+          <a class="tab active" href="#">Data enrichment</a>
+          <a class="tab" href="#">Outbound</a>
+          <a class="tab" href="#">Claygent</a>
+          <a class="tab" href="#">Signals</a>
+        </div>
+      </div>
+
+      <!-- 8. Expert cards -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">08</span><h3>Expert Cards</h3><span class="rule"></span></div>
+        <div class="expert-row">
+          <div class="expert-card">
+            <div class="avatar" style="background:var(--c-brand-lavender)">MT</div>
+            <p class="name">Marta Tonberg</p>
+            <p class="role">Outbound systems · 40+ Clay builds</p>
+            <a href="#">Book a session</a>
+          </div>
+          <div class="expert-card">
+            <div class="avatar" style="background:var(--c-brand-mint);color:#12332b">JO</div>
+            <p class="name">Jamal Okafor</p>
+            <p class="role">RevOps &amp; CRM sync · ex-Salesforce</p>
+            <a href="#">Book a session</a>
+          </div>
+          <div class="expert-card">
+            <div class="avatar" style="background:var(--c-brand-peach)">LS</div>
+            <p class="name">Lena Schäfer</p>
+            <p class="role">Claygent workflows · AI research</p>
+            <a href="#">Book a session</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINISHED PRODUCT — Clay landing page
+       ============================================================ -->
+  <section id="product">
+    <nav class="site-nav">
+      <div class="logo"><span style="width:16px;height:16px;border-radius:46% 54% 58% 42% / 52% 44% 56% 48%;background:var(--c-brand-pink);display:inline-block"></span>Clay</div>
+      <div class="menu">
+        <a href="#">Product</a><a href="#">Solutions</a><a href="#">Resources</a><a href="#">Pricing</a><a href="#">Customers</a>
+      </div>
+      <div class="right">
+        <a class="signin" href="#">Sign in</a>
+        <a class="btn btn-primary" href="#" style="height:40px;padding:10px 16px;font-size:13px">Try free</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div>
+        <h1 class="t-display-xl">Go to market with unique data</h1>
+        <p class="sub">Clay brings together 75+ data providers, AI research agents and your CRM in one spreadsheet-like workspace — so every message you send starts from something true.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#">Try Clay free</a>
+          <a class="btn btn-secondary" href="#">Get a demo</a>
+        </div>
+      </div>
+      <div class="hero-illu" aria-label="Claymation illustration: mountains, sun and clay characters">
+        <span class="sun"></span>
+        <span class="blob b3"></span>
+        <span class="blob b2"></span>
+        <span class="blob"></span>
+        <span class="m1"></span>
+        <span class="m2"></span>
+        <span class="hill"></span>
+      </div>
+    </div>
+
+    <div class="logos">
+      <div class="inner">
+        <p>Powering growth at 300,000+ teams</p>
+        <span class="lg">OpenAI</span><span class="lg">Notion</span><span class="lg">Stripe</span><span class="lg">Vercel</span><span class="lg">Ramp</span><span class="lg">Perplexity</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <p class="kick">The platform</p>
+        <h2 class="t-display-lg">Everything GTM needs, in one table</h2>
+        <p>Enrich, research, sequence and sync — without stitching together six tools and a prayer.</p>
+      </div>
+      <div class="card-grid">
+        <div class="feature-card card-pink">
+          <h4 class="t-title-md">Waterfall enrichment</h4>
+          <p>Chain providers in order — Clay falls through until every cell is filled, and you only pay for what lands.</p>
+          <div class="mock">
+            <div class="mock-line"><p>Provider A</p><span class="bar" style="background:var(--c-brand-pink)"></span></div>
+            <div class="mock-line"><p>Provider B ✓</p><span class="bar" style="background:var(--c-success)"></span></div>
+          </div>
+        </div>
+        <div class="feature-card card-lavender">
+          <h4 class="t-title-md">Claygent, your AI researcher</h4>
+          <p>Describe the question once. Claygent browses the web for every row and writes back structured, sourced answers.</p>
+        </div>
+        <div class="feature-card card-teal">
+          <h4 class="t-title-md">Signals that trigger action</h4>
+          <p>Funding, hiring, tech-stack changes and website rewrites — caught the day they happen, routed the same hour.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="band-cream">
+      <div class="section">
+        <div class="section-head">
+          <p class="kick">Product tour</p>
+          <h2 class="t-display-md">Watch Claygent research an account</h2>
+        </div>
+        <div class="mockup-card claygent">
+          <div class="cg-head">
+            <div class="l"><span class="dot"></span><p>Claygent — column: "Why now?"</p></div>
+            <span class="status">Complete · 312 rows</span>
+          </div>
+          <div class="cg-log">
+            → Reading <b>northbeam.io</b> blog + changelog… found Series B announcement (Mar 2026)<br>
+            → Detected hiring spike: <b>+14 GTM roles</b> in 60 days<br>
+            → Writing per-row summary with sources…
+          </div>
+          <table>
+            <tr><th>Company</th><th>Signal</th><th>Why now (Claygent)</th></tr>
+            <tr><td>Northbeam</td><td><span class="pill" style="background:#e8faf0;color:#15803d">Funding</span></td><td>Series B in March, scaling demand gen team</td></tr>
+            <tr><td>Fernwood</td><td><span class="pill" style="background:#fef3e7;color:#c2660a">Hiring</span></td><td>New VP Sales started last week — building stack</td></tr>
+            <tr><td>Alto Systems</td><td><span class="pill" style="background:#f1ebfd;color:#6d3bd4">Tech change</span></td><td>Added Segment — replacing legacy analytics</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <p class="kick">Pricing</p>
+        <h2 class="t-display-lg">Simple plans, serious data</h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="tier">
+          <p class="plan">Starter</p>
+          <p class="price">$149<span> /month</span></p>
+          <p class="desc">For founders and small teams testing outbound.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>2,000 enrichment credits / mo</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Waterfall &amp; Claygent access</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>All native integrations</li>
+          </ul>
+          <a class="btn btn-secondary" href="#">Start free trial</a>
+        </div>
+        <div class="tier featured">
+          <p class="plan">Explorer</p>
+          <p class="price">$800<span> /month</span></p>
+          <p class="desc">For growth teams running outbound as a machine.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>30,000 credits + rollover</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>CRM two-way sync</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Priority support</li>
+          </ul>
+          <a class="btn btn-on-color" href="#">Start with Explorer</a>
+        </div>
+        <div class="tier">
+          <p class="plan">Enterprise</p>
+          <p class="price">Custom</p>
+          <p class="desc">For GTM orgs with security and scale requirements.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>SSO / SCIM &amp; audit logs</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Dedicated infrastructure</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Named solutions architect</li>
+          </ul>
+          <a class="btn btn-secondary" href="#">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="padding-top:0">
+      <div class="section-head">
+        <p class="kick">Customers</p>
+        <h2 class="t-display-lg">Loved by growth teams</h2>
+      </div>
+      <div class="testimonials">
+        <div class="t-card">
+          <blockquote>"Claygent found a compliance change on a prospect's blog that no data provider had. That one row turned into our biggest enterprise deal of the quarter."</blockquote>
+          <div class="who">
+            <div class="avatar" style="background:var(--c-brand-lavender)">AK</div>
+            <p>Amara Khan<span>VP Growth, Fernwood</span></p>
+          </div>
+        </div>
+        <div class="t-card">
+          <blockquote>"We cut our cost per enriched lead by 70% and our reply rate doubled. The waterfall alone pays for the platform twice over."</blockquote>
+          <div class="who">
+            <div class="avatar" style="background:var(--c-brand-mint);color:#12332b">TB</div>
+            <p>Tomás Beltrán<span>Head of Outbound, Alto Systems</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <div class="cta-band">
+        <div>
+          <h2 class="t-display-md">Turn your growth ideas into reality today</h2>
+          <p>Start free, bring your first table, and let Clay fill in the rest.</p>
+          <a class="btn btn-primary" href="#">Try Clay free</a>
+        </div>
+        <div class="cta-illu" aria-hidden="true">
+          <span class="sun"></span>
+          <span class="blob"></span>
+          <span class="m1"></span>
+          <span class="m2"></span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="inner">
+        <div class="footer-grid">
+          <div>
+            <p class="f-logo"><span style="width:16px;height:16px;border-radius:46% 54% 58% 42% / 52% 44% 56% 48%;background:var(--c-brand-pink);display:inline-block"></span>Clay</p>
+            <p class="f-note">The GTM platform for unique, personal outreach at scale.</p>
+          </div>
+          <div>
+            <h5>Product</h5>
+            <ul><li><a href="#">Waterfall enrichment</a></li><li><a href="#">Claygent</a></li><li><a href="#">Signals</a></li><li><a href="#">Integrations</a></li></ul>
+          </div>
+          <div>
+            <h5>Solutions</h5>
+            <ul><li><a href="#">Outbound sales</a></li><li><a href="#">RevOps</a></li><li><a href="#">Recruiting</a></li><li><a href="#">Fundraising</a></li></ul>
+          </div>
+          <div>
+            <h5>Resources</h5>
+            <ul><li><a href="#">University</a></li><li><a href="#">Templates</a></li><li><a href="#">Docs</a></li><li><a href="#">Blog</a></li></ul>
+          </div>
+          <div>
+            <h5>Company</h5>
+            <ul><li><a href="#">About</a></li><li><a href="#">Experts</a></li><li><a href="#">Careers</a></li><li><a href="#">Slack community</a></li></ul>
+          </div>
+        </div>
+        <div class="footer-mountains" aria-hidden="true">
+          <span class="fm a"></span><span class="fm b"></span><span class="fm c"></span>
+        </div>
+        <div class="footer-legal">
+          <p>© 2026 Clay Labs, Inc. All rights reserved.</p>
+          <p>Privacy · Terms · Security</p>
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

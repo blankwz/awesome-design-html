@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copper Leaf Coffee — Order &amp; Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#006241; --accent:#00754A; --house:#1E3932; --uplift:#2b5148; --mint:#d4e9e2;
+  --gold:#cba258; --gold-light:#dfc49d; --gold-wash:#faf6ee;
+  --white:#ffffff; --neutral-cool:#f9f9f9; --warm:#f2f0eb; --ceramic:#edebe9;
+  --ink:rgba(0,0,0,.87); --ink-soft:rgba(0,0,0,.58); --white-soft:rgba(255,255,255,.70);
+  --rewards-text:#33433d; --red:#c82014; --input-border:#d6dbde; --hairline:#e7e7e7;
+  --r-card:12px; --r-pill:50px; --r-circle:50%; --r-input:4px;
+  --shadow-card:0 0 0.5px rgba(0,0,0,0.14), 0 1px 1px rgba(0,0,0,0.24);
+  --shadow-nav:0 1px 3px rgba(0,0,0,0.1), 0 2px 2px rgba(0,0,0,0.06), 0 0 2px rgba(0,0,0,0.07);
+  --font:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --serif:'Lora','Iowan Old Style',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:62.5%}
+body{font-family:var(--font);background:var(--warm);color:var(--ink);font-size:1.6rem;line-height:1.5;letter-spacing:-.01em}
+a{color:var(--accent);text-decoration:none}
+button{font-family:var(--font);cursor:pointer;letter-spacing:-.01em}
+
+/* 50px pill everywhere + scale(.95) press */
+.btn{border-radius:var(--r-pill);font-weight:600;font-size:1.6rem;padding:7px 18px;transition:all .2s ease;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:scale(.95)}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-accent:hover{background:#006641}
+.btn-outline-accent{background:transparent;border-color:var(--accent);color:var(--accent)}
+.btn-outline-accent:hover{background:rgba(0,117,74,.06)}
+.btn-black{background:#000;border-color:#000;color:#fff}
+.btn-outline-ink{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn-on-dark{background:#fff;border-color:#fff;color:var(--accent)}
+.btn-outline-on-dark{background:transparent;border-color:#fff;color:#fff}
+.btn-sm{font-size:1.4rem;padding:6px 14px}
+.caps-label{font-size:1.3rem;font-weight:700;text-transform:uppercase;letter-spacing:.325px;color:var(--ink)}
+
+/* ---------- global nav ---------- */
+.gnav{position:sticky;top:0;z-index:30;background:#fff;box-shadow:var(--shadow-nav);padding:0 40px;height:80px;display:flex;align-items:center;gap:32px}
+.wordmark{display:flex;align-items:center;gap:12px;color:var(--brand);font-weight:700;font-size:2rem;letter-spacing:-.02em}
+.siren{width:44px;height:44px;border-radius:var(--r-circle);background:var(--brand);color:#fff;display:grid;place-items:center;font-size:2rem;font-weight:700}
+.gnav-links{display:flex;gap:24px}
+.gnav-links a{color:var(--ink);font-weight:600;font-size:1.4rem;letter-spacing:.1em;text-transform:uppercase;padding:6px 2px}
+.gnav-links a:hover{color:var(--accent)}
+.gnav-links a.active{color:var(--accent);box-shadow:0 2px 0 var(--accent)}
+.gnav-right{margin-left:auto;display:flex;align-items:center;gap:20px}
+.find-store{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:1.4rem;font-weight:600}
+.find-store:hover{color:var(--accent)}
+.gnav .bag{position:relative}
+.gnav .bag .count{position:absolute;top:-6px;right:-8px;background:var(--accent);color:#fff;border-radius:var(--r-circle);font-size:1.1rem;font-weight:700;min-width:1.8rem;height:1.8rem;display:grid;place-items:center}
+
+/* ---------- hero split 40/60 ---------- */
+.hero{display:grid;grid-template-columns:40fr 60fr;background:var(--house);color:#fff;min-height:380px}
+.hero-media{background:
+  radial-gradient(260px 260px at 62% 42%,rgba(255,255,255,.16),transparent 70%),
+  linear-gradient(150deg,#0e4d3a 0%,#00754A 55%,#1E3932 100%)}
+.hero-copy{padding:56px 64px;display:flex;flex-direction:column;justify-content:center}
+.hero-copy h1{font-family:var(--serif);font-size:4.2rem;font-weight:600;line-height:1.2;letter-spacing:-.16px;margin-bottom:14px}
+.hero-copy p{color:var(--white-soft);font-size:1.9rem;line-height:1.75;max-width:44ch;margin-bottom:26px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- chips row ---------- */
+.chips{display:flex;gap:12px;align-items:center;padding:28px 40px 4px;flex-wrap:wrap}
+.chips-label{font-size:1.4rem;font-weight:600;color:var(--ink-soft);margin-right:4px}
+.chip{background:#fff;border:1px solid var(--input-border);border-radius:var(--r-pill);padding:7px 18px;font-size:1.4rem;font-weight:600;color:var(--ink)}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ---------- menu grid ---------- */
+.wrap{max-width:1440px;margin:0 auto;padding:0 40px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;margin:26px 0 20px}
+.section-head h2{font-size:2.4rem;font-weight:400;letter-spacing:-.16px}
+.section-head h2 b{color:var(--brand);font-weight:600}
+.section-head a{font-size:1.4rem;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:32px}
+.card{background:#fff;border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.card-art{height:160px;position:relative}
+.card-body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card-body h3{font-size:1.9rem;font-weight:600;letter-spacing:-.16px}
+.card-sub{font-size:1.4rem;color:var(--ink-soft)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px}
+.cal{font-size:1.3rem;color:var(--ink-soft)}
+.price{font-weight:600;font-size:1.6rem}
+.starpill{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--gold);color:var(--gold);border-radius:var(--r-pill);padding:3px 10px;font-size:1.3rem;font-weight:700;letter-spacing:.5px}
+.badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:1.3rem;font-weight:600;border-radius:var(--r-pill);padding:4px 12px}
+.badge.new{background:var(--brand)}
+.badge.gold{background:#fff;border:1px solid var(--gold);color:var(--gold)}
+.d1{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#f2a09a,#d96c5f 60%,#a63d31)}
+.d2{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#b5d4c5,#5fa58a 60%,#2e6b52)}
+.d3{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#f0d9a8,#cfa45e 60%,#8a6a33)}
+.d4{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#c9b6d9,#8a6ba8 60%,#533b6b)}
+.d5{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#a8c8e0,#5f93b8 60%,#2e5673)}
+.d6{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#e8c8b0,#c08a5f 60%,#7a4d2e)}
+.d7{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#d4e9e2,#7ab8a3 60%,#3a7a63)}
+.d8{background:radial-gradient(140px 140px at 62% 40%,rgba(255,255,255,.35),transparent 70%),linear-gradient(140deg,#f4c8c0,#d98a7d 60%,#96504a)}
+
+/* ---------- featured product (PDP cluster) ---------- */
+.featured{background:#fff;border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:40px;display:grid;grid-template-columns:420px 1fr;gap:48px;margin:32px 0}
+.crumb{font-size:1.4rem;color:var(--ink-soft);margin-bottom:12px}
+.crumb a{text-decoration:underline}
+.f-media{background:radial-gradient(180px 180px at 55% 40%,rgba(255,255,255,.4),transparent 70%),linear-gradient(150deg,#f2a09a,#d96c5f 55%,#a63d31);border-radius:var(--r-card);height:320px}
+.f-thumbs{display:flex;gap:12px;margin-top:14px}
+.thumb{width:64px;height:64px;border-radius:var(--r-circle);border:2px solid transparent;cursor:pointer}
+.thumb.on{border-color:var(--accent)}
+.t2{background:linear-gradient(150deg,#b5d4c5,#2e6b52)}
+.t3{background:linear-gradient(150deg,#f0d9a8,#8a6a33)}
+.t4{background:linear-gradient(150deg,#a8c8e0,#2e5673)}
+.featured-info h2{font-size:3.2rem;font-weight:700;letter-spacing:-.16px;margin-bottom:8px}
+.featured-info .desc{color:var(--ink-soft);max-width:52ch;margin:8px 0 20px}
+.nutri{font-size:1.4rem;font-weight:700;margin-bottom:20px}
+.nutri span{color:var(--ink-soft);font-weight:400}
+.sizes{display:flex;gap:32px;padding:16px 8px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-bottom:20px}
+.size{text-align:center;background:none;border:none}
+.size .cup{width:44px;height:44px;border-radius:var(--r-circle);border:2px solid transparent;margin:0 auto 6px;display:grid;place-items:center;background:var(--warm);font-size:1.7rem}
+.size.on .cup{border-color:var(--accent);box-shadow:inset 0 0 0 3px #fff}
+.size b{display:block;font-size:1.6rem;font-weight:700;color:var(--brand)}
+.size span{font-size:1.3rem;color:var(--ink-soft)}
+.select-row{display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.field{flex:1;min-width:180px;background:#fff;border:1px solid var(--input-border);border-radius:var(--r-input);padding:14px 16px;position:relative;cursor:pointer}
+.field:hover{border-color:var(--accent)}
+.field .flabel{position:absolute;top:-8px;left:12px;background:#fff;padding:0 6px;font-size:1.3rem;font-weight:700;text-transform:uppercase;letter-spacing:.325px}
+.field .fvalue{font-size:1.6rem;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.field .chev{color:var(--ink-soft)}
+.buy-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:6px}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--input-border);border-radius:var(--r-pill);background:#fff}
+.stepper button{width:36px;height:36px;border-radius:var(--r-circle);border:1px solid var(--input-border);background:#fff;margin:4px;font-size:1.6rem;color:var(--ink-soft)}
+.stepper button:hover{border-color:var(--accent);color:var(--accent)}
+.stepper .qty{width:28px;text-align:center;font-weight:700;font-size:1.6rem}
+
+/* ---------- order summary ---------- */
+.order{display:grid;grid-template-columns:1fr 400px;gap:40px;align-items:start;margin:8px 0 64px}
+.oi{display:flex;align-items:center;gap:16px;background:#fff;border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:14px 18px;margin-bottom:14px}
+.oi-art{width:64px;height:64px;border-radius:var(--r-card);flex:none}
+.oi-info b{display:block;font-size:1.6rem;font-weight:600}
+.oi-info span{font-size:1.4rem;color:var(--ink-soft)}
+.oi-price{margin-left:auto;font-weight:600}
+.oi-remove{background:none;border:none;color:var(--accent);font-size:1.4rem;font-weight:600}
+.oi-remove:hover{text-decoration:underline}
+.summary{background:#fff;border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:28px}
+.summary h3{font-size:2rem;font-weight:600;margin-bottom:14px}
+.sr{display:flex;justify-content:space-between;font-size:1.5rem;padding:7px 0;color:var(--ink-soft)}
+.sr.total{border-top:1px solid var(--hairline);margin-top:8px;padding-top:14px;color:var(--ink);font-weight:600;font-size:1.8rem}
+.stars-earn{background:var(--gold-wash);border:1px solid var(--gold-light);border-radius:var(--r-card);padding:12px 16px;margin:16px 0;font-size:1.4rem;color:var(--rewards-text)}
+.stars-earn b{color:var(--gold);font-weight:700}
+.summary .btn-accent{width:100%;justify-content:center;padding:12px}
+
+/* ---------- house-green band + footer ---------- */
+.band{background:var(--house);color:#fff;padding:56px 40px}
+.band-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.band h2{font-family:var(--serif);font-size:3.2rem;font-weight:600;margin-bottom:8px}
+.band p{color:var(--white-soft);font-size:1.7rem;max-width:56ch}
+.band-cta{display:flex;gap:12px}
+footer{background:var(--house);color:#fff;padding:0 40px 32px}
+.f-grid{max-width:1440px;margin:0 auto;border-top:1px solid rgba(255,255,255,.2);display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding:48px 0}
+.f-grid h4{font-size:1.4rem;font-weight:700;margin-bottom:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.f-grid ul{list-style:none;display:grid;gap:10px}
+.f-grid a{color:var(--white-soft);font-size:1.4rem}
+.f-grid a:hover{color:#fff;text-decoration:underline}
+.f-brand p{color:var(--white-soft);font-size:1.4rem;max-width:30ch;margin-top:12px}
+.newsletter{display:flex;gap:8px;margin-top:16px}
+.newsletter input{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:var(--r-input);padding:10px 12px;color:#fff;font-family:var(--font);font-size:1.4rem}
+.newsletter input::placeholder{color:var(--white-soft)}
+.legal{max-width:1440px;margin:0 auto;border-top:1px solid rgba(255,255,255,.2);padding-top:20px;display:flex;justify-content:space-between;color:var(--white-soft);font-size:1.3rem}
+
+/* ---------- Frap floating button ---------- */
+.frap{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:var(--r-circle);background:var(--accent);color:#fff;border:none;display:grid;place-items:center;
+  box-shadow:0 0 6px rgba(0,0,0,0.24),0 8px 12px rgba(0,0,0,0.14);transition:all .2s ease;z-index:40}
+.frap:active{transform:scale(.95);box-shadow:0 0 6px rgba(0,0,0,0.24),0 8px 12px rgba(0,0,0,0)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:960px){
+  .gnav{padding:0 20px;gap:16px;height:72px}
+  .gnav-links{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-media{min-height:220px}
+  .hero-copy{padding:32px 24px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .featured{grid-template-columns:1fr;padding:24px}
+  .order{grid-template-columns:1fr}
+  .chips,.wrap{padding-left:20px;padding-right:20px}
+  .f-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<nav class="gnav">
+  <a class="wordmark" href="#"><span class="siren">☾</span>Copper Leaf</a>
+  <div class="gnav-links">
+    <a href="#menu" class="active">Menu</a>
+    <a href="#">Rewards</a>
+    <a href="#order">Gift Cards</a>
+  </div>
+  <div class="gnav-right">
+    <a class="find-store" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+      Find a store
+    </a>
+    <button class="btn btn-outline-ink btn-sm">Sign in</button>
+    <button class="btn btn-black btn-sm">Join now</button>
+    <a class="bag" href="#order" aria-label="Order bag">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006241" stroke-width="2"><path d="M6 7h12l1 14H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="count">3</span>
+    </a>
+    <span style="width:40px;height:40px;border-radius:50%;background:#006241;color:#fff;display:grid;place-items:center;font-weight:600;font-size:1.3rem">AL</span>
+  </div>
+</nav>
+<button class="frap" aria-label="Start an order">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l1 14H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+</button>
+
+<header class="hero">
+  <div class="hero-media" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <h1>Free coffee is just the beginning</h1>
+    <p>Order ahead on the app, earn <b style="color:#cba258">★</b> Stars on every purchase, and redeem them for the drinks you already love.</p>
+    <div class="hero-cta">
+      <button class="btn btn-accent">Join now</button>
+      <button class="btn btn-outline-on-dark">Learn more</button>
+    </div>
+  </div>
+</header>
+
+<div class="chips" id="menu">
+  <span class="chips-label">Menu</span>
+  <button class="chip on">All drinks</button>
+  <button class="chip">Hot coffees</button>
+  <button class="chip">Cold brews</button>
+  <button class="chip">Refreshers</button>
+  <button class="chip">Frappuccino</button>
+  <button class="chip">Bakery</button>
+  <button class="chip">Rewards redeemable</button>
+</div>
+
+<main class="wrap">
+  <div class="section-head">
+    <h2><b>Cold brews &amp; refreshers</b> — handcrafted, always smooth</h2>
+    <a href="#">Full menu</a>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <div class="card-art d1"><span class="badge">New</span></div>
+      <div class="card-body">
+        <h3>Pink Energy Drink</h3>
+        <div class="card-sub">Sparkling refresher · fruity lift</div>
+        <div class="card-foot"><span class="price">$4.75</span><span class="cal">140 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d2"></div>
+      <div class="card-body">
+        <h3>Nitro Cold Brew</h3>
+        <div class="card-sub">Velvet pour · no sugar</div>
+        <div class="card-foot"><span class="price">$5.25</span><span class="cal">5 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d3"><span class="badge gold">200★ item</span></div>
+      <div class="card-body">
+        <h3>Caramel Cloud Macchiato</h3>
+        <div class="card-sub">Espresso · vanilla · cloud foam</div>
+        <div class="card-foot"><span class="price">$5.95</span><span class="cal">250 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d4"></div>
+      <div class="card-body">
+        <h3>Iced Brown Sugar Oat Shaken Espresso</h3>
+        <div class="card-sub">Blonde espresso · oat milk</div>
+        <div class="card-foot"><span class="price">$5.45</span><span class="cal">120 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d5"><span class="badge">New</span></div>
+      <div class="card-body">
+        <h3>Iced Vanilla Chai</h3>
+        <div class="card-sub">Black tea · oat milk · spice</div>
+        <div class="card-foot"><span class="price">$5.25</span><span class="cal">240 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d6"></div>
+      <div class="card-body">
+        <h3>Cinnamon Roll</h3>
+        <div class="card-sub">Warm · cream-cheese icing</div>
+        <div class="card-foot"><span class="price">$4.45</span><span class="cal">420 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d7"></div>
+      <div class="card-body">
+        <h3>Matcha Crest</h3>
+        <div class="card-sub">Iced matcha · mint</div>
+        <div class="card-foot"><span class="price">$5.45</span><span class="cal">210 cal</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-art d8"></div>
+      <div class="card-body">
+        <h3>Strawberry Oatmilk Shake</h3>
+        <div class="card-sub">Strawberry purée · oat milk</div>
+        <div class="card-foot"><span class="price">$5.45</span><span class="cal">290 cal</span></div>
+      </div>
+    </article>
+  </div>
+  <section class="featured">
+    <div>
+      <div class="f-media"></div>
+      <div class="f-thumbs">
+        <span class="thumb on" style="background:linear-gradient(150deg,#f2a09a,#a63d31)"></span>
+        <span class="thumb t2"></span><span class="thumb t3"></span><span class="thumb t4"></span>
+      </div>
+    </div>
+    <div class="featured-info">
+      <div class="crumb"><a href="#">Menu</a> / <a href="#">Refreshers</a> / Pink Energy Drink</div>
+      <h2>Pink Energy Drink</h2>
+      <p class="desc">Sparkling energy enhanced with 90mg of caffeine from coffee cherry, a bright splash of strawberry and lime — built for the afternoon slump.</p>
+      <div class="nutri">140 calories <span>· 25g sugar · 2.5g fat · 90mg caffeine</span></div>
+      <div class="sizes">
+        <button class="size on"><span class="cup">☕</span><b>Tall</b><span>12 fl oz</span></button>
+        <button class="size"><span class="cup">☕</span><b>Grande</b><span>16 fl oz</span></button>
+        <button class="size"><span class="cup">☕</span><b>Venti</b><span>24 fl oz</span></button>
+        <button class="size"><span class="cup">☕</span><b>Trenta</b><span>30 fl oz</span></button>
+      </div>
+      <div class="select-row">
+        <div class="field" tabindex="0">
+          <span class="flabel">Add-ins</span>
+          <div class="fvalue">Ice <span class="chev">▾</span></div>
+        </div>
+        <div class="field" tabindex="0">
+          <span class="flabel">Milk</span>
+          <div class="fvalue">Coconut <span class="chev">▾</span></div>
+        </div>
+        <div class="field" tabindex="0">
+          <span class="flabel">Add-ins</span>
+          <div class="fvalue">Strawberry inclusions · 1 scoop <span class="chev">▾</span></div>
+        </div>
+      </div>
+      <div class="buy-row">
+        <div class="stepper"><button aria-label="Decrease">−</button><span class="qty">1</span><button aria-label="Increase">+</button></div>
+        <span class="price" style="font-size:2.2rem">$4.75</span>
+        <button class="btn btn-outline-accent" style="padding:14px 40px"><span style="color:#cba258">✦</span> Customize</button>
+        <button class="btn btn-accent" style="padding:14px 32px">Add to Order</button>
+        <span class="starpill">200★ item</span>
+      </div>
+      <div style="margin-top:20px;font-size:1.4rem;color:rgba(0,0,0,.58)">★★★★★ <b style="color:rgba(0,0,0,.87)">4.8</b> · 2,314 ratings · “Perfect afternoon lift — not too sweet.”</div>
+    </div>
+  </section>
+
+  <section class="order" id="order">
+    <div>
+      <div class="section-head" style="margin:0 0 16px"><h2><b>Your order</b> — Copper Leaf · 5th &amp; Pine</h2><a href="#">Change store</a></div>
+      <div class="oi">
+        <span class="oi-art d1"></span>
+        <div class="oi-info"><b>Pink Energy Drink</b><span>Grande · coconut milk · light ice</span></div>
+        <span class="oi-price">$4.75</span>
+        <button class="oi-remove">Remove</button>
+      </div>
+      <div class="oi">
+        <span class="oi-art d3"></span>
+        <div class="oi-info"><b>Caramel Cloud Macchiato</b><span>Grande · 2% milk · extra hot</span></div>
+        <span class="oi-price">$5.95</span>
+        <button class="oi-remove">Remove</button>
+      </div>
+      <div class="oi">
+        <span class="oi-art d6"></span>
+        <div class="oi-info"><b>Cinnamon Roll</b><span>Warmed · icing on the side</span></div>
+        <span class="oi-price">$4.45</span>
+        <button class="oi-remove">Remove</button>
+      </div>
+    </div>
+    <aside class="summary">
+      <h3>Order summary</h3>
+      <div class="sr"><span>Subtotal (3 items)</span><span>$15.15</span></div>
+      <div class="sr"><span>Tax (8.9%)</span><span>$1.35</span></div>
+      <div class="sr total"><span>Total</span><span>$16.50</span></div>
+      <div class="stars-earn">You will earn <b> ★ 82</b> Stars with this order — 50 more to Gold tier.</div>
+      <button class="btn btn-accent">Continue to payment</button>
+    </aside>
+  </section>
+</main>
+
+<section class="band">
+  <div class="band-inner">
+    <div>
+      <h2>Free coffee is just the beginning</h2>
+      <p>Join Copper Leaf Rewards and collect Stars on every order — redeem them for free refills, bakery pairs and birthday treats.</p>
+    </div>
+    <div class="band-cta">
+      <button class="btn btn-on-dark">Join for free</button>
+      <button class="btn btn-outline-on-dark">See how it works</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-grid">
+    <div class="f-brand">
+      <a class="wordmark" href="#" style="color:#fff"><span class="siren" style="background:#fff;color:#1E3932">☾</span>Copper Leaf</a>
+      <p>Handcrafted coffee, brewed with care since 1994. Order ahead, skip the line.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Get seasonal menus by email" aria-label="Email">
+        <button class="btn btn-on-dark btn-sm">Sign up</button>
+      </form>
+    </div>
+    <div><h4>Menu</h4><ul><li><a href="#">Hot coffees</a></li><li><a href="#">Cold brews</a></li><li><a href="#">Refreshers</a></li><li><a href="#">Bakery</a></li></ul></div>
+    <div><h4>Rewards</h4><ul><li><a href="#">Join now</a></li><li><a href="#">Stars</a></li><li><a href="#">Gift cards</a></li><li><a href="#">Partner offers</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="#">About us</a></li><li><a href="#">Careers</a></li><li><a href="#">Sourcing</a></li><li><a href="#">Contact</a></li></ul></div>
+  </div>
+  <div class="legal"><span>© 2026 Copper Leaf Coffee Company</span><span>Privacy · Terms · Accessibility · Cookie preferences</span></div>
+</footer>
+</body>
+</html>

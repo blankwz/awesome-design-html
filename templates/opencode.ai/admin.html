@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>opencode admin — ops console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#201d1d; --on-primary:#fdfcfc; --ink:#201d1d; --ink-deep:#0f0000;
+  --charcoal:#302c2c; --body:#424245; --mute:#646262; --stone:#6e6e73; --ash:#9a9898;
+  --canvas:#fdfcfc; --surface-soft:#f8f7f7; --surface-card:#f1eeee;
+  --surface-dark:#201d1d; --surface-dark-elevated:#302c2c;
+  --hairline:rgba(15,0,0,.12); --hairline-strong:#646262;
+  --on-dark:#fdfcfc; --on-dark-mute:#9a9898;
+  --accent:#007aff; --warning:#ff9f0a; --danger:#ff3b30; --success:#30d158;
+  --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-mono);color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+a{color:var(--ink);text-decoration:none}
+ul{list-style:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+
+/* ── sidebar ─────────────────────────────────────────────── */
+.side{border-right:1px solid var(--hairline);display:flex;flex-direction:column;background:var(--canvas)}
+.side .brand{padding:14px 16px;border-bottom:1px solid var(--hairline)}
+.wordmark{font-size:11px;font-weight:700;letter-spacing:1px;line-height:1.15;white-space:pre;text-decoration:none}
+.side .group{font-size:12px;color:var(--mute);padding:18px 16px 6px}
+.side nav a{display:flex;gap:8px;align-items:center;font-size:16px;font-weight:500;padding:8px 16px;color:var(--mute)}
+.side nav a:hover{color:var(--ink)}
+.side nav a.active{color:var(--ink);box-shadow:inset 3px 0 0 var(--ash);background:var(--surface-soft)}
+.side nav a .cnt{margin-left:auto;font-size:12px;color:var(--mute);border:1px solid var(--hairline);border-radius:4px;padding:0 6px}
+.side nav a.active .cnt{color:var(--ink);border-color:var(--hairline-strong)}
+.user-card{margin:auto 12px 12px;border:1px solid var(--hairline);border-radius:4px;padding:12px;display:flex;gap:10px;align-items:center}
+.avatar{width:32px;height:32px;border-radius:9999px;background:var(--surface-card);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none}
+.user-card .u-name{font-size:14px;font-weight:500}
+.user-card .u-role{font-size:12px;color:var(--mute)}
+
+/* ── topbar ──────────────────────────────────────────────── */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{display:flex;align-items:center;gap:16px;height:56px;border-bottom:1px solid var(--hairline);padding:0 32px}
+.crumb{font-size:16px;color:var(--mute)}
+.crumb b{color:var(--ink);font-weight:500}
+.crumb i{font-style:normal;color:var(--stone);margin:0 6px}
+.searchbox{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:4px;height:40px;padding:0 12px;width:320px;color:var(--mute);font-size:16px}
+.searchbox input{border:none;background:none;outline:none;font-family:inherit;font-size:16px;width:100%;color:var(--ink)}
+.bell{position:relative;width:36px;height:36px;border:1px solid var(--hairline);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+.bell .dot{position:absolute;top:-6px;right:-6px;background:var(--danger);color:var(--on-primary);font-size:11px;border-radius:4px;padding:0 5px;font-weight:500}
+
+/* content */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between}
+.page-head h1{font-size:38px;font-weight:700;line-height:1.2}
+.page-head p{color:var(--mute);font-size:14px;margin-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:4px;height:36px;padding:0 20px;font-size:16px;font-weight:500;line-height:1.4}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--ink-deep)}
+.btn-secondary{border:1px solid var(--hairline-strong)}
+.head-actions{display:flex;gap:8px}
+.marker{font-weight:700}
+.mk-ok{color:var(--success)} .mk-warn{color:var(--warning)} .mk-dgr{color:var(--danger)} .mk-nt{color:var(--mute)}
+.badge{display:inline-block;border:1px solid;border-radius:4px;padding:1px 8px;font-size:14px}
+.b-ok{color:var(--success);border-color:var(--success)}
+.b-warn{color:var(--warning);border-color:var(--warning)}
+.b-dgr{color:var(--danger);border-color:var(--danger)}
+.b-nt{color:var(--mute);border-color:var(--hairline-strong)}
+
+/* ── KPI chart tiles ─────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi{border:1px solid var(--hairline);padding:16px}
+.kpi .k-label{font-size:14px;color:var(--mute)}
+.kpi .k-value{font-size:30px;font-weight:700;margin-top:4px}
+.kpi .k-delta{font-size:14px;margin-top:2px}
+.up{color:var(--success)} .down{color:var(--danger)}
+.kpi .k-delta span{color:var(--mute)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:14px}
+.spark i{flex:1;background:var(--surface-card);border-radius:1px}
+.spark i.hi{background:var(--ink)}
+
+/* ── charts ──────────────────────────────────────────────── */
+.charts{display:grid;grid-template-columns:1.8fr 1fr;gap:8px}
+.panel{border:1px solid var(--hairline);padding:24px}
+.panel h3{font-size:16px;font-weight:700}
+.panel .p-sub{font-size:14px;color:var(--mute);margin:2px 0 20px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px;border-bottom:1px solid var(--hairline-strong)}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bcol .bar{width:100%;background:var(--surface-card);border-radius:1px}
+.bcol .bar.hi{background:var(--ink)}
+.bcol small{font-size:14px;color:var(--mute);padding-bottom:6px}
+.donut-wrap{display:flex;gap:20px;align-items:center}
+.donut{width:130px;height:130px;border-radius:9999px;flex:none;position:relative;
+  background:conic-gradient(var(--accent) 0 44%,var(--ink) 44% 68%,var(--warning) 68% 84%,var(--ash) 84% 100%)}
+.donut::after{content:"2.1M";position:absolute;inset:32px;background:var(--canvas);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
+.legend{flex:1}
+.legend li{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px;color:var(--body)}
+.legend i{width:12px;height:12px;border-radius:2px;flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:500}
+
+/* ── table ───────────────────────────────────────────────── */
+.tablewrap{border:1px solid var(--hairline)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+thead th{text-align:left;font-size:14px;color:var(--mute);font-weight:400;padding:10px 16px;border-bottom:1px solid var(--hairline-strong)}
+tbody td{padding:12px 16px;border-bottom:1px solid var(--hairline);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+.checkbox{width:14px;height:14px;border:1px solid var(--hairline-strong);border-radius:2px;display:inline-block;vertical-align:middle}
+.o-num{font-weight:500}
+.o-sub{font-size:12px;color:var(--mute)}
+td .amt{white-space:nowrap}
+.actions a{color:var(--ink);font-size:14px;text-decoration:underline;margin-right:12px}
+tfoot td{padding:10px 16px;font-size:14px;color:var(--mute)}
+.pager{display:flex;gap:6px;justify-content:flex-end}
+.pager button{min-width:32px;height:32px;border:1px solid var(--hairline);border-radius:2px;font-size:14px}
+.pager button.cur{background:var(--ink);color:var(--on-primary);border-color:var(--ink)}
+
+/* ── below row ───────────────────────────────────────────── */
+.below{display:grid;grid-template-columns:1.8fr 1fr;gap:8px;align-items:start}
+.feed li{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--hairline)}
+.feed li:last-child{border-bottom:none}
+.feed p{font-size:16px;color:var(--body)}
+.feed p b{font-weight:500;color:var(--ink)}
+.feed time{font-size:14px;color:var(--mute)}
+.quick label{display:block;font-size:16px;font-weight:500;margin:16px 0 6px}
+.quick input[type=text],.quick select{width:100%;height:40px;border:1px solid var(--hairline);border-radius:4px;padding:0 12px;font-family:inherit;font-size:16px;outline:none;background:var(--surface-soft)}
+.quick input:focus,.quick select:focus{background:var(--canvas);border-color:var(--ink)}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;font-size:16px;margin-top:16px}
+.switch{width:38px;height:22px;border-radius:4px;background:var(--surface-card);border:1px solid var(--hairline);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:2px;background:var(--ash)}
+.switch.on{background:var(--ink);border-color:var(--ink)}
+.switch.on::after{left:auto;right:3px;background:var(--on-primary)}
+.quick .btn-primary{width:100%;margin-top:20px}
+
+@media (max-width:1023px){
+  .shell{grid-template-columns:1fr}.side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.below{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- sidebar -->
+  <aside class="side">
+    <div class="brand">
+      <a class="wordmark" href="#">▛▟▛▟ OPENCODE
+▛▟▛▟ OPS</a>
+    </div>
+    <nav>
+      <p class="group">overview</p>
+      <a href="#" class="active">dashboard</a>
+      <a href="#">usage graphs</a>
+      <p class="group">distribution</p>
+      <a href="#">releases <span class="cnt">4</span></a>
+      <a href="#">registry</a>
+      <a href="#">mirrors</a>
+      <p class="group">zen</p>
+      <a href="#">accounts <span class="cnt">891</span></a>
+      <a href="#">routing</a>
+      <a href="#">billing</a>
+      <p class="group">enterprise</p>
+      <a href="#">tenants</a>
+      <a href="#">sso &amp; audit</a>
+      <p class="group">system</p>
+      <a href="#">settings</a>
+    </nav>
+    <div class="user-card">
+      <span class="avatar">NK</span>
+      <div><p class="u-name">Nadia Kovač</p><p class="u-role">infra · on-call</p></div>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <div class="main">
+    <header class="topbar">
+      <p class="crumb">ops <i>/</i> <b>dashboard</b></p>
+      <label class="searchbox">
+        <span>[?]</span>
+        <input type="search" placeholder="grep tenants, releases, accounts" aria-label="Search">
+      </label>
+      <button class="bell" aria-label="Alerts, 3 active">! <span class="dot">3</span></button>
+      <span class="avatar">NK</span>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>dashboard</h1>
+          <p>2026-10-26 · all regions · on-call: nadia</p>
+        </div>
+        <div class="head-actions">
+          <button class="btn btn-secondary">export json</button>
+          <button class="btn btn-primary">cut release</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="k-label">sessions / day</p>
+          <p class="k-value">2.1M</p>
+          <p class="k-delta up">[+] 7.8% <span>vs last week</span></p>
+          <div class="spark"><i style="height:40%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:76%"></i><i class="hi" style="height:94%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">tokens routed / day</p>
+          <p class="k-value">19.4B</p>
+          <p class="k-delta up">[+] 11.2% <span>vs last week</span></p>
+          <div class="spark"><i style="height:44%"></i><i style="height:50%"></i><i style="height:58%"></i><i style="height:54%"></i><i style="height:66%"></i><i style="height:74%"></i><i class="hi" style="height:90%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">p95 first token</p>
+          <p class="k-value">0.62s</p>
+          <p class="k-delta up">[-] 0.08s <span>vs last week</span></p>
+          <div class="spark"><i style="height:70%"></i><i style="height:62%"></i><i style="height:64%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:44%"></i><i class="hi" style="height:38%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">failed requests</p>
+          <p class="k-value">0.11%</p>
+          <p class="k-delta down">[+] 0.03 pts <span>zen router</span></p>
+          <div class="spark"><i style="height:34%"></i><i style="height:40%"></i><i style="height:36%"></i><i style="height:48%"></i><i style="height:44%"></i><i style="height:56%"></i><i class="hi" style="height:64%"></i></div>
+        </div>
+      </section>
+
+      <!-- charts -->
+      <section class="charts">
+        <div class="panel">
+          <h3>sessions per month</h3>
+          <p class="p-sub">all channels · millions · 2026</p>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:36%"></div><small>nov</small></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div><small>dec</small></div>
+            <div class="bcol"><div class="bar" style="height:44%"></div><small>jan</small></div>
+            <div class="bcol"><div class="bar" style="height:56%"></div><small>feb</small></div>
+            <div class="bcol"><div class="bar" style="height:52%"></div><small>mar</small></div>
+            <div class="bcol"><div class="bar" style="height:64%"></div><small>apr</small></div>
+            <div class="bcol"><div class="bar" style="height:60%"></div><small>may</small></div>
+            <div class="bcol"><div class="bar" style="height:72%"></div><small>jun</small></div>
+            <div class="bcol"><div class="bar" style="height:68%"></div><small>jul</small></div>
+            <div class="bcol"><div class="bar" style="height:80%"></div><small>aug</small></div>
+            <div class="bcol"><div class="bar" style="height:76%"></div><small>sep</small></div>
+            <div class="bcol"><div class="bar hi" style="height:94%"></div><small>oct</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>routing share</h3>
+          <p class="p-sub">tokens by provider, last 30 days</p>
+          <div class="donut-wrap">
+            <div class="donut" role="img" aria-label="Donut chart: Claude 44%, GPT 24%, Qwen 16%, local/other 16%"></div>
+            <ul class="legend">
+              <li><i style="background:var(--accent)"></i>claude<b>44%</b></li>
+              <li><i style="background:var(--ink)"></i>gpt<b>24%</b></li>
+              <li><i style="background:var(--warning)"></i>qwen<b>16%</b></li>
+              <li><i style="background:var(--ash)"></i>local / other<b>16%</b></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- table + side panel -->
+      <section class="below">
+        <div>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><span class="checkbox"></span></th>
+              <th>tenant</th><th>plan</th><th>status</th><th>tokens (30d)</th><th>mrr</th><th>actions</th>
+            </tr></thead>
+            <tbody>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">ferrostack</span><p class="o-sub">412 seats · sso okta</p></td><td>enterprise</td><td><span class="badge b-ok">active</span></td><td class="amt">1.9B</td><td class="amt">$41,200</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">driftline-labs</span><p class="o-sub">38 seats · sso gsuite</p></td><td>enterprise</td><td><span class="badge b-warn">renewal due</span></td><td class="amt">410M</td><td class="amt">$9,880</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">kotori-dev</span><p class="o-sub">1 seat · byok</p></td><td>zen 20</td><td><span class="badge b-ok">active</span></td><td class="amt">26M</td><td class="amt">$71</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">harbor-metrics</span><p class="o-sub">6 seats · card</p></td><td>zen 20</td><td><span class="badge b-dgr">payment failed</span></td><td class="amt">88M</td><td class="amt">$196</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">sable-robotics</span><p class="o-sub">120 seats · sso okta</p></td><td>enterprise</td><td><span class="badge b-ok">active</span></td><td class="amt">760M</td><td class="amt">$18,400</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">q-hackers-club</span><p class="o-sub">trial · 3 seats</p></td><td>trial</td><td><span class="badge b-nt">trial, 4d left</span></td><td class="amt">5.2M</td><td class="amt">$0</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><span class="o-num">atlas-forge</span><p class="o-sub">64 seats · invoice</p></td><td>enterprise</td><td><span class="badge b-warn">over quota</span></td><td class="amt">1.1B</td><td class="amt">$22,600</td><td class="actions"><a href="#">view</a><a href="#">audit</a></td></tr>
+            </tbody>
+            <tfoot><tr>
+              <td colspan="5">1–7 of 891 tenants</td>
+              <td colspan="2"><div class="pager"><button>&lt;</button><button class="cur">1</button><button>2</button><button>3</button><button>…</button><button>128</button><button>&gt;</button></div></td>
+            </tr></tfoot>
+          </table>
+        </div>
+
+        <div class="panel quick">
+          <h3>[-] event log</h3>
+          <p class="p-sub">last 6 hours</p>
+          <ul class="feed">
+            <li><span class="marker mk-ok">[+]</span><div><p><b>v0.14.2</b> mirrored to all 6 CDNs; 0 checksum mismatches.</p><time>12m ago</time></div></li>
+            <li><span class="marker mk-dgr">[x]</span><div><p><b>harbor-metrics</b> card declined — dunning email 2 of 3 sent.</p><time>40m ago</time></div></li>
+            <li><span class="marker mk-nt">[+]</span><div><p><b>31 new zen accounts</b> created; 6 upgraded from trial.</p><time>1h ago</time></div></li>
+            <li><span class="marker mk-warn">[!]</span><div><p><b>zen router</b> p95 latency spiked 40% in eu-central for 9 min.</p><time>2h ago</time></div></li>
+            <li><span class="marker mk-nt">[+]</span><div><p><b>release branch</b> v0.15 cut from main; canary rollout at 5%.</p><time>3h ago</time></div></li>
+            <li><span class="marker mk-ok">[+]</span><div><p><b>mirror sync</b> verified for ap-south; 0 checksum diffs.</p><time>5h ago</time></div></li>
+          </ul>
+          <label>canary rollout %</label>
+          <input type="text" value="5">
+          <div class="toggle-row"><span>auto-halt canary on error spike</span><span class="switch on"></span></div>
+          <div class="toggle-row"><span>page on-call for failed dunning</span><span class="switch"></span></div>
+          <button class="btn btn-primary">apply settings</button>
+        </div>
+      </section>
+
+      <!-- infra strip -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="k-label">ops console uptime</p>
+          <p class="k-value" style="font-size:24px">100%</p>
+          <p class="k-delta up">[+] stable <span>0 incidents</span></p>
+          <div class="spark"><i style="height:62%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:64%"></i><i style="height:66%"></i><i class="hi" style="height:70%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">registry mirror hit</p>
+          <p class="k-value" style="font-size:24px">97.4%</p>
+          <p class="k-delta up">[+] 0.6 pts <span>vs last week</span></p>
+          <div class="spark"><i style="height:50%"></i><i style="height:54%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:56%"></i><i style="height:62%"></i><i style="height:60%"></i><i class="hi" style="height:68%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">router error budget</p>
+          <p class="k-value" style="font-size:24px">62%</p>
+          <p class="k-delta down">[-] 9% <span>burned this month</span></p>
+          <div class="spark"><i style="height:70%"></i><i style="height:64%"></i><i style="height:66%"></i><i style="height:56%"></i><i style="height:52%"></i><i style="height:46%"></i><i style="height:44%"></i><i class="hi" style="height:38%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">canary v0.15</p>
+          <p class="k-value" style="font-size:24px">5%</p>
+          <p class="k-delta up">[+] next step 25% <span>if clean 24h</span></p>
+          <div class="spark"><i style="height:30%"></i><i style="height:38%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:66%"></i><i style="height:74%"></i><i class="hi" style="height:84%"></i></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</body>
+</html>

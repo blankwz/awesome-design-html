@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceX — Design Showcase</title>
+<style>
+:root{
+  /* colors */
+  --primary:#000000;
+  --ink:#000000;
+  --on-primary:#ffffff;
+  --on-primary-mute:#f0f0fa;
+  --canvas-night:#000000;
+  --canvas-night-soft:#0a0a0a;
+  --canvas-light:#ffffff;
+  --canvas-cool:#f0f0fa;
+  --hairline-on-dark:#3a3a3f;
+  --hairline-on-light:#e0e0e8;
+  --link-on-dark:#ffffff;
+  --ink-mute:#5a5a5f;
+  /* radii */
+  --r-xs:4px; --r-sm:8px; --r-md:16px; --r-pill:32px; --r-full:9999px;
+  /* spacing */
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:18px; --sp-xl:24px; --sp-xxl:32px; --sp-huge:48px;
+  /* fonts — D-DIN unavailable: Inter approximates the industrial rhythm */
+  --font-din:'Inter','Arial Narrow',Arial,Verdana,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-din);background:var(--canvas-night);color:var(--on-primary);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 32px}
+button{font-family:var(--font-din);cursor:pointer;border:none;background:none}
+
+/* ============ Banner ============ */
+.sg-banner{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:#000;color:#fff;height:44px;padding:0 24px;border-bottom:1px solid var(--hairline-on-dark)}
+.sg-banner .sg-id{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase}
+.sg-banner .sg-brand{font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase;color:#fff;margin-left:12px}
+.sg-banner .sg-left{display:flex;align-items:center}
+.sg-banner .sg-desc{font-size:12px;color:var(--ink-mute);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ============ shared section chrome ============ */
+#components{padding:88px 0 64px;background:var(--canvas-night)}
+.sec-label{font-size:12px;font-weight:400;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute);margin-bottom:10px}
+.sec-title{font-size:60px;font-weight:700;line-height:.95;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:20px}
+.sec-sub{font-size:16px;line-height:1.7;letter-spacing:.32px;color:var(--ink-mute);max-width:620px;margin-bottom:64px}
+.block{margin-bottom:80px}
+.block-label{font-size:12px;font-weight:400;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute);
+  border-bottom:1px solid var(--hairline-on-dark);padding-bottom:10px;margin-bottom:28px}
+
+/* 1. color swatches */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.swatch{border:1px solid var(--hairline-on-dark);border-radius:var(--r-sm);overflow:hidden;background:#000}
+.swatch .chip{height:64px}
+.swatch .meta{padding:10px 12px}
+.swatch .meta .name{font-size:12px;font-weight:700;letter-spacing:.32px;color:#fff;margin-bottom:2px}
+.swatch .meta .hex{font-family:'Courier New',monospace;font-size:11px;color:var(--ink-mute)}
+
+/* 2. typography */
+.type-spec{border:1px solid var(--hairline-on-dark);border-radius:var(--r-md);padding:8px 32px;background:var(--canvas-night-soft)}
+.type-row{display:flex;align-items:baseline;gap:32px;padding:22px 0;border-bottom:1px solid var(--hairline-on-dark)}
+.type-row:last-child{border-bottom:none}
+.type-token{flex:0 0 210px;font-family:'Courier New',monospace;font-size:11px;color:var(--ink-mute)}
+.t-xxl{font-size:56px;font-weight:700;line-height:.95;letter-spacing:1.6px;text-transform:uppercase}
+.t-xl{font-size:44px;font-weight:700;line-height:1.2;letter-spacing:1.2px;text-transform:uppercase}
+.t-lg{font-size:36px;font-weight:700;line-height:1.25;letter-spacing:.96px;text-transform:uppercase}
+.t-body-lg{font-size:16px;line-height:1.7;letter-spacing:.32px;color:var(--on-primary-mute)}
+.t-btn{font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase}
+.t-micro{font-size:12px;font-weight:400;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute)}
+
+/* 3. buttons */
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:20px}
+.b-ghost{background:transparent;border:1px solid #fff;color:#fff;border-radius:var(--r-pill);
+  padding:18px 24px;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase;line-height:.94;
+  transition:background .2s ease,color .2s ease}
+.b-ghost:hover{background:#fff;color:#000}
+.b-ghost.on-light{border-color:#000;color:#000}
+.b-ghost.on-light:hover{background:#000;color:#fff}
+.b-ghost.disabled{opacity:.35;cursor:not-allowed}
+.b-filled-cool{background:var(--canvas-cool);color:var(--ink);border-radius:var(--r-pill);
+  padding:18px 24px;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase;line-height:.94;
+  transition:background .2s ease}
+.b-filled-cool:hover{background:#e2e2f0}
+
+/* 4. inputs */
+.input-row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.field{display:flex;flex-direction:column;gap:6px;min-width:220px}
+.field label{font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute)}
+.inp{font-family:var(--font-din);font-size:16px;letter-spacing:.32px;color:var(--ink);background:var(--canvas-light);
+  border:1px solid var(--hairline-on-light);border-radius:var(--r-xs);padding:12px 16px;width:100%}
+.inp::placeholder{color:#9a9aa5}
+.inp.focus{border-color:#000;outline:none;box-shadow:0 0 0 1px #000}
+.inp:disabled{background:#f3f3f7;color:var(--ink-mute);cursor:not-allowed}
+select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23000' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:14px;letter-spacing:.32px;cursor:pointer}
+.chk .box{width:18px;height:18px;border:1px solid #000;border-radius:var(--r-xs);display:inline-flex;align-items:center;justify-content:center;background:#fff}
+.chk .box svg{opacity:0}
+.chk.on .box{background:#000}
+.chk.on .box svg{opacity:1}
+.tg{width:40px;height:22px;border-radius:var(--r-full);background:var(--hairline-on-light);position:relative;display:inline-block;border:1px solid #c9c9d6}
+.tg::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#000;transition:left .2s ease}
+.tg.on{background:#000;border-color:#000}
+.tg.on::after{left:20px;background:#fff}
+
+/* photographic bands — pure CSS "photography" */
+.photo-band{position:relative;overflow:hidden;background:#000}
+.ph-rocket{background:
+  radial-gradient(680px 300px at 50% 100%, rgba(255,196,120,.5), transparent 65%),
+  radial-gradient(1200px 480px at 50% 108%, rgba(255,150,70,.35), transparent 70%),
+  radial-gradient(300px 560px at 50% 100%, rgba(255,255,255,.22), transparent 70%),
+  linear-gradient(180deg,#010104 0%,#050810 45%,#131418 78%,#241a12 100%)}
+.ph-mars{background:
+  radial-gradient(900px 420px at 80% 20%, rgba(196,90,54,.4), transparent 70%),
+  radial-gradient(700px 380px at 15% 75%, rgba(120,50,30,.45), transparent 70%),
+  linear-gradient(180deg,#0c0503 0%,#200a05 45%,#3a140a 80%,#58210f 100%)}
+.ph-star{background:
+  radial-gradient(2px 2px at 12% 22%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 34% 12%, #dfe6ff, transparent 60%),
+  radial-gradient(2px 2px at 58% 30%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 76% 16%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 90% 34%, #cdd8ff, transparent 60%),
+  radial-gradient(2px 2px at 22% 55%, #fff, transparent 60%),
+  radial-gradient(1px 1px at 44% 70%, #fff, transparent 60%),
+  radial-gradient(2px 2px at 66% 62%, #e8ecff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 86% 74%, #fff, transparent 60%),
+  linear-gradient(180deg,#020206 0%,#05050c 100%)}
+
+/* 5. cards */
+.card-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px}
+.band-card{border-radius:var(--r-sm);min-height:280px;display:flex;align-items:flex-end}
+.band-card .body{padding:28px}
+.band-card .eyebrow{font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute)}
+.band-card h3{font-size:28px;font-weight:700;line-height:1.25;letter-spacing:.96px;text-transform:uppercase;margin:8px 0 16px}
+.play{position:absolute;top:24px;right:24px;width:52px;height:52px;border-radius:var(--r-full);border:1px solid #fff;display:flex;align-items:center;justify-content:center}
+.prod-card{background:var(--canvas-light);color:var(--ink);border-radius:var(--r-sm);overflow:hidden;display:flex;flex-direction:column}
+.prod-card .ph{height:150px}
+.prod-card .body2{padding:16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.prod-card .nm{font-size:16px;letter-spacing:.32px}
+.prod-card .pr{font-size:16px;font-weight:700;letter-spacing:.32px}
+.prod-card .body2 .b-filled-cool{margin-top:auto;align-self:flex-start;padding:12px 20px}
+
+/* 6. pills */
+.pill-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.pill-tag{display:inline-block;border:1px solid var(--hairline-on-dark);border-radius:var(--r-pill);
+  padding:6px 16px;font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--on-primary-mute)}
+.pill-tag.solid{background:#fff;color:#000;border-color:#fff;font-weight:700}
+
+/* 7. nav demo */
+.navdemo{position:relative;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--hairline-on-dark)}
+.navdemo .bar{position:relative;display:flex;align-items:center;gap:36px;padding:24px 32px;background:transparent}
+.wordmark{font-size:19px;font-weight:700;letter-spacing:2.6px;text-transform:uppercase;color:#fff}
+.navdemo nav{display:flex;gap:24px;flex:1;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase}
+.navdemo nav a:hover{text-decoration:underline}
+
+/* 8. table */
+.tbl{width:100%;border-collapse:collapse;background:#000}
+.tbl th{font-size:12px;font-weight:400;letter-spacing:.96px;text-transform:uppercase;text-align:left;color:var(--ink-mute);
+  padding:14px 20px;border-bottom:1px solid var(--hairline-on-dark)}
+.tbl td{font-size:16px;letter-spacing:.32px;padding:14px 20px;border-bottom:1px solid var(--hairline-on-dark)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .lnk{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.tbl-wrap{border:1px solid var(--hairline-on-dark);border-radius:var(--r-xs);overflow:hidden}
+
+/* ============ Product section ============ */
+.hero{position:relative;min-height:82vh;display:flex;align-items:flex-end;background:
+  radial-gradient(2px 2px at 10% 18%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 28% 10%, #dfe6ff, transparent 60%),
+  radial-gradient(2px 2px at 47% 26%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 63% 12%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 81% 22%, #cdd8ff, transparent 60%),
+  radial-gradient(2px 2px at 91% 38%, #fff, transparent 60%),
+  radial-gradient(1px 1px at 18% 42%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 36% 55%, #fff, transparent 60%),
+  radial-gradient(2px 2px at 55% 48%, #e8ecff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 72% 60%, #fff, transparent 60%),
+  radial-gradient(1.5px 1.5px at 88% 66%, #fff, transparent 60%),
+  radial-gradient(640px 340px at 78% 96%, rgba(255,160,80,.30), transparent 70%),
+  radial-gradient(900px 420px at 70% 102%, rgba(255,120,50,.22), transparent 70%),
+  linear-gradient(180deg,#010104 0%,#03030a 50%,#0a0a12 80%,#191008 100%)}
+.hero .inner{padding:64px 0 96px;width:100%}
+.hero h1{font-size:80px;font-weight:700;line-height:.95;letter-spacing:1.6px;text-transform:uppercase;margin:14px 0 28px;max-width:860px}
+.hero h1 .thin{color:var(--ink-mute)}
+.hero p{font-size:16px;line-height:1.7;letter-spacing:.32px;color:var(--on-primary-mute);max-width:540px;margin-bottom:32px}
+
+.logo-strip{padding:72px 0;border-bottom:1px solid var(--hairline-on-dark);text-align:center}
+.logo-strip .cap{font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute);margin-bottom:28px}
+.logo-strip .logos{display:flex;justify-content:center;gap:64px;flex-wrap:wrap}
+.logo-strip .lg{font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase;opacity:.55}
+
+.features{padding:96px 0}
+.sec-head{max-width:640px;margin-bottom:56px}
+.sec-head h2{font-size:48px;font-weight:700;line-height:1.25;letter-spacing:.96px;text-transform:uppercase;margin-bottom:16px}
+.sec-head p{font-size:16px;line-height:1.7;letter-spacing:.32px;color:var(--ink-mute)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.shop{padding:96px 0;border-top:1px solid var(--hairline-on-dark)}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.cta{padding:96px 0;text-align:center;border-top:1px solid var(--hairline-on-dark)}
+.cta h2{font-size:60px;font-weight:700;line-height:.95;letter-spacing:1.2px;text-transform:uppercase;margin:12px 0 16px}
+.cta p{font-size:16px;line-height:1.7;letter-spacing:.32px;color:var(--ink-mute);margin-bottom:36px}
+
+.footer-dark{background:#000;padding:48px 0 32px;border-top:1px solid var(--hairline-on-dark)}
+.f-cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:36px}
+.f-brand p{font-size:13px;line-height:1.5;letter-spacing:.32px;color:var(--ink-mute);max-width:260px;margin-top:12px}
+.f-col h4{font-size:12px;font-weight:400;letter-spacing:.96px;text-transform:uppercase;color:#fff;margin-bottom:14px}
+.f-col a{display:block;font-size:13px;letter-spacing:.32px;color:var(--ink-mute);padding:4px 0}
+.f-col a:hover{color:#fff;text-decoration:underline}
+.f-legal{border-top:1px solid var(--hairline-on-dark);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.f-legal span{font-size:13px;letter-spacing:.32px;color:var(--ink-mute)}
+.f-legal a{font-size:13px;color:#fff;text-decoration:underline}
+
+@media(max-width:900px){
+  .hero h1{font-size:60px}
+  .sec-title,.cta h2{font-size:44px}
+  .sec-head h2{font-size:34px}
+  .feat-grid,.shop-grid{grid-template-columns:1fr}
+  .card-grid{grid-template-columns:1fr}
+  .f-cols{grid-template-columns:1fr 1fr}
+  .navdemo nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-id">spacex</span>
+    <span class="sg-brand">SpaceX</span>
+  </div>
+  <span class="sg-desc">Mission-oriented aerospace: pure black canvas, uppercase D-DIN display, one ghost pill per band.</span>
+</header>
+
+<main>
+<section id="components">
+  <div class="container">
+    <div class="sec-label">Components</div>
+    <h1 class="sec-title">Black, white, and the imagery itself</h1>
+    <p class="sec-sub">No brand accent colors. No drop shadows. No scrims. The photograph does all the lifting — type lands on it at full opacity, uppercase, positively tracked.</p>
+
+    <!-- 1. Color tokens -->
+    <div class="block">
+      <div class="block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#000000;border-bottom:1px solid var(--hairline-on-dark)"></div><div class="meta"><div class="name">Canvas Night</div><div class="hex">#000000</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a0a0a;border-bottom:1px solid var(--hairline-on-dark)"></div><div class="meta"><div class="name">Night Soft</div><div class="hex">#0A0A0A</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="meta"><div class="name">Canvas Light</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f0f0fa"></div><div class="meta"><div class="name">Canvas Cool</div><div class="hex">#F0F0FA</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#3a3a3f"></div><div class="meta"><div class="name">Hairline Dark</div><div class="hex">#3A3A3F</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#e0e0e8"></div><div class="meta"><div class="name">Hairline Light</div><div class="hex">#E0E0E8</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid var(--hairline-on-dark)"></div><div class="meta"><div class="name">On Primary</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f0f0fa"></div><div class="meta"><div class="name">On Primary Mute</div><div class="hex">#F0F0FA</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#5a5a5f"></div><div class="meta"><div class="name">Ink Mute</div><div class="hex">#5A5A5F</div></div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="block">
+      <div class="block-label">Typography specimen — uppercase, tight leading, wide tracking</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="type-token">display-xxl / 80 / 700 / +1.6px</span><span class="t-xxl">Human Spaceflight</span></div>
+        <div class="type-row"><span class="type-token">display-xl / 60 / 700 / +1.2px</span><span class="t-xl">Occupy Mars</span></div>
+        <div class="type-row"><span class="type-token">display-lg / 48 / 700 / +0.96px</span><span class="t-lg">Starship Update</span></div>
+        <div class="type-row"><span class="type-token">body-lg / 16 / 400 / 1.7 / +0.32px</span><span class="t-body-lg">SpaceX designs, manufactures and launches advanced rockets and spacecraft, founded to revolutionize space technology.</span></div>
+        <div class="type-row"><span class="type-token">button-cap / 13 / 700 / +1.17px</span><span class="t-btn">Reserve Your Seat</span></div>
+        <div class="type-row"><span class="type-token">micro-cap / 12 / 400 / +0.96px</span><span class="t-micro">Upcoming Launch · Pad 39A</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="block">
+      <div class="block-label">Buttons — the ghost outlined pill is the only marketing CTA</div>
+      <div class="btn-row">
+        <button class="b-ghost">Watch Launch</button>
+        <button class="b-ghost">Reserve Your Seat</button>
+        <button class="b-ghost on-light">Ghost On Light</button>
+        <button class="b-filled-cool">Add To Cart</button>
+        <button class="b-ghost" style="padding:12px 18px">Compact</button>
+        <button class="b-ghost disabled" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="block">
+      <div class="block-label">Inputs — shop-site form track</div>
+      <div class="input-row">
+        <div class="field"><label>Email</label><input class="inp" type="email" placeholder="you@earth.com"></div>
+        <div class="field"><label>Name on card</label><input class="inp focus" value="E. Musk"></div>
+        <div class="field"><label>Quantity</label><select class="inp"><option>1</option><option selected>2</option><option>3</option></select></div>
+        <div class="field"><label>Shipping country</label><input class="inp" value="United States (locked)" disabled></div>
+      </div>
+      <div style="display:flex;gap:24px;align-items:center;margin-top:20px;flex-wrap:wrap">
+        <label class="chk on"><span class="box"><svg width="11" height="9" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" fill="none"/></svg></span>Gift wrap</label>
+        <label class="chk"><span class="box"></span>Subscribe to launch alerts</label>
+        <span style="display:inline-flex;align-items:center;gap:10px"><span class="tg on"></span><span style="font-size:14px;letter-spacing:.32px">SMS notifications</span></span>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="block">
+      <div class="block-label">Cards — full-bleed photo bands &amp; shop product cards</div>
+      <div class="card-grid">
+        <div class="photo-band band-card ph-rocket">
+          <div class="play"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2l9 6-9 6z" fill="#fff"/></svg></div>
+          <div class="body">
+            <div class="eyebrow">Flight 12</div>
+            <h3>Starship Flight Test</h3>
+            <button class="b-ghost">Watch Replay</button>
+          </div>
+        </div>
+        <div class="photo-band band-card ph-mars">
+          <div class="body">
+            <div class="eyebrow">Mission</div>
+            <h3 style="font-size:24px">Occupy Mars</h3>
+            <button class="b-ghost">Learn More</button>
+          </div>
+        </div>
+        <div class="prod-card">
+          <div class="ph ph-mars"></div>
+          <div class="body2">
+            <span class="nm">Mars Oracle Hoodie</span>
+            <span class="pr">$58.00</span>
+            <button class="b-filled-cool">Add To Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Pills -->
+    <div class="block">
+      <div class="block-label">Badges, tags &amp; pills</div>
+      <div class="pill-row">
+        <span class="pill-tag solid">Live</span>
+        <span class="pill-tag">Upcoming</span>
+        <span class="pill-tag">Flight 12</span>
+        <span class="pill-tag">Pad 39A</span>
+        <span class="pill-tag">Replay Available</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="block">
+      <div class="block-label">Navigation — fixed overlay style, white-on-image</div>
+      <div class="navdemo">
+        <div class="ph-star" style="position:absolute;inset:0"></div>
+        <div class="bar">
+          <span class="wordmark">SPACEX</span>
+          <nav><a href="#">Falcon 9</a><a href="#">Falcon Heavy</a><a href="#">Dragon</a><a href="#">Starship</a><a href="#">Shop</a></nav>
+          <button class="b-ghost" style="padding:12px 20px">Launch Schedule</button>
+        </div>
+        <div style="position:relative;padding:4px 32px 32px;max-width:560px">
+          <div class="eyebrow" style="font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute)">Next launch · T–03:12:44</div>
+          <div style="font-size:36px;font-weight:700;line-height:1.25;letter-spacing:.96px;text-transform:uppercase;margin-top:6px">Starlink Group 13-4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="block">
+      <div class="block-label">Table — launch manifest</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Mission</th><th>Vehicle</th><th>Pad</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td class="lnk">Starlink 13-4</td><td>Falcon 9</td><td>SLC-40</td><td>Nov 02</td></tr>
+            <tr><td class="lnk">Bandwagon-4</td><td>Falcon 9</td><td>VSFB SLC-4E</td><td>Nov 09</td></tr>
+            <tr><td class="lnk">Crew-12</td><td>Falcon 9 / Dragon</td><td>KSC 39A</td><td>Nov 18</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINISHED PRODUCT ============ -->
+<section id="product">
+  <div class="p-nav" style="position:sticky;top:44px;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)">
+    <div class="container" style="display:flex;align-items:center;gap:40px;padding-top:20px;padding-bottom:20px">
+      <span class="wordmark">SPACEX</span>
+      <nav style="display:flex;gap:26px;flex:1;font-size:13px;font-weight:700;letter-spacing:1.17px;text-transform:uppercase">
+        <a href="#">Falcon 9</a><a href="#">Falcon Heavy</a><a href="#">Dragon</a><a href="#">Starship</a><a href="#">Mission</a><a href="#">Shop</a>
+      </nav>
+      <button class="b-ghost" style="padding:12px 20px">Launch Schedule</button>
+    </div>
+  </div>
+
+  <!-- Full-bleed hero -->
+  <div class="hero">
+    <div class="container inner">
+      <span style="font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute)">Starship · Flight 12</span>
+      <h1>Starship is <span class="thin">flight proven</span></h1>
+      <p>The world's most powerful launch vehicle ever developed — fully reusable, rated for Earth orbit, the Moon, and Mars.</p>
+      <div class="btn-row">
+        <button class="b-ghost">Watch The Flight</button>
+        <a href="#" style="color:#fff;text-decoration:underline;text-underline-offset:3px;font-size:16px;letter-spacing:.32px">Read the mission update</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo strip -->
+  <div class="logo-strip">
+    <div class="container">
+      <div class="cap">Flying for</div>
+      <div class="logos"><span class="lg">NASA</span><span class="lg">U.S. Space Force</span><span class="lg">ESA</span><span class="lg">JAXA</span><span class="lg">ISRO</span><span class="lg">OneWeb</span></div>
+    </div>
+  </div>
+
+  <!-- Vehicles -->
+  <div class="features">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Vehicles</h2>
+        <p>Every band is one photograph, one uppercase headline, one ghost pill. The imagery carries the argument.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="photo-band band-card ph-rocket" style="min-height:320px">
+          <div class="body">
+            <div class="eyebrow">Reusable</div>
+            <h3>Falcon 9</h3>
+            <button class="b-ghost">Learn More</button>
+          </div>
+        </div>
+        <div class="photo-band band-card ph-mars" style="min-height:320px">
+          <div class="body">
+            <div class="eyebrow">Heavy Lift</div>
+            <h3>Falcon Heavy</h3>
+            <button class="b-ghost">Learn More</button>
+          </div>
+        </div>
+        <div class="photo-band band-card ph-star" style="min-height:320px">
+          <div class="body">
+            <div class="eyebrow">Interplanetary</div>
+            <h3>Starship</h3>
+            <button class="b-ghost">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top:48px">
+      <p style="font-size:16px;line-height:1.7;letter-spacing:.32px;color:var(--on-primary-mute);max-width:640px">Every Falcon 9 booster is designed to fly ten times with inspection between flights, and Starship's upper stage returns to the pad — the fastest reuse cadence in orbital launch.</p>
+    </div>
+    <div class="container" style="margin-top:56px">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Vehicle</th><th>Height</th><th>Thrust</th><th>Payload to LEO</th></tr></thead>
+          <tbody>
+            <tr><td class="lnk">Falcon 9</td><td>70 m</td><td>7,607 kN</td><td>22,800 kg</td></tr>
+            <tr><td class="lnk">Falcon Heavy</td><td>70 m</td><td>22,819 kN</td><td>63,800 kg</td></tr>
+            <tr><td class="lnk">Starship</td><td>121 m</td><td>74,400 kN</td><td>100,000+ kg</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop band (light track) -->
+  <div class="shop">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Shop</h2>
+        <p>The only light surface in the system — filled buttons live exclusively here.</p>
+      </div>
+      <div class="shop-grid">
+        <div class="prod-card">
+          <div class="ph ph-star"></div>
+          <div class="body2"><span class="nm">Occupy Mars Tee</span><span class="pr">$30.00</span><button class="b-filled-cool">Add To Cart</button></div>
+        </div>
+        <div class="prod-card">
+          <div class="ph ph-rocket"></div>
+          <div class="body2"><span class="nm">Starship Model Kit</span><span class="pr">$146.00</span><button class="b-filled-cool">Add To Cart</button></div>
+        </div>
+        <div class="prod-card">
+          <div class="ph ph-mars"></div>
+          <div class="body2"><span class="nm">Flight Patch Set</span><span class="pr">$18.00</span><button class="b-filled-cool">Add To Cart</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="container">
+      <span style="font-size:12px;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute)">Humanspaceflight</span>
+      <h2>Make life multiplanetary</h2>
+      <p>Reserve a seat on an upcoming private astronaut mission — or just watch the next launch live.</p>
+      <div class="btn-row" style="justify-content:center">
+        <button class="b-ghost">Reserve Your Seat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-dark">
+    <div class="container">
+      <div class="f-cols">
+        <div class="f-brand">
+          <div class="wordmark">SPACEX</div>
+          <p>Design, manufacture and launch of advanced rockets and spacecraft.</p>
+        </div>
+        <div class="f-col"><h4>Vehicles</h4><a href="#">Falcon 9</a><a href="#">Falcon Heavy</a><a href="#">Dragon</a><a href="#">Starship</a></div>
+        <div class="f-col"><h4>Missions</h4><a href="#">Earth Orbit</a><a href="#">Moon</a><a href="#">Mars</a><a href="#">Starlink</a></div>
+        <div class="f-col"><h4>Company</h4><a href="#">Careers</a><a href="#">Updates</a><a href="#">Media</a><a href="#">Suppliers</a></div>
+        <div class="f-col"><h4>Shop</h4><a href="#">Apparel</a><a href="#">Models</a><a href="#">Accessories</a><a href="#">Gift Cards</a></div>
+      </div>
+      <div class="f-legal">
+        <span>© 2026 SPACE EXPLORATION TECHNOLOGIES CORP. — SHOWCASE PAGE</span>
+        <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+</section>
+</main>
+</body>
+</html>

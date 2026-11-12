@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mistral AI — Model Catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#fa520f; --primary-deep:#cc3a05; --on-primary:#ffffff;
+  --sunshine-300:#ffd06a; --sunshine-500:#ffb83e; --sunshine-700:#ffa110; --sunshine-800:#ff8105; --sunshine-900:#ff8a00;
+  --yellow:#ffd900; --cream:#fff8e0; --cream-light:#fffaeb; --cream-deeper:#fff0c2; --beige:#e6d5a8; --block-5:#ffe295;
+  --ink:#1f1f1f; --ink-tint:#3d3d3d; --charcoal:#2c2c2c; --slate:#4a4a4a; --steel:#6a6a6a; --stone:#8a8a8a; --muted:#a8a8a8;
+  --hairline:#e5e5e5; --hairline-soft:#ededed; --hairline-strong:#c7c7c7;
+  --canvas:#ffffff; --surface:#fafafa; --surface-code:#1c1c1e; --on-dark:#ffffff; --on-dark-muted:#a8a8a8;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:20px; --s-xl:24px; --s-xxl:32px; --s-xxxl:40px; --s-sec:64px;
+  --serif:'PP Editorial Old','Times New Roman',Georgia,serif;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--canvas);color:var(--ink);font-size:16px;line-height:1.55}
+a{text-decoration:none;color:inherit}
+button,input,textarea{font-family:var(--font)}
+.container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+h1{font-family:var(--serif);font-size:52px;font-weight:400;line-height:1.15;letter-spacing:-0.5px}
+h2{font-family:var(--serif);font-size:36px;font-weight:400;line-height:1.2;letter-spacing:-0.5px}
+h3{font-size:18px;font-weight:500;line-height:1.4}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--steel)}
+/* buttons — 8px radius, never pills */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:500;line-height:1.3;border-radius:var(--r-md);cursor:pointer;border:none;padding:10px 20px}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--primary-deep)}
+.btn-dark{background:var(--ink);color:var(--on-dark)}
+.btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--hairline-strong)}
+.btn-cream{background:var(--cream);color:var(--ink);border:1px solid var(--beige)}
+/* promo */
+.promo-banner{background:var(--ink);color:var(--on-dark);font-size:14px;font-weight:500;padding:var(--s-sm) var(--s-md);text-align:center}
+.promo-banner a{color:var(--sunshine-300);text-decoration:underline;text-underline-offset:3px;margin-left:6px}
+/* nav */
+.topnav{position:sticky;top:0;z-index:50;background:var(--canvas);border-bottom:1px solid var(--hairline-soft)}
+.topnav-inner{display:flex;align-items:center;gap:var(--s-xl);height:64px}
+.logo{font-size:16px;font-weight:600;letter-spacing:.12em;display:flex;align-items:center;gap:10px}
+.logo .m{width:26px;height:26px;background:linear-gradient(135deg,var(--yellow) 0%,var(--sunshine-700) 55%,var(--primary) 100%);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-size:16px}
+.nav-links{display:flex;gap:var(--s-lg);font-size:14px;font-weight:500;color:var(--slate)}
+.nav-links a.on{color:var(--primary)}
+.nav-right{display:flex;align-items:center;gap:var(--s-md);margin-left:auto}
+.search-pill{display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--steel);font-size:14px;border-radius:var(--r-md);height:40px;padding:0 var(--s-md);width:240px;border:1px solid var(--hairline-strong)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-md);border:1px solid var(--hairline);background:var(--canvas);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+.icon-btn .dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--primary);border:2px solid var(--canvas)}
+/* hero sunset */
+.hero{background:linear-gradient(135deg,var(--sunshine-700) 0%,var(--sunshine-900) 55%,var(--primary) 100%);padding:var(--s-sec) 0}
+.hero .container{display:grid;grid-template-columns:1.2fr 1fr;gap:var(--s-xxxl);align-items:center}
+.hero h1{color:var(--ink);max-width:560px}
+.hero p{font-size:18px;color:var(--ink-tint);margin-top:var(--s-md);max-width:480px}
+.hero .cta-row{display:flex;gap:var(--s-sm);margin-top:var(--s-xl)}
+.sun-card{border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(180deg,#2a1a0e 0%,#54250c 45%,#a33d0a 78%,var(--sunshine-700) 100%);min-height:300px;position:relative}
+.sun-card .sun{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,var(--yellow) 0%,var(--sunshine-500) 70%);box-shadow:0 0 60px 24px rgba(255,217,0,.5)}
+.sun-card .ridge{position:absolute;inset:auto 0 0 0;height:45%;background:
+  linear-gradient(160deg,transparent 40%,rgba(20,8,2,.85) 41%)}
+.sun-card .tag{position:absolute;left:var(--s-lg);bottom:var(--s-lg);color:var(--cream);font-family:var(--serif);font-size:20px}
+/* badges */
+.badge{display:inline-block;font-size:13px;font-weight:600;border-radius:var(--r-full);padding:4px 10px}
+.b-orange{background:var(--primary);color:var(--on-primary)}
+.b-cream{background:var(--cream-deeper);color:var(--ink)}
+.b-dark{background:var(--ink);color:var(--on-dark)}
+/* pills/tabs */
+.pill-tab{font-size:14px;font-weight:500;color:var(--steel);background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-full);padding:8px 16px;cursor:pointer}
+.pill-tab.active{background:var(--ink);color:var(--on-dark);border-color:var(--ink)}
+.filter-row{display:flex;gap:var(--s-xs);align-items:center;padding:var(--s-lg) 0}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.card{background:var(--canvas);border:1px solid var(--hairline-soft);border-radius:var(--r-lg);padding:var(--s-lg);display:flex;flex-direction:column}
+.card .art{border-radius:var(--r-md);aspect-ratio:16/10;position:relative;overflow:hidden;margin-bottom:var(--s-md);display:flex;align-items:center;justify-content:center}
+.card h4{font-size:16px;font-weight:500}
+.card .desc{font-size:14px;color:var(--steel);margin-top:4px;flex:1}
+.card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s-md)}
+.price{font-size:14px;font-weight:500}
+.price small{display:block;font-size:12px;font-weight:400;color:var(--stone)}
+.art-1{background:linear-gradient(160deg,#2a1a0e,#7a320c 55%,var(--sunshine-700))}
+.art-2{background:linear-gradient(160deg,#1c1c1e,#4a3210 60%,var(--sunshine-500))}
+.art-3{background:linear-gradient(160deg,#3d2c10,#a06a10 60%,var(--block-5))}
+.art-4{background:linear-gradient(160deg,#141414,#333 60%,#666)}
+.art-5{background:linear-gradient(160deg,var(--cream-deeper),var(--sunshine-300))}
+.art-6{background:linear-gradient(160deg,#26140a,#6e2a08 55%,var(--primary))}
+.art-7{background:linear-gradient(160deg,var(--cream),var(--beige))}
+.art-8{background:linear-gradient(160deg,#301c0c,#8a4a10 60%,var(--sunshine-500))}
+.card .glyph{font-family:var(--serif);font-size:34px;color:rgba(255,255,255,.92)}
+.art-5 .glyph,.art-7 .glyph{color:var(--ink)}
+/* featured */
+.featured{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s-xxxl);align-items:start;margin-top:var(--s-xl)}
+.gallery{display:grid;grid-template-columns:80px 1fr;gap:var(--s-md)}
+.thumbs{display:flex;flex-direction:column;gap:var(--s-sm)}
+.thumb{aspect-ratio:1/1;border-radius:var(--r-md);border:1px solid var(--hairline-strong);cursor:pointer}
+.thumb.active{border:2px solid var(--primary)}
+.main-image{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:440px;background:linear-gradient(165deg,#2a1a0e 0%,#5c240a 40%,#b34a0e 72%,var(--sunshine-500) 100%);display:flex;align-items:center;justify-content:center}
+.main-image .big{font-family:var(--serif);font-size:72px;color:rgba(255,255,255,.95);letter-spacing:-1px}
+.main-image .cap{position:absolute;left:var(--s-lg);bottom:var(--s-lg);background:rgba(20,10,4,.55);color:var(--cream);font-size:13px;font-weight:500;border-radius:var(--r-md);padding:6px 12px}
+/* cream buy panel */
+.buy-rail{position:sticky;top:88px}
+.plan-card{background:var(--cream);border:1px solid var(--beige);border-radius:var(--r-lg);padding:var(--s-xl)}
+.plan-card h2{font-size:28px}
+.price-line{display:flex;align-items:baseline;gap:10px;margin:var(--s-sm) 0 var(--s-lg)}
+.price-line .now{font-size:28px;font-weight:600}
+.price-line .unit{font-size:14px;color:var(--steel)}
+.opt-label{font-size:14px;font-weight:500;margin:var(--s-lg) 0 var(--s-sm)}
+.opt-label em{font-style:normal;color:var(--steel);font-weight:400;margin-left:6px}
+.sku-row{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-sm)}
+.sku{background:var(--canvas);border:1px solid var(--beige);border-radius:var(--r-md);padding:var(--s-md);cursor:pointer}
+.sku.sel{border:2px solid var(--primary)}
+.sku b{display:block;font-size:14px;font-weight:500}
+.sku span{font-size:13px;color:var(--steel)}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin:var(--s-lg) 0}
+.stepper{display:flex;align-items:center;background:var(--canvas);border:1px solid var(--beige);border-radius:var(--r-md);height:44px}
+.stepper button{width:44px;height:42px;background:none;border:none;font-size:18px;cursor:pointer}
+.stepper span{min-width:34px;text-align:center;font-size:14px;font-weight:500}
+.summary-line{display:flex;justify-content:space-between;font-size:14px;color:var(--slate);padding:6px 0}
+.summary-line.total{border-top:1px solid var(--beige);margin-top:6px;padding-top:10px;font-weight:600;color:var(--ink)}
+.plan-card .btn-dark{width:100%;margin-top:var(--s-sm)}
+.reviews{margin-top:var(--s-lg);border-top:1px solid var(--beige);padding-top:var(--s-md)}
+.review-quote{font-size:16px;margin-top:var(--s-sm)}
+.review-by{display:flex;align-items:center;gap:10px;margin-top:var(--s-md)}
+.avatar{width:36px;height:36px;border-radius:var(--r-md);background:linear-gradient(135deg,#a06a10,#7a320c);flex-shrink:0}
+.review-by b{font-size:14px;display:block}
+.review-by span{font-size:12px;color:var(--stone)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg);margin-top:var(--s-xl)}
+.stat b{font-family:var(--serif);font-size:56px;font-weight:400;letter-spacing:-1px;display:block}
+.stat span{font-size:14px;color:var(--steel)}
+/* sunset stripe + footer */
+.sunset-stripe{height:44px;background:linear-gradient(90deg,var(--primary) 0%,var(--sunshine-700) 30%,var(--sunshine-500) 55%,var(--yellow) 78%,var(--cream) 100%)}
+.footer-region{background:var(--cream);padding:var(--s-sec) 0}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--s-xl)}
+.foot-brand p{font-size:14px;color:var(--slate);max-width:280px;margin-top:var(--s-md)}
+.newsletter{display:flex;gap:var(--s-sm);margin-top:var(--s-lg)}
+.text-input{flex:1;background:var(--canvas);border:1px solid var(--beige);border-radius:var(--r-md);padding:var(--s-sm) var(--s-md);font-size:14px;height:44px;color:var(--ink)}
+.text-input::placeholder{color:var(--muted)}
+.foot-col h5{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:var(--s-md)}
+.foot-col a{display:block;font-size:14px;color:var(--primary);padding:4px 0}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--beige);margin-top:var(--s-xxxl);padding-top:var(--s-xl);font-size:12px;color:var(--stone)}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:var(--r-md);background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center}
+@media (max-width:960px){
+  h1{font-size:36px}.grid{grid-template-columns:repeat(2,1fr)}
+  .hero .container,.featured{grid-template-columns:1fr}.buy-rail{position:static}
+  .nav-links{display:none}.foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="promo-banner">Mistral Large 3.5 is here — frontier performance at $2 per million tokens. <a href="#">Read the benchmarks</a></div>
+<header class="topnav">
+  <div class="container topnav-inner">
+    <a class="logo" href="#"><span class="m">M</span>MISTRAL AI_</a>
+    <nav class="nav-links"><a class="on" href="#">Models</a><a href="#">Le Studio</a><a href="#">Solutions</a><a href="#">Research</a><a href="#">Pricing</a></nav>
+    <div class="nav-right">
+      <div class="search-pill"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#6a6a6a" stroke-width="1.6"/><path d="m11 11 3.5 3.5" stroke="#6a6a6a" stroke-width="1.6" stroke-linecap="round"/></svg> Search models…</div>
+      <button class="icon-btn" aria-label="Cart"><svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M3.5 5.5h11l-1 9h-9l-1-9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6.5 5.5a2.5 2.5 0 0 1 5 0" stroke="currentColor" stroke-width="1.5"/></svg><span class="dot"></span></button>
+      <a href="#" style="font-size:14px;font-weight:500">Contact sales</a>
+      <button class="btn btn-dark">Try Studio</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <div class="eyebrow">La Catalogue</div>
+      <h1 style="margin-top:var(--s-sm)">Frontier AI. In your hands.</h1>
+      <p>Deploy open-weight and flagship models on your cloud or ours. Transparent pricing, EU hosting, no lock-in.</p>
+      <div class="cta-row">
+        <button class="btn btn-dark">Start building</button>
+        <button class="btn btn-secondary" style="background:rgba(255,255,255,.35);border-color:var(--ink)">Talk to sales</button>
+      </div>
+    </div>
+    <div class="sun-card"><div class="sun"></div><div class="ridge"></div><span class="tag">Mistral Large 3.5 · Flagship</span></div>
+  </div>
+</section>
+
+<main class="container">
+  <div class="filter-row">
+    <button class="pill-tab active">All models</button>
+    <button class="pill-tab">Flagship</button>
+    <button class="pill-tab">Open weights</button>
+    <button class="pill-tab">Coding</button>
+    <button class="pill-tab">Vision</button>
+    <button class="pill-tab">Embeddings</button>
+  </div>
+
+  <!-- GRID -->
+  <section>
+    <div class="grid">
+      <article class="card">
+        <div class="art art-1"><span class="glyph">L 3.5</span></div>
+        <h4>Mistral Large 3.5</h4><p class="desc">Flagship reasoning and multilingual generation, 128K context.</p>
+        <div class="foot"><span class="price">$2.00<small>per 1M input tokens</small></span><span class="badge b-orange">Flagship</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-2"><span class="glyph">Codestral</span></div>
+        <h4>Codestral 25.08</h4><p class="desc">Low-latency code completion across 80+ languages, FIM-native.</p>
+        <div class="foot"><span class="price">$0.30<small>per 1M input tokens</small></span><span class="badge b-dark">Coding</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-3"><span class="glyph">Pixtral</span></div>
+        <h4>Pixtral Large</h4><p class="desc">Vision-language model for documents, charts and screenshots.</p>
+        <div class="foot"><span class="price">$2.00<small>per 1M input tokens</small></span><span class="badge b-cream">Vision</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-4"><span class="glyph">Min</span></div>
+        <h4>Ministral 8B</h4><p class="desc">Edge-class open-weight model for on-device inference.</p>
+        <div class="foot"><span class="price">$0.10<small>per 1M input tokens</small></span><span class="badge b-cream">Open weights</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-5"><span class="glyph">Scribe</span></div>
+        <h4>Voxtral Scribe</h4><p class="desc">Speech-to-text with diarization, 40 languages, 991/1000 GLUE-scale.</p>
+        <div class="foot"><span class="price">$0.02<small>per audio minute</small></span><span class="badge b-cream">New</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-6"><span class="glyph">Agents</span></div>
+        <h4>Agents Platform</h4><p class="desc">Compose models, tools and connectors into production agents.</p>
+        <div class="foot"><span class="price">$0.40<small>per 1K agent steps</small></span><span class="badge b-orange">Beta</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-7"><span class="glyph">Emb</span></div>
+        <h4>Mistral Embed 2</h4><p class="desc">Multilingual embeddings for retrieval, 1K dimensions.</p>
+        <div class="foot"><span class="price">$0.02<small>per 1M tokens</small></span><span class="badge b-cream">Search</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-8"><span class="glyph">Mid</span></div>
+        <h4>Mistral Medium 3.1</h4><p class="desc">Frontier-class performance at 1/5 the cost of Large.</p>
+        <div class="foot"><span class="price">$0.40<small>per 1M input tokens</small></span><span class="badge b-dark">Value</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FEATURED MODEL -->
+  <section>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin:var(--s-sec) 0 var(--s-md)">
+      <div><h2>Mistral Large 3.5</h2><p style="color:var(--steel);font-size:14px;margin-top:6px;max-width:560px">Our flagship model. Configure a deployment and start with the free tier in minutes.</p></div>
+      <span style="font-size:14px;color:var(--steel)">★ 4.9 · 1,102 reviews</span>
+    </div>
+    <div class="featured">
+      <div class="gallery">
+        <div class="thumbs">
+          <div class="thumb active" style="background:linear-gradient(165deg,#2a1a0e,#b34a0e 70%,var(--sunshine-500))"></div>
+          <div class="thumb" style="background:linear-gradient(165deg,#1c1c1e,#4a3210 60%,var(--sunshine-500))"></div>
+          <div class="thumb" style="background:linear-gradient(165deg,#301c0c,#8a4a10 60%,var(--sunshine-300))"></div>
+          <div class="thumb" style="background:linear-gradient(165deg,var(--cream-deeper),var(--sunshine-300))"></div>
+        </div>
+        <div class="main-image">
+          <span class="big">Large 3.5</span>
+          <span class="cap">128K context · 40+ languages · function calling v3</span>
+        </div>
+      </div>
+
+      <aside class="buy-rail">
+        <div class="plan-card">
+          <h2>Configure deployment</h2>
+          <div class="price-line"><span class="now">Free tier</span><span class="unit">· then $2.00 / 1M input tokens</span></div>
+          <div class="opt-label">Hosting <em>· data residency</em></div>
+          <div class="sku-row">
+            <div class="sku sel"><b>EU (Paris)</b><span>GDPR default</span></div>
+            <div class="sku"><b>US (Virginia)</b><span>Lowest latency</span></div>
+          </div>
+          <div class="opt-label">Throughput tier</div>
+          <div class="sku-row">
+            <div class="sku sel"><b>Standard</b><span>2K TPM included</span></div>
+            <div class="sku"><b>Dedicated</b><span>Reserved capacity</span></div>
+          </div>
+          <div class="qty-row">
+            <div class="opt-label" style="margin:0">Reservation (months)</div>
+            <div class="stepper"><button aria-label="decrease">−</button><span>1</span><button aria-label="increase">+</button></div>
+          </div>
+          <div class="summary-line"><span>Free tier credits</span><span>$0.00</span></div>
+          <div class="summary-line"><span>Pay-as-you-go after credits</span><span>$2.00 / 1M in · $6.00 / 1M out</span></div>
+          <div class="summary-line total"><span>Estimated first month</span><span>$58.00</span></div>
+          <button class="btn btn-dark">Deploy Large 3.5</button>
+          <div class="reviews">
+            <div class="review-quote">“We moved 60% of our European workload from a US provider. Same quality benchmarks, and our DPA review took a week instead of a quarter.”</div>
+            <div class="review-by"><span class="avatar"></span><span><b>Amélie Fournier</b><span>CTO · Banque Lumen</span></span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat"><b>75%</b><span>lower inference cost vs. last generation</span></div>
+    <div class="stat"><b>80%</b><span>of Fortune 500s evaluated or deployed</span></div>
+    <div class="stat"><b>100%</b><span>EU-hosted option for every flagship model</span></div>
+  </section>
+</main>
+
+<!-- SUNSET STRIPE — brand signature -->
+<div class="sunset-stripe" role="presentation"></div>
+
+<footer class="footer-region">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#"><span class="m">M</span>MISTRAL AI_</a>
+        <p>Frontier AI, made in Europe. Get model releases and research notes in your inbox.</p>
+        <form class="newsletter" onsubmit="return false">
+          <input class="text-input" type="email" placeholder="Email address">
+          <button class="btn btn-dark" type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="foot-col"><h5>Models</h5><a href="#">Mistral Large 3.5</a><a href="#">Codestral</a><a href="#">Pixtral</a><a href="#">Ministral</a><a href="#">All models</a></div>
+      <div class="foot-col"><h5>Build</h5><a href="#">Le Studio</a><a href="#">API reference</a><a href="#">Agents Platform</a><a href="#">Deployment guide</a></div>
+      <div class="foot-col"><h5>Company</h5><a href="#">About</a><a href="#">Research</a><a href="#">Newsroom</a><a href="#">Careers</a><a href="#">Contact</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Mistral AI SAS · Paris, France</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1 1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a6.5 6.5 0 0 0-2 12.7c.3 0 .4-.1.4-.3v-1.2c-1.8.4-2.2-.8-2.2-.8-.3-.8-.7-1-.7-1-.6-.4 0-.4 0-.4.7 0 1 .7 1 .7.6 1 1.6.7 2 .5 0-.4.2-.7.4-.9-1.4-.2-2.9-.7-2.9-3.2 0-.7.2-1.3.7-1.7 0-.2-.3-.8 0-1.7 0 0 .6-.2 1.8.7a6 6 0 0 1 3.2 0c1.2-.9 1.8-.7 1.8-.7.3.9 0 1.5 0 1.7.4.4.7 1 .7 1.7 0 2.5-1.5 3-2.9 3.2.2.2.4.6.4 1.2v1.8c0 .2.1.3.4.3A6.5 6.5 0 0 0 8 1.5Z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

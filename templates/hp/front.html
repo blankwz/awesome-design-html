@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HP Store — Laptops, Desktops &amp; Printers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#024ad8; --primary-bright:#296ef9; --primary-deep:#0e3191; --primary-soft:#c9e0fc;
+  --on-primary:#ffffff;
+  --ink:#1a1a1a; --ink-deep:#000000; --ink-soft:#292929; --on-ink:#ffffff;
+  --canvas:#ffffff; --cloud:#f7f7f7; --fog:#e8e8e8; --steel:#c2c2c2;
+  --charcoal:#3d3d3d; --graphite:#636363;
+  --hairline:#e8e8e8; --hairline-strong:#c2c2c2;
+  --bloom-coral:#ff5050; --bloom-rose:#f9d4d2; --bloom-deep:#b3262b;
+  --font:'Manrope',-apple-system,system-ui,sans-serif;
+  --r-sm:3px; --r-md:4px; --r-lg:8px; --r-xl:16px; --r-pill:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:20px; --sp-xl:24px; --sp-xxl:32px; --sp-section:80px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;font-weight:400;line-height:1.38}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font)}
+.wrap{max-width:1366px;margin:0 auto;padding:0 var(--sp-xl)}
+/* ---------- utility strip + nav ---------- */
+.utility{background:var(--ink);color:var(--on-ink);height:36px;font-size:14px;display:flex;align-items:center}
+.utility .wrap{width:100%;display:flex;justify-content:space-between;gap:var(--sp-md)}
+.utility a{padding:0 var(--sp-xs);opacity:.92}
+.nav{background:var(--canvas);height:64px;border-bottom:1px solid var(--hairline);position:sticky;top:0;z-index:60}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:var(--sp-lg)}
+.wordmark{font-size:26px;font-weight:800;letter-spacing:-1px;color:var(--ink-deep);display:flex;align-items:center;gap:6px}
+.wordmark i{font-style:normal;color:var(--primary)}
+.nav nav{display:flex;gap:2px}
+.nav nav a{font-size:16px;padding:8px 16px}
+.nav nav a.on{box-shadow:inset 0 -2px 0 var(--primary)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.search-pill{display:flex;align-items:center;height:40px;border:1px solid var(--steel);border-radius:var(--r-md);padding:0 var(--sp-md);gap:var(--sp-xs);width:240px}
+.search-pill input{border:none;outline:none;flex:1;font-family:var(--font);font-size:16px;color:var(--ink)}
+.icon-btn{position:relative;width:44px;height:44px;border:none;background:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--r-md)}
+.icon-btn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:var(--r-pill);background:var(--bloom-coral)}
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 var(--sp-xl);font-size:14px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;border-radius:var(--r-md);cursor:pointer;border:none}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--primary-deep)}
+.btn-ink{background:var(--ink);color:var(--on-ink)}
+.btn-outline{background:var(--canvas);color:var(--primary);border:1px solid var(--primary)}
+.btn-outline-ink{background:var(--canvas);color:var(--ink);border:1px solid var(--ink)}
+.text-link{color:var(--primary);font-weight:500;font-size:16px;background:none;border:none;cursor:pointer;padding:4px 0}
+/* ---------- hero with chevrons ---------- */
+.hero{padding:var(--sp-xxl) 0;position:relative}
+.hero-stage{position:relative}
+.chev{position:absolute;top:-14px;bottom:-14px;width:34px;background:var(--primary);clip-path:polygon(35% 0,100% 0,65% 100%,0 100%)}
+.chev.l{left:-52px} .chev.r{right:-52px;transform:scaleX(-1)}
+.hero-card{background:var(--canvas);border-radius:var(--r-xl);box-shadow:0 2px 8px rgba(26,26,26,.08);display:grid;grid-template-columns:1.05fr .95fr;overflow:hidden}
+.hero-photo{background:
+  radial-gradient(120% 120% at 80% 10%,var(--primary-soft) 0%,transparent 55%),
+  linear-gradient(160deg,#dfe9fb,#f2f6fd);min-height:400px;display:flex;align-items:center;justify-content:center}
+.hero-photo svg{width:78%}
+.hero-copy{padding:var(--sp-xxl);display:flex;flex-direction:column;justify-content:center;gap:var(--sp-md)}
+.eyebrow{font-size:14px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--primary)}
+.hero-copy h1{font-size:56px;font-weight:500;line-height:1.0}
+.hero-copy p{font-size:18px;line-height:1.33;color:var(--charcoal);max-width:420px}
+.price-stamp{font-size:24px;font-weight:500;line-height:1.17}
+.price-stamp s{color:var(--graphite);font-weight:400;font-size:18px;margin-right:8px}
+.badge-sale{display:inline-flex;align-self:flex-start;background:var(--bloom-coral);color:#fff;font-size:14px;font-weight:700;border-radius:var(--r-sm);padding:4px 8px}
+/* ---------- category icons ---------- */
+.cat-band{background:var(--cloud);padding:var(--sp-xl) 0}
+.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--sp-md)}
+.cat-card{background:var(--canvas);border-radius:var(--r-lg);padding:var(--sp-md);display:flex;flex-direction:column;align-items:center;gap:var(--sp-xs);font-weight:500;cursor:pointer;box-shadow:0 2px 8px rgba(26,26,26,.06)}
+.cat-card svg{width:44px;height:44px}
+/* ---------- tabs + grid ---------- */
+.sec{padding:var(--sp-section) 0 0}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-lg);margin-bottom:var(--sp-xl);flex-wrap:wrap}
+.sec-head h2{font-size:44px;font-weight:500;line-height:1.0}
+.tabs{display:flex;gap:var(--sp-xs);flex-wrap:wrap}
+.tab{background:var(--canvas);color:var(--ink);font-size:16px;font-weight:500;border:1px solid var(--fog);border-radius:var(--r-pill);padding:8px 20px;cursor:pointer}
+.tab.on{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xl)}
+.card{background:var(--canvas);border-radius:var(--r-xl);padding:var(--sp-xl);box-shadow:0 2px 8px rgba(26,26,26,.08);display:flex;flex-direction:column;gap:var(--sp-xxs);position:relative}
+.card-photo{height:170px;display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-xs)}
+.card-photo svg{width:82%}
+.card h3{font-size:20px;font-weight:500;line-height:1.0}
+.card .specs{font-size:14px;color:var(--charcoal);line-height:1.5}
+.card .rating{font-size:14px;color:var(--charcoal)}
+.card .rating b{color:var(--ink)}
+.card-foot{margin-top:auto;padding-top:var(--sp-xs);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-xs)}
+.card .price{font-size:24px;font-weight:500;line-height:1.17}
+.card .price s{color:var(--graphite);font-weight:400;font-size:15px}
+.badge-pill-ink{display:inline-flex;align-items:center;background:var(--ink);color:var(--on-ink);border-radius:var(--r-lg);padding:6px 12px;font-size:14px;align-self:flex-start}
+.badge-save{display:inline-flex;align-self:flex-start;background:var(--bloom-coral);color:#fff;font-size:14px;font-weight:700;border-radius:var(--r-sm);padding:4px 8px}
+/* ---------- featured detail ---------- */
+.detail{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--sp-xxl);background:var(--cloud);border-radius:var(--r-xl);padding:var(--sp-xxl)}
+.gallery-main{background:var(--canvas);border-radius:var(--r-xl);height:400px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 8px rgba(26,26,26,.08)}
+.gallery-main svg{width:76%}
+.thumbs{display:flex;gap:var(--sp-md);margin-top:var(--sp-md)}
+.thumb{width:92px;height:68px;border-radius:var(--r-lg);background:var(--canvas);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.thumb.on{border:1px solid var(--ink)}
+.thumb svg{width:72%}
+.detail-info h2{font-size:32px;font-weight:500;line-height:1.0;margin:var(--sp-xxs) 0}
+.detail-info .rating{font-size:14px;color:var(--charcoal);margin-bottom:var(--sp-md)}
+.opt-label{font-size:16px;font-weight:500;margin-bottom:var(--sp-xxs)}
+.opt-row{display:flex;gap:var(--sp-xs);flex-wrap:wrap;margin-bottom:var(--sp-md)}
+.opt{height:44px;padding:0 var(--sp-md);border-radius:var(--r-md);background:var(--canvas);border:1px solid var(--steel);color:var(--ink);font-size:16px;font-weight:500;cursor:pointer}
+.opt.on{border:1px solid var(--ink);font-weight:600}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--steel);border-radius:var(--r-md);height:44px;background:var(--canvas)}
+.qty button{width:44px;height:100%;border:none;background:none;font-size:18px;cursor:pointer;color:var(--ink)}
+.qty input{width:48px;height:100%;border:none;border-left:1px solid var(--steel);border-right:1px solid var(--steel);text-align:center;font-family:var(--font);font-size:16px}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);flex-wrap:wrap}
+.review{background:var(--canvas);border-radius:var(--r-lg);padding:var(--sp-md) var(--sp-lg);margin-top:var(--sp-md)}
+.review .who{display:flex;align-items:center;gap:10px;margin-bottom:var(--sp-xxs);font-weight:500}
+.review .ava{width:36px;height:36px;border-radius:var(--r-md);background:var(--primary-soft);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.review p{font-size:16px;color:var(--charcoal)}
+/* ---------- cart ---------- */
+.cart-band{background:var(--fog);padding:var(--sp-section) 0;margin-top:var(--sp-section)}
+.cart{display:grid;grid-template-columns:1.3fr 1fr;background:var(--canvas);border-radius:var(--r-xl);overflow:hidden;box-shadow:0 2px 8px rgba(26,26,26,.08)}
+.cart-lines{padding:var(--sp-xxl)}
+.cart-line{display:flex;gap:var(--sp-md);align-items:center;padding:var(--sp-md) 0;border-bottom:1px solid var(--hairline)}
+.cart-line:last-child{border-bottom:none}
+.cart-art{width:88px;height:64px;border-radius:var(--r-lg);flex:none;display:flex;align-items:center;justify-content:center;background:var(--cloud)}
+.cart-art svg{width:76%}
+.cart-line b{font-size:16px;font-weight:500;display:block}
+.cart-line small{font-size:14px;color:var(--charcoal)}
+.cart-line .p{margin-left:auto;font-size:24px;font-weight:500}
+.cart-sum{background:var(--cloud);padding:var(--sp-xxl);display:flex;flex-direction:column;gap:var(--sp-xs)}
+.sum-row{display:flex;justify-content:space-between;font-size:16px}
+.sum-row.total{border-top:1px solid var(--hairline-strong);padding-top:var(--sp-xs);font-size:24px;font-weight:500}
+.sum-row .ok{color:var(--bloom-deep)}
+/* ---------- dark slabs ---------- */
+.promo-dark{background:var(--ink);color:var(--on-ink);border-radius:var(--r-xl);padding:var(--sp-xxl) 48px;margin-top:var(--sp-section);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-lg);flex-wrap:wrap}
+.promo-dark h2{font-size:32px;font-weight:500;line-height:1.0;max-width:560px}
+.help-band{background:var(--ink);color:var(--on-ink);padding:var(--sp-section) 0;margin-top:var(--sp-section)}
+.help-band .wrap{display:flex;flex-direction:column;align-items:center;gap:var(--sp-lg);text-align:center}
+.help-band h2{font-size:44px;font-weight:500;line-height:1.0}
+.chip-row{display:flex;gap:var(--sp-xs);flex-wrap:wrap;justify-content:center}
+.chip{background:transparent;border:1px solid var(--on-ink);color:var(--on-ink);border-radius:var(--r-pill);padding:8px 20px;font-size:16px;font-weight:500;cursor:pointer}
+.chip.on{background:var(--on-ink);color:var(--ink)}
+/* ---------- footer ---------- */
+.footer{background:var(--ink);color:var(--on-ink);padding:var(--sp-xxl) 0;border-top:1px solid var(--ink-soft)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--sp-xl)}
+.foot-grid h4{font-size:16px;font-weight:500;margin-bottom:var(--sp-sm)}
+.foot-grid a{display:block;font-size:14px;padding:5px 0;opacity:.85}
+.foot-base{display:flex;justify-content:space-between;gap:var(--sp-lg);margin-top:var(--sp-xl);padding-top:var(--sp-lg);border-top:1px solid var(--ink-soft);font-size:12px;flex-wrap:wrap}
+.socials{display:flex;gap:var(--sp-sm)}
+.socials a{width:40px;height:40px;border-radius:var(--r-md);border:1px solid var(--ink-soft);display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:960px){
+  .nav nav{display:none}
+  .utility .wrap span:nth-child(2){display:none}
+  .hero-card,.detail,.cart{grid-template-columns:1fr}
+  .chev{display:none}
+  .hero-copy h1{font-size:36px}
+  .sec-head h2{font-size:32px}
+  .cats{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="utility">
+  <div class="wrap">
+    <span>Free shipping on orders over $25 · <a href="#">For Home</a> | <a href="#">For Business</a></span>
+    <span><a href="#">Sign in</a> <a href="#">Support</a> <a href="#">🇺🇸 EN</a></span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="wordmark" href="#">hp<i>.</i></a>
+    <nav>
+      <a class="on" href="#">Laptops</a>
+      <a href="#">Desktops</a>
+      <a href="#">Printers</a>
+      <a href="#">Accessories</a>
+      <a href="#">Ink &amp; Toner</a>
+      <a href="#">Support</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search-pill">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#636363" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+        <input type="search" placeholder="Search hp.com">
+      </div>
+      <button class="icon-btn" aria-label="Account"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a1a" stroke-width="1.5"><circle cx="10" cy="6.5" r="3.2"/><path d="M3.5 17.5c1.2-3.8 4.3-5 6.5-5s5.3 1.2 6.5 5"/></svg></button>
+      <button class="icon-btn" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a1a" stroke-width="1.5"><path d="M2.5 3.5h2.2l2.2 10h9l2.2-8H6"/><circle cx="8" cy="17" r="1.3"/><circle cx="15" cy="17" r="1.3"/></svg><span class="dot"></span></button>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="wrap hero-stage">
+      <span class="chev l" aria-hidden="true"></span>
+      <span class="chev r" aria-hidden="true"></span>
+      <div class="hero-card">
+        <div class="hero-photo">
+          <svg viewBox="0 0 260 170" aria-hidden="true">
+            <rect x="34" y="26" width="192" height="108" rx="8" fill="#1a1a1a"/>
+            <rect x="42" y="34" width="176" height="92" rx="4" fill="#0e3191"/>
+            <path d="M42 96c40-18 90-26 176-18v48H42z" fill="#296ef9" opacity=".55"/>
+            <circle cx="196" cy="56" r="14" fill="#c9e0fc"/>
+            <rect x="20" y="134" width="220" height="10" rx="5" fill="#3d3d3d"/>
+            <rect x="106" y="128" width="48" height="6" rx="3" fill="#3d3d3d"/>
+          </svg>
+        </div>
+        <div class="hero-copy">
+          <span class="badge-sale">Save $300 · Ends Sunday</span>
+          <p class="eyebrow">OMEN Gaming Series</p>
+          <h1>OMEN Max 16. Play without compromise.</h1>
+          <p>RTX 5080 graphics, 240Hz display and vapor-chamber cooling in a 16-inch aluminum frame.</p>
+          <p class="price-stamp"><s>$2,899</s> $2,599</p>
+          <div style="display:flex;gap:var(--sp-sm);flex-wrap:wrap">
+            <button class="btn btn-primary">Buy now</button>
+            <button class="btn btn-outline-ink">Customize</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat-band">
+    <div class="wrap cats">
+      <a class="cat-card" href="#"><svg viewBox="0 0 44 44" fill="none" stroke="#024ad8" stroke-width="2"><rect x="6" y="10" width="32" height="20" rx="2"/><path d="M2 34h40l-3 3H5z"/></svg>Laptops</a>
+      <a class="cat-card" href="#"><svg viewBox="0 0 44 44" fill="none" stroke="#024ad8" stroke-width="2"><rect x="10" y="6" width="24" height="26" rx="2"/><path d="M6 34h32v4H6zM18 38h8"/></svg>Desktops</a>
+      <a class="cat-card" href="#"><svg viewBox="0 0 44 44" fill="none" stroke="#024ad8" stroke-width="2"><rect x="8" y="16" width="28" height="18" rx="2"/><rect x="14" y="8" width="16" height="8" rx="1"/><path d="M12 22h12M12 27h8"/></svg>Printers</a>
+      <a class="cat-card" href="#"><svg viewBox="0 0 44 44" fill="none" stroke="#024ad8" stroke-width="2"><path d="M8 14h28v16H8zM14 14v16M8 20h6"/></svg>Ink &amp; Toner</a>
+      <a class="cat-card" href="#"><svg viewBox="0 0 44 44" fill="none" stroke="#024ad8" stroke-width="2"><rect x="12" y="12" width="20" height="12" rx="6"/><path d="M16 24v8h12v-8"/></svg>Accessories</a>
+      <a class="cat-card" href="#"><svg viewBox="0 0 44 44" fill="none" stroke="#024ad8" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><rect x="24" y="8" width="12" height="12" rx="2"/><rect x="8" y="24" width="12" height="12" rx="2"/><rect x="24" y="24" width="12" height="12" rx="2"/></svg>Solutions</a>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Trending laptops</h2>
+        <div class="tabs">
+          <button class="tab on">All</button>
+          <button class="tab">Gaming</button>
+          <button class="tab">Business</button>
+          <button class="tab">On sale</button>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="badge-pill-ink">Best seller</span>
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="24" y="14" width="82" height="52" rx="4" fill="#1a1a1a"/><rect x="29" y="19" width="72" height="42" rx="2" fill="#0e3191"/><rect x="14" y="66" width="102" height="7" rx="3.5" fill="#3d3d3d"/></svg>
+          </div>
+          <h3>OMEN 16 Gaming Laptop</h3>
+          <p class="specs">RTX 5070 · 32 GB · 1 TB SSD · 16.1" 165Hz</p>
+          <p class="rating">★ 4.7 <b>(1,204)</b></p>
+          <div class="card-foot"><span class="price"><s>$1,799</s> $1,499</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <span class="badge-save">Save $200</span>
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="24" y="14" width="82" height="52" rx="4" fill="#c9e0fc"/><rect x="29" y="19" width="72" height="42" rx="2" fill="#fff"/><rect x="14" y="66" width="102" height="7" rx="3.5" fill="#8fabd9"/></svg>
+          </div>
+          <h3>EliteBook 860 G11</h3>
+          <p class="specs">Core Ultra 7 · 32 GB · 5G ready · 16" WQXGA</p>
+          <p class="rating">★ 4.8 <b>(862)</b></p>
+          <div class="card-foot"><span class="price"><s>$2,099</s> $1,899</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="30" y="20" width="46" height="58" rx="3" fill="#b3262b"/><rect x="80" y="20" width="20" height="20" rx="2" fill="#1a1a1a"/><rect x="80" y="44" width="20" height="20" rx="2" fill="#1a1a1a"/><rect x="34" y="30" width="24" height="26" rx="2" fill="#fff" opacity=".9"/></svg>
+          </div>
+          <h3>Spectre x360 14</h3>
+          <p class="specs">Core Ultra 7 · 16 GB · OLED touch · Nightfall</p>
+          <p class="rating">★ 4.6 <b>(533)</b></p>
+          <div class="card-foot"><span class="price">$1,649</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <span class="badge-pill-ink">New</span>
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="26" y="16" width="78" height="50" rx="4" fill="#3d3d3d"/><rect x="31" y="21" width="68" height="40" rx="2" fill="#356373"/><rect x="16" y="66" width="98" height="7" rx="3.5" fill="#1a1a1a"/></svg>
+          </div>
+          <h3>ZBook Studio G11</h3>
+          <p class="specs">RTX 3000 Ada · 64 GB · DreamColor 16"</p>
+          <p class="rating">★ 4.9 <b>(214)</b></p>
+          <div class="card-foot"><span class="price">$3,299</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="24" y="14" width="82" height="52" rx="4" fill="#f9d4d2"/><rect x="29" y="19" width="72" height="42" rx="2" fill="#fff"/><rect x="14" y="66" width="102" height="7" rx="3.5" fill="#d9a5a3"/></svg>
+          </div>
+          <h3>Pavilion Plus 14</h3>
+          <p class="specs">Core Ultra 5 · 16 GB · 1 TB SSD · 2.8K OLED</p>
+          <p class="rating">★ 4.5 <b>(1,731)</b></p>
+          <div class="card-foot"><span class="price"><s>$1,049</s> $899</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <span class="badge-pill-ink">For business</span>
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="40" y="10" width="50" height="34" rx="3" fill="#1a1a1a"/><rect x="44" y="14" width="42" height="26" rx="2" fill="#356373"/><path d="M40 44l-8 26h66l-8-26z" fill="#3d3d3d"/><path d="M50 50h30" stroke="#c2c2c2" stroke-width="3"/></svg>
+          </div>
+          <h3>ProMini 400 G9 Desktop</h3>
+          <p class="specs">Core Ultra 7 · 32 GB · vPro · 1 L chassis</p>
+          <p class="rating">★ 4.7 <b>(398)</b></p>
+          <div class="card-foot"><span class="price">$1,199</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="22" y="34" width="86" height="40" rx="5" fill="#e8e8e8" stroke="#c2c2c2"/><rect x="34" y="20" width="34" height="14" rx="2" fill="#3d3d3d"/><rect x="30" y="46" width="46" height="6" rx="3" fill="#fff"/><circle cx="96" cy="56" r="6" fill="#024ad8"/></svg>
+          </div>
+          <h3>OfficeJet Pro 9135e</h3>
+          <p class="specs">Print/scan/copy/fax · Instant Ink eligible</p>
+          <p class="rating">★ 4.4 <b>(2,918)</b></p>
+          <div class="card-foot"><span class="price"><s>$389</s> $299</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+        <article class="card">
+          <span class="badge-save">Save $30</span>
+          <div class="card-photo" style="background:var(--cloud);border-radius:var(--r-lg)">
+            <svg viewBox="0 0 130 90"><rect x="40" y="18" width="50" height="54" rx="4" fill="#fff" stroke="#c2c2c2"/><rect x="48" y="26" width="34" height="10" rx="2" fill="#024ad8"/><rect x="48" y="42" width="34" height="22" rx="2" fill="#e8f0fd"/></svg>
+          </div>
+          <h3>912 Black Ink 2-Pack</h3>
+          <p class="specs">Up to 2× more pages · Genuine HP</p>
+          <p class="rating">★ 4.8 <b>(4,012)</b></p>
+          <div class="card-foot"><span class="price"><s>$89</s> $59</span><button class="btn btn-outline-ink" style="height:40px;padding:0 16px">View</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><h2>Featured — OMEN Max 16</h2><button class="text-link">Full specifications →</button></div>
+      <div class="detail">
+        <div>
+          <div class="gallery-main">
+            <span class="badge-save" style="position:absolute;top:16px;left:16px">Save $300</span>
+            <svg viewBox="0 0 240 160" aria-hidden="true">
+              <rect x="30" y="24" width="180" height="100" rx="8" fill="#1a1a1a"/>
+              <rect x="38" y="32" width="164" height="84" rx="4" fill="#0e3191"/>
+              <path d="M38 92c44-20 96-28 164-20v44H38z" fill="#296ef9" opacity=".5"/>
+              <circle cx="172" cy="56" r="12" fill="#c9e0fc"/>
+              <text x="120" y="84" text-anchor="middle" font-family="Manrope" font-size="22" font-weight="800" fill="#fff" opacity=".9">OMEN</text>
+              <rect x="16" y="124" width="208" height="10" rx="5" fill="#3d3d3d"/>
+              <rect x="100" y="118" width="40" height="6" rx="3" fill="#3d3d3d"/>
+            </svg>
+          </div>
+          <div class="thumbs">
+            <button class="thumb on"><svg viewBox="0 0 70 52"><rect x="8" y="8" width="54" height="34" rx="3" fill="#1a1a1a"/><rect x="12" y="12" width="46" height="26" rx="2" fill="#0e3191"/><rect x="4" y="44" width="62" height="4" rx="2" fill="#3d3d3d"/></svg></button>
+            <button class="thumb"><svg viewBox="0 0 70 52"><rect x="8" y="8" width="54" height="34" rx="3" fill="#3d3d3d"/><circle cx="35" cy="25" r="9" fill="#1a1a1a"/><circle cx="35" cy="25" r="4" fill="#296ef9"/></svg></button>
+            <button class="thumb"><svg viewBox="0 0 70 52"><rect x="8" y="14" width="54" height="8" rx="4" fill="#1a1a1a"/><rect x="12" y="26" width="20" height="6" rx="3" fill="#296ef9"/><rect x="36" y="26" width="20" height="6" rx="3" fill="#3d3d3d"/></svg></button>
+            <button class="thumb"><svg viewBox="0 0 70 52"><path d="M20 8h30l-6 36H26z" fill="#3d3d3d"/><path d="M32 14h8l-2 24h-4z" fill="#296ef9"/></svg></button>
+          </div>
+        </div>
+        <div class="detail-info">
+          <p class="rating">★ 4.8 · 2,106 verified reviews · #1 in gaming laptops</p>
+          <h2>OMEN Max 16 Gaming Laptop</h2>
+          <p style="font-size:16px;color:var(--charcoal)">Intel Core Ultra 9 275HX, NVIDIA RTX 5080 16 GB, 32 GB DDR5, 2 TB PCIe Gen4 SSD, 16" 240Hz QHD+ display with OMEN Tempest cooling.</p>
+          <div>
+            <p class="opt-label">Processor</p>
+            <div class="opt-row">
+              <button class="opt on">Ultra 9 275HX</button><button class="opt">Ultra 9 265HX</button><button class="opt">Ultra 7 255HX</button>
+            </div>
+          </div>
+          <div>
+            <p class="opt-label">Memory &amp; storage</p>
+            <div class="opt-row">
+              <button class="opt on">32 GB / 2 TB</button><button class="opt">32 GB / 1 TB</button><button class="opt">64 GB / 4 TB</button>
+            </div>
+          </div>
+          <div class="buy-row">
+            <span class="price-stamp" style="font-size:32px"><s style="font-size:20px">$2,899</s> $2,599</span>
+            <div class="qty"><button aria-label="Decrease">−</button><input value="1" readonly><button aria-label="Increase">+</button></div>
+          </div>
+          <div class="buy-row">
+            <button class="btn btn-primary">Add to cart</button>
+            <button class="btn btn-outline-ink">Customize</button>
+          </div>
+          <p style="font-size:14px;color:var(--graphite)">Free 2-day shipping · 1-year limited warranty · Free 90-day OMEN Gear credit</p>
+          <div class="review">
+            <div class="who"><span class="ava">DM</span><b>Dana M. · Verified purchase</b></div>
+            <p>"Thermals are genuinely impressive for a 16-inch — sustained 140W on the GPU without throttling. The 240Hz panel is the best I've used on a laptop."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cart-band">
+      <div class="cart">
+        <div class="cart-lines">
+          <p class="eyebrow" style="margin-bottom:var(--sp-md)">Your cart · 3 items</p>
+          <div class="cart-line">
+            <span class="cart-art"><svg viewBox="0 0 60 44" width="52"><rect x="10" y="8" width="40" height="24" rx="3" fill="#1a1a1a"/><rect x="13" y="11" width="34" height="18" rx="2" fill="#0e3191"/><rect x="6" y="34" width="48" height="4" rx="2" fill="#3d3d3d"/></svg></span>
+            <div><b>OMEN Max 16 Gaming Laptop</b><small>Ultra 9 · 32 GB / 2 TB · Qty 1</small></div>
+            <span class="p">$2,599</span>
+          </div>
+          <div class="cart-line">
+            <span class="cart-art"><svg viewBox="0 0 60 44" width="52"><rect x="14" y="6" width="32" height="32" rx="4" fill="#1a1a1a"/><circle cx="30" cy="22" r="7" fill="#296ef9"/><circle cx="30" cy="22" r="3" fill="#0e3191"/></svg></span>
+            <div><b>OMEN Vector 2 Mouse</b><small>Black · 26K DPI · Qty 1</small></div>
+            <span class="p">$79</span>
+          </div>
+          <div class="cart-line">
+            <span class="cart-art"><svg viewBox="0 0 60 44" width="52"><rect x="18" y="12" width="24" height="10" rx="3" fill="#c2c2c2"/><rect x="14" y="26" width="32" height="8" rx="4" fill="#1a1a1a"/></svg></span>
+            <div><b>OMEN by HP Headset 2.0</b><small>Black · Qty 1</small></div>
+            <span class="p">$119</span>
+          </div>
+        </div>
+        <div class="cart-sum">
+          <p class="eyebrow" style="margin-bottom:var(--sp-xxs)">Order summary</p>
+          <div class="sum-row"><span>Subtotal</span><span>$2,797.00</span></div>
+          <div class="sum-row"><span>Instant savings</span><span class="ok">−$330.00</span></div>
+          <div class="sum-row"><span>Shipping</span><span>Free</span></div>
+          <div class="sum-row"><span>Estimated tax</span><span>$206.78</span></div>
+          <div class="sum-row total"><span>Total</span><span>$2,673.78</span></div>
+          <button class="btn btn-primary">Check out</button>
+          <button class="btn btn-outline-ink" style="width:100%">Continue shopping</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-dark">
+      <h2>When did work start getting in the way of work?</h2>
+      <div style="display:flex;gap:var(--sp-sm);flex-wrap:wrap">
+        <button class="btn btn-primary" style="background:var(--primary-bright)">Shop for business</button>
+        <button class="btn" style="background:transparent;border:1px solid var(--on-ink);color:var(--on-ink)">Talk to sales</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="help-band">
+    <div class="wrap">
+      <h2>How can we help?</h2>
+      <div class="chip-row">
+        <button class="chip on">Browse topics</button>
+        <button class="chip">Live chat</button>
+        <button class="chip">Contact</button>
+        <button class="chip">Diagnose</button>
+        <button class="chip">Order status</button>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="wordmark" href="#" style="color:#fff">hp<i>.</i></a>
+        <p style="font-size:14px;opacity:.85;max-width:280px;margin-top:var(--sp-sm)">Sign up for deals, product launches and printing tips — about two emails a month.</p>
+        <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-md);max-width:380px">
+          <input type="email" placeholder="Email address" style="flex:1;height:44px;border:1px solid var(--steel);border-radius:var(--r-md);padding:0 var(--sp-md);font-family:var(--font);font-size:16px;background:var(--canvas)">
+          <button class="btn btn-primary">Sign up</button>
+        </div>
+      </div>
+      <div><h4>Shop</h4><a href="#">Laptops</a><a href="#">Desktops</a><a href="#">Printers</a><a href="#">Ink &amp; Toner</a><a href="#">Deals</a></div>
+      <div><h4>Support</h4><a href="#">Order status</a><a href="#">Drivers</a><a href="#">Warranty check</a><a href="#">Contact us</a><a href="#">Repair</a></div>
+      <div><h4>Company</h4><a href="#">About HP</a><a href="#">Careers</a><a href="#">Investors</a><a href="#">Sustainability</a><a href="#">Newsroom</a></div>
+      <div><h4>Communities</h4><a href="#">HP Support Community</a><a href="#">For Business</a><a href="#">For Home</a><a href="#">Developers</a></div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 HP Development Company, L.P. · Prices in USD, while supplies last</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg width="15" height="15" viewBox="0 0 15 15" stroke="#fff" stroke-width="1.4"><path d="M1 1l13 13M14 1L1 14"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#fff"><rect x="1" y="1" width="13" height="13" rx="4"/><circle cx="7.5" cy="7.5" r="3"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#fff"><rect x="1" y="1" width="13" height="13" rx="2"/><path d="M4.5 6.5V11M4.5 4v.2M7.5 11V8.2c0-1 .8-1.7 1.8-1.7s1.7.8 1.7 1.7V11"/></svg></a>
+      </div>
+      <span>Privacy · Terms of use · Cookies · Accessibility</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

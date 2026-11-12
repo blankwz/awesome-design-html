@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renault — Vehicle Range</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ffed00; --primary-deep:#e6d200; --on-primary:#000000;
+  --ink:#000000; --body:#222222; --charcoal:#333333; --mute:#666666; --ash:#8a8a8a; --stone:#c4c4c4;
+  --on-dark:#ffffff; --on-dark-mute:rgba(255,255,255,0.72);
+  --canvas:#ffffff; --surface-soft:#f7f7f7; --surface-dark:#000000; --surface-deep:#111111;
+  --hairline:#f2f2f2; --hairline-strong:#000000; --divider-dark:rgba(255,255,255,0.16);
+  --badge-new:#ffed00; --link:#0000ee;
+  --error:#be6464; --warning:#f0ad4e; --success:#8dc572; --info:#337ab7;
+  --font-sans:"Inter Tight","Segoe UI",Arial,sans-serif;
+  --r-xs:2px; --r-sm:3px; --r-md:4px; --r-pill:46px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:20px; --sp-xl:24px; --sp-xxl:32px; --sp-xxxl:40px; --sp-section:80px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-sans);border:0}
+h1,h2,h3{color:var(--ink);font-weight:700;line-height:0.95;letter-spacing:0}
+.wrap{max-width:1440px;margin:0 auto;padding:0 24px}
+.overline{font-size:10px;font-weight:700;letter-spacing:0;text-transform:uppercase}
+
+/* ---------- buttons ---------- */
+.btn-yellow{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:14px 24px;background:var(--primary);color:var(--on-primary);border-radius:var(--r-xs);font-size:14.4px;font-weight:700;letter-spacing:0.144px}
+.btn-yellow:active{background:var(--primary-deep)}
+.btn-black{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:14px 24px;background:var(--surface-dark);color:var(--on-dark);border-radius:var(--r-xs);font-size:14.4px;font-weight:700;letter-spacing:0.144px}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:13px 23px;background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong);border-radius:var(--r-xs);font-size:14.4px;font-weight:700;letter-spacing:0.144px}
+.btn-outline-lt{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:13px 23px;background:var(--surface-dark);color:var(--on-dark);border:1px solid var(--on-dark);border-radius:var(--r-xs);font-size:14px;font-weight:700}
+.badge-new{display:inline-flex;align-items:center;background:var(--badge-new);color:var(--on-primary);border-radius:var(--r-pill);padding:6px 14px;font-size:14.4px;font-weight:700;letter-spacing:0.144px}
+.icon-sq{width:40px;height:40px;background:var(--canvas);border:1px solid var(--hairline-strong);border-radius:var(--r-xs);display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink)}
+
+/* ---------- nav ---------- */
+.nav{background:var(--canvas);height:60px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-xl)}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:700;font-size:16px}
+.diamond{width:30px;height:30px;flex:none}
+.navlinks{display:flex;gap:var(--sp-xl);font-size:14.4px;font-weight:700;letter-spacing:0.144px;color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.bag{position:relative}
+.bag .dot{position:absolute;top:-4px;right:-6px;min-width:16px;height:16px;border-radius:var(--r-full);background:var(--primary);color:var(--on-primary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid var(--ink)}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-dark);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.subnav{display:flex;gap:var(--sp-sm);flex-wrap:wrap;padding:var(--sp-md) 0}
+.subnav .pill{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong);border-radius:var(--r-pill);padding:8px 16px;height:36px;font-size:13px;font-weight:600;letter-spacing:0.13px}
+.subnav .pill.active{background:var(--ink);color:var(--on-dark);border-color:var(--ink)}
+
+/* ---------- hero ---------- */
+.hero{background:var(--surface-dark);padding:var(--sp-xxl) 0}
+.hero-grid{display:grid;grid-template-columns:6fr 6fr;gap:var(--sp-xl);align-items:center}
+.hero h1{font-size:56px;color:var(--on-dark);margin-bottom:var(--sp-md)}
+.hero p{font-size:19.2px;font-weight:600;line-height:1.3;color:var(--on-dark-mute);max-width:440px;margin-bottom:var(--sp-xl)}
+.hero-art{position:relative;height:340px;background:
+  radial-gradient(ellipse at 75% 60%,rgba(255,237,0,.35) 0%,transparent 45%),
+  radial-gradient(ellipse at 30% 30%,rgba(122,80,200,.35) 0%,transparent 55%),
+  radial-gradient(ellipse at 55% 85%,rgba(244,110,110,.25) 0%,transparent 45%),
+  var(--surface-deep)}
+.hero-art .car{position:absolute;left:0;right:0;bottom:36px;height:90px;
+  background:
+    linear-gradient(180deg,transparent 0 34%,var(--primary) 34% 38%,transparent 38%) 20% 0/42% 100% no-repeat,
+    linear-gradient(180deg,transparent 0 26%,#e8e8e8 26% 30%,transparent 30%) 62% 0/48% 100% no-repeat}
+.hero-art .car::after{content:"";position:absolute;left:14%;right:14%;bottom:0;height:26px;background:var(--primary);clip-path:polygon(4% 100%,10% 20%,30% 0,70% 0,90% 20%,96% 100%)}
+.hero-art .badge-new{position:absolute;top:20px;left:20px}
+
+/* ---------- vehicle grid ---------- */
+.range{padding:var(--sp-section) 0}
+.range h2{font-size:40px;margin-bottom:var(--sp-md)}
+.range .lead{font-size:18px;color:var(--mute);max-width:560px;margin-bottom:var(--sp-xl)}
+.vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+.vcard{background:var(--canvas);border:1px solid var(--hairline);text-align:left;padding:0;position:relative}
+.vcard .art{aspect-ratio:4/3;position:relative}
+.a1{background:linear-gradient(160deg,#dfe3e6 0%,#9aa3aa 60%,#5d666d 100%)}
+.a2{background:linear-gradient(160deg,#e8e2d5 0%,#b0a58e 60%,#6e6650 100%)}
+.a3{background:linear-gradient(160deg,#d5e2e8 0%,#8aa9ba 60%,#4d6a7a 100%)}
+.a4{background:linear-gradient(160deg,#e3d8e8 0%,#a893b6 60%,#665273 100%)}
+.a5{background:linear-gradient(160deg,#f2ecc8 0%,#d8cc7a 60%,#8f853f 100%)}
+.a6{background:linear-gradient(160deg,#d8e8dd 0%,#8fb99f 60%,#4f7360 100%)}
+.a7{background:linear-gradient(160deg,#e8d8d5 0%,#b8908a 60%,#73534f 100%)}
+.a8{background:linear-gradient(160deg,#dde0e8 0%,#96a0b8 60%,#555d73 100%)}
+.vcard .art::after{content:"";position:absolute;left:12%;right:12%;bottom:18%;height:22%;background:var(--surface-dark);clip-path:polygon(5% 100%,12% 30%,32% 8%,68% 8%,88% 30%,95% 100%)}
+.vcard .body{padding:var(--sp-md)}
+.vcard h3{font-size:20px;margin-bottom:var(--sp-xxs)}
+.vcard .variant{font-size:14px;color:var(--mute);margin-bottom:var(--sp-sm)}
+.vcard .from{display:flex;align-items:center;justify-content:space-between}
+.vcard .from .p{font-size:18px;font-weight:700;color:var(--ink)}
+.vcard .from .s{font-size:12px;color:var(--mute)}
+.vcard .badge-new{position:absolute;top:12px;left:12px}
+
+/* ---------- configurator detail row ---------- */
+.detail{background:var(--surface-soft);padding:var(--sp-xxl);display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xxl);margin-bottom:var(--sp-section)}
+.gal{display:grid;grid-template-columns:1fr 88px;gap:var(--sp-md)}
+.stage{position:relative;border:1px solid var(--hairline-strong);height:400px;background:linear-gradient(160deg,#dfe3e6 0%,#9aa3aa 55%,#5d666d 100%)}
+.stage::after{content:"";position:absolute;left:14%;right:14%;bottom:22%;height:26%;background:var(--primary);clip-path:polygon(4% 100%,11% 25%,32% 4%,68% 4%,89% 25%,96% 100%)}
+.stage .badge-new{position:absolute;top:16px;left:16px}
+.thumbs{display:flex;flex-direction:column;gap:var(--sp-md)}
+.thumb{flex:1;border:1px solid var(--hairline-strong);background:linear-gradient(160deg,#e8e2d5,#6e6650)}
+.thumb.t2{background:linear-gradient(160deg,#d5e2e8,#4d6a7a)}
+.thumb.t3{background:linear-gradient(160deg,#f2ecc8,#8f853f)}
+.thumb.active{border:2px solid var(--ink)}
+.d-info h2{font-size:32px;margin-bottom:var(--sp-xs)}
+.d-info .byline{font-size:14px;color:var(--mute);margin-bottom:var(--sp-lg)}
+.d-info .desc{font-size:18px;line-height:1.5;margin-bottom:var(--sp-xl)}
+.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-xl) 0;border-top:1px solid var(--hairline)}
+.cfg-row .k{font-size:16px;font-weight:700;color:var(--ink)}
+.cfg-row .k small{display:block;font-size:14px;font-weight:400;color:var(--mute)}
+.swatches{display:flex;gap:var(--sp-md)}
+.swatch{width:56px;height:56px;border-radius:var(--r-full);border:1px solid var(--hairline-strong)}
+.swatch.y{background:var(--primary)} .swatch.w{background:#e8e8e8} .swatch.b{background:var(--surface-dark)} .swatch.g{background:#6e6650}
+.swatch.active{outline:2px solid var(--ink);outline-offset:3px}
+.cfg-opts{display:flex;gap:var(--sp-sm);flex-wrap:wrap}
+.opt{background:var(--canvas);border:1px solid var(--hairline-strong);border-radius:var(--r-xs);padding:10px 16px;font-size:14px;font-weight:700;color:var(--ink)}
+.opt.active{background:var(--ink);color:var(--on-dark)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-lg);flex-wrap:wrap}
+.buy-row .big{font-size:32px;font-weight:700;color:var(--ink)}
+.buy-row .per{font-size:14px;color:var(--mute)}
+.stars{font-size:13px;color:#b8860b;letter-spacing:1px}
+.stars b{color:var(--ink);letter-spacing:0;margin-left:4px;font-weight:700}
+.review{background:var(--canvas);border:1px solid var(--hairline);padding:var(--sp-lg);margin-top:var(--sp-xl)}
+.review .top{display:flex;align-items:center;gap:var(--sp-sm);margin-bottom:var(--sp-xs)}
+.review .ava{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.review .who{font-size:14px;font-weight:700;color:var(--ink)}
+.review .role{font-size:12px;color:var(--mute)}
+.review p{font-size:14px;color:var(--body)}
+
+/* ---------- cart panel ---------- */
+.cart{background:var(--canvas);border:1px solid var(--hairline-strong);padding:var(--sp-xl)}
+.cart h3{font-size:24px;margin-bottom:var(--sp-lg)}
+.ci{display:flex;gap:var(--sp-md);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline);align-items:center}
+.ci .art{width:56px;height:40px;flex:none;position:relative}
+.ci .art::after{content:"";position:absolute;left:8%;right:8%;bottom:15%;height:50%;background:var(--surface-dark);clip-path:polygon(5% 100%,12% 30%,32% 8%,68% 8%,88% 30%,95% 100%)}
+.ci .art.y::after{background:var(--primary)}
+.ci .n{font-size:14px;font-weight:700;color:var(--ink)}
+.ci .m{font-size:12px;color:var(--mute)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap}
+.sum{margin-top:var(--sp-lg);font-size:14px;color:var(--body)}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0}
+.sum .r.total{border-top:1px solid var(--hairline-strong);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:700;color:var(--ink)}
+.cart .btn-yellow{width:100%;margin-top:var(--sp-lg)}
+.cart .btn-outline{width:100%;margin-top:var(--sp-sm)}
+.cart-note{font-size:12px;color:var(--ash);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* ---------- yellow band + footer ---------- */
+.yellow-band{background:var(--primary);padding:var(--sp-xxl) 0;margin-bottom:var(--sp-section)}
+.yb-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-xl);flex-wrap:wrap}
+.yellow-band h2{font-size:40px;max-width:600px}
+.yellow-band p{font-size:18px;margin-top:var(--sp-sm);max-width:520px}
+footer{background:var(--surface-dark);color:var(--on-dark);padding:64px 0}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg);padding-bottom:var(--sp-xxl);border-bottom:1px solid var(--divider-dark)}
+.foot-grid h4{font-size:18px;font-weight:700;margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;color:var(--on-dark-mute);padding:6px 0}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--sp-lg);gap:var(--sp-md);flex-wrap:wrap}
+.legal{font-size:12px;color:var(--on-dark-mute)}
+.newsletter{display:flex;gap:8px}
+.newsletter input{background:var(--surface-deep);border:0;border-bottom:1px solid var(--on-dark);border-radius:0;height:48px;padding:0 16px;color:#fff;font-size:16px;width:240px;font-family:var(--font-sans)}
+.newsletter input::placeholder{color:var(--on-dark-mute)}
+
+@media (max-width:960px){
+  .hero-grid,.detail,.duo{grid-template-columns:1fr}
+  .vgrid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:40px}
+  .navlinks{display:none}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="nav">
+    <a class="logo" href="#">
+      <svg class="diamond" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 6 L24 6 L30 16 L24 26 L8 26 L2 16 Z" fill="none" stroke="#000" stroke-width="2.4"/><path d="M11 11 L21 11 L24 16 L21 21 L11 21 L8 16 Z" fill="#000"/></svg>
+      RENAULT
+    </a>
+    <nav class="navlinks">
+      <a href="#range">Models</a><a href="#">Electric</a><a href="#config">Configure</a><a href="#">Services</a><a href="#">MyRenault</a>
+    </nav>
+    <div class="nav-right">
+      <button class="icon-sq" aria-label="Language">EN</button>
+      <button class="icon-sq bag" aria-label="Configurations">▤<span class="dot">2</span></button>
+      <div class="avatar">SD</div>
+    </div>
+  </div>
+
+  <div class="subnav">
+    <button class="pill active">All models</button>
+    <button class="pill">Electric</button>
+    <button class="pill">Hybrid</button>
+    <button class="pill">SUV</button>
+    <button class="pill">Commercial</button>
+    <button class="pill">Offers</button>
+  </div>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="overline" style="color:var(--on-dark-mute);margin-bottom:12px">NEW R5 E-TECH 100% ELECTRIC</div>
+        <h1>LA RENAULT, RÉINVENTÉE</h1>
+        <p>The icon returns — 400 km of range, from €25,000. Configure yours today.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <a class="btn-yellow" href="#config">Start configurator</a>
+          <a class="btn-outline-lt" href="#">Book a test drive</a>
+        </div>
+      </div>
+      <div class="hero-art"><span class="badge-new">NEW</span><span class="car"></span></div>
+    </div>
+  </section>
+
+  <section class="range" id="range">
+    <h2>The range</h2>
+    <p class="lead">Every model available to configure online, with live dealer stock and monthly finance from 0% APR.</p>
+    <div class="vgrid">
+      <button class="vcard"><span class="badge-new">NEW</span><span class="art a5"></span><span class="body"><h3>R5 E-TECH</h3><div class="variant">Electric · 52 kWh · 400 km</div><div class="from"><span class="p">€25,000</span><span class="s">or €229/mo</span></div></span></button>
+      <button class="vcard"><span class="art a1"></span><span class="body"><h3>Clio E-TECH</h3><div class="variant">Full hybrid 145 · Auto</div><div class="from"><span class="p">€19,600</span><span class="s">or €189/mo</span></div></span></button>
+      <button class="vcard"><span class="badge-new">NEW</span><span class="art a3"></span><span class="body"><h3>Scenic E-TECH</h3><div class="variant">Electric · 87 kWh · 610 km</div><div class="from"><span class="p">€40,500</span><span class="s">or €369/mo</span></div></span></button>
+      <button class="vcard"><span class="art a4"></span><span class="body"><h3>Austral E-TECH</h3><div class="variant">Mild hybrid 160 · Auto</div><div class="from"><span class="p">€33,200</span><span class="s">or €309/mo</span></div></span></button>
+      <button class="vcard"><span class="art a2"></span><span class="body"><h3>Megane E-TECH</h3><div class="variant">Electric · 60 kWh · 450 km</div><div class="from"><span class="p">€35,000</span><span class="s">or €329/mo</span></div></span></button>
+      <button class="vcard"><span class="art a6"></span><span class="body"><h3>Rafale</h3><div class="variant">Hybrid 300 4x4 · Auto</div><div class="from"><span class="p">€43,900</span><span class="s">or €399/mo</span></div></span></button>
+      <button class="vcard"><span class="art a7"></span><span class="body"><h3>Kangoo E-TECH</h3><div class="variant">Electric van · 286 km</div><div class="from"><span class="p">€26,400</span><span class="s">or €249/mo</span></div></span></button>
+      <button class="vcard"><span class="art a8"></span><span class="body"><h3>Espace</h3><div class="variant">Hybrid 200 · 7 seats</div><div class="from"><span class="p">€41,800</span><span class="s">or €385/mo</span></div></span></button>
+    </div>
+  </section>
+
+  <section class="wrap" id="config">
+    <div class="duo">
+      <div class="detail">
+        <div class="gal">
+          <div class="stage"><span class="badge-new">NEW</span></div>
+          <div class="thumbs"><div class="thumb active"></div><div class="thumb t2"></div><div class="thumb t3"></div></div>
+        </div>
+        <div class="d-info">
+          <h2>R5 E-TECH — Evolution</h2>
+          <div class="byline"><span class="stars">★★★★★<b>4.7</b></span> &nbsp;·&nbsp; 2,104 owner reviews &nbsp;·&nbsp; Delivery from 6 weeks</div>
+          <p class="desc">52 kWh battery, 150 hp, 10–80% in 30 minutes. bidirectional V2L charging and the Reno canvas roof come standard on Evolution.</p>
+          <div class="cfg-row" style="border-top:0;padding-top:0">
+            <div class="k">Body<small>Choose your shape</small></div>
+            <div class="cfg-opts">
+              <button class="opt active">5-door</button>
+              <button class="opt">5-door Alpine</button>
+            </div>
+          </div>
+          <div class="cfg-row">
+            <div class="k">Motor<small>Range &amp; power</small></div>
+            <div class="cfg-opts">
+              <button class="opt">120 hp · 310 km</button>
+              <button class="opt active">150 hp · 400 km</button>
+            </div>
+          </div>
+          <div class="cfg-row">
+            <div class="k">Colour<small>Sunlight Yellow, as it should be</small></div>
+            <div class="swatches">
+              <button class="swatch y active" aria-label="Sunlight Yellow"></button>
+              <button class="swatch w" aria-label="Glacier White"></button>
+              <button class="swatch b" aria-label="Diamond Black"></button>
+              <button class="swatch g" aria-label="Pop Green"></button>
+            </div>
+          </div>
+          <div class="buy-row">
+            <span class="big">€229</span><span class="per">/month · 36 mo · PCP</span>
+            <a class="btn-yellow" href="#cart">Save configuration</a>
+            <a class="btn-outline" href="#">Book a test drive</a>
+          </div>
+          <div class="review">
+            <div class="top"><div class="ava">EM</div><div><div class="who">Elif Mert</div><div class="role">R5 E-TECH owner · Verified purchase</div></div><span class="stars" style="margin-left:auto">★★★★★</span></div>
+            <p>“620 km driven in the first week and I charged twice at work. The yellow gets a thumbs-up at every traffic light.”</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cart" id="cart">
+        <h3>Your garage</h3>
+        <div class="ci"><span class="art y"></span><div><div class="n">R5 E-TECH Evolution</div><div class="m">150 hp · Sunlight Yellow</div></div><span class="p">€229/mo</span></div>
+        <div class="ci"><span class="art"></span><div><div class="n">Clio E-TECH Techno</div><div class="m">Hybrid 145 · Iron Blue</div></div><span class="p">€189/mo</span></div>
+        <div class="sum">
+          <div class="r"><span>Monthly total</span><span>€418/mo</span></div>
+          <div class="r"><span>Deposit (10%)</span><span>€5,240</span></div>
+          <div class="r"><span>Order fee</span><span>€0</span></div>
+          <div class="r total"><span>Estimated total term</span><span>€20,308</span></div>
+        </div>
+        <a class="btn-yellow" href="#">Reserve with €200</a>
+        <button class="btn-outline" type="button">Email this configuration</button>
+        <p class="cart-note">Fully refundable · Final terms confirmed at your dealer</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="yellow-band">
+    <div class="wrap yb-inner">
+      <div>
+        <h2>Scrappage bonus: up to €5,000 off electric</h2>
+        <p>Trade in any car over 10 years old and we double the state bonus on every E-TECH model.</p>
+      </div>
+      <a class="btn-black" href="#">Check eligibility</a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Models</h4><a href="#">R5 E-TECH</a><a href="#">Clio</a><a href="#">Scenic E-TECH</a><a href="#">Austral</a></div>
+      <div><h4>Buying</h4><a href="#">Configurator</a><a href="#">Test drive</a><a href="#">Finance</a><a href="#">Trade-in</a></div>
+      <div><h4>Ownership</h4><a href="#">MyRenault</a><a href="#">Service &amp; parts</a><a href="#">Warranty</a><a href="#">Roadside</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Electric strategy</a><a href="#">Careers</a><a href="#">Dealers</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Renault S.A.S. · Fuel consumption and CO₂ figures shown are WLTP combined values. Terms and conditions apply to all finance offers.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Email address" aria-label="Email address">
+        <button class="btn-yellow" type="submit" style="height:48px;padding:0 24px">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

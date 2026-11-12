@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kraken — Earn Marketplace: Stake, Grow, Trade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#7132f5; --purple-dark:#5741d8; --purple-deep:#5b1ecf;
+  --purple-subtle:rgba(133,91,251,0.16);
+  --ink:#101114; --cool-gray:#686b82; --silver:#9497a9;
+  --white:#ffffff; --border:#dedee5;
+  --green:#149e61; --green-bg:rgba(20,158,97,0.16); --green-dark:#026b3f;
+  --red:#d9304e; --red-bg:rgba(217,48,78,0.12);
+  --neutral-bg:rgba(104,107,130,0.12); --neutral-text:#484b5e;
+  --shadow-subtle:rgba(0,0,0,0.03) 0px 4px 24px;
+  --shadow-micro:rgba(16,24,40,0.04) 0px 1px 4px;
+  --font:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--white);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.38}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+h1,h2{font-family:var(--font);font-weight:700}
+
+/* ---------- top nav ---------- */
+.topnav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.topnav .wrap{display:flex;align-items:center;gap:28px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-0.5px}
+.logo svg{flex:none}
+.navlinks{display:flex;gap:22px;font-size:15px;font-weight:500;color:var(--cool-gray)}
+.navlinks a:hover{color:var(--purple)}
+.navlinks a.active{color:var(--purple)}
+.top-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;background:rgba(148,151,169,0.08);border-radius:12px;padding:9px 14px;width:220px}
+.nav-search input{border:0;outline:0;background:transparent;font:inherit;font-size:14px;width:100%;color:var(--ink)}
+.nav-search input::placeholder{color:var(--silver)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:12px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.icon-btn:hover{background:var(--neutral-bg)}
+.icon-btn .dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--purple);border:2px solid var(--white)}
+.avatar{width:36px;height:36px;border-radius:12px;background:var(--purple);color:#fff;font-size:13px;font-weight:600;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-size:16px;font-weight:600;padding:13px 16px;border-radius:12px;border:0;cursor:pointer}
+.btn-primary{background:var(--purple);color:#fff}
+.btn-primary:hover{background:var(--purple-deep)}
+.btn-outlined{background:#fff;color:var(--purple-dark);border:1px solid var(--purple-dark);border-radius:12px}
+.btn-subtle{background:rgba(148,151,169,0.08);color:var(--ink);font-weight:500}
+
+/* ---------- hero strip ---------- */
+.hero{padding:40px 0 8px}
+.hero h1{font-size:48px;line-height:1.17;letter-spacing:-1px}
+.hero p{color:var(--cool-gray);font-size:18px;margin-top:12px;max-width:520px}
+.hero-stats{display:flex;gap:40px;margin-top:24px}
+.hstat b{font-size:22px;font-weight:700;display:block}
+.hstat span{font-size:13px;color:var(--silver)}
+
+/* ---------- filter chips ---------- */
+.chips{display:flex;gap:10px;padding:28px 0 20px;flex-wrap:wrap}
+.chip{font-size:14px;font-weight:600;padding:10px 16px;border-radius:12px;border:0;cursor:pointer;background:rgba(148,151,169,0.08);color:var(--cool-gray);font-family:var(--font)}
+.chip:hover{color:var(--ink)}
+.chip.active{background:var(--purple-subtle);color:var(--purple)}
+
+/* ---------- asset grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .15s}
+.card:hover{box-shadow:var(--shadow-subtle)}
+.art{height:110px;border-radius:12px;position:relative;overflow:hidden}
+.tag{position:absolute;top:10px;left:10px;font-size:12px;font-weight:600;padding:3px 8px;border-radius:6px}
+.tag.hot{background:var(--purple);color:#fff}
+.tag.new{background:var(--green-bg);color:var(--green-dark)}
+.tag.sale{background:var(--neutral-bg);color:var(--neutral-text)}
+.coin{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;position:absolute;left:14px;bottom:14px;box-shadow:var(--shadow-micro)}
+.card h3{font-size:20px;font-weight:600;line-height:1.2}
+.card .meta{font-size:13px;color:var(--silver)}
+.apy{display:flex;align-items:baseline;gap:8px}
+.apy b{font-size:22px;font-weight:700;color:var(--green-dark)}
+.apy span{font-size:13px;color:var(--silver)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.rating{font-size:13px;color:var(--cool-gray)}
+.rating .stars{color:var(--purple);letter-spacing:1px}
+.price{font-size:15px;font-weight:600}
+/* artwork tiles */
+.art-a{background:linear-gradient(135deg,#efeaff,#dcd0ff)}
+.art-b{background:linear-gradient(135deg,#0e0f1c,#26264a)}
+.art-c{background:linear-gradient(135deg,#e6f4ee,#c8e8d9)}
+.art-d{background:linear-gradient(135deg,#fff1ec,#ffd9c7)}
+.art-e{background:linear-gradient(135deg,#e8f0fb,#cfdffa)}
+.art-f{background:linear-gradient(135deg,#f4efff,#e5d8ff)}
+.art-g{background:linear-gradient(135deg,#fdf6e3,#f7e8bd)}
+.art-h{background:linear-gradient(135deg,#101114,#2c2c33)}
+.chainline{position:absolute;left:14px;right:14px;bottom:16px;height:6px;border-radius:3px;background:rgba(255,255,255,.55)}
+.chainline i{display:block;height:100%;width:64%;border-radius:3px;background:#fff}
+.rings{position:absolute;right:-20px;top:-20px;width:110px;height:110px;border-radius:50%;border:18px solid rgba(255,255,255,.35)}
+
+/* ---------- featured detail ---------- */
+.featured{margin:40px 0;background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px}
+.gallery-main{border-radius:12px;background:linear-gradient(135deg,#0e0f1c,#26264a);position:relative;overflow:hidden;height:330px}
+.gallery-main .terminal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:82%;background:#16172b;border-radius:12px;padding:16px;color:#c9cbe0}
+.gallery-main .terminal .row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid #23243c}
+.gallery-main .terminal .row:last-child{border-bottom:0}
+.gallery-main .terminal .up{color:#4ade80}
+.gallery-main .terminal .hd{display:flex;justify-content:space-between;margin-bottom:10px;font-weight:600;color:#fff}
+.gallery-main .terminal .hd span{color:var(--purple);background:var(--purple-subtle);padding:2px 8px;border-radius:6px;font-size:12px}
+.thumbs{display:flex;gap:10px;margin-top:14px}
+.thumb{flex:1;height:60px;border-radius:10px;cursor:pointer;border:1px solid var(--border)}
+.thumb.active{border:2px solid var(--purple)}
+.detail h2{font-size:28px;line-height:1.29;letter-spacing:-0.5px}
+.detail .sub{font-size:14px;color:var(--silver);margin-top:4px}
+.detail .desc{color:var(--cool-gray);margin-top:16px;font-size:16px}
+.opt-label{font-size:14px;font-weight:600;margin:20px 0 10px}
+.opts{display:flex;gap:10px}
+.opt{font-size:14px;font-weight:600;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:#fff;color:var(--cool-gray);cursor:pointer;font-family:var(--font)}
+.opt.active{background:var(--purple-subtle);color:var(--purple);border-color:var(--purple)}
+.qty{display:inline-flex;align-items:center;background:rgba(148,151,169,0.08);border-radius:12px;margin-right:10px}
+.qty button{width:42px;height:46px;border:0;background:transparent;font-size:16px;cursor:pointer;color:var(--ink)}
+.qty span{width:52px;text-align:center;font-weight:600}
+.buy-row{display:flex;align-items:center;margin-top:8px}
+.kv{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--border)}
+.kv span{color:var(--cool-gray)}
+.kv b{font-weight:600}
+.review{margin-top:20px;background:rgba(148,151,169,0.08);border-radius:12px;padding:16px}
+.review p{font-size:15px;color:var(--ink)}
+.review .who{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--silver)}
+.review .who i{width:30px;height:30px;border-radius:50%;background:var(--purple);color:#fff;font-style:normal;font-size:12px;font-weight:600;display:grid;place-items:center}
+
+/* ---------- portfolio summary ---------- */
+.checkout{display:grid;grid-template-columns:1fr 380px;gap:28px;margin-bottom:56px}
+.cart-list{background:#fff;border:1px solid var(--border);border-radius:16px;padding:8px 16px}
+.cart-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.cart-row:last-child{border-bottom:0}
+.cart-art{width:48px;height:48px;border-radius:12px;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px}
+.cart-row h4{font-size:15px;font-weight:600}
+.cart-row p{font-size:13px;color:var(--silver)}
+.cart-row .p{margin-left:auto;text-align:right}
+.cart-row .p b{display:block;font-size:15px}
+.cart-row .p span{font-size:13px;color:var(--green-dark);font-weight:600}
+.summary{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;align-self:start;box-shadow:var(--shadow-subtle)}
+.summary h3{font-size:22px;font-weight:700;letter-spacing:-0.5px}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--cool-gray);margin-top:12px}
+.sum-row.total{border-top:1px solid var(--border);padding-top:14px;margin-top:16px;color:var(--ink);font-weight:700;font-size:16px}
+.summary .btn{width:100%;margin-top:16px}
+.note{font-size:12px;color:var(--silver);text-align:center;margin-top:10px}
+
+/* ---------- footer ---------- */
+footer{background:rgba(148,151,169,0.08);padding:48px 0 32px}
+.foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px}
+.foot-grid h5{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--silver);margin-bottom:10px}
+.foot-grid a{display:block;font-size:14px;color:var(--cool-gray);padding:5px 0}
+.foot-grid a:hover{color:var(--purple)}
+.newsletter{display:flex;gap:10px;margin-top:14px}
+.newsletter input{flex:1;border:1px solid var(--border);border-radius:12px;padding:12px 14px;font:inherit;font-size:14px;outline:0;color:var(--ink);background:#fff}
+.foot-base{display:flex;align-items:center;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--silver)}
+.socials{display:flex;gap:10px}
+.socials a{width:34px;height:34px;border-radius:10px;background:#fff;border:1px solid var(--border);display:grid;place-items:center;color:var(--cool-gray)}
+.socials a:hover{color:var(--purple)}
+
+@media (max-width:1180px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:1024px){
+  .featured,.checkout{grid-template-columns:1fr}
+  .navlinks{display:none}
+  .hero h1{font-size:36px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:960px){.nav-search{display:none}}
+</style>
+</head>
+<body>
+
+<!-- top nav -->
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path fill="#7132f5" d="M13 1C6.4 1 1 6.4 1 13s5.4 12 12 12 12-5.4 12-12S19.6 1 13 1zm0 4.5c3.1 0 5.8 2 6.8 4.8h-3.4a3.9 3.9 0 00-6.8 0H6.2A7.5 7.5 0 0113 5.5zM9.1 13a3.9 3.9 0 017.8 0 3.9 3.9 0 01-7.8 0zm-2.9 1.7A7.5 7.5 0 0013 20.5c3.1 0 5.8-2 6.8-4.8h-3.4a3.9 3.9 0 01-6.8 0H6.2z"/></svg>
+      Kraken
+    </a>
+    <nav class="navlinks">
+      <a href="#">Buy crypto</a><a href="#" class="active">Earn</a><a href="#">Trade</a><a href="#">NFTs</a><a href="#">Learn</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <label class="nav-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9497a9" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search assets">
+    </label>
+    <button class="icon-btn" aria-label="Alerts">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <button class="icon-btn" aria-label="Portfolio">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+    </button>
+    <span class="avatar">TR</span>
+    <a class="btn btn-primary" href="#">Get started</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- hero -->
+  <section class="hero">
+    <h1>Put your crypto to work</h1>
+    <p>Earn up to 12% APY on 40+ assets with flexible and locked staking. Payouts twice a week, unbond in one tap.</p>
+    <div class="hero-stats">
+      <div class="hstat"><b>$2.4B</b><span>Assets staked</span></div>
+      <div class="hstat"><b>190+ countries</b><span>Served securely</span></div>
+      <div class="hstat"><b>2×</b><span>Payouts per week</span></div>
+    </div>
+  </section>
+
+  <!-- filters -->
+  <div class="chips">
+    <button class="chip active">All earn products</button>
+    <button class="chip">Staking</button>
+    <button class="chip">Stablecoin yield</button>
+    <button class="chip">Indices</button>
+    <button class="chip">Locked terms</button>
+    <button class="chip">New listings</button>
+  </div>
+
+  <!-- asset grid -->
+  <section class="grid">
+    <article class="card">
+      <div class="art art-a"><span class="tag hot">Popular</span><span class="coin" style="background:#627eea">ETH</span></div>
+      <h3>Ethereum staking</h3>
+      <p class="meta">Bonded · 28-day unbond</p>
+      <div class="apy"><b>4.2%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9</span><span class="price">$3,412.80</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-b"><span class="tag new">New</span><span class="rings"></span><span class="coin" style="background:#5b1ecf">SOL</span></div>
+      <h3>Solana staking</h3>
+      <p class="meta">Flexible · instant unbond</p>
+      <div class="apy"><b>7.8%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.8</span><span class="price">$214.36</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-c"><span class="coin" style="background:#26a17b">USDT</span></div>
+      <h3>Stablecoin yield</h3>
+      <p class="meta">USDT · monthly terms</p>
+      <div class="apy"><b>9.1%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.6</span><span class="price">$1.00</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-d"><span class="tag sale">Low fee</span><span class="coin" style="background:#f7931a">BTC</span></div>
+      <h3>Bitcoin lending</h3>
+      <p class="meta">Collateralized · 90-day</p>
+      <div class="apy"><b>2.4%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.7</span><span class="price">$96,840.00</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-e"><span class="coin" style="background:#00a4df">ADA</span></div>
+      <h3>Cardano staking</h3>
+      <p class="meta">Flexible · no lockup</p>
+      <div class="apy"><b>3.6%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.5</span><span class="price">$0.92</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-f"><span class="tag new">New</span><span class="coin" style="background:#e84142">AVAX</span></div>
+      <h3>Avalanche staking</h3>
+      <p class="meta">Bonded · 14-day unbond</p>
+      <div class="apy"><b>8.3%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.8</span><span class="price">$41.17</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-g"><span class="coin" style="background:#8247e5">MATIC</span></div>
+      <h3>Polygon staking</h3>
+      <p class="meta">Flexible · instant unbond</p>
+      <div class="apy"><b>5.9%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★☆</span> 4.4</span><span class="price">$0.61</span></div>
+    </article>
+    <article class="card">
+      <div class="art art-h"><span class="tag hot">Top yield</span><span class="chainline"><i></i></span><span class="coin" style="background:#7132f5">DOT</span></div>
+      <h3>Polkadot staking</h3>
+      <p class="meta">Bonded · 28-day unbond</p>
+      <div class="apy"><b>11.7%</b><span>APY</span></div>
+      <div class="card-foot"><span class="rating"><span class="stars">★★★★★</span> 4.9</span><span class="price">$7.84</span></div>
+    </article>
+  </section>
+
+  <!-- featured detail -->
+  <section class="featured">
+    <div>
+      <div class="gallery-main">
+        <div class="terminal">
+          <div class="hd">DOT · Polkadot staking <span>Bonded 28d</span></div>
+          <div class="row"><span>Staked balance</span><b class="up">1,240.00 DOT</b></div>
+          <div class="row"><span>Rewards accrued (7d)</span><b class="up">+1.94 DOT</b></div>
+          <div class="row"><span>Current APY</span><b class="up">11.7%</b></div>
+          <div class="row"><span>Next payout</span><span>Thu, Oct 29 · 14:00 UTC</span></div>
+        </div>
+      </div>
+      <div class="thumbs">
+        <span class="thumb active" style="background:linear-gradient(135deg,#0e0f1c,#26264a)"></span>
+        <span class="thumb" style="background:linear-gradient(135deg,#efeaff,#dcd0ff)"></span>
+        <span class="thumb" style="background:linear-gradient(135deg,#e6f4ee,#c8e8d9)"></span>
+        <span class="thumb" style="background:linear-gradient(135deg,#e8f0fb,#cfdffa)"></span>
+      </div>
+    </div>
+    <div class="detail">
+      <h2>Polkadot bonded staking</h2>
+      <p class="sub">DOT · Bonded · 28-day unbond period · Payouts 2× weekly</p>
+      <p class="desc">Delegate to Kraken-run validators with 100% uptime slashing insurance. Rewards compound automatically and can be tracked to the planck in your portfolio.</p>
+      <p class="opt-label">Term</p>
+      <div class="opts">
+        <button class="opt active">Bonded 28d · 11.7%</button>
+        <button class="opt">Flexible · 9.8%</button>
+        <button class="opt">Locked 90d · 12.4%</button>
+      </div>
+      <p class="opt-label">Amount (DOT)</p>
+      <div class="buy-row">
+        <div class="qty">
+          <button aria-label="Decrease">−</button><span>250</span><button aria-label="Increase">+</button>
+        </div>
+        <button class="btn btn-primary">Stake 250 DOT</button>
+        <button class="btn btn-outlined">Preview</button>
+      </div>
+      <div style="margin-top:16px">
+        <div class="kv"><span>Estimated yearly reward</span><b>29.25 DOT · $229.31</b></div>
+        <div class="kv"><span>Network fee</span><b>$0.00 — covered by Kraken</b></div>
+        <div class="kv" style="border-bottom:0"><span>Unbond period</span><b>28 days</b></div>
+      </div>
+      <div class="review">
+        <p>"Moved my DOT here from a solo wallet a year ago. Zero slashing incidents, and the twice-weekly payouts just work."</p>
+        <div class="who"><i>AO</i>Adaeze Okafor · staking since 2024 · verified client</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- order summary -->
+  <section class="checkout">
+    <div class="cart-list">
+      <div class="cart-row">
+        <span class="cart-art" style="background:#7132f5">DOT</span>
+        <div><h4>Polkadot bonded staking</h4><p>Bonded 28d · 11.7% APY</p></div>
+        <div class="p"><b>250 DOT</b><span>≈ $1,960.00</span></div>
+      </div>
+      <div class="cart-row">
+        <span class="cart-art" style="background:#5b1ecf">SOL</span>
+        <div><h4>Solana flexible staking</h4><p>Flexible · 7.8% APY</p></div>
+        <div class="p"><b>18.5 SOL</b><span>≈ $3,965.66</span></div>
+      </div>
+      <div class="cart-row">
+        <span class="cart-art" style="background:#26a17b">USDT</span>
+        <div><h4>Stablecoin yield — monthly</h4><p>USDT · 9.1% APY</p></div>
+        <div class="p"><b>2,000 USDT</b><span>≈ $2,000.00</span></div>
+      </div>
+    </div>
+    <aside class="summary">
+      <h3>Your earn order</h3>
+      <div class="sum-row"><span>Total staked value</span><span>$7,925.66</span></div>
+      <div class="sum-row"><span>Blended APY</span><span>8.9%</span></div>
+      <div class="sum-row"><span>Projected yearly rewards</span><span>$705.38</span></div>
+      <div class="sum-row total"><span>Total</span><span>$7,925.66</span></div>
+      <button class="btn btn-primary">Confirm stake</button>
+      <p class="note">Yields are variable · Crypto is volatile and can lose value</p>
+    </aside>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#">
+          <svg width="26" height="26" viewBox="0 0 26 26"><path fill="#7132f5" d="M13 1C6.4 1 1 6.4 1 13s5.4 12 12 12 12-5.4 12-12S19.6 1 13 1zm0 4.5c3.1 0 5.8 2 6.8 4.8h-3.4a3.9 3.9 0 00-6.8 0H6.2A7.5 7.5 0 0113 5.5zM9.1 13a3.9 3.9 0 017.8 0 3.9 3.9 0 01-7.8 0zm-2.9 1.7A7.5 7.5 0 0013 20.5c3.1 0 5.8-2 6.8-4.8h-3.4a3.9 3.9 0 01-6.8 0H6.2z"/></svg>
+          Kraken
+        </a>
+        <p style="font-size:14px;color:var(--cool-gray);margin-top:10px;max-width:280px">Buy, sell and earn on 400+ digital assets with a platform trusted since 2011.</p>
+        <div class="newsletter">
+          <input type="email" placeholder="Email address">
+          <button class="btn btn-primary">Subscribe</button>
+        </div>
+      </div>
+      <div>
+        <h5>Products</h5>
+        <a href="#">Buy crypto</a><a href="#">Earn</a><a href="#">Futures</a><a href="#">NFT marketplace</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="#">About</a><a href="#">Careers</a><a href="#">Security</a><a href="#">Press</a>
+      </div>
+      <div>
+        <h5>Support</h5>
+        <a href="#">Help center</a><a href="#">Fees</a><a href="#">Status</a><a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Payward, Inc. · Privacy · Terms · Disclosures</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L6 22H2.9l7.5-8.6L2.5 2H9l4.5 6.6L18.9 2z"/></svg></a>
+        <a href="#" aria-label="Reddit"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a2.2 2.2 0 00-3.7-1.6 10.9 10.9 0 00-5.6-1.8l1-4.5 3.2.7a1.6 1.6 0 101.6-1.7 1.6 1.6 0 00-1.4.8L13.4 2a.5.5 0 00-.6.4l-1.1 5.1a11 11 0 00-5.6 1.8A2.2 2.2 0 002.4 12a2.2 2.2 0 00.9 1.8v.9C3.3 18.2 7.2 21 12 21s8.7-2.8 8.7-6.3v-.9A2.2 2.2 0 0022 12zM8 13.8a1.5 1.5 0 111.5-1.5A1.5 1.5 0 018 13.8zm7.6 3.3a5.4 5.4 0 01-3.6 1 5.4 5.4 0 01-3.6-1 .4.4 0 01.6-.6 4.7 4.7 0 003 .8 4.7 4.7 0 003-.8.4.4 0 11.6.6zm-.4-3.3a1.5 1.5 0 111.5-1.5 1.5 1.5 0 01-1.5 1.5z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C16.6 4 12 4 12 4s-4.6 0-7.8.2c-.4.1-1.4.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 9.4.8 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.9.2 7.6.2 7.6.2s4.6 0 7.8-.3c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 15.3V8.7l6.2 3.3-6.2 3.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uber — Fleet Operations Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#000000;
+  --on-primary:#ffffff;
+  --ink:#000000;
+  --body-tx:#5e5e5e;
+  --mute:#afafaf;
+  --hairline-mid:#4b4b4b;
+  --canvas:#ffffff;
+  --canvas-soft:#efefef;
+  --canvas-softer:#f3f3f3;
+  --pressed:#e2e2e2;
+  --link:#0000ee;
+  --black-elevated:#282828;
+  --ok-bg:#e3efe6; --ok-tx:#1f6b3d;
+  --warn-bg:#f7eede; --warn-tx:#95661a;
+  --bad-bg:#f6e3e3; --bad-tx:#9c3434;
+  --neu-bg:var(--canvas-soft); --neu-tx:#5e5e5e;
+  --r-none:0px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:999px; --r-pill-tab:36px;
+  --sh-1:rgba(0,0,0,.12) 0px 4px 16px 0px;
+  --sh-2:rgba(0,0,0,.16) 0px 4px 16px 0px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'UberMoveText','Inter',system-ui,'Helvetica Neue',Arial,sans-serif;
+  font-weight:400;color:var(--ink);background:var(--canvas);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;line-height:1.25;border-radius:var(--r-pill);padding:12px 24px;transition:background-color .18s,color .18s}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--black-elevated)}
+.btn-subtle{background:var(--canvas-soft);color:var(--ink)}
+.btn-subtle:hover{background:var(--pressed)}
+.btn-sm{font-size:14px;padding:10px 16px}
+
+/* ---------- Sidebar ---------- */
+.sidebar{border-right:1px solid var(--pressed);background:var(--canvas);position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.side-brand{padding:18px 20px;font-size:20px;font-weight:700;letter-spacing:-.4px;border-bottom:1px solid var(--pressed)}
+.side-brand small{display:block;font-size:12px;font-weight:400;color:var(--body-tx)}
+.side-group{padding:20px 12px 4px}
+.side-label{font-size:12px;font-weight:500;color:var(--mute);padding:0 12px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.side-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-md);font-size:14px;font-weight:500;color:var(--ink);transition:background-color .18s}
+.side-item:hover{background:var(--canvas-soft)}
+.side-item.active{background:var(--canvas-soft);box-shadow:inset 3px 0 0 var(--primary)}
+.side-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex:none}
+.side-item .count{margin-left:auto;font-size:12px;background:var(--pressed);border-radius:var(--r-pill);padding:2px 8px;color:var(--body-tx)}
+.side-user{margin-top:auto;padding:16px;border-top:1px solid var(--pressed);display:flex;gap:12px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:var(--r-pill);flex:none;display:grid;place-items:center;font-size:13px;font-weight:500;background:var(--ink);color:#fff}
+.side-user strong{display:block;font-size:14px;font-weight:500}
+.side-user span{font-size:12px;color:var(--body-tx)}
+
+/* ---------- Topbar ---------- */
+.topbar{border-bottom:1px solid var(--pressed);padding:14px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;background:var(--canvas);z-index:40}
+.crumbs{font-size:14px;color:var(--body-tx)}
+.crumbs strong{color:var(--ink);font-weight:500}
+.crumbs span{margin:0 8px;color:var(--mute)}
+.search{display:flex;align-items:center;gap:8px;background:var(--canvas-soft);border-radius:var(--r-md);padding:0 16px;height:40px;width:300px;margin-left:auto;color:var(--mute)}
+.search input{border:none;outline:none;background:transparent;font-family:inherit;font-size:14px;width:100%;color:var(--ink);height:100%}
+.icon-btn{width:40px;height:40px;border-radius:var(--r-pill);display:grid;place-items:center;color:var(--ink);position:relative;transition:background-color .18s}
+.icon-btn:hover{background:var(--canvas-soft)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--ink);color:#fff;font-size:9px;font-weight:500;display:grid;place-items:center;padding:0 3px}
+
+/* ---------- Content ---------- */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px;background:var(--canvas)}
+.page-head{display:flex;align-items:end;justify-content:space-between;gap:24px}
+.page-head h1{font-family:'UberMove','Inter',sans-serif;font-size:36px;font-weight:700;line-height:1.22}
+.page-head p{font-size:14px;color:var(--body-tx);margin-top:4px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--canvas);border:1px solid var(--pressed);border-radius:var(--r-xl);padding:24px}
+.kpi .label{font-size:14px;color:var(--body-tx)}
+.kpi .value{font-family:'UberMove','Inter',sans-serif;font-size:28px;font-weight:700;margin:8px 0 4px}
+.kpi .delta{font-size:14px;font-weight:500}
+.delta.up{color:var(--ok-tx)}
+.delta.down{color:var(--bad-tx)}
+.kpi .sub{font-size:12px;color:var(--mute);margin-top:2px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:16px}
+.spark i{flex:1;background:var(--pressed);border-radius:2px}
+.spark i.hi{background:var(--ink)}
+
+/* ---------- Charts ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{border:1px solid var(--pressed);border-radius:var(--r-xl);padding:24px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.panel-head h3{font-family:'UberMove','Inter',sans-serif;font-size:24px;font-weight:700;line-height:1.32}
+.panel-head .hint{font-size:14px;color:var(--mute)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:36px;border-radius:4px 4px 0 0;background:var(--pressed)}
+.bar-col.hi i{background:var(--ink)}
+.bar-col .v{font-size:12px;color:var(--body-tx)}
+.bar-col .m{font-size:12px;color:var(--mute)}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:18}
+.donut .c1{stroke:var(--ink);stroke-dasharray:256 660}
+.donut .c2{stroke:#9c9c9c;stroke-dasharray:172 660;stroke-dashoffset:-256}
+.donut .c3{stroke:#cfcfcf;stroke-dasharray:137 660;stroke-dashoffset:-428}
+.donut .c4{stroke:var(--pressed);stroke-dasharray:95 660;stroke-dashoffset:-565}
+.donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut-center strong{display:block;font-family:'UberMove','Inter',sans-serif;font-size:22px;font-weight:700}
+.donut-center span{font-size:12px;color:var(--mute)}
+.legend{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--body-tx)}
+.legend .sw{width:10px;height:10px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:500}
+
+/* ---------- Table ---------- */
+.badge{display:inline-block;font-size:12px;font-weight:500;border-radius:var(--r-pill);padding:4px 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:14px;font-weight:500;color:var(--body-tx);background:var(--canvas-soft);padding:12px 16px}
+td{padding:12px 16px;border-bottom:1px solid var(--pressed)}
+td.strong{font-weight:500}
+.row-act{font-size:14px;font-weight:500;border:1px solid var(--pressed);border-radius:var(--r-pill);padding:6px 14px;transition:background-color .18s}
+.row-act:hover{background:var(--canvas-soft)}
+
+/* ---------- Feed + settings ---------- */
+.feed-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--pressed)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:32px;height:32px;border-radius:var(--r-pill);flex:none;display:grid;place-items:center;font-size:12px;font-weight:500;background:var(--canvas-soft);color:var(--ink)}
+.feed-item p{font-size:14px;color:var(--body-tx)}
+.feed-item strong{color:var(--ink);font-weight:500}
+.feed-item em{font-style:normal;display:block;font-size:12px;color:var(--mute);margin-top:2px}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500}
+.field input,.field select{background:var(--canvas-soft);border:none;border-radius:var(--r-md);padding:12px 16px;font-family:inherit;font-size:14px;font-weight:400;color:var(--ink);outline:none}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--pressed)}
+.setting-row:last-of-type{border-bottom:none}
+.setting-row .t{font-size:14px;font-weight:500}
+.setting-row .d{font-size:12px;color:var(--mute)}
+.toggle{width:40px;height:24px;border-radius:var(--r-pill);background:var(--pressed);position:relative;flex:none;transition:background-color .18s}
+.toggle i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:var(--r-pill);background:#fff;transition:left .18s}
+.toggle.on{background:var(--ink)}
+.toggle.on i{left:19px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="side-brand">Uber<small>Fleet Operations</small></div>
+    <nav class="side-group">
+      <p class="side-label">Overview</p>
+      <a class="side-item active" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M5 17h14M6 17a2 2 0 1 0 0 .1M18 17a2 2 0 1 0 0 .1"/><path d="M4 16V8h11l4 4v4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>Live trips<span class="count">412</span></a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M19 8v6M22 11h-6"/></svg>Drivers</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 5-6"/></svg>Analytics</a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Operations</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>Zones &amp; surge</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>Safety &amp; incidents<span class="count">7</span></a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>Payouts</a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Settings</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>Ops settings</a>
+    </nav>
+    <div class="side-user">
+      <span class="avatar">DV</span>
+      <div><strong>Dana Villanueva</strong><span>Bay Area Ops Manager</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div>
+    <header class="topbar">
+      <div class="crumbs">Fleet Ops <span>/</span> <strong>Bay Area dashboard</strong></div>
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search drivers, trips, zones">
+      </label>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot">5</span>
+      </button>
+      <span class="avatar" style="width:34px;height:34px;font-size:12px">DV</span>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Bay Area ops dashboard</h1>
+          <p>Tuesday, 26 Oct 2026 · evening peak in 42 minutes</p>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn btn-subtle btn-sm">Dispatch report</button>
+          <button class="btn btn-primary btn-sm">Adjust surge</button>
+        </div>
+      </div>
+<!--__PART2__-->
+</div>
+      <!-- ============ KPI ROW ============ -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="label">Active trips</p>
+          <p class="value">412</p>
+          <p class="delta up">↑ 14% vs yesterday</p>
+          <p class="sub">38 airport queues</p>
+          <div class="spark"><i style="height:30%"></i><i style="height:42%"></i><i style="height:38%"></i><i style="height:54%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:56%"></i><i style="height:70%"></i><i class="hi" style="height:100%"></i><i style="height:66%"></i><i style="height:76%"></i><i style="height:84%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Avg. pickup ETA</p>
+          <p class="value">3.4 min</p>
+          <p class="delta up">↓ 0.4 min faster</p>
+          <p class="sub">SFO queue 5.1 min</p>
+          <div class="spark"><i style="height:88%"></i><i style="height:80%"></i><i style="height:84%"></i><i style="height:72%"></i><i style="height:76%"></i><i style="height:62%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:46%"></i><i class="hi" style="height:30%"></i><i style="height:38%"></i><i style="height:34%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Driver supply online</p>
+          <p class="value">2,187</p>
+          <p class="delta up">↑ 92 vs yesterday</p>
+          <p class="sub">64% EV or hybrid</p>
+          <div class="spark"><i style="height:36%"></i><i style="height:40%"></i><i style="height:50%"></i><i class="hi" style="height:96%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:72%"></i><i style="height:68%"></i><i style="height:78%"></i><i style="height:86%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Cancellation rate</p>
+          <p class="value">4.2%</p>
+          <p class="delta down">↑ 0.6% vs yesterday</p>
+          <p class="sub">Mostly SFO 5–7 PM</p>
+          <div class="spark"><i style="height:24%"></i><i style="height:30%"></i><i style="height:28%"></i><i style="height:42%"></i><i style="height:36%"></i><i style="height:48%"></i><i class="hi" style="height:94%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:38%"></i></div>
+        </div>
+      </section>
+
+      <!-- ============ CHARTS ============ -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head"><h3>Trips by month</h3><span class="hint">Bay Area · 2026</span></div>
+          <div class="bars">
+            <div class="bar-col"><span class="v">310k</span><i style="height:28%"></i><span class="m">Nov</span></div>
+            <div class="bar-col"><span class="v">335k</span><i style="height:31%"></i><span class="m">Dec</span></div>
+            <div class="bar-col"><span class="v">290k</span><i style="height:26%"></i><span class="m">Jan</span></div>
+            <div class="bar-col"><span class="v">340k</span><i style="height:31%"></i><span class="m">Feb</span></div>
+            <div class="bar-col"><span class="v">410k</span><i style="height:38%"></i><span class="m">Mar</span></div>
+            <div class="bar-col"><span class="v">470k</span><i style="height:44%"></i><span class="m">Apr</span></div>
+            <div class="bar-col"><span class="v">540k</span><i style="height:50%"></i><span class="m">May</span></div>
+            <div class="bar-col"><span class="v">510k</span><i style="height:47%"></i><span class="m">Jun</span></div>
+            <div class="bar-col"><span class="v">620k</span><i style="height:58%"></i><span class="m">Jul</span></div>
+            <div class="bar-col"><span class="v">700k</span><i style="height:65%"></i><span class="m">Aug</span></div>
+            <div class="bar-col"><span class="v">660k</span><i style="height:61%"></i><span class="m">Sep</span></div>
+            <div class="bar-col hi"><span class="v">910k</span><i style="height:92%"></i><span class="m">Oct</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Ride mix</h3><span class="hint">share of trips</span></div>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="105" stroke="var(--canvas-soft)" stroke-width="18"></circle>
+                <circle class="c1" cx="110" cy="110" r="105"></circle>
+                <circle class="c2" cx="110" cy="110" r="105"></circle>
+                <circle class="c3" cx="110" cy="110" r="105"></circle>
+                <circle class="c4" cx="110" cy="110" r="105"></circle>
+              </svg>
+              <div class="donut-center"><div><strong>6.5M</strong><span>trips YTD</span></div></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:var(--ink)"></span>UberX<b>39%</b></div>
+              <div class="row"><span class="sw" style="background:#9c9c9c"></span>Comfort &amp; Black<b>26%</b></div>
+              <div class="row"><span class="sw" style="background:#cfcfcf"></span>Reserve<b>21%</b></div>
+              <div class="row"><span class="sw" style="background:var(--pressed)"></span>XL &amp; Share<b>14%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TABLE + SIDE PANELS ============ -->
+      <section style="display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start">
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="panel-head" style="padding:24px 24px 16px;margin-bottom:0">
+            <h3>Active trips</h3>
+            <span class="hint">Showing 8 of 412</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px"><input type="checkbox" style="accent-color:var(--primary)"></th>
+                <th>Trip</th>
+                <th>Driver</th>
+                <th>Status</th>
+                <th>Fare</th>
+                <th>ETA</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">SFO → Mission District</td><td>M. Chen · Comfort EV</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">On trip</span></td><td>$44.20</td><td>12 min</td><td style="text-align:right"><button class="row-act">Track</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">SoMa → Oakland</td><td>A. Osei · UberX</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">On trip</span></td><td>$51.75</td><td>18 min</td><td style="text-align:right"><button class="row-act">Track</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">Fisherman's Wharf → SFO</td><td>J. Reyes · Black</td><td><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">En route</span></td><td>$71.30</td><td>6 min</td><td style="text-align:right"><button class="row-act">Track</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">Berkeley → SJC</td><td>L. Novak · XL</td><td><span class="badge" style="background:var(--bad-bg);color:var(--bad-tx)">Cancelled</span></td><td>—</td><td>—</td><td style="text-align:right"><button class="row-act">Details</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">Union Square → SFO</td><td>P. Singh · Reserve</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">On trip</span></td><td>$46.00</td><td>22 min</td><td style="text-align:right"><button class="row-act">Track</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">Hayes Valley → Palo Alto</td><td>T. Ito · Comfort</td><td><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">En route</span></td><td>$63.10</td><td>9 min</td><td style="text-align:right"><button class="row-act">Track</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">Mission → SFO</td><td>R. Duarte · Green</td><td><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">On trip</span></td><td>$37.85</td><td>15 min</td><td style="text-align:right"><button class="row-act">Track</button></td></tr>
+              <tr><td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="strong">SFO → Nob Hill</td><td>K. Adeyemi · UberX</td><td><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx)">Matching</span></td><td>—</td><td>—</td><td style="text-align:right"><button class="row-act">Prioritize</button></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--pressed);font-size:14px;color:var(--body-tx)">
+            <span>Page 1 of 52</span>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-subtle btn-sm" disabled style="opacity:.5;cursor:default">Previous</button>
+              <button class="btn btn-subtle btn-sm">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Activity feed -->
+          <div class="panel">
+            <div class="panel-head"><h3>Activity</h3><span class="hint">live</span></div>
+            <div class="feed-item" style="padding-top:0">
+              <span class="feed-dot" style="background:var(--ink);color:#fff">Z</span>
+              <p><strong>Surge 1.4x</strong> activated in SoMa as events let out <em>3 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot">S</span>
+              <p>SFO queue rebalanced — <strong>38 drivers</strong> repositioned <em>11 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot" style="background:var(--bad-bg);color:var(--bad-tx)">!</span>
+              <p><strong>Berkeley → SJC</strong> cancelled by rider after 9 min wait <em>16 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot">P</span>
+              <p>Weekly payouts released to <strong>2,187 drivers</strong> <em>1 hr ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="feed-dot">S</span>
+              <p>Safety review <strong>#7741</strong> closed — no action required <em>2 hrs ago</em></p>
+            </div>
+          </div>
+
+          <!-- Quick settings -->
+          <div class="panel">
+            <div class="panel-head"><h3>Quick settings</h3></div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:8px">
+              <label class="field">Coverage zone
+                <select><option>Bay Area — all counties (current)</option><option>SF / San Mateo only</option><option>East Bay only</option></select>
+              </label>
+              <label class="field">Surge cap
+                <input type="text" value="2.0x">
+              </label>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Airport auto-dispatch</p><p class="d">Match SFO queue first</p></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row">
+              <div><p class="t">Rider cancellation alerts</p><p class="d">Notify ops above 5%</p></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row" style="border-bottom:none">
+              <div><p class="t">EV driver bonus</p><p class="d">$1.50/trip, weekends</p></div>
+              <span class="toggle"><i></i></span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:20px">Save settings</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

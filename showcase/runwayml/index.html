@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runway — Advancing creativity with AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,450;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --black:#000000;
+  --deep-black:#030303;
+  --dark-surface:#1a1a1a;
+  --white:#ffffff;
+  --near-white:#fefefe;
+  --cool-cloud:#e9ecf2;
+  --border-dark:#27272a;
+  --charcoal:#404040;
+  --near-charcoal:#3f3f3f;
+  --cool-slate:#767d88;
+  --mid-slate:#7d848e;
+  --muted-gray:#a7a7a7;
+  --cool-silver:#c9ccd1;
+  --light-silver:#d0d4d4;
+  --tailwind-gray:#6b7280;
+  --dark-link:#0c0c0c;
+  --footer-gray:#999999;
+  /* type — one family only */
+  --sans:'DM Sans','Helvetica Neue',Arial,sans-serif; /* abcNormal stand-in */
+  /* radii */
+  --r-sharp:4px; --r-subtle:6px; --r-comfort:8px; --r-generous:16px;
+  /* spacing */
+  --s1:4px; --s2:6px; --s3:8px; --s4:12px; --s5:16px; --s6:20px; --s7:24px; --s8:28px; --s9:32px; --s10:48px; --s11:64px; --s12:78px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:16px;
+  font-weight:400;
+  line-height:1.3;
+  letter-spacing:-0.16px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:1600px;margin:0 auto;padding:0 40px}
+.container-narrow{max-width:1200px;margin:0 auto;padding:0 40px}
+
+/* type utilities */
+.label{font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:0.35px;color:var(--cool-slate);line-height:1.25}
+.micro{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;line-height:1.3}
+.display{font-size:48px;font-weight:400;line-height:1.0;letter-spacing:-1.2px}
+.h-section{font-size:40px;font-weight:400;line-height:1.1;letter-spacing:-1px}
+.h-sub{font-size:36px;font-weight:400;line-height:1.0;letter-spacing:-0.9px}
+.h-card{font-size:24px;font-weight:400;line-height:1.0;letter-spacing:0}
+.h-feature{font-size:20px;font-weight:400;line-height:1.0}
+.body-std{font-size:16px;line-height:1.5;color:var(--cool-slate)}
+.body-sm{font-size:13px;line-height:1.3;letter-spacing:-0.26px;color:var(--mid-slate)}
+
+/* ============ Banner ============ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  height:52px;padding:0 32px;
+  background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-dark);
+}
+.sg-banner .sg-id{display:flex;align-items:baseline;gap:14px}
+.sg-banner .sg-folder{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--muted-gray)}
+.sg-banner .sg-name{font-size:17px;font-weight:500;letter-spacing:-0.3px;color:var(--white)}
+.sg-banner .sg-desc{font-size:13px;color:var(--mid-slate)}
+@media(max-width:900px){.sg-banner .sg-desc{display:none}}
+
+/* section label marker */
+.sec-label{font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:0.35px;color:var(--cool-slate);line-height:1.25;margin-bottom:var(--s9)}
+
+/* ============ 1. Color tokens ============ */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--s5)}
+.swatch{border-radius:var(--r-comfort);overflow:hidden}
+.swatch .chip{height:64px;border:1px solid var(--border-dark);border-bottom:none}
+.swatch .meta{border:1px solid var(--border-dark);padding:10px 12px}
+.swatch .meta .n{font-size:13px;color:var(--white);display:block;margin-bottom:3px;font-weight:400}
+.swatch .meta .h{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--muted-gray)}
+@media(max-width:900px){.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ============ 2. Typography specimen ============ */
+.specimen{border:1px solid var(--border-dark);border-radius:var(--r-comfort);overflow:hidden}
+.spec-row{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:baseline;padding:22px 28px;border-bottom:1px solid var(--border-dark)}
+.spec-row:last-child{border-bottom:none}
+.spec-row .t-name{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--mid-slate);line-height:1.6}
+@media(max-width:900px){.spec-row{grid-template-columns:1fr;gap:8px}}
+
+/* ============ 3. Buttons ============ */
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s5)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--sans);font-size:14px;font-weight:600;line-height:1.3;
+  padding:11px 20px;border-radius:var(--r-sharp);
+  border:1px solid var(--border-dark);background:transparent;color:var(--white);
+  cursor:pointer;transition:border-color .15s ease,color .15s ease,background .15s ease;
+}
+.btn:hover{border-color:var(--mid-slate)}
+.btn-solid{background:var(--white);color:var(--dark-link);border-color:var(--white)}
+.btn-solid:hover{background:var(--cool-silver);border-color:var(--cool-silver)}
+.btn-ghost{border-color:transparent;padding-left:0;padding-right:4px;color:var(--cool-slate)}
+.btn-ghost:hover{color:var(--white);border-color:transparent}
+.btn-pressed{background:var(--dark-surface);border-color:var(--mid-slate)}
+
+/* ============ 4. Inputs ============ */
+.input-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s7);max-width:760px}
+.field .fl{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--mid-slate);display:block;margin-bottom:8px}
+.input{
+  width:100%;padding:12px 14px;
+  background:var(--deep-black);color:var(--white);
+  font-family:var(--sans);font-size:14px;
+  border:1px solid var(--border-dark);border-radius:var(--r-sharp);
+  outline:none;transition:border-color .15s ease;
+}
+.input::placeholder{color:var(--muted-gray)}
+.input:focus{border-color:var(--mid-slate)}
+.input-focused{border-color:var(--cool-slate);box-shadow:inset 0 0 0 1px var(--cool-slate)}
+select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23767878' stroke-width='1.4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.input:disabled{color:var(--muted-gray);border-color:var(--border-dark);cursor:not-allowed}
+.switch-row{display:inline-flex;align-items:center;gap:12px}
+.switch{position:relative;width:36px;height:20px;border-radius:var(--r-sharp);background:var(--dark-surface);border:1px solid var(--border-dark);transition:background .15s ease}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:3px;background:var(--muted-gray);transition:transform .15s ease,background .15s ease}
+.switch.on{background:#2c2c30;border-color:var(--mid-slate)}
+.switch.on::after{transform:translateX(16px);background:var(--white)}
+.switch-label{font-size:13px;color:var(--mid-slate)}
+@media(max-width:900px){.input-grid{grid-template-columns:1fr}}
+
+/* ============ 5. Cards ============ */
+.card-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:var(--s7)}
+.still{ /* CSS "photography" — the only color in the system */
+  border-radius:var(--r-comfort);position:relative;overflow:hidden;
+}
+.still::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,0.45))}
+.still .frame-tag{position:absolute;left:14px;bottom:12px;z-index:2;font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:rgba(255,255,255,0.85)}
+.still-dusk{background:
+  radial-gradient(120% 90% at 70% 20%, #46506b 0%, transparent 55%),
+  radial-gradient(90% 70% at 20% 80%, #1d2233 0%, transparent 60%),
+  linear-gradient(160deg,#0e1220 0%,#05060c 100%)}
+.still-portrait{background:
+  radial-gradient(100% 80% at 30% 30%, #5a5062 0%, transparent 55%),
+  linear-gradient(200deg,#181420 0%,#070609 100%)}
+.still-arch{background:
+  linear-gradient(115deg,#2a2f38 0%,#12151b 60%),
+  repeating-linear-gradient(90deg,rgba(255,255,255,0.05) 0 2px,transparent 2px 26px)}
+.still-desert{background:
+  radial-gradient(110% 80% at 80% 85%, #6b5a44 0%, transparent 50%),
+  linear-gradient(180deg,#241f18 0%,#0a0806 100%)}
+.still-ocean{background:
+  radial-gradient(90% 70% at 25% 25%, #33454d 0%, transparent 60%),
+  linear-gradient(150deg,#0c1418 0%,#04080a 100%)}
+.feature-card{background:var(--dark-surface);border:1px solid var(--border-dark);border-radius:var(--r-comfort);padding:var(--s9)}
+.feature-card h4{font-size:20px;font-weight:400;line-height:1.0;margin:var(--s6) 0 var(--s4)}
+.feature-card p{font-size:14px;line-height:1.45;color:var(--cool-slate)}
+.stat-card{border:1px solid var(--border-dark);border-radius:var(--r-comfort);padding:var(--s9);display:flex;flex-direction:column;gap:var(--s7)}
+.stat-card .v{font-size:48px;font-weight:400;line-height:1.0;letter-spacing:-1px;color:var(--white)}
+.stat-card .l{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--mid-slate);line-height:1.6}
+@media(max-width:900px){.card-grid{grid-template-columns:1fr}}
+
+/* ============ 6. Badges ============ */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--s4);align-items:center}
+.tag{display:inline-flex;align-items:center;font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--cool-slate);border:1px solid var(--border-dark);border-radius:var(--r-sharp);padding:5px 10px}
+.tag-fill{background:var(--dark-surface);border-color:var(--dark-surface);color:var(--white)}
+.tag-light{background:var(--cool-cloud);border-color:var(--cool-cloud);color:var(--charcoal)}
+.tag-plain{border-color:transparent;padding-left:0;color:var(--mid-slate)}
+
+/* ============ 7. Navigation ============ */
+.nav-demo{border:1px solid var(--border-dark);border-radius:var(--r-comfort);overflow:hidden}
+.nav-bar{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--border-dark)}
+.nav-wordmark{font-size:18px;font-weight:500;letter-spacing:-0.4px;color:var(--white)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:14px;font-weight:400;color:var(--cool-slate);transition:color .15s ease}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-right .signin{font-size:14px;color:var(--cool-slate)}
+.subnav{display:flex;gap:var(--s5);padding:14px 28px;border-bottom:1px solid var(--border-dark)}
+.subnav a{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--mid-slate);padding-bottom:2px;border-bottom:1px solid transparent;transition:color .15s ease}
+.subnav a.active{color:var(--white);border-bottom-color:var(--white)}
+
+/* ============ 8. List rows ============ */
+.row-list{border:1px solid var(--border-dark);border-radius:var(--r-comfort);overflow:hidden}
+.row-item{display:grid;grid-template-columns:64px 1fr 120px 110px;gap:var(--s7);align-items:center;padding:16px 24px;border-bottom:1px solid var(--border-dark);transition:background .15s ease}
+.row-item:last-child{border-bottom:none}
+.row-item:hover{background:var(--deep-black)}
+.row-item .still{height:40px;border-radius:var(--r-sharp)}
+.row-item .t{font-size:15px;color:var(--white)}
+.row-item .s{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--mid-slate)}
+.row-item .meta-r{text-align:right;font-size:13px;color:var(--muted-gray)}
+@media(max-width:900px){.row-item{grid-template-columns:48px 1fr;}.row-item .meta-r,.row-item .s.rt{display:none}}
+
+/* ============ Product ============ */
+#product{padding-top:0}
+.p-hero{position:relative;min-height:640px;display:flex;align-items:flex-end;overflow:hidden;
+  background:
+   radial-gradient(120% 100% at 75% 10%, #3e4a63 0%, transparent 55%),
+   radial-gradient(80% 70% at 15% 90%, #23293c 0%, transparent 60%),
+   linear-gradient(170deg,#0b0e18 0%,#000 100%);}
+.p-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,transparent 40%,rgba(0,0,0,0.7) 100%)}
+.p-hero .container{position:relative;z-index:2;padding-bottom:96px;width:100%}
+.p-hero .hero-eyebrow{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:rgba(255,255,255,0.75);margin-bottom:24px}
+.p-hero h1{font-size:76px;font-weight:400;line-height:1.0;letter-spacing:-1.2px;color:var(--white);max-width:900px}
+.p-hero .hero-sub{font-size:16px;line-height:1.5;color:rgba(255,255,255,0.78);max-width:520px;margin:28px 0 36px}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.p-hero .btn-solid{background:var(--white)}
+.p-hero .btn{border-color:rgba(255,255,255,0.35)}
+@media(max-width:900px){.p-hero h1{font-size:48px}}
+
+/* trust bar */
+.trust{padding:var(--s11) 0;border-bottom:1px solid var(--border-dark)}
+.trust .t-label{text-align:center;margin-bottom:40px}
+.trust-logos{display:flex;align-items:center;justify-content:space-between;gap:48px;flex-wrap:wrap}
+.trust-logos span{font-size:17px;font-weight:500;letter-spacing:0.2px;color:var(--muted-gray);opacity:.7}
+
+/* editorial mixed grid */
+.ed-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:110px;gap:var(--s5)}
+.ed-grid .still:first-child{grid-column:1/8;grid-row:span 4}
+.ed-grid .still:nth-child(2){grid-column:8/13;grid-row:span 2}
+.ed-grid .still:nth-child(3){grid-column:8/13;grid-row:span 2}
+.ed-caption{display:flex;justify-content:space-between;align-items:baseline;margin-top:var(--s5)}
+@media(max-width:900px){.ed-grid .still{grid-column:1/13 !important;grid-row:span 2}}
+
+/* features */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s7)}
+@media(max-width:900px){.feat-grid{grid-template-columns:1fr}}
+
+/* mission */
+.mission{background:var(--black);text-align:center;padding:calc(var(--s12) * 1.4) 0}
+.mission p{font-size:36px;font-weight:400;line-height:1.0;letter-spacing:-0.9px;color:var(--white);max-width:760px;margin:0 auto}
+
+/* light research section */
+.research{background:var(--cool-cloud);color:var(--charcoal);padding:var(--s12) 0}
+.research .h-section{color:var(--dark-link)}
+.research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s7)}
+.res-card{cursor:pointer}
+.res-card .still{height:210px}
+.res-card .still.light-a{background:radial-gradient(110% 90% at 30% 20%,#9aa6c0 0%,transparent 55%),linear-gradient(160deg,#c8cede 0%,#eef0f4 100%)}
+.res-card .still.light-b{background:radial-gradient(100% 80% at 70% 70%,#8f9aa8 0%,transparent 55%),linear-gradient(200deg,#b9c0cb 0%,#f2f3f6 100%)}
+.res-card .still.light-c{background:radial-gradient(100% 80% at 50% 30%,#a8b2a6 0%,transparent 55%),linear-gradient(150deg,#c9cfc4 0%,#f0f2ee 100%)}
+.res-card h5{font-size:20px;font-weight:400;line-height:1.0;margin:var(--s5) 0 var(--s2);color:var(--dark-link)}
+.res-card p{font-size:13px;color:var(--tailwind-gray)}
+.res-card:hover h5{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:900px){.research-grid{grid-template-columns:1fr}}
+
+/* CTA band */
+.cta-band{text-align:center;padding:calc(var(--s12) * 1.5) 0;border-top:1px solid var(--border-dark)}
+.cta-band h2{font-size:48px;font-weight:400;line-height:1.0;letter-spacing:-1.2px;color:var(--white);max-width:680px;margin:0 auto var(--s9)}
+
+/* footer */
+footer{background:var(--black);border-top:1px solid var(--border-dark);padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px;max-width:1600px;margin:0 auto;padding:0 40px}
+.foot-grid h6{font-size:11px;font-weight:450;text-transform:uppercase;letter-spacing:0.35px;color:var(--mid-slate);margin-bottom:16px}
+.foot-grid a{display:block;font-size:14px;color:var(--footer-gray);padding:4px 0;transition:color .15s ease}
+.foot-grid a:hover{color:var(--white)}
+.foot-brand p{font-size:13px;color:var(--muted-gray);max-width:240px;margin-top:14px;line-height:1.4}
+.foot-legal{max-width:1600px;margin:56px auto 0;padding:24px 40px 0;border-top:1px solid var(--border-dark);display:flex;justify-content:space-between;font-size:13px;color:var(--footer-gray)}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">runwayml</span>
+    <span class="sg-name">Runway</span>
+  </div>
+  <span class="sg-desc">Cinematic AI-creativity platform — photography is the UI, the interface is invisible.</span>
+</header>
+
+<main>
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components" style="padding:var(--s12) 0">
+    <div class="container-narrow">
+
+      <span class="sec-label">01 / Color tokens <em>— colorless interface, cool neutrals only</em></span>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><span class="n">Runway Black</span><span class="h">#000000</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#1a1a1a"></div><div class="meta"><span class="n">Dark Surface</span><span class="h">#1A1A1A</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#27272a"></div><div class="meta"><span class="n">Border Dark</span><span class="h">#27272A</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#767d88"></div><div class="meta"><span class="n">Cool Slate</span><span class="h">#767D88</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#a7a7a7"></div><div class="meta"><span class="n">Muted Gray</span><span class="h">#A7A7A7</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#e9ecf2"></div><div class="meta"><span class="n">Cool Cloud</span><span class="h">#E9ECF2</span></div></div>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">02 / Typography specimen <em>— one typeface, complete expression</em></span>
+      <div class="specimen">
+        <div class="spec-row"><div class="t-name">Display / Hero<br>48px · 400 · lh 1.0 · -1.2px</div><div class="display">Tools for imagination</div></div>
+        <div class="spec-row"><div class="t-name">Section Heading<br>40px · 400 · lh 1.1 · -1px</div><div class="h-section">Made with Runway</div></div>
+        <div class="spec-row"><div class="t-name">Card Title<br>24px · 400 · lh 1.0</div><div class="h-card">Generative video, frame by frame</div></div>
+        <div class="spec-row"><div class="t-name">Body / Button<br>16px · 400–600 · lh 1.3–1.5</div><div><p class="body-std" style="max-width:620px;margin-bottom:10px">Direct, edit and composite shots the way a film crew would — with a model that understands light.</p><a href="#" style="font-weight:600;color:var(--white)">Watch the reel →</a></div></div>
+        <div class="spec-row"><div class="t-name">Caption / Label<br>14px · 500 · uppercase · 0.35px</div><div class="label">Creative operations</div></div>
+        <div class="spec-row"><div class="t-name">Micro / Tag<br>11px · 450 · uppercase</div><div style="display:flex;gap:12px"><span class="micro" style="color:var(--mid-slate)">GEN-4 TURBO</span><span class="micro" style="color:var(--cool-slate)">FPS 24 · 1280×720</span></div></div>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">03 / Buttons <em>— restrained, sharp 4px, blending into the editorial flow</em></span>
+      <div class="btn-row">
+        <button class="btn btn-solid">Get started</button>
+        <button class="btn">Watch demo</button>
+        <button class="btn btn-pressed">Generating… (active)</button>
+        <button class="btn btn-ghost">Read the docs →</button>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">04 / Inputs</span>
+      <div class="input-grid">
+        <div class="field"><span class="fl">Prompt</span><input class="input" placeholder="Describe the shot you want to generate…"></div>
+        <div class="field"><span class="fl">Prompt — focused</span><input class="input input-focused" value="Aerial shot, golden hour, slow dolly forward"></div>
+        <div class="field"><span class="fl">Model</span><select class="input"><option>Gen-4 Turbo</option><option>Gen-4</option><option>Gen-3 Alpha</option></select></div>
+        <div class="field"><span class="fl">API key</span><input class="input" value="key_live_9f2…" disabled></div>
+        <div class="field" style="grid-column:1/-1"><span class="fl">Session</span>
+          <div style="display:flex;gap:28px;flex-wrap:wrap">
+            <span class="switch-row"><span class="switch on"></span><span class="switch-label">Upscale to 4K</span></span>
+            <span class="switch-row"><span class="switch"></span><span class="switch-label">Remove watermark</span></span>
+          </div>
+        </div>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">05 / Cards <em>— the image IS the card</em></span>
+      <div class="card-grid">
+        <div class="feature-card">
+          <div class="still still-dusk" style="height:180px;margin-bottom:24px"><span class="frame-tag">Still 0241 · Gen-4</span></div>
+          <h4>Direct with language</h4>
+          <p>Camera moves, lens choices and lighting controlled in plain sentences — the model translates direction into frames.</p>
+        </div>
+        <div class="stat-card">
+          <div><div class="v">12M+</div><div class="l">Videos generated<br>on Runway this year</div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="tag tag-fill">Gen-4 Turbo</span><span class="tag">24 FPS</span></div>
+        </div>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">06 / Badges &amp; tags</span>
+      <div class="badge-row">
+        <span class="tag tag-fill">New</span>
+        <span class="tag">Research</span>
+        <span class="tag">Gen-4 Turbo</span>
+        <span class="tag tag-plain">Updated 2h ago</span>
+        <span class="micro" style="color:var(--mid-slate)">API V1 · STABLE</span>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">07 / Navigation <em>— designed to not compete with the content</em></span>
+      <div class="nav-demo">
+        <div class="nav-bar">
+          <span class="nav-wordmark">runway</span>
+          <nav class="nav-links"><a class="active" href="#">Studio</a><a href="#">Models</a><a href="#">Research</a><a href="#">Watch</a><a href="#">Pricing</a></nav>
+          <div class="nav-right">
+            <a class="signin" href="#">Sign in</a>
+            <button class="btn btn-solid" style="padding:9px 16px">Try Runway</button>
+          </div>
+        </div>
+        <div class="subnav">
+          <a class="active" href="#">Video generation</a>
+          <a href="#">Image generation</a>
+          <a href="#">Motion brush</a>
+          <a href="#">Inpainting</a>
+          <a href="#">Frame interpolation</a>
+        </div>
+      </div>
+
+      <span class="sec-label" style="margin-top:78px">08 / List rows <em>— generation history</em></span>
+      <div class="row-list">
+        <div class="row-item">
+          <span class="still still-dusk"></span>
+          <div><div class="t">Coastline at dusk, drone push-in</div><div class="s" style="margin-top:3px">Gen-4 Turbo · 10s · 720p</div></div>
+          <span class="s rt">Completed</span>
+          <span class="meta-r">12:04:22</span>
+        </div>
+        <div class="row-item">
+          <span class="still still-portrait"></span>
+          <div><div class="t">Portrait study, window light</div><div class="s" style="margin-top:3px">Gen-4 · 5s · 4K upscale</div></div>
+          <span class="s rt">Completed</span>
+          <span class="meta-r">11:47:03</span>
+        </div>
+        <div class="row-item">
+          <span class="still still-arch"></span>
+          <div><div class="t">Brutalist facade, slow orbit</div><div class="s" style="margin-top:3px">Gen-4 Turbo · 10s · 720p</div></div>
+          <span class="s rt">Rendering</span>
+          <span class="meta-r">11:39:58</span>
+        </div>
+        <div class="row-item">
+          <span class="still still-ocean"></span>
+          <div><div class="t">Open water, low fog, static</div><div class="s" style="margin-top:3px">Gen-3 Alpha · 4s · 720p</div></div>
+          <span class="s rt">Completed</span>
+          <span class="meta-r">10:02:11</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PRODUCT ================= -->
+  <section id="product">
+    <!-- Cinematic hero -->
+    <div class="p-hero">
+      <div class="container">
+        <div class="hero-eyebrow">GEN-4 — NOW AVAILABLE</div>
+        <h1>Tools for human imagination.</h1>
+        <p class="hero-sub">Runway is applied AI research company building the next era of art, entertainment and human creativity. If you can imagine it, you can direct it.</p>
+        <div class="hero-cta">
+          <button class="btn btn-solid">Get started</button>
+          <button class="btn" style="border-color:rgba(255,255,255,0.35)">Watch the reel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust bar -->
+    <div class="trust">
+      <div class="container-narrow">
+        <div class="t-label label">Trusted by leading organizations across industries</div>
+        <div class="trust-logos">
+          <span>AMC</span><span>HARPER&nbsp;COLLINS</span><span>LIONSGATE</span><span>MSNBC</span><span>ADOBE</span><span>NETFLIX&nbsp;LABS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial mixed grid -->
+    <div class="container" style="padding:78px 40px">
+      <div class="sec-label">Made with Runway</div>
+      <div class="ed-grid">
+        <div class="still still-desert"><span class="frame-tag">“Dust &amp; Neon” — short film, dir. A. Ferreira</span></div>
+        <div class="still still-portrait"><span class="frame-tag">Portrait study №7</span></div>
+        <div class="still still-arch"><span class="frame-tag">Concrete / Light — architecture reel</span></div>
+      </div>
+      <div class="ed-caption">
+        <span class="body-sm">Selected frames from the community showcase — 2.4M videos generated last month.</span>
+        <a href="#" style="font-size:13px;font-weight:600;color:var(--white)">Explore all work →</a>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="container-narrow" style="padding-bottom:78px">
+      <div class="sec-label">The toolkit</div>
+      <div class="feat-grid">
+        <div class="feature-card">
+          <h4>Video generation</h4>
+          <p>Text or image to video with consistent characters, locations and physics across every shot in your sequence.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Motion brush &amp; camera control</h4>
+          <p>Paint movement onto specific regions and dial dolly, pan and orbit like a virtual crane operator.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Inpainting &amp; cleanup</h4>
+          <p>Erase crew reflections, swap signage, extend sets — frame-accurate edits on footage you already shot.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="container-narrow" style="padding-bottom:78px">
+      <div class="feat-grid">
+        <div class="stat-card" style="grid-column:span 1"><div class="v">2,800+</div><div class="l">Studios and agencies producing on Runway weekly</div></div>
+        <div class="stat-card"><div class="v">93%</div><div class="l">Of Fortune 500 media companies with a Runway workspace</div></div>
+        <div class="stat-card"><div class="v">4K</div><div class="l">Native upscale on every generation, included on all plans</div></div>
+      </div>
+    </div>
+
+    <!-- Mission statement -->
+    <div class="mission">
+      <div class="container-narrow">
+        <p>“We are building AI to simulate the world through imagination, art and aesthetics.”</p>
+      </div>
+    </div>
+
+    <!-- Light research section -->
+    <div class="research">
+      <div class="container-narrow">
+        <div class="sec-label" style="color:var(--charcoal)">Research</div>
+        <h2 class="h-section" style="margin-bottom:48px;max-width:640px">The papers behind the pictures.</h2>
+        <div class="research-grid">
+          <div class="res-card">
+            <div class="still light-a"></div>
+            <h5>Generalized world models</h5>
+            <p>Learning spatial consistency without supervision — Gen-4 technical report.</p>
+          </div>
+          <div class="res-card">
+            <div class="still light-b"></div>
+            <h5>Temporal coherence at scale</h5>
+            <p>Keeping characters, objects and lighting stable across 10-second horizons.</p>
+          </div>
+          <div class="res-card">
+            <div class="still light-c"></div>
+            <h5>Directable generation</h5>
+            <p>From language to lens: grounding camera instructions in 3D scene priors.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA band -->
+    <div class="cta-band">
+      <div class="container-narrow">
+        <h2>Start creating with Runway today.</h2>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-solid">Get started</button>
+          <button class="btn">Talk to sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <span class="nav-wordmark">runway</span>
+      <p>Applied AI research company. Tools for human imagination.</p>
+    </div>
+    <div><h6>Product</h6><a href="#">Studio</a><a href="#">Gen-4</a><a href="#">API</a><a href="#">Pricing</a></div>
+    <div><h6>Research</h6><a href="#">Publications</a><a href="#">Gen-4 report</a><a href="#">World models</a><a href="#">Careers</a></div>
+    <div><h6>Watch</h6><a href="#">Showcase</a><a href="#">Film festival</a><a href="#">Tutorials</a><a href="#">Community</a></div>
+    <div><h6>Company</h6><a href="#">About</a><a href="#">Press</a><a href="#">Terms</a><a href="#">Privacy</a></div>
+  </div>
+  <div class="foot-legal"><span>© 2026 Runway AI, Inc.</span><span>Imagination, engineered.</span></div>
+</footer>
+
+</body>
+</html>

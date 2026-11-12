@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>meta — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* colors */
+    --c-primary:#0064e0; --c-primary-deep:#0457cb; --c-primary-soft:#0091ff;
+    --c-on-primary:#ffffff; --c-ink-button:#000000; --c-on-ink-button:#ffffff;
+    --c-fb-blue:#1876f2; --c-meta-link:#385898; --c-oculus-purple:#a121ce;
+    --c-success:#31a24c; --c-attention:#f2a918; --c-warning:#f7b928;
+    --c-critical:#e41e3f; --c-critical-strong:#f0284a;
+    --c-canvas:#ffffff; --c-surface-soft:#f1f4f7;
+    --c-ink-deep:#0a1317; --c-ink:#1c1e21; --c-charcoal:#444950; --c-slate:#4b4c4f;
+    --c-steel:#5d6c7b; --c-stone:#8595a4;
+    --c-hairline:#ced0d4; --c-hairline-soft:#dee3e9; --c-disabled-text:#bcc0c4;
+    /* radii */
+    --r-xs:2px; --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:16px;
+    --r-xxl:24px; --r-xxxl:32px; --r-feature:40px; --r-full:100px; --r-circle:9999px;
+    /* spacing */
+    --s-xxs:4px; --s-xs:8px; --s-sm:10px; --s-md:12px; --s-base:16px; --s-lg:20px;
+    --s-xl:24px; --s-xxl:32px; --s-xxxl:40px; --s-section-sm:48px; --s-section:64px;
+    --s-section-lg:80px; --s-hero:120px;
+    /* type */
+    --font:'Montserrat','Helvetica Neue',Helvetica,Arial,'Noto Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);color:var(--c-ink-deep);background:var(--c-canvas);font-size:16px;line-height:1.5;letter-spacing:-0.16px}
+  a{color:inherit;text-decoration:none}
+  .sg-container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+
+  /* ===== Banner ===== */
+  .sg-banner{background:var(--c-ink-deep);color:var(--c-canvas);position:sticky;top:0;z-index:50}
+  .sg-banner-inner{max-width:1280px;margin:0 auto;padding:var(--s-md) var(--s-xxl);display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap}
+  .sg-banner-left{display:flex;align-items:baseline;gap:var(--s-md)}
+  .sg-banner-folder{font-family:Helvetica,Arial,monospace;font-size:12px;font-weight:400;color:var(--c-stone);letter-spacing:0.5px}
+  .sg-banner-name{font-size:20px;font-weight:500;font-feature-settings:"ss01","ss02"}
+  .sg-banner-desc{font-size:12px;color:var(--c-steel);font-weight:400}
+
+  /* ===== Section scaffolding ===== */
+  .sg-section-label{font-size:14px;font-weight:700;color:var(--c-stone);text-transform:uppercase;letter-spacing:1px;margin:var(--s-section-lg) 0 var(--s-xl)}
+  .sg-section-label:first-child{margin-top:var(--s-section)}
+  .sg-sub{margin-bottom:var(--s-xxl)}
+  .sg-sub-label{font-size:12px;font-weight:700;color:var(--c-steel);letter-spacing:0.4px;margin-bottom:var(--s-base)}
+  .sg-panel{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xxxl);padding:var(--s-xxl)}
+
+  /* ===== Color tokens ===== */
+  .swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s-base)}
+  .swatch{border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);overflow:hidden}
+  .swatch-chip{height:64px}
+  .swatch-meta{padding:var(--s-sm) var(--s-md);font-size:12px}
+  .swatch-name{font-weight:700;display:block}
+  .swatch-hex{color:var(--c-steel);font-family:Helvetica,Arial,monospace}
+
+  /* ===== Typography ===== */
+  .type-row{padding:var(--s-base) 0;border-bottom:1px solid var(--c-hairline-soft);display:flex;align-items:baseline;gap:var(--s-lg);flex-wrap:wrap}
+  .type-row:last-child{border-bottom:none}
+  .type-token{font-family:Helvetica,Arial,monospace;font-size:11px;color:var(--c-stone);min-width:170px;flex-shrink:0}
+  .t-hero{font-size:64px;font-weight:500;line-height:1.16;font-feature-settings:"ss01","ss02"}
+  .t-display{font-size:48px;font-weight:500;line-height:1.17;font-feature-settings:"ss01","ss02"}
+  .t-hlg{font-size:36px;font-weight:500;line-height:1.28;font-feature-settings:"ss01","ss02"}
+  .t-hmd{font-size:28px;font-weight:300;line-height:1.21;font-feature-settings:"ss01","ss02"}
+  .t-hsm{font-size:24px;font-weight:500;line-height:1.25;font-feature-settings:"ss01","ss02"}
+  .t-sub{font-size:18px;font-weight:400;line-height:1.44}
+  .t-body{font-size:16px;font-weight:400;line-height:1.5;letter-spacing:-0.16px}
+  .t-sm{font-size:14px;font-weight:400;line-height:1.43;letter-spacing:-0.14px;color:var(--c-charcoal)}
+  .t-cap{font-size:12px;font-weight:400;line-height:1.33;color:var(--c-stone)}
+
+  /* ===== Buttons ===== */
+  .btn-row{display:flex;gap:var(--s-md);flex-wrap:wrap;align-items:center;margin-bottom:var(--s-lg)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;line-height:1.43;letter-spacing:-0.14px;border-radius:var(--r-full);cursor:pointer;border:none;transition:background-color .18s ease-out,color .18s ease-out,border-color .18s ease-out;font-family:var(--font)}
+  .btn-primary{background:var(--c-ink-button);color:var(--c-on-ink-button);padding:14px 30px}
+  .btn-primary:hover{background:var(--c-charcoal)}
+  .btn-primary:disabled{background:var(--c-disabled-text);cursor:not-allowed}
+  .btn-buy{background:var(--c-primary);color:var(--c-on-primary);padding:14px 30px}
+  .btn-buy:hover{background:var(--c-primary-deep)}
+  .btn-secondary{background:transparent;color:var(--c-ink-deep);padding:12px 28px;border:2px solid var(--c-ink-deep)}
+  .btn-secondary:hover{background:rgba(10,19,23,0.05)}
+  .btn-ghost{background:transparent;color:var(--c-ink-deep);padding:10px 22px;border:2px solid rgba(10,19,23,0.12)}
+  .btn-pill-tab{background:var(--c-canvas);color:var(--c-ink);font-size:14px;font-weight:700;padding:8px 16px;border:1px solid var(--c-hairline)}
+  .btn-pill-tab-active{background:var(--c-ink-deep);color:var(--c-canvas);border-color:var(--c-ink-deep)}
+  .btn-icon{width:40px;height:40px;border-radius:var(--r-circle);background:var(--c-canvas);color:var(--c-ink);border:1px solid var(--c-hairline);display:inline-flex;align-items:center;justify-content:center;font-size:16px}
+  .btn-lg{padding:16px 36px;font-size:16px}
+  .btn-sm{padding:10px 20px;font-size:12px}
+
+  /* ===== Inputs ===== */
+  .input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-xl)}
+  .field-label{display:block;font-size:14px;font-weight:700;letter-spacing:-0.14px;margin-bottom:var(--s-xs)}
+  .text-input{width:100%;background:var(--c-canvas);color:var(--c-ink);font-size:16px;font-family:var(--font);letter-spacing:-0.16px;border:1px solid var(--c-hairline);border-radius:var(--r-lg);padding:0 var(--s-md);height:44px;outline:none}
+  .text-input:focus{border:2px solid var(--c-fb-blue);padding:0 15px}
+  .text-input-error{border:1px solid var(--c-critical-strong)}
+  .field-error{font-size:14px;color:var(--c-critical-strong);margin-top:var(--s-xxs)}
+  .text-input:disabled{background:var(--c-surface-soft);color:var(--c-disabled-text);cursor:not-allowed}
+  select.text-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23444950' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+  .search-pill{display:inline-flex;align-items:center;gap:var(--s-sm);background:var(--c-surface-soft);color:var(--c-steel);font-size:14px;letter-spacing:-0.14px;border-radius:var(--r-full);padding:0 var(--s-lg);height:40px;width:100%}
+  .radio-row{display:flex;gap:var(--s-md);flex-wrap:wrap}
+  .radio-option{background:var(--c-canvas);border:1px solid rgba(10,19,23,0.12);border-radius:var(--r-lg);padding:var(--s-lg);min-width:160px;cursor:pointer}
+  .radio-option-selected{border:2px solid #0143b5}
+  .radio-option strong{display:block;font-size:14px;font-weight:700;letter-spacing:-0.14px}
+  .radio-option span{font-size:14px;letter-spacing:-0.14px;color:var(--c-steel)}
+  .switch-row{display:flex;align-items:center;gap:var(--s-md);margin-top:var(--s-lg)}
+  .switch{position:relative;width:44px;height:24px;border-radius:var(--r-full);background:var(--c-hairline);border:none;cursor:pointer;display:inline-block}
+  .switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:var(--r-circle);background:var(--c-canvas);box-shadow:rgba(20,22,26,.3) 0 1px 4px;transition:left .15s ease-out}
+  .switch-on{background:var(--c-fb-blue)}
+  .switch-on::after{left:22px}
+  .swatch-pick-row{display:flex;gap:var(--s-sm);align-items:center;margin-top:var(--s-lg)}
+  .color-swatch{width:32px;height:32px;border-radius:var(--r-circle);border:2px solid var(--c-canvas);outline:1px solid var(--c-hairline);cursor:pointer}
+  .color-swatch-sel{outline:2px solid var(--c-ink-deep)}
+
+  /* ===== Cards ===== */
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-xl)}
+  .card-product-feature{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xxxl);padding:var(--s-xxl)}
+  .card-photo{border-radius:var(--r-xxxl);aspect-ratio:4/3;margin-bottom:var(--s-lg);position:relative;overflow:hidden}
+  .photo-glasses{background:
+    radial-gradient(120% 90% at 20% 10%, #bfe0ff 0%, transparent 55%),
+    radial-gradient(100% 80% at 85% 90%, #ffe0c2 0%, transparent 60%),
+    linear-gradient(160deg,#dcebf7 0%,#f3ede4 100%)}
+  .photo-headset{background:
+    radial-gradient(100% 100% at 80% 15%, #6e6bd8 0%, transparent 60%),
+    radial-gradient(120% 90% at 10% 90%, #2b3a55 0%, transparent 65%),
+    linear-gradient(150deg,#3b4a6b 0%,#141b2b 100%)}
+  .photo-glasses-dark{background:
+    radial-gradient(100% 80% at 70% 20%, #ffd9a0 0%, transparent 55%),
+    linear-gradient(155deg,#2a333f 0%,#0a1317 90%)}
+  .card-product-feature h3{font-size:24px;font-weight:500;line-height:1.25;font-feature-settings:"ss01","ss02";margin-bottom:var(--s-xs)}
+  .card-product-feature p{font-size:14px;letter-spacing:-0.14px;color:var(--c-charcoal);margin-bottom:var(--s-base)}
+  .card-stat{background:var(--c-ink-deep);color:var(--c-canvas);border-radius:var(--r-xxxl);padding:var(--s-xxl)}
+  .card-stat .num{font-size:48px;font-weight:500;font-feature-settings:"ss01","ss02";line-height:1.17}
+  .card-stat .lbl{font-size:14px;color:var(--c-stone);margin-top:var(--s-xs)}
+  .thumb-row{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--s-md)}
+  .product-thumbnail{background:var(--c-surface-soft);border-radius:var(--r-xl);aspect-ratio:1/1;padding:var(--s-base);display:flex;align-items:center;justify-content:center}
+  .product-thumbnail .glyph{width:56%;height:44%;border-radius:var(--r-lg)}
+  .thumb-name{font-size:14px;font-weight:700;letter-spacing:-0.14px;margin-top:var(--s-xs);display:block}
+  .thumb-price{font-size:14px;letter-spacing:-0.14px;color:var(--c-steel);display:block}
+  .why-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-xl)}
+  .why-buy-tile{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);padding:var(--s-xxl) var(--s-xl)}
+  .why-buy-tile .icn{width:32px;height:32px;color:var(--c-ink-deep);margin-bottom:var(--s-base)}
+  .why-buy-tile h4{font-size:18px;font-weight:700;line-height:1.44;margin-bottom:var(--s-xxs)}
+  .why-buy-tile p{font-size:14px;letter-spacing:-0.14px;color:var(--c-charcoal)}
+
+  /* ===== Badges ===== */
+  .badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;line-height:1.33;border-radius:var(--r-full);padding:4px 10px}
+  .badge-promo{background:var(--c-warning);color:var(--c-ink-deep)}
+  .badge-attention{background:var(--c-attention);color:var(--c-canvas)}
+  .badge-success{background:var(--c-success);color:var(--c-canvas)}
+  .badge-critical{background:var(--c-critical);color:var(--c-canvas)}
+
+  /* ===== Navigation ===== */
+  .nav-demo{border:1px solid var(--c-hairline-soft);border-radius:var(--r-xxxl);overflow:hidden}
+  .promo-banner{background:var(--c-ink-deep);color:var(--c-canvas);font-size:14px;font-weight:700;letter-spacing:-0.14px;padding:var(--s-md) var(--s-xl);text-align:center}
+  .promo-banner a{text-decoration:underline;text-underline-offset:2px}
+  .topnav{background:var(--c-canvas);border-bottom:1px solid var(--c-hairline-soft);padding:0 var(--s-xxl);height:64px;display:flex;align-items:center;gap:var(--s-xl)}
+  .brandmark{font-size:22px;font-weight:700;letter-spacing:-0.5px;font-feature-settings:"ss01","ss02"}
+  .nav-pills{display:flex;gap:var(--s-xs)}
+  .topnav .search-pill{max-width:260px}
+  .nav-icons{margin-left:auto;display:flex;gap:var(--s-sm);align-items:center}
+
+  /* ===== Table ===== */
+  .specs-table{width:100%;border-collapse:collapse;background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-lg);overflow:hidden;font-size:14px;letter-spacing:-0.14px}
+  .specs-table th{text-align:left;font-size:14px;font-weight:700;color:var(--c-ink);padding:var(--s-lg);border-bottom:1px solid var(--c-hairline-soft);background:var(--c-surface-soft)}
+  .specs-table td{padding:var(--s-lg);border-bottom:1px solid var(--c-hairline-soft)}
+  .specs-table td:first-child{font-weight:700}
+  .specs-table td:last-child{color:var(--c-charcoal)}
+  .specs-table tr:last-child td{border-bottom:none}
+
+  /* ================= PRODUCT LANDING ================= */
+  .lp{background:var(--c-canvas)}
+  .lp-hero{padding:var(--s-hero) 0 var(--s-section-lg);text-align:center}
+  .lp-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--c-steel);margin-bottom:var(--s-lg)}
+  .lp-hero h1{font-size:64px;font-weight:500;line-height:1.16;font-feature-settings:"ss01","ss02";max-width:900px;margin:0 auto var(--s-lg)}
+  .lp-hero .sub{font-size:18px;font-weight:400;line-height:1.44;color:var(--c-slate);max-width:620px;margin:0 auto var(--s-xxl)}
+  .lp-hero .cta-row{display:flex;gap:var(--s-md);justify-content:center;flex-wrap:wrap}
+  .lp-hero-visual{margin-top:var(--s-xxl);border-radius:var(--r-xxxl);overflow:hidden;aspect-ratio:16/7;position:relative;
+    background:
+      radial-gradient(90% 120% at 15% 0%, #4a5a78 0%, transparent 55%),
+      radial-gradient(80% 100% at 85% 100%, #a121ce 0%, transparent 60%),
+      linear-gradient(140deg,#101820 0%,#1c2b3a 100%)}
+  .lp-hero-visual .caption{position:absolute;left:var(--s-xxl);bottom:var(--s-xxl);color:var(--c-canvas);text-align:left}
+  .lp-hero-visual .caption strong{display:block;font-size:24px;font-weight:500;font-feature-settings:"ss01","ss02"}
+  .lp-hero-visual .caption span{font-size:14px;color:rgba(255,255,255,0.75)}
+  .lp-hero-visual .glasses-shape{position:absolute;right:12%;top:30%;width:280px;height:96px}
+  .logo-strip{border-top:1px solid var(--c-hairline-soft);border-bottom:1px solid var(--c-hairline-soft);padding:var(--s-xl) 0}
+  .logo-strip .row{display:flex;justify-content:space-between;align-items:center;gap:var(--s-xl);flex-wrap:wrap;color:var(--c-steel);font-size:16px;font-weight:700;letter-spacing:-0.16px}
+  .lp-feature-band{padding:var(--s-section-lg) 0}
+  .lp-feature-band h2{font-size:36px;font-weight:500;line-height:1.28;font-feature-settings:"ss01","ss02";margin-bottom:var(--s-sm)}
+  .lp-feature-band .lead{font-size:28px;font-weight:300;line-height:1.21;font-feature-settings:"ss01","ss02";color:var(--c-slate);max-width:640px;margin-bottom:var(--s-xxl)}
+  .lp-feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-xl)}
+  .lp-feature-grid .card-product-feature{display:flex;flex-direction:column}
+  .lp-feature-grid .card-photo{margin-bottom:var(--s-lg)}
+  .lp-promo-strip{background:var(--c-ink-deep);color:var(--c-canvas);border-radius:var(--r-xxxl);padding:var(--s-section);display:flex;align-items:center;justify-content:space-between;gap:var(--s-xxl);flex-wrap:wrap;margin:var(--s-section) 0}
+  .lp-promo-strip h2{font-size:36px;font-weight:500;line-height:1.28;font-feature-settings:"ss01","ss02";max-width:560px}
+  .lp-promo-strip p{font-size:14px;letter-spacing:-0.14px;color:var(--c-stone);margin-top:var(--s-xs)}
+  .lp-buy{background:var(--c-surface-soft);border-radius:var(--r-xxxl);padding:var(--s-section);display:grid;grid-template-columns:1.2fr 0.8fr;gap:var(--s-xxl);margin:var(--s-section) 0}
+  .lp-buy h2{font-size:36px;font-weight:500;font-feature-settings:"ss01","ss02";margin-bottom:var(--s-sm)}
+  .lp-buy .desc{font-size:16px;color:var(--c-charcoal);max-width:420px}
+  .checkout-summary{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:rgba(20,22,26,.3) 0 1px 4px}
+  .checkout-summary .price-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s-base)}
+  .checkout-summary .price{font-size:36px;font-weight:500;font-feature-settings:"ss01","ss02"}
+  .checkout-summary .stock{font-size:12px;font-weight:700;color:var(--c-success)}
+  .checkout-summary .swatch-pick-row{margin:0 0 var(--s-lg)}
+  .lp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-xl);margin:var(--s-section) 0;text-align:center}
+  .lp-stats .num{font-size:48px;font-weight:500;font-feature-settings:"ss01","ss02";line-height:1.17}
+  .lp-stats .lbl{font-size:14px;letter-spacing:-0.14px;color:var(--c-steel);margin-top:var(--s-xxs)}
+  .lp-testimonial{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-xl);margin:var(--s-section) 0}
+  .testimonial-customer-card{background:var(--c-canvas);border:1px solid var(--c-hairline-soft);border-radius:var(--r-xl);padding:var(--s-xxl)}
+  .testimonial-customer-card blockquote{font-size:16px;line-height:1.5;letter-spacing:-0.16px;margin-bottom:var(--s-lg)}
+  .testimonial-customer-card .by{display:flex;align-items:center;gap:var(--s-md)}
+  .avatar{width:40px;height:40px;border-radius:var(--r-circle)}
+  .av1{background:linear-gradient(135deg,#0064e0,#a121ce)}
+  .av2{background:linear-gradient(135deg,#f7b928,#e41e3f)}
+  .by .who strong{display:block;font-size:14px;font-weight:700;letter-spacing:-0.14px}
+  .by .who span{font-size:14px;letter-spacing:-0.14px;color:var(--c-steel)}
+  .lp-cta-band{background:var(--c-ink-deep);color:var(--c-canvas);border-radius:var(--r-xxxl);padding:var(--s-section-lg);text-align:center;margin:var(--s-section) 0}
+  .lp-cta-band h2{font-size:48px;font-weight:500;line-height:1.17;font-feature-settings:"ss01","ss02";margin-bottom:var(--s-sm)}
+  .lp-cta-band p{font-size:18px;color:var(--c-stone);margin-bottom:var(--s-xxl)}
+  .lp-cta-band .cta-row{display:flex;gap:var(--s-md);justify-content:center;flex-wrap:wrap}
+  .lp-footer{border-top:1px solid var(--c-hairline-soft);padding:var(--s-section) 0 var(--s-xxl);color:var(--c-steel)}
+  .lp-footer .cols{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--s-xl)}
+  .lp-footer h5{font-size:14px;font-weight:700;letter-spacing:-0.14px;color:var(--c-ink);margin-bottom:var(--s-base)}
+  .lp-footer ul{list-style:none}
+  .lp-footer li{margin-bottom:var(--s-xs)}
+  .lp-footer li a{font-size:14px;letter-spacing:-0.14px}
+  .lp-footer li a:hover{color:var(--c-meta-link)}
+  .lp-footer .legal{margin-top:var(--s-xxl);padding-top:var(--s-lg);border-top:1px solid var(--c-hairline-soft);display:flex;justify-content:space-between;gap:var(--s-lg);flex-wrap:wrap;font-size:12px;color:var(--c-stone)}
+
+  @media (max-width:900px){
+    .input-grid,.card-grid,.lp-feature-grid,.lp-testimonial{grid-template-columns:1fr}
+    .why-row,.lp-stats{grid-template-columns:repeat(2,1fr)}
+    .lp-buy{grid-template-columns:1fr}
+    .lp-footer .cols{grid-template-columns:repeat(3,1fr)}
+    .t-hero,.lp-hero h1{font-size:36px}
+    .lp-hero-visual{aspect-ratio:4/3}
+    .thumb-row{grid-template-columns:repeat(3,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ BANNER ============ -->
+<header class="sg-banner">
+  <div class="sg-banner-inner">
+    <div class="sg-banner-left">
+      <span class="sg-banner-folder">meta</span>
+      <span class="sg-banner-name">Meta</span>
+    </div>
+    <span class="sg-banner-desc">Confident hardware merchandising — AI glasses and VR, black marketing CTAs and cobalt buy-now pills on a stark white canvas.</span>
+  </div>
+</header>
+
+<main>
+<!-- ============ COMPONENTS ============ -->
+<section id="components" class="sg-container">
+  <h2 class="sg-section-label">Components</h2>
+
+  <!-- 1. Colors -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Color tokens</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-chip" style="background:#0064e0"></div><div class="swatch-meta"><span class="swatch-name">primary</span><span class="swatch-hex">#0064E0</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#000000"></div><div class="swatch-meta"><span class="swatch-name">ink-button</span><span class="swatch-hex">#000000</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#0a1317"></div><div class="swatch-meta"><span class="swatch-name">ink-deep</span><span class="swatch-hex">#0A1317</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#f1f4f7"></div><div class="swatch-meta"><span class="swatch-name">surface-soft</span><span class="swatch-hex">#F1F4F7</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#1876f2"></div><div class="swatch-meta"><span class="swatch-name">fb-blue</span><span class="swatch-hex">#1876F2</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#a121ce"></div><div class="swatch-meta"><span class="swatch-name">oculus-purple</span><span class="swatch-hex">#A121CE</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#31a24c"></div><div class="swatch-meta"><span class="swatch-name">success</span><span class="swatch-hex">#31A24C</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#f7b928"></div><div class="swatch-meta"><span class="swatch-name">warning</span><span class="swatch-hex">#F7B928</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#e41e3f"></div><div class="swatch-meta"><span class="swatch-name">critical</span><span class="swatch-hex">#E41E3F</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#5d6c7b"></div><div class="swatch-meta"><span class="swatch-name">steel</span><span class="swatch-hex">#5D6C7B</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#ced0d4"></div><div class="swatch-meta"><span class="swatch-name">hairline</span><span class="swatch-hex">#CED0D4</span></div></div>
+      <div class="swatch"><div class="swatch-chip" style="background:#ffffff;border-bottom:1px solid #dee3e9"></div><div class="swatch-meta"><span class="swatch-name">canvas</span><span class="swatch-hex">#FFFFFF</span></div></div>
+    </div>
+  </div>
+
+  <!-- 2. Typography -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Typography specimen — Optimistic VF (Montserrat fallback), ss01 + ss02 on headings</div>
+    <div class="sg-panel">
+      <div class="type-row"><span class="type-token">hero-display · 64 / 500 / 1.16</span><span class="t-hero">See the world, differently</span></div>
+      <div class="type-row"><span class="type-token">display-lg · 48 / 500 / 1.17</span><span class="t-display">Made for prescriptions. Built for comfort.</span></div>
+      <div class="type-row"><span class="type-token">heading-lg · 36 / 500 / 1.28</span><span class="t-hlg">Why buy from Meta</span></div>
+      <div class="type-row"><span class="type-token">heading-md · 28 / 300 / 1.21</span><span class="t-hmd">Look forward</span></div>
+      <div class="type-row"><span class="type-token">heading-sm · 24 / 500 / 1.25</span><span class="t-hsm">Advanced. Inside and out.</span></div>
+      <div class="type-row"><span class="type-token">subtitle-md · 18 / 400 / 1.44</span><span class="t-sub">Capture, call and stay present — hands free.</span></div>
+      <div class="type-row"><span class="type-token">body-md · 16 / 400 / -0.16px</span><span class="t-body">Ray-Ban Meta smart glasses blend iconic design with an open-ear audio experience and a 12 MP ultra-wide camera.</span></div>
+      <div class="type-row"><span class="type-token">body-sm · 14 / 400 / -0.14px</span><span class="t-sm">Free 2-day delivery and free 30-day returns on every order.</span></div>
+      <div class="type-row"><span class="type-token">caption · 12 / 400 / 1.33</span><span class="t-cap">Terms apply. Compatibility and features vary by region.</span></div>
+    </div>
+  </div>
+
+  <!-- 3. Buttons -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Buttons — pill ({rounded.full}) everywhere; black for marketing, cobalt only inside buy flows</div>
+    <div class="sg-panel">
+      <div class="btn-row">
+        <button class="btn btn-primary">Shop now</button>
+        <button class="btn btn-primary" style="background:var(--c-charcoal)">Primary pressed</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-buy">Add to cart</button>
+        <button class="btn btn-buy" style="background:var(--c-primary-deep)">Buy CTA pressed</button>
+        <button class="btn btn-secondary">Book a demo</button>
+        <button class="btn btn-ghost">Learn more</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-pill-tab btn-pill-tab-active">Glasses</button>
+        <button class="btn btn-pill-tab">Quest</button>
+        <button class="btn btn-pill-tab">Apps</button>
+        <button class="btn btn-pill-tab">Accessories</button>
+        <button class="btn btn-icon" aria-label="Share">&#8599;</button>
+        <button class="btn btn-primary btn-lg">Large pill</button>
+        <button class="btn btn-primary btn-sm">Small pill</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Inputs -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Inputs — 44px fields, cobalt-blue focus, 8px radius; search pill and radio option cards</div>
+    <div class="sg-panel">
+      <div class="input-grid">
+        <div>
+          <label class="field-label" for="em">Email address</label>
+          <input class="text-input" id="em" type="email" placeholder="you@example.com">
+        </div>
+        <div>
+          <label class="field-label" for="emf">Focused input</label>
+          <input class="text-input" id="emf" style="border:2px solid var(--c-fb-blue);padding:0 15px" value="Getting started with Quest 3S" readonly>
+        </div>
+        <div>
+          <label class="field-label" for="reg">Region</label>
+          <select class="text-input" id="reg"><option>United States</option><option>United Kingdom</option><option>Japan</option></select>
+        </div>
+        <div>
+          <label class="field-label">Error state</label>
+          <input class="text-input text-input-error" value="meta@@example" readonly>
+          <div class="field-error">Enter a valid email address.</div>
+        </div>
+        <div>
+          <label class="field-label" for="dis">Disabled</label>
+          <input class="text-input" id="dis" value="Prescription upload pending" disabled>
+        </div>
+        <div>
+          <label class="field-label">Search pill</label>
+          <div class="search-pill"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#5d6c7b" stroke-width="1.6"/><path d="M11 11l3.4 3.4" stroke="#5d6c7b" stroke-width="1.6" stroke-linecap="round"/></svg>Search glasses, Quest and accessories</div>
+        </div>
+      </div>
+      <div class="radio-row" style="margin-top:var(--s-xl)">
+        <div class="radio-option radio-option-selected"><strong>512 GB</strong><span>Store more games and captures</span></div>
+        <div class="radio-option"><strong>256 GB</strong><span>Great for most libraries</span></div>
+        <div class="radio-option"><strong>128 GB</strong><span>Essential storage</span></div>
+      </div>
+      <div class="switch-row">
+        <span class="switch switch-on" role="switch" aria-checked="true"></span><span class="t-sm">Remember this device</span>
+        <span class="switch" role="switch" aria-checked="false" style="margin-left:var(--s-lg)"></span><span class="t-sm">Email me restock alerts</span>
+      </div>
+      <div class="swatch-pick-row">
+        <span class="t-sm" style="margin-right:var(--s-xs)">Frame finish:</span>
+        <span class="color-swatch color-swatch-sel" style="background:#1c1e21"></span>
+        <span class="color-swatch" style="background:#c8a878"></span>
+        <span class="color-swatch" style="background:#a24b3f"></span>
+        <span class="color-swatch" style="background:#d8e2ea"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Cards -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Cards — 32px photographic feature cards, dark stat card, checkout summary (the only shadow)</div>
+    <div class="card-grid">
+      <div class="card-product-feature">
+        <div class="card-photo photo-glasses"><div style="position:absolute;left:18%;top:38%;width:56%;height:22%;border-radius:24px;background:rgba(28,30,33,0.85);box-shadow:0 6px 18px rgba(10,19,23,0.25)"></div></div>
+        <h3>Designed for sport</h3>
+        <p>Sweat-resistant, lightweight frames rated for your longest runs and rides.</p>
+        <a class="btn btn-ghost" style="align-self:flex-start">Explore features</a>
+      </div>
+      <div class="card-product-feature">
+        <div class="card-photo photo-headset"><div style="position:absolute;left:32%;top:30%;width:36%;height:34%;border-radius:28px 28px 40px 40px;background:linear-gradient(160deg,#e8ecf2,#aab6c6)"></div></div>
+        <h3>Advanced. Inside and out.</h3>
+        <p>4K+ Infinite Display, pancake optics and full-color passthrough on Quest 3.</p>
+        <a class="btn btn-ghost" style="align-self:flex-start">Compare headsets</a>
+      </div>
+      <div class="card-stat">
+        <div class="num">100M+</div>
+        <div class="lbl">people use Meta AI every month across our devices and apps</div>
+      </div>
+    </div>
+    <div class="sg-panel" style="margin-top:var(--s-xl)">
+      <div class="sg-sub-label" style="margin-bottom:var(--s-md)">Color &amp; SKU picker row (product thumbnails)</div>
+      <div class="thumb-row">
+        <div><div class="product-thumbnail"><div class="glyph" style="background:#1c1e21"></div></div><span class="thumb-name">Skyler</span><span class="thumb-price">Shiny black</span></div>
+        <div><div class="product-thumbnail"><div class="glyph" style="background:#c8a878"></div></div><span class="thumb-name">Wayfarer</span><span class="thumb-price">Sand</span></div>
+        <div><div class="product-thumbnail"><div class="glyph" style="background:#a24b3f"></div></div><span class="thumb-name">Headliner</span><span class="thumb-price">Wine</span></div>
+        <div><div class="product-thumbnail"><div class="glyph" style="background:#d8e2ea"></div></div><span class="thumb-name">Skyler</span><span class="thumb-price">Sky blue</span></div>
+        <div><div class="product-thumbnail"><div class="glyph" style="background:#6d7a68"></div></div><span class="thumb-name">Wayfarer</span><span class="thumb-price">Olive</span></div>
+        <div><div class="product-thumbnail"><div class="glyph" style="background:#e8d4c0"></div></div><span class="thumb-name">Headliner</span><span class="thumb-price">Cream</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Badges -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Badges — caption-bold pills, 4px 10px</div>
+    <div class="btn-row">
+      <span class="badge badge-promo">Limited time</span>
+      <span class="badge badge-attention">Almost gone</span>
+      <span class="badge badge-success">In stock</span>
+      <span class="badge badge-critical">Out of stock</span>
+    </div>
+  </div>
+
+  <!-- 7. Navigation -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Navigation — promo banner above a sticky pill-tab nav</div>
+    <div class="nav-demo">
+      <div class="promo-banner">Get 25% off the #1 selling AI glasses. <a href="#">Shop the sale &rarr;</a></div>
+      <div class="topnav">
+        <span class="brandmark">meta</span>
+        <div class="nav-pills">
+          <button class="btn btn-pill-tab btn-pill-tab-active">Glasses</button>
+          <button class="btn btn-pill-tab">Quest</button>
+          <button class="btn btn-pill-tab">Apps</button>
+          <button class="btn btn-pill-tab">Support</button>
+        </div>
+        <div class="nav-icons">
+          <div class="search-pill"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#5d6c7b" stroke-width="1.6"/><path d="M11 11l3.4 3.4" stroke="#5d6c7b" stroke-width="1.6" stroke-linecap="round"/></svg>Search</div>
+          <button class="btn btn-icon" aria-label="Account"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6.5" r="3.2" stroke="#1c1e21" stroke-width="1.6"/><path d="M3.5 17c1.2-3 3.6-4.5 6.5-4.5s5.3 1.5 6.5 4.5" stroke="#1c1e21" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <button class="btn btn-icon" aria-label="Cart"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 6h12l-1 9H5L4 6z" stroke="#1c1e21" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 6a3 3 0 016 0" stroke="#1c1e21" stroke-width="1.6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Table -->
+  <div class="sg-sub">
+    <div class="sg-sub-label">Tech specs table — body-sm-bold labels, hairline-soft row separators</div>
+    <table class="specs-table">
+      <thead><tr><th style="width:34%">Spec</th><th>Ray-Ban Meta Skyler (Gen 2)</th></tr></thead>
+      <tbody>
+        <tr><td>Camera</td><td>12 MP ultra-wide, 3K video capture at 30 fps</td></tr>
+        <tr><td>Audio</td><td>Open-ear directional speakers, five-mic array</td></tr>
+        <tr><td>Battery life</td><td>Up to 4 hours mixed use; 36 hours with charging case</td></tr>
+        <tr><td>Water resistance</td><td>IPX4 — sweat and splash resistant</td></tr>
+        <tr><td>Weight</td><td>49 grams</td></tr>
+        <tr><td>Compatibility</td><td>iOS and Android with the Meta AI app</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ FINISHED PRODUCT ============ -->
+<section id="product" class="lp">
+  <div class="sg-container">
+    <div class="lp-hero">
+      <div class="lp-eyebrow">Meta AI glasses</div>
+      <h1>Look up. Stay present. Capture it all.</h1>
+      <p class="sub">Ray-Ban Meta smart glasses put a 12 MP camera, open-ear audio and Meta AI in the frames you already love to wear.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="#">Shop AI glasses</a>
+        <a class="btn btn-secondary btn-lg" href="#">Compare frames</a>
+      </div>
+      <div class="lp-hero-visual">
+        <div class="glasses-shape">
+          <svg viewBox="0 0 280 96" fill="none" width="280" height="96"><rect x="8" y="22" width="112" height="56" rx="24" stroke="rgba(255,255,255,0.9)" stroke-width="4"/><rect x="160" y="22" width="112" height="56" rx="24" stroke="rgba(255,255,255,0.9)" stroke-width="4"/><path d="M120 40h40" stroke="rgba(255,255,255,0.9)" stroke-width="4"/><circle cx="64" cy="50" r="9" fill="rgba(255,255,255,0.35)"/><circle cx="216" cy="50" r="9" fill="rgba(255,255,255,0.35)"/></svg>
+        </div>
+        <div class="caption"><strong>Ray-Ban Meta Skyler</strong><span>Now $299 — limited-time launch offer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="logo-strip">
+    <div class="sg-container row">
+      <span>Ray-Ban</span><span>EssilorLuxottica</span><span>Meta Quest</span><span>Meta AI</span><span>Instagram</span><span>WhatsApp</span>
+    </div>
+  </div>
+
+  <div class="sg-container lp-feature-band">
+    <h2>Why buy from Meta</h2>
+    <p class="lead">Free delivery, easy returns and a warranty that travels with every frame.</p>
+    <div class="why-row">
+      <div class="why-buy-tile">
+        <svg class="icn" viewBox="0 0 32 32" fill="none"><rect x="3" y="8" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M23 12h4l2 4v6h-6" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="24" r="2.5" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="2.5" stroke="currentColor" stroke-width="2"/></svg>
+        <h4>Free 2-day delivery</h4><p>On every order, everywhere we ship.</p>
+      </div>
+      <div class="why-buy-tile">
+        <svg class="icn" viewBox="0 0 32 32" fill="none"><path d="M16 5l10 5v7c0 6-4.5 9.5-10 11C10.5 26.5 6 23 6 17v-7l10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11.5 16l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <h4>Free 30-day returns</h4><p>Changed your mind? Send it back free.</p>
+      </div>
+      <div class="why-buy-tile">
+        <svg class="icn" viewBox="0 0 32 32" fill="none"><path d="M16 4l3 6 6.5 1-4.7 4.6 1.1 6.6L16 19l-5.9 3.2 1.1-6.6L6.5 11l6.5-1 3-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <h4>Worry-free warranty</h4><p>One year of coverage, no registration.</p>
+      </div>
+      <div class="why-buy-tile">
+        <svg class="icn" viewBox="0 0 32 32" fill="none"><rect x="4" y="7" width="24" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 12h24" stroke="currentColor" stroke-width="2"/><path d="M8 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <h4>Buy now, pay later</h4><p>Four interest-free payments with Affirm.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-promo-strip">
+      <div>
+        <h2>Meta Quest brings the magic of virtual reality within reach.</h2>
+        <p>Quest 3S starts at $299. Mixed reality included.</p>
+      </div>
+      <a class="btn btn-buy" href="#">Shop Quest</a>
+    </div>
+  </div>
+
+  <div class="sg-container lp-feature-band">
+    <h2 style="margin-bottom:var(--s-xxl)">Advanced. Inside and out.</h2>
+    <div class="lp-feature-grid">
+      <div class="card-product-feature">
+        <div class="card-photo photo-glasses-dark"><div style="position:absolute;left:16%;top:40%;width:60%;height:20%;border-radius:20px;background:rgba(255,255,255,0.14);backdrop-filter:blur(2px)"></div></div>
+        <h3>Meta AI, built in</h3>
+        <p>Ask what you're looking at, translate a menu, or send a hands-free message — just by saying "Hey Meta."</p>
+      </div>
+      <div class="card-product-feature">
+        <div class="card-photo photo-glasses"></div>
+        <h3>Iconic Ray-Ban frames</h3>
+        <p>Wayfarer, Skyler and Headliner silhouettes with prescription-ready lenses and 32 color finish combinations.</p>
+      </div>
+      <div class="card-product-feature">
+        <div class="card-photo photo-headset"></div>
+        <h3>Shareable in one tap</h3>
+        <p>Photos and videos move straight to Instagram stories, or to your phone with the Meta AI app.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-buy">
+      <div>
+        <h2>Configure your Skyler (Gen 2)</h2>
+        <p class="desc">Pick a finish, choose your lens package and see the total before you add to cart. Prescription lenses ship in 5–7 business days.</p>
+        <div class="thumb-row" style="grid-template-columns:repeat(4,1fr);max-width:420px;margin-top:var(--s-lg)">
+          <div><div class="product-thumbnail"><div class="glyph" style="background:#1c1e21"></div></div><span class="thumb-name">Shiny black</span></div>
+          <div><div class="product-thumbnail"><div class="glyph" style="background:#c8a878"></div></div><span class="thumb-name">Sand</span></div>
+          <div><div class="product-thumbnail"><div class="glyph" style="background:#a24b3f"></div></div><span class="thumb-name">Wine</span></div>
+          <div><div class="product-thumbnail"><div class="glyph" style="background:#d8e2ea"></div></div><span class="thumb-name">Sky blue</span></div>
+        </div>
+      </div>
+      <div class="checkout-summary">
+        <div class="price-row"><span class="price">$299</span><span class="stock">In stock</span></div>
+        <p class="t-sm" style="margin-bottom:var(--s-base)">Ray-Ban Meta Skyler · Shiny black · Standard lenses</p>
+        <div class="swatch-pick-row" style="margin-bottom:var(--s-lg)">
+          <span class="color-swatch color-swatch-sel" style="background:#1c1e21"></span>
+          <span class="color-swatch" style="background:#c8a878"></span>
+          <span class="color-swatch" style="background:#a24b3f"></span>
+          <span class="color-swatch" style="background:#d8e2ea"></span>
+        </div>
+        <a class="btn btn-buy" style="width:100%" href="#">Add to cart</a>
+        <p class="t-cap" style="margin-top:var(--s-md);text-align:center">Free delivery · Free 30-day returns</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-stats">
+      <div><div class="num">2M+</div><div class="lbl">AI glasses sold since launch</div></div>
+      <div><div class="num">4.8</div><div class="lbl">average customer rating</div></div>
+      <div><div class="num">12 MP</div><div class="lbl">ultra-wide camera in every frame</div></div>
+      <div><div class="num">36 hrs</div><div class="lbl">battery with the charging case</div></div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-testimonial">
+      <div class="testimonial-customer-card">
+        <blockquote>"I stopped bringing my phone on runs. The camera is fast, the audio is surprisingly great, and Meta AI answers before I've finished the thought."</blockquote>
+        <div class="by">
+          <span class="avatar av1"></span>
+          <span class="who"><strong>Dana K.</strong><span>Marathon coach, Austin TX</span></span>
+        </div>
+      </div>
+      <div class="testimonial-customer-card">
+        <blockquote>"The prescription flow was seamless — uploaded my script at checkout and the lenses arrived fitted in under a week."</blockquote>
+        <div class="by">
+          <span class="avatar av2"></span>
+          <span class="who"><strong>Marcus T.</strong><span>Product designer, Brooklyn NY</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-container">
+    <div class="lp-cta-band">
+      <h2>The best way to see the future is to wear it.</h2>
+      <p>Get 25% off for a limited time. Free delivery and free returns included.</p>
+      <div class="cta-row">
+        <a class="btn btn-buy btn-lg" href="#">Buy AI glasses</a>
+        <a class="btn btn-secondary btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)" href="#">Find your fit</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lp-footer">
+    <div class="sg-container">
+      <div class="cols">
+        <div><h5>Glasses</h5><ul><li><a href="#">Ray-Ban Meta</a></li><li><a href="#">Prescriptions</a></li><li><a href="#">Lenses</a></li><li><a href="#">Accessories</a></li></ul></div>
+        <div><h5>Quest</h5><ul><li><a href="#">Quest 3</a></li><li><a href="#">Quest 3S</a></li><li><a href="#">Compare</a></li><li><a href="#">Games</a></li></ul></div>
+        <div><h5>Apps</h5><ul><li><a href="#">Meta AI app</a></li><li><a href="#">Instagram</a></li><li><a href="#">WhatsApp</a></li><li><a href="#">Horizon</a></li></ul></div>
+        <div><h5>Support</h5><ul><li><a href="#">Order status</a></li><li><a href="#">Returns</a></li><li><a href="#">Warranty</a></li><li><a href="#">Contact us</a></li></ul></div>
+        <div><h5>Company</h5><ul><li><a href="#">About Meta</a></li><li><a href="#">Newsroom</a></li><li><a href="#">Careers</a></li><li><a href="#">Sustainability</a></li></ul></div>
+        <div><h5>Stores</h5><ul><li><a href="#">Find a store</a></li><li><a href="#">Book a fitting</a></li><li><a href="#">Meta Store</a></li><li><a href="#">Gift cards</a></li></ul></div>
+      </div>
+      <div class="legal">
+        <span>&copy; 2026 Meta Platforms, Inc. Terms apply.</span>
+        <span>Privacy &middot; Cookies &middot; Legal &middot; English (US)</span>
+      </div>
+    </div>
+  </footer>
+</section>
+</main>
+</body>
+</html>

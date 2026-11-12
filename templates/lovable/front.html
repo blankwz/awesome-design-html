@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lovable — Template Gallery: Ship your idea today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;480;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f4ed; --charcoal:#1c1c1c; --off-white:#fcfbf8;
+  --muted:#5f5f5d;
+  --border-passive:#eceae4; --border-active:rgba(28,28,28,0.4);
+  --charcoal-83:rgba(28,28,28,0.83); --charcoal-04:rgba(28,28,28,0.04); --charcoal-03:rgba(28,28,28,0.03);
+  --ring-blue:rgba(59,130,246,0.5);
+  --shadow-inset:rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset, rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset, rgba(0,0,0,0.05) 0px 1px 2px 0px;
+  --shadow-focus:rgba(0,0,0,0.1) 0px 4px 12px;
+  --font:'Figtree','Camera Plain Variable',ui-sans-serif,system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--charcoal);font-family:var(--font);font-size:16px;font-weight:400;line-height:1.5}
+a{color:inherit;text-decoration:underline}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-weight:600;letter-spacing:-0.5px}
+
+/* ---------- top nav ---------- */
+.topnav{position:sticky;top:0;z-index:50;background:var(--cream);border-bottom:1px solid var(--border-passive)}
+.topnav .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:600;letter-spacing:-0.4px;text-decoration:none}
+.logo-mark{width:24px;height:24px;border-radius:9999px;background:var(--charcoal);display:grid;place-items:center;box-shadow:var(--shadow-inset)}
+.logo-mark i{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#ffb199,#ff6a88 45%,#7fb2ff)}
+.navlinks{display:flex;gap:20px;font-size:15px;color:var(--charcoal-83)}
+.navlinks a{text-decoration:none}
+.navlinks a:hover{color:var(--charcoal)}
+.nav-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;background:var(--charcoal-04);border:1px solid var(--border-passive);border-radius:6px;padding:8px 14px;width:220px}
+.nav-search input{border:0;outline:0;background:transparent;font:inherit;font-size:14px;width:100%;color:var(--charcoal)}
+.nav-search input::placeholder{color:var(--muted)}
+.icon-btn{position:relative;width:38px;height:38px;border-radius:9999px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--charcoal)}
+.icon-btn:hover{background:var(--charcoal-04)}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#ff6a88,#7fb2ff);border:2px solid var(--cream)}
+.avatar{width:32px;height:32px;border-radius:9999px;background:var(--charcoal);color:var(--off-white);font-size:12px;font-weight:600;display:grid;place-items:center;box-shadow:var(--shadow-inset)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-size:16px;font-weight:400;padding:8px 16px;border-radius:6px;border:0;cursor:pointer}
+.btn:active{opacity:.8}
+.btn-dark{background:var(--charcoal);color:var(--off-white);box-shadow:var(--shadow-inset)}
+.btn-ghost{background:transparent;color:var(--charcoal);border:1px solid var(--border-active)}
+.btn-cream{background:var(--cream);color:var(--charcoal)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:88px 0 48px;text-align:center}
+.hero-wash{position:absolute;inset:-64px 0 auto 0;height:340px;pointer-events:none;
+  background:
+    radial-gradient(420px 200px at 30% 20%, rgba(255,178,153,.35), transparent 70%),
+    radial-gradient(420px 200px at 70% 15%, rgba(127,178,255,.3), transparent 70%),
+    radial-gradient(500px 220px at 50% 40%, rgba(255,106,136,.22), transparent 70%);
+  filter:blur(24px)}
+.hero h1{font-size:60px;line-height:1.05;letter-spacing:-1.5px;position:relative}
+.hero p{font-size:18px;line-height:1.38;color:var(--muted);max-width:520px;margin:18px auto 0;position:relative}
+.hero .cta-row{display:flex;gap:12px;justify-content:center;margin-top:28px;position:relative}
+.prompt-bar{position:relative;max-width:640px;margin:40px auto 0;background:var(--cream);border:1px solid var(--border-passive);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:var(--shadow-focus)}
+.prompt-bar input{flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--charcoal)}
+.prompt-bar input::placeholder{color:var(--muted)}
+.prompt-bar .pill{width:38px;height:38px;border-radius:9999px;background:var(--cream);border:1px solid var(--border-passive);display:grid;place-items:center;color:var(--muted);flex:none}
+
+/* ---------- section head + stats ---------- */
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin:56px 0 8px}
+.sec-head h2{font-size:36px;letter-spacing:-0.9px;line-height:1.1}
+.sec-head p{font-size:15px;color:var(--muted)}
+.stats{display:flex;gap:32px;margin:40px 0 8px;flex-wrap:wrap}
+.stat b{font-size:48px;font-weight:600;letter-spacing:-1.2px;display:block}
+.stat span{font-size:15px;color:var(--muted)}
+
+/* ---------- filter chips ---------- */
+.chips{display:flex;gap:10px;flex-wrap:wrap;padding:20px 0 24px}
+.chip{font-size:14px;padding:8px 16px;border-radius:9999px;border:1px solid var(--border-passive);background:var(--cream);color:var(--charcoal-83);cursor:pointer;font-family:var(--font)}
+.chip:hover{border-color:var(--border-active)}
+.chip.active{background:var(--charcoal);color:var(--off-white);border-color:var(--charcoal);box-shadow:var(--shadow-inset)}
+
+/* ---------- template grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-bottom:8px}
+.card{background:var(--cream);border:1px solid var(--border-passive);border-radius:12px;overflow:hidden;transition:border-color .15s, box-shadow .15s;display:flex;flex-direction:column}
+.card:hover{border-color:var(--border-active);box-shadow:var(--shadow-focus)}
+.card .art{height:150px;margin:10px;border-radius:8px;position:relative;overflow:hidden;border:1px solid var(--border-passive)}
+.card-body{padding:6px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card-title{font-size:20px;font-weight:400;line-height:1.25}
+.card-meta{font-size:14px;color:var(--muted)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px}
+.rating{font-size:13px;color:var(--muted)}
+.rating .stars{letter-spacing:1px}
+.price{font-size:14px;font-weight:600}
+.badge{position:absolute;top:10px;left:10px;font-size:12px;padding:3px 10px;border-radius:9999px;background:var(--cream);color:var(--charcoal);border:1px solid var(--border-passive)}
+.badge.dark{background:var(--charcoal);color:var(--off-white);border-color:var(--charcoal)}
+/* warm gradient artwork with mini app previews */
+.art .mini{position:absolute;left:14px;right:14px;top:22px;background:var(--cream);border:1px solid var(--border-passive);border-radius:8px;padding:10px;box-shadow:var(--shadow-focus)}
+.art .mini b{display:block;width:52%;height:7px;border-radius:4px;background:var(--charcoal-04)}
+.art .mini em{display:block;width:78%;height:7px;border-radius:4px;background:var(--charcoal-03);margin-top:7px}
+.art .mini i{display:block;height:20px;border-radius:6px;margin-top:9px}
+.art-1{background:linear-gradient(135deg,#ffe3d3,#ffc7cf)}
+.art-2{background:linear-gradient(135deg,#d9e6ff,#cdd7ff)}
+.art-3{background:linear-gradient(135deg,#ffe9c9,#ffd9a8)}
+.art-4{background:linear-gradient(135deg,#dff3e6,#c8ecd8)}
+.art-5{background:linear-gradient(135deg,#f0e0ff,#e2ccff)}
+.art-6{background:linear-gradient(135deg,#ffdede,#ffbdbd)}
+.art-7{background:linear-gradient(135deg,#d8f3f0,#bfe8e2)}
+.art-8{background:linear-gradient(135deg,#e8e6ff,#d4d0ff)}
+
+/* ---------- featured detail ---------- */
+.featured{margin:56px 0;background:var(--cream);border:1px solid var(--border-passive);border-radius:16px;padding:24px;display:grid;grid-template-columns:1.15fr .85fr;gap:32px}
+.gallery-main{height:340px;border-radius:12px;border:1px solid var(--border-passive);position:relative;overflow:hidden;background:linear-gradient(135deg,#ffe3d3,#ffc7cf)}
+.gallery-main .mini{position:absolute;left:10%;right:10%;top:14%;bottom:-2px;background:var(--cream);border:1px solid var(--border-passive);border-radius:12px 12px 0 0;padding:16px;box-shadow:var(--shadow-focus)}
+.gallery-main .mini .hd{display:flex;align-items:center;gap:8px}
+.gallery-main .mini .hd i{width:22px;height:22px;border-radius:9999px;background:linear-gradient(135deg,#ff6a88,#7fb2ff)}
+.gallery-main .mini .hd b{height:8px;border-radius:4px;background:var(--charcoal-04);flex:1}
+.gallery-main .mini .chart{display:flex;align-items:flex-end;gap:8px;height:130px;margin-top:14px}
+.gallery-main .mini .chart i{flex:1;border-radius:6px 6px 0 0;background:var(--charcoal-04)}
+.gallery-main .mini .chart i.hot{background:linear-gradient(180deg,#ff8a8a,#ffb199)}
+.thumbs{display:flex;gap:10px;margin-top:12px}
+.thumb{flex:1;height:56px;border-radius:8px;border:1px solid var(--border-passive);cursor:pointer}
+.thumb.active{border-color:var(--border-active);box-shadow:var(--shadow-focus)}
+.detail h2{font-size:36px;letter-spacing:-0.9px;line-height:1.1}
+.detail .sub{font-size:14px;color:var(--muted);margin-top:6px}
+.detail .desc{font-size:16px;color:var(--muted);margin-top:16px;max-width:440px}
+.opt-label{font-size:14px;margin:20px 0 10px;color:var(--charcoal)}
+.opts{display:flex;gap:10px;flex-wrap:wrap}
+.opt{font-size:14px;padding:8px 16px;border-radius:6px;border:1px solid var(--border-passive);background:var(--cream);color:var(--charcoal-83);cursor:pointer;font-family:var(--font)}
+.opt.active{border-color:var(--border-active);color:var(--charcoal);box-shadow:var(--shadow-focus)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--border-passive);border-radius:6px;margin-right:10px;background:var(--cream)}
+.qty button{width:38px;height:42px;border:0;background:transparent;font-size:15px;cursor:pointer;color:var(--charcoal)}
+.qty span{width:44px;text-align:center;font-size:15px}
+.buy-row{display:flex;align-items:center;margin-top:4px}
+.kv{display:flex;justify-content:space-between;font-size:14px;padding:9px 0;border-bottom:1px solid var(--border-passive);color:var(--muted)}
+.kv b{color:var(--charcoal);font-weight:600}
+.review{margin-top:20px;border-top:1px solid var(--border-passive);padding-top:16px}
+.review p{font-size:16px}
+.review .who{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:14px;color:var(--muted)}
+.review .who i{width:32px;height:32px;border-radius:9999px;background:var(--charcoal);color:var(--off-white);font-style:normal;font-size:12px;font-weight:600;display:grid;place-items:center}
+
+/* ---------- cart ---------- */
+.checkout{display:grid;grid-template-columns:1fr 380px;gap:32px;margin:56px 0 80px}
+.cart-list{background:var(--cream);border:1px solid var(--border-passive);border-radius:16px;padding:8px 20px}
+.cart-row{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border-passive)}
+.cart-row:last-child{border-bottom:0}
+.cart-art{width:56px;height:56px;border-radius:8px;border:1px solid var(--border-passive);flex:none}
+.cart-row h4{font-size:16px;font-weight:600}
+.cart-row p{font-size:14px;color:var(--muted)}
+.cart-row .p{margin-left:auto;font-weight:600}
+.summary{background:var(--cream);border:1px solid var(--border-passive);border-radius:16px;padding:24px;align-self:start;box-shadow:var(--shadow-focus)}
+.summary h3{font-size:20px;font-weight:400}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:12px}
+.sum-row.total{border-top:1px solid var(--border-passive);padding-top:14px;margin-top:16px;color:var(--charcoal);font-size:16px;font-weight:600}
+.summary .btn{width:100%;margin-top:16px}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--border-passive);padding:56px 0 32px;background:linear-gradient(180deg,var(--cream),#f2ede3)}
+.foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px}
+.foot-grid h5{font-size:14px;font-weight:600;margin-bottom:10px}
+.foot-grid a{display:block;font-size:14px;color:var(--muted);padding:5px 0;text-decoration:none}
+.foot-grid a:hover{text-decoration:underline}
+.newsletter{display:flex;gap:10px;margin-top:14px;max-width:340px}
+.newsletter input{flex:1;border:1px solid var(--border-passive);border-radius:6px;padding:10px 14px;font:inherit;font-size:14px;outline:0;background:var(--cream);color:var(--charcoal)}
+.newsletter input::placeholder{color:var(--muted)}
+.foot-base{display:flex;align-items:center;justify-content:space-between;margin-top:48px;padding-top:20px;border-top:1px solid var(--border-passive);font-size:13px;color:var(--muted)}
+.socials{display:flex;gap:10px}
+.socials a{width:34px;height:34px;border-radius:9999px;border:1px solid var(--border-passive);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.socials a:hover{border-color:var(--border-active);color:var(--charcoal)}
+
+@media (max-width:1180px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:1024px){
+  .featured,.checkout{grid-template-columns:1fr}
+  .navlinks,.nav-search{display:none}
+  .hero h1{font-size:44px;letter-spacing:-0.9px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- top nav -->
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#"><span class="logo-mark"><i></i></span>Lovable</a>
+    <nav class="navlinks">
+      <a href="#">Templates</a><a href="#">Community</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Launch</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <label class="nav-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5f5f5d" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search templates…">
+    </label>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <button class="icon-btn" aria-label="Projects">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+    </button>
+    <span class="avatar">NB</span>
+    <a class="btn btn-dark" href="#">Start building</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <!-- hero -->
+    <section class="hero">
+      <div class="hero-wash"></div>
+      <h1>Start from a template,<br>make it yours</h1>
+      <p>Every template is a full, working app — remix it with a prompt, connect your data, and ship the same afternoon.</p>
+      <div class="prompt-bar">
+        <input type="text" placeholder="Describe the app you want to build…">
+        <span class="pill" title="Voice input">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 19v3"/></svg>
+        </span>
+        <button class="btn btn-dark">Remix</button>
+      </div>
+    </section>
+
+    <!-- stats -->
+    <div class="stats">
+      <div class="stat"><b>500K+</b><span>apps shipped</span></div>
+      <div class="stat"><b>1.2M+</b><span>templates remixed</span></div>
+      <div class="stat"><b>40 sec</b><span>median first build</span></div>
+    </div>
+
+    <!-- filters -->
+    <div class="chips">
+      <button class="chip active">All templates</button>
+      <button class="chip">SaaS dashboards</button>
+      <button class="chip">Marketplaces</button>
+      <button class="chip">Internal tools</button>
+      <button class="chip">Landing pages</button>
+      <button class="chip">AI apps</button>
+      <button class="chip">New this week</button>
+    </div>
+
+    <!-- template grid -->
+    <section class="grid">
+      <article class="card">
+        <div class="art art-1"><span class="badge dark">Popular</span><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#ff8a8a,#ffb199)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Crmlite</h3>
+          <p class="card-meta">SaaS dashboard · by Mira K. </p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★★</span> 4.9</span><span class="price">Free</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-2"><span class="badge">New</span><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#8ab0ff,#cdd7ff)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Helpdesk Kit</h3>
+          <p class="card-meta">Internal tool · by Atelier Núñez</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★☆</span> 4.7</span><span class="price">$29</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-3"><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#ffcf7a,#ffe9c9)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Cornerstore</h3>
+          <p class="card-meta">Marketplace · by Studio Halde</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★★</span> 4.8</span><span class="price">$39</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-4"><span class="badge dark">Staff pick</span><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#8fd8ab,#c8ecd8)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Loop Fitness</h3>
+          <p class="card-meta">Consumer app · by Raxa Labs</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★★</span> 4.9</span><span class="price">Free</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-5"><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#c79bff,#e2ccff)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Notesmith AI</h3>
+          <p class="card-meta">AI app · by Ferrand &amp; Co</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★☆</span> 4.6</span><span class="price">$19</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-6"><span class="badge">Trending</span><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#ff9b9b,#ffbdbd)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Launchpage Pro</h3>
+          <p class="card-meta">Landing page · by Bloom Studio</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★☆</span> 4.5</span><span class="price">Free</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-7"><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#7ecfc4,#bfe8e2)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Bookhavn</h3>
+          <p class="card-meta">Marketplace · by Fjell Works</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★★</span> 4.8</span><span class="price">$29</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-8"><span class="badge">New</span><div class="mini"><b></b><em></em><i style="background:linear-gradient(90deg,#a9a3ff,#d4d0ff)"></i></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Pulse Analytics</h3>
+          <p class="card-meta">SaaS dashboard · by Neosignal</p>
+          <div class="card-foot"><span class="rating"><span class="stars" style="color:var(--charcoal)">★★★★☆</span> 4.7</span><span class="price">$49</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- featured template -->
+    <section class="featured">
+      <div>
+        <div class="gallery-main">
+          <div class="mini">
+            <div class="hd"><i></i><b></b></div>
+            <div class="chart">
+              <i style="height:40%"></i><i style="height:62%"></i><i style="height:48%"></i><i class="hot" style="height:92%"></i><i style="height:70%"></i><i style="height:84%"></i>
+            </div>
+          </div>
+        </div>
+        <div class="thumbs">
+          <span class="thumb active" style="background:linear-gradient(135deg,#ffe3d3,#ffc7cf)"></span>
+          <span class="thumb" style="background:linear-gradient(135deg,#d9e6ff,#cdd7ff)"></span>
+          <span class="thumb" style="background:linear-gradient(135deg,#dff3e6,#c8ecd8)"></span>
+          <span class="thumb" style="background:linear-gradient(135deg,#f0e0ff,#e2ccff)"></span>
+        </div>
+      </div>
+      <div class="detail">
+        <h2>Crmlite — SaaS starter</h2>
+        <p class="sub">by Mira K. · v2.4 · Remixes: 84,210</p>
+        <p class="desc">A complete CRM with pipeline views, contact enrichment, and Stripe billing wired in. Remix it, describe your changes, and Crmlite becomes your product.</p>
+        <p class="opt-label">License</p>
+        <div class="opts">
+          <button class="opt active">Personal · Free</button>
+          <button class="opt">Commercial · $99</button>
+          <button class="opt">Team · $249</button>
+        </div>
+        <p class="opt-label">Seats</p>
+        <div class="buy-row">
+          <div class="qty">
+            <button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button>
+          </div>
+          <button class="btn btn-dark">Remix this template</button>
+          <button class="btn btn-ghost">Preview live demo</button>
+        </div>
+        <div style="margin-top:16px">
+          <div class="kv"><span>Stack</span><b>React · Tailwind · Supabase</b></div>
+          <div class="kv"><span>Includes</span><b>Auth, billing, 14 screens</b></div>
+          <div class="kv" style="border-bottom:0"><span>Last updated</span><b>Oct 2026</b></div>
+        </div>
+        <div class="review">
+          <p>"We remixed Crmlite on a Friday and were demoing to our first customer on Monday. It saved us a month."</p>
+          <div class="who"><i>JO</i>Jonas Ott · founder, Tallyferm</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- order summary -->
+    <section class="checkout">
+      <div class="cart-list">
+        <div class="cart-row">
+          <span class="cart-art" style="background:linear-gradient(135deg,#ffe3d3,#ffc7cf)"></span>
+          <div><h4>Crmlite — commercial license</h4><p>1 seat · lifetime updates</p></div>
+          <span class="p">$99.00</span>
+        </div>
+        <div class="cart-row">
+          <span class="cart-art" style="background:linear-gradient(135deg,#d9e6ff,#cdd7ff)"></span>
+          <div><h4>Helpdesk Kit</h4><p>Personal license</p></div>
+          <span class="p">$29.00</span>
+        </div>
+        <div class="cart-row">
+          <span class="cart-art" style="background:linear-gradient(135deg,#dff3e6,#c8ecd8)"></span>
+          <div><h4>Lovable Pro — monthly</h4><p>Unlimited remixes · priority builds</p></div>
+          <span class="p">$25.00</span>
+        </div>
+      </div>
+      <aside class="summary">
+        <h3>Order summary</h3>
+        <div class="sum-row"><span>Subtotal</span><span>$153.00</span></div>
+        <div class="sum-row"><span>Estimated tax</span><span>$12.24</span></div>
+        <div class="sum-row total"><span>Total</span><span>$165.24</span></div>
+        <button class="btn btn-dark">Complete purchase</button>
+        <p class="note">One-time purchases. Cancel Pro anytime.</p>
+      </aside>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#"><span class="logo-mark"><i></i></span>Lovable</a>
+        <p style="font-size:14px;color:var(--muted);margin-top:10px;max-width:280px">Build something Lovable. The AI full-stack engineer for everyone.</p>
+        <div class="newsletter">
+          <input type="email" placeholder="Email address">
+          <button class="btn btn-dark">Subscribe</button>
+        </div>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <a href="#">Templates</a><a href="#">Pricing</a><a href="#">Launch</a><a href="#">Changelog</a>
+      </div>
+      <div>
+        <h5>Community</h5>
+        <a href="#">Showcase</a><a href="#">Forum</a><a href="#">Ambassadors</a><a href="#">Events</a>
+      </div>
+      <div>
+        <h5>Resources</h5>
+        <a href="#">Docs</a><a href="#">Support</a><a href="#">Status</a><a href="#">Careers</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Lovable Labs · Privacy · Terms</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L6 22H2.9l7.5-8.6L2.5 2H9l4.5 6.6L18.9 2z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.7-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.9-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.71 1.03 1.6 1.03 2.7 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg></a>
+        <a href="#" aria-label="Discord"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19.8 19.8 0 0015.7 3l-.2.4a18 18 0 00-7 0L8.3 3a19.8 19.8 0 00-4.6 1.5A20.3 20.3 0 00.2 18.1a20 20 0 006 3l.5-.7a13 13 0 01-2-1l.5-.4a14.3 14.3 0 0013.6 0l.5.4a13 13 0 01-2 1l.5.7a20 20 0 006-3 20.3 20.3 0 00-3.5-13.7zM8.5 15.3c-1.2 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.2 1 2.1 2.3c0 1.3-.9 2.3-2.1 2.3zm7 0c-1.2 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.2 1 2.1 2.3c0 1.3-.9 2.3-2.1 2.3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

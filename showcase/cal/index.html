@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cal.com — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CAL.COM — friendly modern-SaaS scheduling system
+   White canvas · #111 primary CTA · Cal Sans display (Inter 600 sub)
+   ============================================================ */
+:root {
+  /* colors */
+  --c-primary: #111111;
+  --c-primary-active: #242424;
+  --c-primary-disabled: #e5e7eb;
+  --c-ink: #111111;
+  --c-body: #374151;
+  --c-muted: #6b7280;
+  --c-muted-soft: #898989;
+  --c-hairline: #e5e7eb;
+  --c-hairline-soft: #f3f4f6;
+  --c-canvas: #ffffff;
+  --c-surface-soft: #f8f9fa;
+  --c-surface-card: #f5f5f5;
+  --c-surface-strong: #e5e7eb;
+  --c-surface-dark: #101010;
+  --c-surface-dark-elevated: #1a1a1a;
+  --c-on-primary: #ffffff;
+  --c-on-dark: #ffffff;
+  --c-on-dark-soft: #a1a1aa;
+  --c-brand-accent: #3b82f6;
+  --c-success: #10b981;
+  --c-warning: #f59e0b;
+  --c-error: #ef4444;
+  --c-badge-orange: #fb923c;
+  --c-badge-pink: #ec4899;
+  --c-badge-violet: #8b5cf6;
+  --c-badge-emerald: #34d399;
+
+  --f-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-display: "Cal Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-code: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono", monospace;
+
+  --r-xs: 4px; --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px;
+  --r-pill: 9999px; --r-full: 9999px;
+
+  --s-xxs: 4px; --s-xs: 8px; --s-sm: 12px; --s-md: 16px;
+  --s-lg: 24px; --s-xl: 32px; --s-xxl: 48px; --s-section: 96px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--c-canvas);
+  color: var(--c-body);
+  font-family: var(--f-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { color: var(--c-ink); }
+
+/* ---------- type tokens ---------- */
+.t-display-xl { font-family: var(--f-display); font-size: 64px; font-weight: 600; line-height: 1.05; letter-spacing: -2px; color: var(--c-ink); }
+.t-display-lg { font-family: var(--f-display); font-size: 48px; font-weight: 600; line-height: 1.1; letter-spacing: -1.5px; color: var(--c-ink); }
+.t-display-md { font-family: var(--f-display); font-size: 36px; font-weight: 600; line-height: 1.15; letter-spacing: -1px; color: var(--c-ink); }
+.t-display-sm { font-family: var(--f-display); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.5px; color: var(--c-ink); }
+.t-title-lg   { font-family: var(--f-sans); font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -0.3px; color: var(--c-ink); }
+.t-title-md   { font-family: var(--f-sans); font-size: 18px; font-weight: 600; line-height: 1.4; color: var(--c-ink); }
+.t-title-sm   { font-family: var(--f-sans); font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--c-ink); }
+.t-body-md    { font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--c-body); }
+.t-body-sm    { font-size: 14px; font-weight: 400; line-height: 1.5; }
+.t-caption    { font-size: 13px; font-weight: 500; line-height: 1.4; }
+.t-code       { font-family: var(--f-code); font-size: 14px; }
+.t-button     { font-size: 14px; font-weight: 600; }
+.t-nav        { font-size: 14px; font-weight: 500; }
+
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-xl); }
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; padding: 0 var(--s-lg);
+  background: var(--c-canvas);
+  border-bottom: 1px solid var(--c-hairline);
+}
+.sg-banner .sg-id { display: flex; align-items: center; gap: var(--s-md); }
+.sg-banner .sg-folder { font-family: var(--f-code); font-size: 12px; color: var(--c-muted); }
+.sg-banner .sg-brand { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 16px; font-weight: 600; letter-spacing: -0.3px; color: var(--c-ink); }
+.sg-banner .sg-dot { width: 16px; height: 16px; border-radius: var(--r-full); background: var(--c-primary); display: inline-flex; align-items: center; justify-content: center; }
+.sg-banner .sg-dot span { width: 6px; height: 6px; border-radius: 50%; background: var(--c-on-primary); }
+.sg-banner .sg-desc { font-size: 13px; font-weight: 500; color: var(--c-muted); }
+@media (max-width: 900px) { .sg-banner .sg-desc { display: none; } }
+
+/* ============================================================
+   COMPONENTS SECTION
+   ============================================================ */
+#components { padding: var(--s-xxl) 0 var(--s-section); }
+.sg-section-label { font-size: 13px; font-weight: 500; color: var(--c-muted); margin-bottom: var(--s-xl); }
+.sg-block { margin-bottom: var(--s-section); }
+.sg-block-title { display: flex; align-items: baseline; gap: var(--s-md); margin-bottom: var(--s-lg); }
+.sg-block-title .num { font-family: var(--f-code); font-size: 12px; color: var(--c-muted-soft); }
+.sg-block-title h3 { font-family: var(--f-display); font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
+.sg-block-title .rule { flex: 1; height: 1px; background: var(--c-hairline-soft); }
+
+/* color tokens */
+.swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-md); }
+.swatch { border: 1px solid var(--c-hairline); border-radius: var(--r-lg); overflow: hidden; }
+.swatch .chip { height: 64px; }
+.swatch .meta { padding: var(--s-sm) var(--s-md); background: var(--c-canvas); }
+.swatch .name { font-size: 12px; font-weight: 600; color: var(--c-ink); margin-bottom: 2px; }
+.swatch .hex { font-family: var(--f-code); font-size: 11px; color: var(--c-muted); }
+
+/* typography specimen */
+.specimen .row { display: grid; grid-template-columns: 220px 1fr; gap: var(--s-lg); padding: var(--s-lg) 0; border-bottom: 1px solid var(--c-hairline-soft); align-items: baseline; }
+.specimen .row:last-child { border-bottom: none; }
+.specimen .tok { font-family: var(--f-code); font-size: 12px; color: var(--c-muted); }
+
+/* buttons */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-md); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 40px; padding: 12px 20px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  font-family: var(--f-sans); border: 1px solid transparent;
+}
+.btn-primary { background: var(--c-primary); color: var(--c-on-primary); }
+.btn-primary:hover { background: var(--c-primary-active); }
+.btn-primary.is-active { background: var(--c-primary-active); }
+.btn-secondary { background: var(--c-canvas); color: var(--c-ink); border-color: var(--c-hairline); }
+.btn-secondary:hover { background: var(--c-surface-soft); }
+.btn-disabled { background: var(--c-primary-disabled); color: var(--c-muted); cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--c-ink); padding: 12px 12px; }
+.btn-ghost:hover { background: var(--c-surface-soft); }
+.btn-icon { width: 36px; height: 36px; padding: 0; border-radius: var(--r-full); background: var(--c-canvas); border-color: var(--c-hairline); color: var(--c-ink); }
+.btn-icon svg { width: 14px; height: 14px; }
+.btn-sm { height: 32px; padding: 6px 12px; font-size: 13px; }
+
+/* inputs */
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-lg); max-width: 720px; }
+.field label { display: block; font-size: 13px; font-weight: 500; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.field input, .field select {
+  width: 100%; height: 40px; padding: 10px 14px;
+  background: var(--c-canvas); border: 1px solid var(--c-hairline); border-radius: var(--r-md);
+  color: var(--c-ink); font-family: var(--f-sans); font-size: 16px; outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field input::placeholder { color: var(--c-muted-soft); }
+.field input:focus { border-color: var(--c-ink); }
+.field input:disabled { background: var(--c-surface-soft); color: var(--c-muted); cursor: not-allowed; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%236b7280' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.switch-row { display: flex; align-items: center; gap: var(--s-sm); margin-top: var(--s-lg); }
+.switch { width: 36px; height: 20px; border-radius: var(--r-full); background: var(--c-primary); position: relative; }
+.switch::after { content: ""; position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--c-on-primary); }
+.switch.off { background: var(--c-surface-strong); }
+.switch.off::after { right: auto; left: 2px; }
+.switch-row span { font-size: 14px; color: var(--c-body); }
+
+/* cards */
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-lg); }
+.feature-card { background: var(--c-surface-card); border-radius: var(--r-lg); padding: var(--s-xl); }
+.feature-card .icon { width: 36px; height: 36px; border-radius: var(--r-md); background: var(--c-canvas); display: flex; align-items: center; justify-content: center; margin-bottom: var(--s-lg); border: 1px solid var(--c-hairline); }
+.feature-card .icon svg { width: 16px; height: 16px; stroke: var(--c-ink); }
+.feature-card h4 { margin-bottom: var(--s-xs); }
+.stat-card { background: var(--c-surface-card); border-radius: var(--r-lg); padding: var(--s-xl); }
+.stat-card .num { font-family: var(--f-display); font-size: 36px; font-weight: 600; letter-spacing: -1px; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.stat-card .lbl { font-size: 14px; color: var(--c-muted); }
+
+/* badges */
+.badge-row { display: flex; flex-wrap: wrap; gap: var(--s-sm); align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--r-pill); font-size: 13px; font-weight: 500; background: var(--c-surface-card); color: var(--c-ink); }
+.badge.orange { background: #fef3e7; color: #c2660a; }
+.badge.pink { background: #fdeef6; color: #be1b6d; }
+.badge.violet { background: #f1ebfd; color: #6d3bd4; }
+.badge.emerald { background: #e8faf2; color: #0a7d56; }
+
+/* nav */
+.nav-demo { border: 1px solid var(--c-hairline); border-radius: var(--r-lg); overflow: hidden; }
+.topnav { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 var(--s-xl); background: var(--c-canvas); }
+.topnav .logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 17px; font-weight: 600; letter-spacing: -0.3px; color: var(--c-ink); }
+.topnav .menu { display: flex; gap: var(--s-xl); }
+.topnav .menu a { font-size: 14px; font-weight: 500; color: var(--c-body); text-decoration: none; }
+.topnav .menu a:hover { color: var(--c-ink); }
+.topnav .right { display: flex; align-items: center; gap: var(--s-md); }
+.topnav .signin { font-size: 14px; font-weight: 600; color: var(--c-ink); text-decoration: none; }
+.pill-group { display: inline-flex; gap: 2px; padding: 6px; background: var(--c-surface-soft); border-radius: var(--r-pill); margin-top: var(--s-lg); }
+.pill-group a { padding: 8px 14px; border-radius: var(--r-md); font-size: 14px; font-weight: 500; color: var(--c-muted); text-decoration: none; }
+.pill-group a.active { background: var(--c-canvas); color: var(--c-ink); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+/* list row */
+.list-row { display: flex; align-items: center; gap: var(--s-md); padding: var(--s-md) var(--s-lg); border: 1px solid var(--c-hairline); border-radius: var(--r-lg); margin-bottom: var(--s-sm); background: var(--c-canvas); }
+.list-row .avatar { width: 36px; height: 36px; border-radius: var(--r-full); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--c-ink); }
+.list-row .who { flex: 1; }
+.list-row .who p { font-size: 14px; font-weight: 600; color: var(--c-ink); }
+.list-row .who span { font-size: 13px; color: var(--c-muted); }
+.list-row .when { font-size: 13px; font-weight: 500; color: var(--c-muted); }
+
+/* ============================================================
+   PRODUCT SECTION
+   ============================================================ */
+#product { border-top: 1px solid var(--c-hairline-soft); }
+.site-nav { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 var(--s-xl); max-width: 1200px; margin: 0 auto; background: var(--c-canvas); }
+.site-nav .logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 17px; font-weight: 600; letter-spacing: -0.3px; color: var(--c-ink); }
+.site-nav .menu { display: flex; gap: var(--s-xl); }
+.site-nav .menu a { font-size: 14px; font-weight: 500; color: var(--c-body); text-decoration: none; }
+.site-nav .right { display: flex; align-items: center; gap: var(--s-md); }
+.site-nav .signin { font-size: 14px; font-weight: 600; color: var(--c-ink); text-decoration: none; }
+
+.hero { display: grid; grid-template-columns: 7fr 5fr; gap: var(--s-xxl); align-items: center; padding: var(--s-section) 0; max-width: 1200px; margin: 0 auto; padding-left: var(--s-xl); padding-right: var(--s-xl); }
+.hero h1 { margin-bottom: var(--s-lg); }
+.hero .sub { font-size: 18px; color: var(--c-muted); margin-bottom: var(--s-xl); max-width: 480px; }
+.hero .cta-row { display: flex; gap: var(--s-md); }
+
+/* booking widget mockup — product UI fragment */
+.booking-card { background: var(--c-canvas); border: 1px solid var(--c-hairline); border-radius: var(--r-xl); box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; }
+.booking-head { display: flex; align-items: center; gap: var(--s-md); padding: var(--s-lg); border-bottom: 1px solid var(--c-hairline-soft); }
+.booking-head .avatar { width: 40px; height: 40px; border-radius: var(--r-full); background: var(--c-badge-violet); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+.booking-head p { font-size: 15px; font-weight: 600; color: var(--c-ink); }
+.booking-head span { display: block; font-size: 13px; font-weight: 400; color: var(--c-muted); }
+.booking-body { display: grid; grid-template-columns: 1fr 1fr; }
+.cal-grid { padding: var(--s-lg); border-right: 1px solid var(--c-hairline-soft); }
+.cal-grid .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s-md); }
+.cal-grid .cal-head p { font-size: 13px; font-weight: 600; color: var(--c-ink); }
+.cal-grid .cal-head div { display: flex; gap: 4px; }
+.cal-grid .cal-head button { width: 22px; height: 22px; border: 1px solid var(--c-hairline); border-radius: var(--r-sm); background: var(--c-canvas); color: var(--c-muted); font-size: 10px; cursor: pointer; }
+.cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
+.cal-days .dow { font-size: 10px; font-weight: 500; color: var(--c-muted); padding: 4px 0; }
+.cal-days .d { font-size: 12px; padding: 7px 0; border-radius: var(--r-full); color: var(--c-body); }
+.cal-days .d.dim { color: var(--c-hairline); }
+.cal-days .d.sel { background: var(--c-primary); color: var(--c-on-primary); font-weight: 600; }
+.slots { padding: var(--s-lg); }
+.slots .slot-head { font-size: 12px; font-weight: 600; color: var(--c-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: var(--s-md); }
+.slots .slot { display: block; width: 100%; text-align: center; padding: 8px 0; margin-bottom: var(--s-xs); border: 1px solid var(--c-hairline); border-radius: var(--r-md); font-size: 13px; font-weight: 600; color: var(--c-primary); background: var(--c-canvas); cursor: pointer; }
+.slots .slot:hover { border-color: var(--c-primary); }
+.slots .slot.pick { background: var(--c-primary); color: var(--c-on-primary); border-color: var(--c-primary); }
+.slots .confirm { width: 100%; margin-top: var(--s-xs); border: none; }
+
+.logos { padding: var(--s-xl) 0; border-top: 1px solid var(--c-hairline-soft); border-bottom: 1px solid var(--c-hairline-soft); }
+.logos .inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-xl); display: flex; align-items: center; justify-content: space-between; gap: var(--s-xl); flex-wrap: wrap; }
+.logos p { font-size: 13px; font-weight: 500; color: var(--c-muted-soft); }
+.logos .lg { font-family: var(--f-display); font-size: 16px; font-weight: 600; color: var(--c-muted); letter-spacing: -0.2px; }
+
+.section { padding: var(--s-section) 0; max-width: 1200px; margin: 0 auto; padding-left: var(--s-xl); padding-right: var(--s-xl); }
+.section-head { max-width: 640px; margin-bottom: var(--s-xxl); }
+.section-head .kick { font-size: 13px; font-weight: 600; color: var(--c-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: var(--s-md); }
+.section-head h2 { margin-bottom: var(--s-md); }
+.section-head p { font-size: 16px; color: var(--c-muted); }
+
+.mock-band { background: var(--c-surface-soft); }
+.mock-card { background: var(--c-canvas); border: 1px solid var(--c-hairline); border-radius: var(--r-lg); padding: var(--s-lg); }
+.workflow { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-md); align-items: center; }
+.wf-step { border: 1px solid var(--c-hairline); border-radius: var(--r-md); padding: var(--s-md); background: var(--c-canvas); }
+.wf-step .tag { display: inline-block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: var(--r-pill); background: var(--c-surface-soft); color: var(--c-muted); margin-bottom: var(--s-xs); }
+.wf-step p { font-size: 13px; font-weight: 600; color: var(--c-ink); margin-bottom: 2px; }
+.wf-step span { font-size: 12px; color: var(--c-muted); }
+.wf-arrow { text-align: center; color: var(--c-muted-soft); font-size: 16px; }
+
+.int-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-md); }
+.int-tile { display: flex; align-items: center; gap: var(--s-sm); border: 1px solid var(--c-hairline); border-radius: var(--r-md); padding: var(--s-md); background: var(--c-canvas); }
+.int-tile .dot { width: 28px; height: 28px; border-radius: var(--r-sm); flex-shrink: 0; }
+.int-tile p { font-size: 13px; font-weight: 600; color: var(--c-ink); }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-lg); }
+.tier { background: var(--c-canvas); border: 1px solid var(--c-hairline); border-radius: var(--r-lg); padding: var(--s-xl); display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.tier .plan { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.tier .price { font-family: var(--f-display); font-size: 28px; font-weight: 600; letter-spacing: -0.5px; color: var(--c-ink); margin-bottom: var(--s-xs); }
+.tier .price span { font-size: 14px; font-weight: 400; color: var(--c-muted); letter-spacing: 0; }
+.tier .desc { font-size: 14px; color: var(--c-muted); margin-bottom: var(--s-lg); }
+.tier ul { list-style: none; margin-bottom: var(--s-xl); flex: 1; }
+.tier li { display: flex; gap: var(--s-xs); font-size: 14px; color: var(--c-body); margin-bottom: var(--s-xs); }
+.tier li svg { width: 14px; height: 14px; margin-top: 3px; flex-shrink: 0; stroke: var(--c-success); }
+.tier.dark { background: var(--c-surface-dark); border-color: var(--c-surface-dark); }
+.tier.dark .plan, .tier.dark .price { color: var(--c-on-dark); }
+.tier.dark .price span, .tier.dark .desc { color: var(--c-on-dark-soft); }
+.tier.dark li { color: var(--c-on-dark-soft); }
+.tier.dark li svg { stroke: var(--c-badge-emerald); }
+
+.testimonials { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-lg); }
+.t-card { background: var(--c-surface-card); border-radius: var(--r-lg); padding: var(--s-lg); }
+.t-card .stars { color: var(--c-badge-orange); font-size: 14px; letter-spacing: 2px; margin-bottom: var(--s-md); }
+.t-card blockquote { font-size: 16px; line-height: 1.5; color: var(--c-ink); margin-bottom: var(--s-lg); }
+.t-card .who { display: flex; align-items: center; gap: var(--s-sm); }
+.t-card .avatar { width: 36px; height: 36px; border-radius: var(--r-full); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; }
+.t-card .who p { font-size: 14px; font-weight: 600; color: var(--c-ink); }
+.t-card .who span { font-size: 13px; color: var(--c-muted); display: block; }
+
+.cta-band { background: var(--c-surface-card); border-radius: var(--r-lg); padding: var(--s-xxl); text-align: center; max-width: 1200px; margin: 0 auto var(--s-section); }
+.cta-wrap { padding: 0 var(--s-xl); }
+.cta-band h2 { margin-bottom: var(--s-sm); }
+.cta-band p { font-size: 16px; color: var(--c-muted); margin-bottom: var(--s-xl); }
+
+.footer { background: var(--c-surface-dark); padding: var(--s-xxl) 0 var(--s-xl); }
+.footer .inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-xl); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: var(--s-xl); margin-bottom: var(--s-xxl); }
+.footer .f-logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: 16px; font-weight: 600; color: var(--c-on-dark); margin-bottom: var(--s-md); }
+.footer .f-note { font-size: 14px; color: var(--c-on-dark-soft); max-width: 260px; }
+.footer h5 { font-size: 13px; font-weight: 600; color: var(--c-on-dark); margin-bottom: var(--s-md); }
+.footer ul { list-style: none; }
+.footer li { margin-bottom: var(--s-xs); }
+.footer a { font-size: 14px; color: var(--c-on-dark-soft); text-decoration: none; }
+.footer a:hover { color: var(--c-on-dark); }
+.footer-legal { display: flex; justify-content: space-between; padding-top: var(--s-xl); border-top: 1px solid var(--c-surface-dark-elevated); }
+.footer-legal p { font-size: 13px; color: var(--c-on-dark-soft); }
+
+@media (max-width: 900px) {
+  .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+  .specimen .row { grid-template-columns: 1fr; gap: var(--s-xs); }
+  .card-grid, .form-grid { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr; }
+  .pricing-grid, .int-grid { grid-template-columns: 1fr 1fr; }
+  .testimonials, .workflow { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .t-display-xl { font-size: 40px; }
+  .site-nav .menu { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">cal</span>
+    <span class="sg-brand"><span class="sg-dot"><span></span></span>Cal.com</span>
+  </div>
+  <span class="sg-desc">Calendar-first scheduling infrastructure — white canvas, black CTAs, Cal Sans display</span>
+</header>
+
+<main>
+  <section id="components">
+    <div class="wrap">
+      <p class="sg-section-label">Components — Cal.com Design System</p>
+
+      <!-- 1. Color tokens -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">01</span><h3>Color Tokens</h3><span class="rule"></span></div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="chip" style="background:#111111"></div><div class="meta"><p class="name">Primary</p><p class="hex">#111111</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#374151"></div><div class="meta"><p class="name">Body</p><p class="hex">#374151</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#6b7280"></div><div class="meta"><p class="name">Muted</p><p class="hex">#6B7280</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#e5e7eb"></div><div class="meta"><p class="name">Hairline</p><p class="hex">#E5E7EB</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#f5f5f5"></div><div class="meta"><p class="name">Surface Card</p><p class="hex">#F5F5F5</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#101010"></div><div class="meta"><p class="name">Surface Dark</p><p class="hex">#101010</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#3b82f6"></div><div class="meta"><p class="name">Brand Accent</p><p class="hex">#3B82F6</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#10b981"></div><div class="meta"><p class="name">Success</p><p class="hex">#10B981</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#f59e0b"></div><div class="meta"><p class="name">Warning</p><p class="hex">#F59E0B</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ef4444"></div><div class="meta"><p class="name">Error</p><p class="hex">#EF4444</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#8b5cf6"></div><div class="meta"><p class="name">Badge Violet</p><p class="hex">#8B5CF6</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#34d399"></div><div class="meta"><p class="name">Badge Emerald</p><p class="hex">#34D399</p></div></div>
+        </div>
+      </div>
+
+      <!-- 2. Typography -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">02</span><h3>Typography</h3><span class="rule"></span></div>
+        <div class="specimen">
+          <div class="row"><span class="tok">display-xl · Cal Sans 64/600/-2px</span><p class="t-display-xl">The better way to schedule</p></div>
+          <div class="row"><span class="tok">display-lg · Cal Sans 48/600/-1.5px</span><p class="t-display-lg">Your all-purpose scheduling app</p></div>
+          <div class="row"><span class="tok">display-md · Cal Sans 36/600/-1px</span><p class="t-display-md">Scheduling automation for everyone</p></div>
+          <div class="row"><span class="tok">display-sm · Cal Sans 28/600/-0.5px</span><p class="t-display-sm">Smarter, simpler scheduling</p></div>
+          <div class="row"><span class="tok">title-lg · Inter 22/600</span><p class="t-title-lg">Teams plan</p></div>
+          <div class="row"><span class="tok">title-md · Inter 18/600</span><p class="t-title-md">Connect your calendar in seconds</p></div>
+          <div class="row"><span class="tok">body-md · Inter 16/400</span><p class="t-body-md">Cal.com connects to your existing calendar, respects your availability rules, and lets anyone book time with you through a personal link.</p></div>
+          <div class="row"><span class="tok">caption · Inter 13/500</span><p class="t-caption" style="color:var(--c-muted)">Free for individuals · No credit card required</p></div>
+          <div class="row"><span class="tok">code · JetBrains Mono 14/400</span><p class="t-code">npx calcom@latest migrate --from cal.com --to self-hosted</p></div>
+        </div>
+      </div>
+
+      <!-- 3. Buttons -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">03</span><h3>Buttons</h3><span class="rule"></span></div>
+        <div class="btn-row">
+          <button class="btn btn-primary">Sign up free</button>
+          <button class="btn btn-primary is-active">Get started</button>
+          <button class="btn btn-disabled" disabled>Upgrade to Teams</button>
+          <button class="btn btn-secondary">Book a demo</button>
+          <button class="btn btn-ghost">Sign in</button>
+          <button class="btn btn-icon" aria-label="Previous month"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3 5 8l5 5"/></svg></button>
+          <button class="btn btn-secondary btn-sm">Log out</button>
+        </div>
+      </div>
+
+      <!-- 4. Inputs -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">04</span><h3>Inputs</h3><span class="rule"></span></div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="em">Email address</label>
+            <input id="em" type="email" placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="em2">Email address — focused</label>
+            <input id="em2" type="email" value="ana@acme.co" style="border-color:#111111">
+          </div>
+          <div class="field">
+            <label for="tz">Timezone</label>
+            <select id="tz">
+              <option>Europe/Berlin</option>
+              <option>America/New_York</option>
+              <option>Asia/Tokyo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="org">Organization — disabled</label>
+            <input id="org" value="Acme Inc. (verified)" disabled>
+          </div>
+        </div>
+        <div class="switch-row">
+          <span class="switch"></span><span>Send me an email when a booking is made</span>
+        </div>
+        <div class="switch-row">
+          <span class="switch off"></span><span>Offer paid bookings (Stripe)</span>
+        </div>
+      </div>
+
+      <!-- 5. Cards -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">05</span><h3>Cards</h3><span class="rule"></span></div>
+        <div class="card-grid">
+          <div class="feature-card">
+            <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke-width="1.5"><path d="M2 4h12M2 8h12M2 12h8"/></svg></div>
+            <h4 class="t-title-md">Event types that fit your week</h4>
+            <p class="t-body-sm" style="color:var(--c-muted);margin-top:6px">Define 15-minute syncs, 45-minute deep dives and everything between — each with its own availability, buffers and questions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg></div>
+            <h4 class="t-title-md">Automated reminders and follow-ups</h4>
+            <p class="t-body-sm" style="color:var(--c-muted);margin-top:6px">Reduce no-shows with workflows that message attendees by email or SMS before — and after — every meeting.</p>
+          </div>
+          <div class="stat-card">
+            <p class="num">2.4M</p>
+            <p class="lbl">meetings scheduled through Cal.com links every month, across 120+ countries.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Badges -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">06</span><h3>Badges &amp; Pills</h3><span class="rule"></span></div>
+        <div class="badge-row">
+          <span class="badge">Product</span>
+          <span class="badge orange"><svg width="12" height="12" viewBox="0 0 12 12" fill="#c2660a"><circle cx="6" cy="6" r="3"/></svg> Booking confirmed</span>
+          <span class="badge pink">Teams</span>
+          <span class="badge violet">Round-robin</span>
+          <span class="badge emerald">Available now</span>
+        </div>
+      </div>
+
+      <!-- 7. Navigation -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">07</span><h3>Navigation</h3><span class="rule"></span></div>
+        <div class="nav-demo">
+          <nav class="topnav">
+            <div class="logo"><span class="sg-dot" style="width:16px;height:16px;border-radius:9999px;background:var(--c-primary);display:inline-flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:#fff"></span></span>Cal.com</div>
+            <div class="menu">
+              <a href="#">Product</a><a href="#">Solutions</a><a href="#">Resources</a><a href="#">Pricing</a><a href="#">Enterprise</a>
+            </div>
+            <div class="right">
+              <a class="signin" href="#">Sign in</a>
+              <a class="btn btn-primary" href="#" style="height:36px;padding:8px 14px;font-size:13px">Sign up free</a>
+            </div>
+          </nav>
+        </div>
+        <div class="pill-group">
+          <a href="#" class="active">Personal</a>
+          <a href="#">Teams</a>
+          <a href="#">Enterprise</a>
+        </div>
+      </div>
+
+      <!-- 8. List rows -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">08</span><h3>Booking List Rows</h3><span class="rule"></span></div>
+        <div class="list-row">
+          <div class="avatar" style="background:#fdeef6">JD</div>
+          <div class="who"><p>Jason Duarte</p><span>Intro call · 15m · Google Meet</span></div>
+          <span class="when">Tomorrow, 9:00 AM</span>
+        </div>
+        <div class="list-row">
+          <div class="avatar" style="background:#f1ebfd">PM</div>
+          <div class="who"><p>Priya Menon</p><span>Design review · 45m · Zoom</span></div>
+          <span class="when">Thu, Jun 11 · 2:30 PM</span>
+        </div>
+        <div class="list-row">
+          <div class="avatar" style="background:#e8faf2;color:#0a7d56">KO</div>
+          <div class="who"><p>Kenji Okafor</p><span>Onboarding session · 30m · Cal Video</span></div>
+          <span class="when">Fri, Jun 12 · 11:00 AM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINISHED PRODUCT — Cal.com landing page
+       ============================================================ -->
+  <section id="product">
+    <nav class="site-nav">
+      <div class="logo"><span style="width:16px;height:16px;border-radius:9999px;background:var(--c-primary);display:inline-flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:#fff"></span></span>Cal.com</div>
+      <div class="menu">
+        <a href="#">Product</a><a href="#">Solutions</a><a href="#">Resources</a><a href="#">Pricing</a><a href="#">Enterprise</a>
+      </div>
+      <div class="right">
+        <a class="signin" href="#">Sign in</a>
+        <a class="btn btn-primary" href="#" style="height:36px;padding:8px 14px;font-size:13px">Sign up free</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div>
+        <h1 class="t-display-xl">The better way<br>to schedule meetings</h1>
+        <p class="sub">Open-source scheduling infrastructure for everyone. Share your link, let people pick a time, and stop playing email tennis forever.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#">Get started free</a>
+          <a class="btn btn-secondary" href="#">Book a demo</a>
+        </div>
+      </div>
+      <div class="booking-card">
+        <div class="booking-head">
+          <div class="avatar">SB</div>
+          <p>Sofia Brandt<span>Product Strategy Call · 30m · Cal Video</span></p>
+        </div>
+        <div class="booking-body">
+          <div class="cal-grid">
+            <div class="cal-head">
+              <p>June 2026</p>
+              <div><button>‹</button><button>›</button></div>
+            </div>
+            <div class="cal-days">
+              <span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span><span class="dow">S</span>
+              <span class="d dim">1</span><span class="d dim">2</span><span class="d dim">3</span><span class="d dim">4</span><span class="d dim">5</span><span class="d dim">6</span><span class="d dim">7</span>
+              <span class="d">8</span><span class="d">9</span><span class="d">10</span><span class="d sel">11</span><span class="d">12</span><span class="d">13</span><span class="d">14</span>
+              <span class="d">15</span><span class="d">16</span><span class="d">17</span><span class="d">18</span><span class="d">19</span><span class="d">20</span><span class="d">21</span>
+            </div>
+          </div>
+          <div class="slots">
+            <p class="slot-head">Thursday, June 11</p>
+            <button class="slot">9:00am</button>
+            <button class="slot">10:30am</button>
+            <button class="slot pick">2:30pm</button>
+            <button class="slot">4:00pm</button>
+            <button class="btn btn-primary confirm">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logos">
+      <div class="inner">
+        <p>Trusted by teams that take time seriously</p>
+        <span class="lg">Vector Labs</span>
+        <span class="lg">Northwind</span>
+        <span class="lg">Hexadecimal</span>
+        <span class="lg">Aria Health</span>
+        <span class="lg">Parabol</span>
+        <span class="lg">Deel Agency</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <p class="kick">Why Cal.com</p>
+        <h2 class="t-display-lg">Your all-purpose scheduling app</h2>
+        <p>From one-on-ones to round-robin sales floors, Cal.com adapts to how your team actually works — then automates everything around the meeting itself.</p>
+      </div>
+      <div class="card-grid">
+        <div class="feature-card">
+          <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8l2 2 4-4"/></svg></div>
+          <h4 class="t-title-md">Scheduling that respects availability</h4>
+          <p class="t-body-sm" style="color:var(--c-muted);margin-top:6px">Working hours, date overrides, minimum notice and buffers — enforced on every event type, across every connected calendar.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke-width="1.5"><path d="M2 8h4l2-4 2 8 2-4h2"/></svg></div>
+          <h4 class="t-title-md">Routing forms for sales teams</h4>
+          <p class="t-body-sm" style="color:var(--c-muted);margin-top:6px">Qualify leads the moment they book. Route enterprise accounts to account executives and self-serve signups to onboarding.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke-width="1.5"><path d="M4 6l4-3 4 3M4 10l4 3 4-3"/></svg></div>
+          <h4 class="t-title-md">API-first and self-hostable</h4>
+          <p class="t-body-sm" style="color:var(--c-muted);margin-top:6px">Everything in the product is available through our API — and the whole platform runs on your own infrastructure if you want it to.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mock-band">
+      <div class="section">
+        <div class="section-head">
+          <p class="kick">Scheduling automation</p>
+          <h2 class="t-display-md">Workflows that run the meeting for you</h2>
+        </div>
+        <div class="mock-card">
+          <div class="workflow">
+            <div class="wf-step">
+              <span class="tag">Trigger</span>
+              <p>Booking created</p>
+              <span>Instantly on confirmation</span>
+            </div>
+            <div class="wf-arrow">→</div>
+            <div class="wf-step">
+              <span class="tag">Action</span>
+              <p>Send SMS reminder</p>
+              <span>24 hours before the event</span>
+            </div>
+            <div class="wf-arrow">→</div>
+            <div class="wf-step">
+              <span class="tag">Action</span>
+              <p>Post to #wins</p>
+              <span>Booking details to Slack</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:var(--s-xl)">
+          <div class="int-grid">
+            <div class="int-tile"><span class="dot" style="background:#3b82f6"></span><p>Google Calendar</p></div>
+            <div class="int-tile"><span class="dot" style="background:#0a66c2"></span><p>Outlook</p></div>
+            <div class="int-tile"><span class="dot" style="background:#4a154b"></span><p>Slack</p></div>
+            <div class="int-tile"><span class="dot" style="background:#2d8cff"></span><p>Zoom</p></div>
+            <div class="int-tile"><span class="dot" style="background:#0052cc"></span><p>Jira</p></div>
+            <div class="int-tile"><span class="dot" style="background:#635bff"></span><p>Stripe</p></div>
+            <div class="int-tile"><span class="dot" style="background:#e01e5a"></span><p>HubSpot</p></div>
+            <div class="int-tile"><span class="dot" style="background:#111111"></span><p>Webhooks</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <p class="kick">Pricing</p>
+        <h2 class="t-display-lg">Plans that grow with your team</h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="tier">
+          <p class="plan">Free</p>
+          <p class="price">$0<span> /month</span></p>
+          <p class="desc">For individuals getting started with smarter scheduling.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>1 calendar connection</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Unlimited event types</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Cal Video meetings</li>
+          </ul>
+          <a class="btn btn-secondary" href="#">Get started</a>
+        </div>
+        <div class="tier dark">
+          <p class="plan">Teams</p>
+          <p class="price">$15<span> /user/month</span></p>
+          <p class="desc">For teams that book on behalf of each other.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Round-robin &amp; collective events</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Routing forms</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Workflows &amp; reminders</li>
+          </ul>
+          <a class="btn btn-primary" href="#" style="background:#ffffff;color:#101010">Start with Teams</a>
+        </div>
+        <div class="tier">
+          <p class="plan">Organizations</p>
+          <p class="price">$29<span> /user/month</span></p>
+          <p class="desc">For companies standardizing scheduling org-wide.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Org-wide availability policies</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Managed user provisioning</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Insights dashboard</li>
+          </ul>
+          <a class="btn btn-secondary" href="#">Talk to sales</a>
+        </div>
+        <div class="tier">
+          <p class="plan">Enterprise</p>
+          <p class="price">Custom</p>
+          <p class="desc">For regulated industries and platform teams.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>SSO / SCIM &amp; audit logs</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Self-hosting support</li>
+            <li><svg viewBox="0 0 16 16" fill="none" stroke-width="2"><path d="M3 8.5 6.5 12 13 4.5"/></svg>Dedicated success manager</li>
+          </ul>
+          <a class="btn btn-secondary" href="#">Contact us</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="padding-top:0">
+      <div class="section-head">
+        <p class="kick">Customers</p>
+        <h2 class="t-display-lg">Loved by schedulers everywhere</h2>
+      </div>
+      <div class="testimonials">
+        <div class="t-card">
+          <p class="stars">★★★★★</p>
+          <blockquote>"We replaced three tools with Cal.com. Round-robin booking alone saves our sales team about six hours a week of calendar wrangling."</blockquote>
+          <div class="who">
+            <div class="avatar" style="background:#8b5cf6">MR</div>
+            <p>Maya Reyes<span>Head of Sales, Vector Labs</span></p>
+          </div>
+        </div>
+        <div class="t-card">
+          <p class="stars">★★★★★</p>
+          <blockquote>"Being open-source meant our security team approved it in a week. Self-hosting the booking API was the deciding factor for us."</blockquote>
+          <div class="who">
+            <div class="avatar" style="background:#ec4899">DL</div>
+            <p>Daniel Lindqvist<span>Platform Lead, Northwind</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <div class="cta-band">
+        <h2 class="t-display-sm">Smarter, simpler scheduling starts here</h2>
+        <p>Free for individuals. Set up your booking link in under two minutes.</p>
+        <a class="btn btn-primary" href="#">Sign up free</a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="inner">
+        <div class="footer-grid">
+          <div>
+            <p class="f-logo"><span style="width:16px;height:16px;border-radius:9999px;background:#ffffff;display:inline-flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:#101010"></span></span>Cal.com</p>
+            <p class="f-note">Open-source scheduling infrastructure for everyone.</p>
+          </div>
+          <div>
+            <h5>Product</h5>
+            <ul><li><a href="#">Event types</a></li><li><a href="#">Workflows</a></li><li><a href="#">Routing forms</a></li><li><a href="#">Insights</a></li></ul>
+          </div>
+          <div>
+            <h5>Solutions</h5>
+            <ul><li><a href="#">Sales</a></li><li><a href="#">Recruiting</a></li><li><a href="#">Education</a></li><li><a href="#">Healthcare</a></li></ul>
+          </div>
+          <div>
+            <h5>Company</h5>
+            <ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Open source</a></li></ul>
+          </div>
+          <div>
+            <h5>Resources</h5>
+            <ul><li><a href="#">Docs</a></li><li><a href="#">API reference</a></li><li><a href="#">Status</a></li><li><a href="#">Community</a></li></ul>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <p>© 2026 Cal.com, Inc. All rights reserved.</p>
+          <p>Privacy · Terms · Security</p>
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

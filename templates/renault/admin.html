@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renault — Dealer Operations Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ffed00; --primary-deep:#e6d200; --on-primary:#000000;
+  --ink:#000000; --body:#222222; --charcoal:#333333; --mute:#666666; --ash:#8a8a8a; --stone:#c4c4c4;
+  --on-dark:#ffffff; --on-dark-mute:rgba(255,255,255,0.72);
+  --canvas:#ffffff; --surface-soft:#f7f7f7; --surface-dark:#000000; --surface-deep:#111111;
+  --hairline:#f2f2f2; --hairline-strong:#000000; --divider-dark:rgba(255,255,255,0.16);
+  --error:#be6464; --warning:#f0ad4e; --success:#8dc572; --info:#337ab7;
+  --font-sans:"Inter Tight","Segoe UI",Arial,sans-serif;
+  --r-xs:2px; --r-sm:3px; --r-md:4px; --r-pill:46px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:20px; --sp-xl:24px; --sp-xxl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--surface-soft);color:var(--body);font-family:var(--font-sans);font-size:14px;line-height:1.57;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-sans);border:0}
+h1,h2,h3{color:var(--ink);font-weight:700;line-height:0.95}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.side{background:var(--surface-dark);padding:var(--sp-md);display:flex;flex-direction:column;gap:2px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--on-dark);padding:var(--sp-sm) var(--sp-md) var(--sp-lg)}
+.diamond{width:26px;height:26px;flex:none}
+.m-label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--on-dark-mute);padding:var(--sp-lg) var(--sp-md) var(--sp-xs)}
+.menu a{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:var(--r-xs);color:var(--on-dark-mute);font-weight:400}
+.menu a .ico{width:18px;text-align:center;font-style:normal}
+.menu a:hover{background:var(--surface-deep);color:var(--on-dark)}
+.menu a.active{background:var(--primary);color:var(--on-primary);font-weight:700}
+.menu a .cnt{margin-left:auto;background:var(--on-dark);color:var(--on-primary);border-radius:var(--r-full);font-size:11px;font-weight:700;padding:1px 8px}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:12px;padding:var(--sp-sm);background:var(--surface-deep);border:1px solid var(--divider-dark)}
+.ava{width:36px;height:36px;border-radius:var(--r-full);background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none}
+.user-card .nm{font-weight:700;color:var(--on-dark);font-size:13px}
+.user-card .rl{font-size:12px;color:var(--on-dark-mute)}
+
+/* ---------- topbar ---------- */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:60px;background:var(--canvas);border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-xl)}
+.crumb{font-size:14px;color:var(--mute)}
+.crumb b{color:var(--ink);font-weight:700}
+.search{margin-left:auto;position:relative}
+.search input{height:44px;width:280px;border:0;border-bottom:1px solid var(--hairline-strong);border-radius:0;padding:0 14px;font-size:16px;background:var(--canvas);font-family:var(--font-sans);color:var(--ink)}
+.search input::placeholder{color:var(--ash)}
+.icon-sq{width:40px;height:40px;background:var(--canvas);border:1px solid var(--hairline-strong);border-radius:var(--r-xs);display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink)}
+.bell{position:relative}
+.bell .dot{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:var(--r-full);background:var(--primary);color:var(--on-primary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid var(--ink)}
+.ava-top{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface-dark);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+
+/* ---------- content ---------- */
+.content{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-lg)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-md)}
+.page-head h1{font-size:32px}
+.btn-yellow{display:inline-flex;align-items:center;gap:8px;height:48px;padding:14px 24px;background:var(--primary);color:var(--on-primary);border-radius:var(--r-xs);font-size:14.4px;font-weight:700;letter-spacing:0.144px}
+.btn-yellow:active{background:var(--primary-deep)}
+.btn-black{display:inline-flex;align-items:center;gap:8px;height:48px;padding:14px 24px;background:var(--surface-dark);color:var(--on-dark);border-radius:var(--r-xs);font-size:14.4px;font-weight:700;letter-spacing:0.144px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;height:44px;padding:13px 23px;background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong);border-radius:var(--r-xs);font-size:14px;font-weight:700}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.kpi{background:var(--canvas);border:1px solid var(--hairline);padding:var(--sp-lg)}
+.kpi .lbl{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.kpi .val{font-size:28px;font-weight:700;color:var(--ink);line-height:0.95}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+.delta{font-size:12px;font-weight:700}
+.up{color:#4e7c37} .down{color:var(--error)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:24px}
+.spark i{width:6px;background:var(--stone);opacity:.5}
+.spark i.hot{background:var(--primary);border:1px solid var(--ink);opacity:1}
+
+/* ---------- charts ---------- */
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-md)}
+.card{background:var(--canvas);border:1px solid var(--hairline);padding:var(--sp-xl)}
+.card h3{font-size:20px;margin-bottom:var(--sp-lg)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:180px;border-bottom:1px solid var(--hairline-strong)}
+.bcol{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:60%;background:var(--stone);opacity:.5}
+.bcol.hot .bar{background:var(--primary);border:1px solid var(--ink);opacity:1}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-size:12px;color:var(--mute)}
+.donut-wrap{display:flex;gap:var(--sp-xl);align-items:center}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-size:22px;font-weight:700;color:var(--ink)}
+.donut .center .t{font-size:12px;color:var(--mute)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--body)}
+.leg i{width:10px;height:10px;flex:none}
+.leg .pct{margin-left:auto;font-weight:700;color:var(--ink)}
+
+/* ---------- table + panel ---------- */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-md);align-items:start}
+.table-card{background:var(--canvas);border:1px solid var(--hairline-strong)}
+.tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-xl);border-bottom:1px solid var(--hairline-strong)}
+.tc-head h3{font-size:20px}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--mute);text-align:left;padding:var(--sp-sm) var(--sp-xl);border-bottom:1px solid var(--hairline-strong);background:var(--surface-soft)}
+td{padding:var(--sp-md) var(--sp-xl);border-bottom:1px solid var(--hairline);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.cell-name{font-weight:700;color:var(--ink)}
+.cell-sub{font-size:12px;color:var(--mute)}
+.num{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700;white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:700;border-radius:var(--r-pill);padding:3px 12px}
+.badge.success{background:#e2f0da;color:#4e7c37}
+.badge.warning{background:#fdf0d9;color:#8a5a00}
+.badge.danger{background:#f6e2e2;color:#8a3c3c}
+.badge.neutral{background:var(--surface-soft);color:var(--charcoal);border:1px solid var(--stone)}
+.badge.info{background:#dfe9f3;color:#264e76}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--stone);background:var(--canvas);vertical-align:middle}
+input[type=checkbox]:checked{background:var(--primary);border-color:var(--ink)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+.act{width:32px;height:32px;background:var(--canvas);border:1px solid var(--hairline-strong);display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-xl);border-top:1px solid var(--hairline-strong);font-size:12px;color:var(--mute)}
+.pages{display:flex;gap:6px}
+.pg{min-width:32px;height:32px;border:1px solid var(--hairline-strong);background:var(--canvas);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ink)}
+.pg.on{background:var(--ink);color:var(--on-dark)}
+
+/* ---------- side panel ---------- */
+.feed{display:flex;flex-direction:column;gap:var(--sp-lg)}
+.fi{display:flex;gap:12px;align-items:flex-start}
+.fi .dot{width:10px;height:10px;margin-top:4px;flex:none}
+.fi .tx{font-size:13px;color:var(--body)}
+.fi .tx b{color:var(--ink)}
+.fi .tm{font-size:12px;color:var(--mute);margin-top:2px}
+.qa{margin-top:var(--sp-lg);border-top:1px solid var(--hairline);padding-top:var(--sp-lg);display:flex;flex-direction:column;gap:8px}
+.qa .btn-yellow,.qa .btn-outline,.qa .btn-black{height:44px;padding:0 20px;width:100%;justify-content:center}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .search{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="logo">
+      <svg class="diamond" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 6 L24 6 L30 16 L24 26 L8 26 L2 16 Z" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M11 11 L21 11 L24 16 L21 21 L11 21 L8 16 Z" fill="#fff"/></svg>
+      Dealer Console
+    </div>
+    <nav class="menu">
+      <a href="#"><i class="ico">◫</i>Overview</a>
+      <a href="#" class="active"><i class="ico">▤</i>Orders</a>
+      <a href="#"><i class="ico">▦</i>Stock &amp; pipeline</a>
+      <a href="#"><i class="ico">✎</i>Configurations<span class="cnt">14</span></a>
+      <a href="#"><i class="ico">⊙</i>Test drives</a>
+      <a href="#"><i class="ico">▦</i>Trade-ins</a>
+      <a href="#"><i class="ico">◉</i>Customers</a>
+      <a href="#"><i class="ico">✦</i>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="ava">SD</div>
+      <div><div class="nm">Selin Demir</div><div class="rl">Renault Kadıköy · Sales Lead</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="crumb">Orders &nbsp;›&nbsp; <b>E-TECH reservations</b></span>
+      <div class="search"><input type="search" placeholder="Search orders, VINs, customers…"></div>
+      <button class="icon-sq bell" aria-label="Notifications">◔<span class="dot">7</span></button>
+      <div class="ava-top">SD</div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <h1>Dealership performance</h1>
+        <div style="display:flex;gap:8px">
+          <button class="btn-outline">Last 30 days</button>
+          <button class="btn-yellow">+ New order</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="lbl">Orders this month</div><div class="val">64</div><div class="row"><span class="delta up">↑ 18.2%</span><span class="spark"><i style="height:30%"></i><i style="height:44%"></i><i style="height:38%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:72%"></i><i class="hot" style="height:92%"></i></span></div></div>
+        <div class="kpi"><div class="lbl">Revenue</div><div class="val">€1.92M</div><div class="row"><span class="delta up">↑ 12.6%</span><span class="spark"><i style="height:34%"></i><i style="height:42%"></i><i style="height:46%"></i><i style="height:54%"></i><i style="height:60%"></i><i style="height:68%"></i><i class="hot" style="height:84%"></i></span></div></div>
+        <div class="kpi"><div class="lbl">Test drives</div><div class="val">118</div><div class="row"><span class="delta up">↑ 6.4%</span><span class="spark"><i style="height:40%"></i><i style="height:48%"></i><i style="height:42%"></i><i style="height:56%"></i><i style="height:52%"></i><i style="height:64%"></i><i class="hot" style="height:76%"></i></span></div></div>
+        <div class="kpi"><div class="lbl">Delivery lead time</div><div class="val">6.2 wks</div><div class="row"><span class="delta up">↓ 1.1 wk</span><span class="spark"><i style="height:74%"></i><i style="height:66%"></i><i style="height:70%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:46%"></i><i class="hot" style="height:42%"></i></span></div></div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3>Orders per month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:30%"></div></div>
+            <div class="bcol"><div class="bar" style="height:38%"></div></div>
+            <div class="bcol"><div class="bar" style="height:34%"></div></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div></div>
+            <div class="bcol"><div class="bar" style="height:44%"></div></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div></div>
+            <div class="bcol"><div class="bar" style="height:52%"></div></div>
+            <div class="bcol"><div class="bar" style="height:66%"></div></div>
+            <div class="bcol"><div class="bar" style="height:60%"></div></div>
+            <div class="bcol"><div class="bar" style="height:74%"></div></div>
+            <div class="bcol"><div class="bar" style="height:68%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:90%"></div></div>
+          </div>
+          <div class="blabels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+        </div>
+        <div class="card">
+          <h3>Orders by powertrain</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#f2f2f2" stroke-width="20"/>
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#ffed00" stroke-width="20" stroke-dasharray="140 256" stroke-dashoffset="0" stroke-linecap="butt"/>
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#000000" stroke-width="20" stroke-dasharray="76 256" stroke-dashoffset="-148" stroke-linecap="butt"/>
+                <circle cx="80" cy="80" r="62" fill="none" stroke="#c4c4c4" stroke-width="20" stroke-dasharray="40 256" stroke-dashoffset="-232" stroke-linecap="butt"/>
+              </svg>
+              <div class="center"><span class="v">64</span><span class="t">orders</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#ffed00;border:1px solid #000"></i>Electric E-TECH<span class="pct">55%</span></div>
+              <div class="leg"><i style="background:#000000"></i>Hybrid<span class="pct">30%</span></div>
+              <div class="leg"><i style="background:#c4c4c4"></i>Petrol / diesel<span class="pct">15%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head"><h3>Orders</h3><button class="btn-outline">Export</button></div>
+          <table>
+            <thead><tr><th></th><th>Order</th><th>Model</th><th>Status</th><th>Amount</th><th>Date</th><th style="text-align:right">Actions</th></tr></thead>
+            <tbody>
+              <tr><td><input type="checkbox" checked></td><td><div class="cell-name">Elif Mert</div><div class="cell-sub">ORD-84102 · R5 E-TECH Evolution</div></td><td>Electric</td><td><span class="badge success">Confirmed</span></td><td class="num">€26,410</td><td>Oct 24</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Baran Aydın</div><div class="cell-sub">ORD-84098 · Scenic E-TECH Techno</div></td><td>Electric</td><td><span class="badge info">In production</span></td><td class="num">€41,980</td><td>Oct 23</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Zeynep Kaya</div><div class="cell-sub">ORD-84091 · Clio E-TECH Techno</div></td><td>Hybrid</td><td><span class="badge warning">Awaiting finance</span></td><td class="num">€24,300</td><td>Oct 22</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Mert Öztürk</div><div class="cell-sub">ORD-84087 · Megane E-TECH</div></td><td>Electric</td><td><span class="badge success">Ready for pickup</span></td><td class="num">€36,750</td><td>Oct 20</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Ayşe Yıldız</div><div class="cell-sub">ORD-84079 · Kangoo E-TECH Van</div></td><td>Electric</td><td><span class="badge info">In production</span></td><td class="num">€27,120</td><td>Oct 18</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Kaan Arslan</div><div class="cell-sub">ORD-84066 · Austral E-TECH</div></td><td>Hybrid</td><td><span class="badge danger">Cancelled</span></td><td class="num">€34,600</td><td>Oct 15</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+              <tr><td><input type="checkbox"></td><td><div class="cell-name">Deniz Şahin</div><div class="cell-sub">ORD-84051 · Espace Initium</div></td><td>Hybrid</td><td><span class="badge neutral">Draft</span></td><td class="num">€42,900</td><td>Oct 12</td><td><span class="row-actions"><button class="act">✎</button><button class="act">⋯</button></span></td></tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span>Showing 1–7 of 212 orders</span>
+            <div class="pages"><button class="pg">‹</button><button class="pg on">1</button><button class="pg">2</button><button class="pg">3</button><button class="pg">…</button><button class="pg">›</button></div>
+          </div>
+        </div>
+
+        <div class="feed">
+          <div class="card">
+            <h3>Recent activity</h3>
+            <div class="fi"><span class="dot" style="background:#8dc572"></span><div><div class="tx"><b>ORD-84087</b> is ready for pickup — customer notified via MyRenault.</div><div class="tm">35 minutes ago</div></div></div>
+            <div class="fi"><span class="dot" style="background:#f0ad4e"></span><div><div class="tx"><b>ORD-84091</b> finance pre-approval pending — chase RCA Finance.</div><div class="tm">2 hours ago</div></div></div>
+            <div class="fi"><span class="dot" style="background:#337ab7"></span><div><div class="tx">New online configuration: <b>R5 Alpine · Sunlight Yellow</b> saved by a lead.</div><div class="tm">5 hours ago</div></div></div>
+            <div class="fi"><span class="dot" style="background:#be6464"></span><div><div class="tx"><b>ORD-84066</b> cancelled — trade-in valuation disputed.</div><div class="tm">Yesterday</div></div></div>
+          </div>
+          <div class="card">
+            <h3>Quick actions</h3>
+            <div class="qa">
+              <button class="btn-yellow">Confirm 3 deliveries</button>
+              <button class="btn-black">Schedule test drives</button>
+              <button class="btn-outline">Request trade-in valuation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

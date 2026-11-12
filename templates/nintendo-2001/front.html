@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nintendo.com — The Official Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#e60012; --signal:#f68d1f; --amber:#ecab37; --nav-gold:#e48600;
+  --canvas:#7a8aba; --canvas-soft:#9fbee7; --sky:#9fbee7; --lavender:#acace7; --ice:#c0d5e6;
+  --periwinkle:#8ba1d4; --chrome-indigo:#3d4f97; --muted-indigo:#60619c;
+  --platinum:#dedede; --surface:#ffffff; --carbon:#21242e; --hairline:#5a5f8c;
+  --ink:#21242e; --ink-soft:#3d4f97; --on-primary:#ffffff;
+  --systems-teal:#206479; --games-red:#a7282b; --success:#2e7d5b; --warning:#ecab37; --danger:#a7282b; --neutral:#60619c;
+  --font-ui:Arial,Helvetica,sans-serif;
+  --font-display:'Arial Black',Arial,sans-serif;
+  --font-pixel:'Press Start 2P',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);font-family:var(--font-ui);font-size:12px;color:var(--ink);line-height:1.4;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:100% 4px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;font-size:11px;font-weight:700;letter-spacing:.5px}
+.page{width:840px;margin:0 auto;padding:16px 0 32px}
+
+/* ── bevel utilities ─────────────────────────────────────── */
+.plate{background:var(--canvas);border:1px solid var(--chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 var(--chrome-indigo),2px 3px 0 rgba(33,36,46,.25)}
+.inset{background:var(--platinum);border:1px solid var(--chrome-indigo);
+  box-shadow:inset 1px 1px 0 var(--chrome-indigo),inset -1px -1px 0 rgba(255,255,255,.7)}
+
+/* ── nav bar (carbon command slab) ───────────────────────── */
+.navbar{background:var(--carbon);height:34px;display:flex;align-items:center;gap:14px;padding:0 10px;
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:5px 5px;
+  box-shadow:0 2px 0 var(--chrome-indigo)}
+.logo-pill{background:var(--surface);border:2px solid var(--primary);border-radius:9999px;padding:2px 10px;display:flex;align-items:center}
+.logo-pill b{font-family:var(--font-display);color:var(--primary);font-size:13px;letter-spacing:.5px}
+.nav-words{display:flex;gap:2px;height:34px}
+.nav-words a{font-family:var(--font-ui);font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--nav-gold);text-transform:uppercase;padding:0 11px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.12)}
+.nav-words a:first-child{border-left:none}
+.nav-words a:hover{color:#ffc14d}
+.nav-chips{margin-left:auto;display:flex;gap:5px}
+.chip{background:var(--amber);color:var(--carbon);border-radius:2px;padding:5px 9px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 var(--nav-gold)}
+
+/* ── subnav strip ────────────────────────────────────────── */
+.subnav{background:var(--canvas-soft);display:flex;justify-content:center;gap:0;padding:5px 0;box-shadow:0 1px 0 var(--chrome-indigo)}
+.subnav a{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);padding:0 12px;border-right:1px dotted var(--muted-indigo)}
+.subnav a:last-child{border-right:none}
+.subnav a:hover{color:var(--games-red)}
+
+/* ── masthead: mascot + search ───────────────────────────── */
+.masthead{display:flex;align-items:flex-end;gap:12px;margin:14px 0}
+.mascot{display:flex;align-items:flex-end;gap:8px}
+.mascot-figure{width:52px;height:62px;flex:none}
+.bubble{background:var(--surface);border:1px solid var(--carbon);border-radius:10px;padding:8px 12px;position:relative;font-family:var(--font-pixel);font-size:9px;line-height:1.5;color:var(--carbon);max-width:230px}
+.bubble::after{content:"";position:absolute;left:-9px;bottom:10px;border:5px solid transparent;border-right-color:var(--carbon)}
+.searchline{margin-left:auto;display:flex;align-items:center;gap:5px}
+.searchline .fld{width:190px}
+.fld{background:var(--surface);border:1px solid var(--hairline);border-radius:2px;height:22px;padding:0 6px;font-family:var(--font-ui);font-size:12px;color:var(--ink);outline:none;box-shadow:inset 1px 1px 0 var(--chrome-indigo)}
+select.fld{height:24px;box-shadow:none}
+.go{background:var(--amber);color:var(--carbon);border-radius:2px;padding:5px 12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 var(--nav-gold)}
+
+/* ── hero panel ──────────────────────────────────────────── */
+.hero{border-radius:6px;padding:0;overflow:hidden;height:250px;position:relative;
+  background:linear-gradient(115deg,var(--lavender) 0%,#8f8fd6 45%,#5f6db0 100%)}
+.hero::before{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(210px 170px at 78% 42%,rgba(255,255,255,.5),transparent 72%),
+   radial-gradient(120px 100px at 64% 68%,rgba(227,30,36,.55),transparent 70%),
+   radial-gradient(90px 80px at 90% 22%,rgba(246,141,31,.5),transparent 70%),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.09) 0 2px,transparent 2px 26px),
+   repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 2px,transparent 2px 26px)}
+.hero-copy{position:absolute;left:24px;top:38px;max-width:440px}
+.hero-word{font-family:var(--font-display);font-size:44px;font-weight:900;line-height:1;color:#fff;letter-spacing:0;
+  -webkit-text-stroke:2px var(--carbon);text-shadow:4px 4px 0 var(--carbon)}
+.hero-tag{font-size:15px;font-weight:700;color:#fff;text-shadow:1px 1px 0 var(--chrome-indigo);margin-top:12px}
+.hero-cta{position:absolute;left:24px;bottom:22px;display:flex;align-items:center;gap:10px}
+.arrow-disc{width:22px;height:22px;border-radius:9999px;background:var(--signal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 0 var(--chrome-indigo)}
+
+/* ── two-column body ─────────────────────────────────────── */
+.body-split{display:grid;grid-template-columns:1fr 246px;gap:14px;margin-top:14px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:14px}
+.label-bar{background:var(--canvas);padding:7px 10px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);
+  border-bottom:1px solid var(--chrome-indigo);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.label-bar .glyph{color:var(--games-red);font-family:var(--font-pixel);font-size:8px}
+.label-bar .more{margin-left:auto;color:var(--ink-soft);font-size:10px}
+
+/* ── game grid ───────────────────────────────────────────── */
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;background:var(--canvas)}
+.game-tile{background:var(--surface);border:1px solid var(--chrome-indigo);border-radius:4px;padding:6px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),1px 2px 0 rgba(33,36,46,.2)}
+.boxart{height:96px;border:1px solid var(--chrome-indigo);border-radius:2px;position:relative;overflow:hidden;margin-bottom:6px}
+.boxart .ba-word{position:absolute;left:8px;top:8px;font-family:var(--font-display);font-size:15px;font-weight:900;color:#fff;-webkit-text-stroke:1px var(--carbon);text-shadow:2px 2px 0 var(--carbon)}
+.boxart .ba-platform{position:absolute;right:5px;bottom:5px;background:var(--carbon);color:var(--canvas-soft);font-size:9px;font-weight:700;padding:1px 5px;border-radius:2px}
+.g1{background:linear-gradient(140deg,#2f7fd0 0%,#1c4f9c 55%,#122f66 100%)}
+.g2{background:linear-gradient(140deg,#3aa66b 0%,#1f6e46 55%,#0f3d27 100%)}
+.g3{background:linear-gradient(140deg,#e2b13c 0%,#b07d1c 55%,#6e4a0a 100%)}
+.g4{background:linear-gradient(140deg,#c04fd8 0%,#7d2c96 55%,#43155a 100%)}
+.g5{background:linear-gradient(140deg,#d84040 0%,#8f1f2c 55%,#4d0f18 100%)}
+.g6{background:linear-gradient(140deg,#41c3c9 0%,#1f7f8a 55%,#0d4650 100%)}
+.g7{background:linear-gradient(140deg,#f08a3c 0%,#b5561a 55%,#5f2c08 100%)}
+.g8{background:linear-gradient(140deg,#8a9ad8 0%,#4d5fae 55%,#26305e 100%)}
+.g-t{font-size:12px;font-weight:700;color:var(--ink)}
+.g-p{font-size:10px;color:var(--ink-soft);font-weight:700;margin:1px 0 5px}
+.g-row{display:flex;align-items:center;gap:6px}
+.g-price{font-size:12px;font-weight:700;color:var(--games-red)}
+.rating-sq{width:20px;height:20px;background:var(--surface);border:1px solid var(--carbon);border-radius:2px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--carbon);margin-left:auto}
+.add{background:var(--signal);color:#fff;border-radius:2px;padding:4px 8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 0 #c26306}
+
+/* ── news rows ───────────────────────────────────────────── */
+.news-list{padding:10px;background:var(--canvas);display:flex;flex-direction:column;gap:6px}
+.news-row{background:var(--platinum);border-radius:4px;padding:7px 8px;display:flex;align-items:center;gap:8px;box-shadow:inset -1px -1px 0 rgba(255,255,255,.7)}
+.news-row .cat{font-family:var(--font-pixel);font-size:7px;color:var(--games-red);flex:none;width:38px}
+.news-row a{font-size:12px;font-weight:700;color:var(--ink-soft)}
+.news-row a:hover{color:var(--games-red)}
+.news-row .arr{margin-left:auto}
+
+/* ── right rail ──────────────────────────────────────────── */
+.rail-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--carbon);color:#fff;border-radius:0;padding:9px 10px;margin-bottom:5px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:5px 5px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 2px 0 var(--chrome-indigo)}
+.rail-btn .i{color:var(--amber)}
+.poll{background:var(--periwinkle);border-radius:6px;border:1px solid var(--chrome-indigo);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.poll-body{padding:12px}
+.poll-q{font-size:12px;font-weight:700;margin-bottom:8px}
+.radio-row{display:flex;align-items:center;gap:7px;margin-bottom:6px;font-size:12px}
+.radio-dot{width:12px;height:12px;border-radius:9999px;background:#fff;border:1px solid var(--hairline);flex:none}
+.radio-row.on .radio-dot{border:4px solid var(--signal)}
+.submit{background:var(--signal);color:#fff;border-radius:2px;padding:7px 16px;margin-top:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 0 #c26306}
+.info-box{background:var(--surface);border-radius:4px;border:1px solid var(--chrome-indigo);overflow:hidden}
+.info-tab{background:var(--amber);color:var(--carbon);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:5px 10px}
+.info-body{padding:10px;font-size:12px;color:var(--ink)}
+.promo{background:var(--lavender);border-radius:4px;border:1px solid var(--chrome-indigo);padding:12px;text-align:center}
+.promo .p-word{font-family:var(--font-display);font-size:16px;font-weight:900;color:#fff;-webkit-text-stroke:1px var(--carbon);text-shadow:2px 2px 0 var(--carbon)}
+.promo .p-sub{font-size:10px;color:var(--carbon);font-weight:700;margin-top:6px}
+.promo .p-render{height:54px;margin-top:8px;border-radius:2px;background:linear-gradient(140deg,#d75bb2 0%,#8f3a86 60%,#4a1a4d 100%)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- carbon command nav -->
+  <header class="navbar">
+    <a class="logo-pill" href="#"><b>NINTENDO</b></a>
+    <nav class="nav-words">
+      <a href="#">Games</a><a href="#">Systems</a><a href="#">News</a><a href="#">Nsider</a><a href="#">Downloads</a>
+    </nav>
+    <div class="nav-chips">
+      <a class="chip" href="#">Code Bank</a>
+      <a class="chip" href="#">Game Finder</a>
+    </div>
+  </header>
+
+  <!-- pale sky subnav -->
+  <nav class="subnav">
+    <a href="#">Parents</a><a href="#">Customer Service</a><a href="#">Corporate</a><a href="#">Global</a><a href="#">Privacy</a><a href="#">Store</a><a href="#">Contact</a>
+  </nav>
+
+  <!-- masthead -->
+  <div class="masthead">
+    <div class="mascot">
+      <svg class="mascot-figure" viewBox="0 0 52 62" aria-hidden="true">
+        <ellipse cx="26" cy="40" rx="16" ry="20" fill="#e60012"/>
+        <circle cx="26" cy="18" r="13" fill="#f6c9a0"/>
+        <path d="M13 12c0-8 26-8 26 0v6H13z" fill="#3d2b1f"/>
+        <rect x="17" y="30" width="7" height="10" rx="2" fill="#2d6cc0"/>
+        <rect x="28" y="30" width="7" height="10" rx="2" fill="#2d6cc0"/>
+        <circle cx="21" cy="17" r="2" fill="#21242e"/><circle cx="31" cy="17" r="2" fill="#21242e"/>
+        <path d="M22 23c2 2 6 2 8 0" stroke="#21242e" stroke-width="1.5" fill="none"/>
+        <ellipse cx="8" cy="50" rx="5" ry="9" fill="#fff" stroke="#21242e"/>
+        <ellipse cx="44" cy="50" rx="5" ry="9" fill="#fff" stroke="#21242e"/>
+      </svg>
+      <div class="bubble">WELCOME TO<br>NINTENDO.COM!<br>THE STORE IS OPEN.</div>
+    </div>
+    <form class="searchline">
+      <select class="fld"><option>All</option><option>Games</option><option>Systems</option></select>
+      <input class="fld" type="text" placeholder="Search games..." aria-label="Search games">
+      <button type="button" class="go">GO</button>
+    </form>
+  </div>
+
+  <!-- hero -->
+  <section class="hero plate">
+    <div class="hero-copy">
+      <div class="hero-word">MARIO KART 64</div>
+      <p class="hero-tag">Gorgeous graphics, great sound, and four-player mayhem — now shipping.</p>
+    </div>
+    <div class="hero-cta"><a class="arrow-disc" href="#">▶</a><span style="font-size:11px;font-weight:700;color:#fff;text-shadow:1px 1px 0 var(--chrome-indigo)">PLAY IT ON NINTENDO 64</span></div>
+  </section>
+
+  <!-- body split -->
+  <div class="body-split">
+    <div class="stack">
+
+      <!-- games grid -->
+      <section class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> TOP SELLERS <a class="more" href="#">See All ›</a></div>
+        <div class="game-grid">
+          <article class="game-tile">
+            <div class="boxart g1"><span class="ba-word">SUPER MARIO 64</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">Super Mario 64</p><p class="g-p">Nintendo 64 · Platformer</p>
+            <div class="g-row"><span class="g-price">$49.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g2"><span class="ba-word">ZELDA: OCARINA</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">Legend of Zelda: Ocarina of Time</p><p class="g-p">Nintendo 64 · Adventure</p>
+            <div class="g-row"><span class="g-price">$54.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g3"><span class="ba-word">POKEMON GOLD</span><span class="ba-platform">GBC</span></div>
+            <p class="g-t">Pokemon Gold Version</p><p class="g-p">Game Boy Color · RPG</p>
+            <div class="g-row"><span class="g-price">$34.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g4"><span class="ba-word">MARIO PARTY 2</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">Mario Party 2</p><p class="g-p">Nintendo 64 · Party</p>
+            <div class="g-row"><span class="g-price">$44.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g5"><span class="ba-word">F-ZERO X</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">F-Zero X</p><p class="g-p">Nintendo 64 · Racing</p>
+            <div class="g-row"><span class="g-price">$39.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g6"><span class="ba-word">WAVE RACE 64</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">Wave Race 64</p><p class="g-p">Nintendo 64 · Racing</p>
+            <div class="g-row"><span class="g-price">$34.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g7"><span class="ba-word">DONKEY KONG 64</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">Donkey Kong 64</p><p class="g-p">Nintendo 64 · Platformer</p>
+            <div class="g-row"><span class="g-price">$54.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+          <article class="game-tile">
+            <div class="boxart g8"><span class="ba-word">STAR FOX 64</span><span class="ba-platform">N64</span></div>
+            <p class="g-t">Star Fox 64</p><p class="g-p">Nintendo 64 · Shooter</p>
+            <div class="g-row"><span class="g-price">$44.95</span><span class="rating-sq">E</span><button class="add">ADD TO CART</button></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- official news -->
+      <section class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> OFFICIAL NEWS <a class="more" href="#">Archives ›</a></div>
+        <div class="news-list">
+          <div class="news-row"><span class="cat">NEWS</span><a href="#">Pokemon Gold and Silver hit 5 million cartridges shipped worldwide</a><a class="arrow-disc arr" href="#">▶</a></div>
+          <div class="news-row"><span class="cat">STORE</span><a href="#">Holiday shipping cut-off dates announced for the Nintendo Power Store</a><a class="arrow-disc arr" href="#">▶</a></div>
+          <div class="news-row"><span class="cat">NSIDER</span><a href="#">Chat live with the Mario Party 2 team this Thursday at 4 PM PT</a><a class="arrow-disc arr" href="#">▶</a></div>
+          <div class="news-row"><span class="cat">DOWNLOAD</span><a href="#">New 64DD wallpapers and ICQ skins added to the Downloads page</a><a class="arrow-disc arr" href="#">▶</a></div>
+        </div>
+      </section>
+
+      <!-- featured game detail -->
+      <section class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> GAME OF THE WEEK: SUPER MARIO 64</div>
+        <div class="detail">
+          <div class="d-thumbs">
+            <div class="d-thumb ba-word-none g1 on"></div>
+            <div class="d-thumb g2"></div>
+            <div class="d-thumb g5"></div>
+            <div class="d-thumb g6"></div>
+            <div class="d-thumb g8"></div>
+          </div>
+          <div class="d-main g1">
+            <span class="d-word">SUPER MARIO 64</span>
+            <span class="ba-platform" style="right:6px;top:6px;bottom:auto">N64</span>
+          </div>
+          <div class="d-panel">
+            <p class="g-t" style="font-family:var(--font-display);font-size:20px;-webkit-text-stroke:1px var(--carbon);color:#fff;text-shadow:2px 2px 0 var(--carbon)">SUPER MARIO 64</p>
+            <p class="g-p" style="font-size:11px">Nintendo 64 · 1–4 Players · Rumble Pak Compatible</p>
+            <p class="d-price">$49.95 <span class="d-stock">In Stock — Ships in 24 hrs</span></p>
+            <p class="d-lbl">FORMAT</p>
+            <div class="d-formats">
+              <button class="fmt on">Cartridge $49.95</button>
+              <button class="fmt">Player's Guide $19.95</button>
+              <button class="fmt">Bundle w/ Rumble Pak $64.95</button>
+            </div>
+            <p class="d-lbl">QUANTITY</p>
+            <div class="d-qty">
+              <button class="stepper-btn" aria-label="Decrease">−</button><span class="inset qty">1</span><button class="stepper-btn" aria-label="Increase">+</button>
+              <button class="submit" style="margin:0 0 0 10px">ADD TO CART</button>
+              <span class="rating-sq" title="Rated E for Everyone">E</span>
+            </div>
+            <div class="dotted-divider"></div>
+            <p class="d-rev-h">PLAYER REVIEWS</p>
+            <div class="news-row" style="margin-bottom:4px"><span class="cat">★★★★★</span><a href="#">"Best launch game ever made. The analog stick changed everything." — Kev64</a></div>
+            <div class="news-row"><span class="cat">★★★★☆</span><a href="#">"Camera is rough in tight spots, but the stages are pure magic." — PeachFan88</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- cart panel -->
+      <section class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> YOUR CART <span class="more">3 ITEMS</span></div>
+        <div class="cart">
+          <div class="c-rows">
+            <div class="c-row">
+              <div class="c-img g1"></div>
+              <div><p class="g-t">Super Mario 64</p><p class="g-p">Nintendo 64 · Cartridge · Qty 1</p></div>
+              <p class="g-price" style="margin-left:auto">$49.95</p>
+            </div>
+            <div class="c-row">
+              <div class="c-img g2"></div>
+              <div><p class="g-t">Zelda: Ocarina of Time</p><p class="g-p">Nintendo 64 · Cartridge · Qty 1</p></div>
+              <p class="g-price" style="margin-left:auto">$54.95</p>
+            </div>
+            <div class="c-row">
+              <div class="c-img g3"></div>
+              <div><p class="g-t">Pokemon Gold Version</p><p class="g-p">Game Boy Color · Cartridge · Qty 1</p></div>
+              <p class="g-price" style="margin-left:auto">$34.95</p>
+            </div>
+          </div>
+          <div class="c-summary">
+            <p class="c-lbl">ORDER SUMMARY</p>
+            <div class="c-line"><span>Subtotal</span><b>$139.85</b></div>
+            <div class="c-line"><span>Shipping (3–5 business days)</span><b>$5.95</b></div>
+            <div class="c-line"><span>Sales Tax</span><b>$11.47</b></div>
+            <div class="c-line c-total"><span>TOTAL</span><b>$157.27</b></div>
+            <button class="submit" style="width:100%">PROCEED TO CHECKOUT</button>
+            <p class="c-secure">🔒 Secure checkout · Visa · MasterCard</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- right action rail -->
+    <aside class="stack">
+      <section class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> PLAYER'S POLL</div>
+        <div class="poll">
+          <div class="poll-body">
+            <p class="poll-q">Which system are you playing most this holiday?</p>
+            <div class="radio-row on"><span class="radio-dot"></span>Nintendo 64</div>
+            <div class="radio-row"><span class="radio-dot"></span>Game Boy Color</div>
+            <div class="radio-row"><span class="radio-dot"></span>Super Nintendo</div>
+            <div class="radio-row"><span class="radio-dot"></span>Virtual Boy</div>
+            <button class="submit">SUBMIT VOTE</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <button class="rail-btn"><span class="i">◆</span> LOG IN</button>
+        <button class="rail-btn"><span class="i">◆</span> SUBSCRIBE TO NSIDER</button>
+        <button class="rail-btn"><span class="i">◆</span> NEWSLETTER</button>
+        <button class="rail-btn"><span class="i">◆</span> HELP</button>
+      </section>
+
+      <section class="info-box">
+        <div class="info-tab">What Is — Game Finder</div>
+        <p class="info-body">Tell us your favorite genres and we'll match them to cartridges in stock. Answer three questions and Game Finder ranks the top ten games for you.</p>
+      </section>
+
+      <section class="promo">
+        <p class="p-word">GAME BOY COLOR</p>
+        <p class="p-sub">NOW IN BERRY, KIWI &amp; TEAL — $69.95</p>
+        <div class="p-render"></div>
+      </section>
+
+      <section class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> RELEASE CALENDAR</div>
+        <div class="cal inset">
+          <p class="cal-cap">NOVEMBER 2001</p>
+          <table class="cal-t">
+            <tr><th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th></tr>
+            <tr><td></td><td></td><td></td><td></td><td>1</td><td class="evt">2</td><td class="evt">3</td></tr>
+            <tr><td>4</td><td class="evt">5</td><td>6</td><td>7</td><td>8</td><td class="evt">9</td><td>10</td></tr>
+            <tr><td>11</td><td>12</td><td class="evt">13</td><td>14</td><td>15</td><td class="evt">16</td><td>17</td></tr>
+            <tr><td>18</td><td class="evt">19</td><td>20</td><td>21</td><td>22</td><td>23</td><td class="evt">24</td></tr>
+          </table>
+          <p class="cal-note">■ = new releases &amp; Nsider chats</p>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- footer -->
+  <footer class="footerbar">
+    <div class="f-links">
+      <a href="#">Games</a><a href="#">Systems</a><a href="#">News</a><a href="#">Nsider</a><a href="#">Downloads</a><a href="#">Store</a><a href="#">Help</a>
+    </div>
+    <div class="f-fine">
+      <span>© 1997–2001 Nintendo. Games are property of their respective owners. Nintendo of America Inc. Headquarters are in Redmond, Washington.</span>
+      <span class="esrb">ESRB — PRIVACY CERTIFIED</span>
+    </div>
+  </footer>
+</div>
+
+<style>
+/* ── detail panel ────────────────────────────────────────── */
+.detail{display:grid;grid-template-columns:56px 1fr 236px;gap:10px;padding:12px;background:var(--canvas)}
+.d-thumbs{display:flex;flex-direction:column;gap:6px}
+.d-thumb{height:52px;border:1px solid var(--chrome-indigo);border-radius:2px}
+.d-thumb.on{outline:2px solid var(--signal);outline-offset:-2px}
+.d-main{position:relative;border:1px solid var(--chrome-indigo);border-radius:2px;min-height:236px}
+.d-word{position:absolute;left:12px;top:12px;font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;-webkit-text-stroke:1.5px var(--carbon);text-shadow:3px 3px 0 var(--carbon)}
+.d-panel{background:var(--surface);border:1px solid var(--chrome-indigo);border-radius:2px;padding:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.d-price{font-size:18px;font-weight:700;color:var(--games-red);margin:8px 0 4px}
+.d-stock{font-size:10px;color:var(--success);font-weight:700;letter-spacing:.5px;margin-left:6px}
+.d-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--ink-soft);text-transform:uppercase;margin:10px 0 4px}
+.d-formats{display:flex;flex-direction:column;gap:5px}
+.fmt{background:var(--surface);border:1px solid var(--hairline);border-radius:2px;text-align:left;padding:6px 8px;font-size:11px;box-shadow:inset -1px -1px 0 rgba(255,255,255,.7)}
+.fmt.on{background:var(--canvas-soft);border-color:var(--carbon)}
+.d-qty{display:flex;align-items:center;gap:4px}
+.stepper-btn{width:22px;height:22px;background:var(--amber);border-radius:2px;color:var(--carbon);font-size:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 var(--nav-gold)}
+.qty{width:28px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.dotted-divider{border-top:1px dotted var(--muted-indigo);margin:12px 0 8px}
+.d-rev-h{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+
+/* ── cart ────────────────────────────────────────────────── */
+.cart{display:grid;grid-template-columns:1fr 200px;gap:10px;padding:12px;background:var(--canvas)}
+.c-rows{display:flex;flex-direction:column;gap:6px}
+.c-row{background:var(--platinum);border-radius:4px;padding:7px;display:flex;align-items:center;gap:8px;box-shadow:inset -1px -1px 0 rgba(255,255,255,.7)}
+.c-img{width:52px;height:38px;border:1px solid var(--chrome-indigo);border-radius:2px;flex:none}
+.c-summary{background:var(--surface);border:1px solid var(--chrome-indigo);border-radius:2px;padding:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.c-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--ink-soft);margin-bottom:6px}
+.c-line{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;color:var(--ink-soft)}
+.c-line b{color:var(--ink)}
+.c-total{border-top:1px dotted var(--muted-indigo);padding-top:5px;margin-top:5px;font-size:12px}
+.c-total b{color:var(--games-red)}
+.c-secure{font-size:9px;color:var(--neutral);margin-top:6px;text-align:center}
+
+/* ── calendar ────────────────────────────────────────────── */
+.cal{padding:10px;margin:10px}
+.cal-cap{background:var(--carbon);color:var(--canvas-soft);font-size:10px;font-weight:700;letter-spacing:.5px;padding:4px 8px;margin:-10px -10px 8px;text-align:center}
+.cal-t{width:100%;border-collapse:collapse;font-size:10px;text-align:center}
+.cal-t th{color:var(--ink-soft);font-size:9px;padding:2px 0}
+.cal-t td{padding:2px 0;color:var(--ink)}
+.cal-t td.evt{background:var(--amber);border-radius:2px;font-weight:700}
+.cal-note{font-size:9px;color:var(--neutral);margin-top:6px}
+
+/* ── footer ──────────────────────────────────────────────── */
+.footerbar{margin-top:16px;background:var(--carbon);padding:16px 18px;color:var(--canvas-soft);
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:5px 5px;
+  box-shadow:0 2px 0 var(--chrome-indigo)}
+.f-links{display:flex;justify-content:center;gap:0;margin-bottom:10px;flex-wrap:wrap}
+.f-links a{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:0 10px;border-right:1px dotted var(--muted-indigo)}
+.f-links a:last-child{border-right:none}
+.f-fine{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:10px}
+.esrb{background:var(--amber);color:var(--carbon);font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;flex:none}
+
+@media (max-width:870px){
+  .page{width:100%;padding:8px}
+  .body-split{grid-template-columns:1fr}
+  .hero-word{font-size:32px}
+  .masthead{flex-wrap:wrap}
+}
+</style>
+</body>
+</html>

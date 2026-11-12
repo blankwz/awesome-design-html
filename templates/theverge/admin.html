@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Verge — Newsroom CMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#131313;
+  --slate:#2d2d2d;
+  --frame:#313131;
+  --white:#ffffff;
+  --mint:#3cffd0;
+  --mint-border:#309875;
+  --violet:#5200ff;
+  --violet-rule:#3d00bf;
+  --link-blue:#3860be;
+  --focus:#1eaedb;
+  --meta:#949494;
+  --muted:#e9e9e9;
+  --yellow:#f5f50a;
+  --pink:#ff8bd1;
+  --orange:#ff9a3c;
+  --ok-bg:rgba(60,255,208,.12); --ok-tx:var(--mint); --ok-bd:var(--mint-border);
+  --warn-bg:rgba(245,245,10,.1); --warn-tx:var(--yellow); --warn-bd:#8c8c20;
+  --bad-bg:rgba(255,139,209,.12); --bad-tx:var(--pink); --bad-bd:#b0568f;
+  --neu-bg:var(--slate); --neu-tx:var(--meta); --neu-bd:var(--frame);
+  --r-input:2px;
+  --r-img:3px;
+  --r-tile:20px;
+  --r-feature:24px;
+  --r-promo:30px;
+  --r-cta:40px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',Helvetica,Arial,sans-serif;
+  background:var(--canvas);color:var(--white);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;transition:color .15s ease}
+a:hover{color:var(--link-blue)}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.mono{font-family:'Space Mono','Courier New',monospace;text-transform:uppercase}
+
+/* ---------- Shell ---------- */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ---------- Sidebar ---------- */
+.sidebar{background:#0d0d0d;border-right:1px solid var(--frame);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-brand{padding:18px 20px;border-bottom:1px solid var(--frame)}
+.side-brand strong{font-family:'Anton',Impact,sans-serif;font-size:20px;font-weight:400;letter-spacing:1px;line-height:.95;display:block}
+.side-brand span{font-family:'Space Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:var(--mint)}
+.side-group{padding:20px 14px 4px}
+.side-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:var(--meta);padding:0 8px;margin-bottom:8px}
+.side-item{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;
+  border-radius:var(--r-tile);font-size:14px;font-weight:500;color:var(--muted);
+  transition:background-color .15s ease,color .15s ease;
+}
+.side-item:hover{background:var(--slate);color:var(--white)}
+.side-item.active{background:var(--mint);color:#000}
+.side-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex:none}
+.side-item .count{margin-left:auto;font-family:'Space Mono',monospace;font-size:10px;font-weight:600;border-radius:var(--r-tile);padding:2px 8px;background:rgba(255,255,255,.12)}
+.side-item.active .count{background:rgba(0,0,0,.18)}
+.side-user{margin-top:auto;padding:16px;border-top:1px solid var(--frame);display:flex;gap:12px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:600;background:var(--violet);color:#fff}
+.side-user strong{display:block;font-size:14px;font-weight:700}
+.side-user span{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.1px;color:var(--meta)}
+
+/* ---------- Topbar ---------- */
+.topbar{background:var(--canvas);border-bottom:1px solid var(--frame);padding:12px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:40}
+.crumbs{font-family:'Space Mono',monospace;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--meta)}
+.crumbs strong{color:var(--white);font-weight:600}
+.crumbs span{margin:0 8px;color:var(--frame)}
+.search{display:flex;align-items:center;gap:8px;background:var(--canvas);border:1px solid var(--meta);border-radius:var(--r-input);padding:8px 12px;width:300px;margin-left:auto;color:var(--meta);transition:border-color .15s ease}
+.search:focus-within{border-color:var(--mint)}
+.search input{border:none;outline:none;background:transparent;font-family:'Space Grotesk';font-size:15px;width:100%;color:var(--white)}
+.search input::placeholder{color:var(--meta)}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--frame);display:grid;place-items:center;color:var(--white);position:relative;transition:border-color .15s ease}
+.icon-btn:hover{border-color:var(--white)}
+.icon-btn .dot{position:absolute;top:2px;right:2px;min-width:16px;height:16px;border-radius:var(--r-tile);background:var(--mint);color:#000;font-family:'Space Mono',monospace;font-size:9px;font-weight:600;display:grid;place-items:center;padding:0 3px}
+.btn-mint{
+  display:inline-flex;align-items:center;gap:8px;background:var(--mint);color:#000;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
+  border-radius:var(--r-feature);padding:10px 24px;line-height:2;
+  transition:background-color .18s ease,box-shadow .18s ease;
+}
+.btn-mint:hover{background:rgba(255,255,255,.2);color:#000;box-shadow:0 0 0 1px #c2c2c2}
+.btn-slate{background:var(--slate);color:var(--muted);font-size:14px;border-radius:var(--r-feature);padding:8px 20px;line-height:1.6;transition:background-color .18s ease,color .18s ease,box-shadow .18s ease}
+.btn-slate:hover{background:rgba(255,255,255,.2);color:#000;box-shadow:0 0 0 1px #c2c2c2}
+
+/* ---------- Content ---------- */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px}
+.page-head h1{font-family:'Anton',Impact,sans-serif;font-size:60px;font-weight:900;line-height:.95;letter-spacing:.6px}
+.page-head p{color:var(--meta);margin-top:8px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--canvas);border:1px solid var(--white);border-radius:var(--r-tile);padding:24px}
+.kpi .label{font-family:'Space Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:var(--meta)}
+.kpi .value{font-size:34px;font-weight:700;line-height:1;margin:10px 0 6px}
+.kpi .delta{font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.1px}
+.delta.up{color:var(--mint)}
+.delta.down{color:var(--pink)}
+.kpi .sub{font-size:13px;color:var(--meta);margin-top:2px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:14px}
+.spark i{flex:1;background:var(--slate);border-radius:var(--r-input)}
+.spark i.hi{background:var(--mint)}
+
+/* ---------- Charts ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{background:var(--canvas);border:1px solid var(--frame);border-radius:var(--r-tile);padding:24px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.panel-head h3{font-size:24px;font-weight:700;line-height:1}
+.panel-head .hint{font-family:'Space Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--meta)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:36px;border-radius:var(--r-input);background:var(--slate);border:1px solid var(--frame)}
+.bar-col.hi i{background:var(--violet);border-color:var(--violet)}
+.bar-col .v{font-family:'Space Mono',monospace;font-size:10px;font-weight:500;color:var(--muted)}
+.bar-col .m{font-family:'Space Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.1px;color:var(--meta)}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{position:relative;width:160px;height:160px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:18}
+.donut .c1{stroke:var(--mint);stroke-dasharray:264 660}
+.donut .c2{stroke:var(--violet);stroke-dasharray:165 660;stroke-dashoffset:-264}
+.donut .c3{stroke:var(--yellow);stroke-dasharray:125 660;stroke-dashoffset:-429}
+.donut .c4{stroke:var(--slate);stroke-dasharray:106 660;stroke-dashoffset:-554}
+.donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut-center strong{display:block;font-size:22px;font-weight:700}
+.donut-center span{font-family:'Space Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--meta)}
+.legend{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--meta)}
+.legend .sw{width:10px;height:10px;border-radius:var(--r-input);flex:none}
+.legend b{margin-left:auto;color:var(--white);font-weight:700}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="side-brand"><strong>THE VERGE</strong><span>Newsroom CMS</span></div>
+    <nav class="side-group">
+      <p class="side-label">Newsroom</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard</a>
+      <a class="side-item active" href="#"><svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>StoryStream<span class="count">12</span></a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Drafts<span class="count">8</span></a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3Z"/></svg>Reviews</a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Audience</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M19 8v6M22 11h-6"/></svg>Subscribers</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 5-6"/></svg>Analytics</a>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4Z"/></svg>Newsletters<span class="count">3</span></a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">System</p>
+      <a class="side-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>CMS settings</a>
+    </nav>
+    <div class="side-user">
+      <span class="avatar">LC</span>
+      <div><strong>Lena Cruz</strong><span>Managing editor</span></div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div>
+    <header class="topbar">
+      <div class="crumbs">Newsroom <span>/</span> <strong>StoryStream</strong></div>
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search stories, writers, tags">
+      </label>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot">9</span>
+      </button>
+      <span class="avatar" style="width:34px;height:34px;font-size:11px">LC</span>
+    </header>
+
+    <main class="content">
+      <div class="page-head" style="display:flex;align-items:end;justify-content:space-between;gap:24px">
+        <div>
+          <h1>STORYSTREAM</h1>
+          <p>Tuesday, 26 Oct 2026 · 214 stories published today · 12 in the queue</p>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn-slate">Export analytics</button>
+          <button class="btn-mint">New story</button>
+        </div>
+      </div>
+      <!-- ============ KPI ROW ============ -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="label">Stories today</p>
+          <p class="value">214</p>
+          <p class="delta up">↑ 18% vs yesterday</p>
+          <p class="sub">12 reviews · 6 exclusives</p>
+          <div class="spark"><i style="height:32%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:72%"></i><i class="hi" style="height:100%"></i><i style="height:68%"></i><i style="height:78%"></i><i style="height:86%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Pageviews (24h)</p>
+          <p class="value">3.9M</p>
+          <p class="delta up">↑ 6.2% vs yesterday</p>
+          <p class="sub">Peak 411k/hr at 2pm</p>
+          <div class="spark"><i style="height:36%"></i><i style="height:42%"></i><i class="hi" style="height:98%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:68%"></i><i style="height:64%"></i><i style="height:74%"></i><i style="height:70%"></i><i style="height:80%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">New subscribers</p>
+          <p class="value">1,204</p>
+          <p class="delta up">↑ 11% week over week</p>
+          <p class="sub">84% annual plans</p>
+          <div class="spark"><i style="height:28%"></i><i style="height:38%"></i><i style="height:34%"></i><i style="height:48%"></i><i style="height:42%"></i><i style="height:56%"></i><i style="height:52%"></i><i style="height:66%"></i><i style="height:60%"></i><i style="height:74%"></i><i class="hi" style="height:92%"></i><i style="height:82%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Corrections filed</p>
+          <p class="value">3</p>
+          <p class="delta down">↑ 1 vs yesterday</p>
+          <p class="sub">2 resolved · 1 open</p>
+          <div class="spark"><i style="height:22%"></i><i style="height:30%"></i><i style="height:26%"></i><i style="height:40%"></i><i style="height:34%"></i><i style="height:46%"></i><i class="hi" style="height:90%"></i><i style="height:50%"></i><i style="height:42%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:36%"></i></div>
+        </div>
+      </section>
+
+      <!-- ============ CHARTS ============ -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head"><h3>Published stories by month</h3><span class="hint">2026 · all desks</span></div>
+          <div class="bars">
+            <div class="bar-col"><span class="v">1.8k</span><i style="height:30%"></i><span class="m">Nov</span></div>
+            <div class="bar-col"><span class="v">2.4k</span><i style="height:40%"></i><span class="m">Dec</span></div>
+            <div class="bar-col"><span class="v">1.5k</span><i style="height:25%"></i><span class="m">Jan</span></div>
+            <div class="bar-col"><span class="v">1.9k</span><i style="height:32%"></i><span class="m">Feb</span></div>
+            <div class="bar-col"><span class="v">2.2k</span><i style="height:37%"></i><span class="m">Mar</span></div>
+            <div class="bar-col"><span class="v">2.6k</span><i style="height:44%"></i><span class="m">Apr</span></div>
+            <div class="bar-col"><span class="v">3.0k</span><i style="height:50%"></i><span class="m">May</span></div>
+            <div class="bar-col"><span class="v">2.8k</span><i style="height:47%"></i><span class="m">Jun</span></div>
+            <div class="bar-col"><span class="v">3.4k</span><i style="height:57%"></i><span class="m">Jul</span></div>
+            <div class="bar-col"><span class="v">3.8k</span><i style="height:63%"></i><span class="m">Aug</span></div>
+            <div class="bar-col"><span class="v">3.6k</span><i style="height:60%"></i><span class="m">Sep</span></div>
+            <div class="bar-col hi"><span class="v">5.1k</span><i style="height:90%"></i><span class="m">Oct</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Traffic by desk</h3><span class="hint">share of 24h views</span></div>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="105" stroke="var(--slate)" stroke-width="18"></circle>
+                <circle class="c1" cx="110" cy="110" r="105"></circle>
+                <circle class="c2" cx="110" cy="110" r="105"></circle>
+                <circle class="c3" cx="110" cy="110" r="105"></circle>
+                <circle class="c4" cx="110" cy="110" r="105"></circle>
+              </svg>
+              <div class="donut-center"><div><strong>3.9M</strong><span>views / 24h</span></div></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:var(--mint)"></span>Reviews<b>40%</b></div>
+              <div class="row"><span class="sw" style="background:var(--violet)"></span>Tech &amp; policy<b>25%</b></div>
+              <div class="row"><span class="sw" style="background:var(--yellow)"></span>Science &amp; space<b>19%</b></div>
+              <div class="row"><span class="sw" style="background:var(--slate)"></span>Transportation<b>16%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TABLE + SIDE PANELS ============ -->
+      <section style="display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start">
+        <div class="panel" style="padding:0;overflow:hidden;border-color:var(--white)">
+          <div class="panel-head" style="padding:24px 24px 16px;margin-bottom:0">
+            <h3>Story queue</h3>
+            <span class="hint">Showing 8 of 214</span>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead>
+              <tr style="border-top:1px solid var(--frame);border-bottom:1px solid var(--frame);background:#0d0d0d;text-align:left">
+                <th style="padding:12px 16px;width:36px"><input type="checkbox" style="accent-color:var(--mint)"></th>
+                <th class="mono" style="padding:12px 8px;font-size:10px;font-weight:600;letter-spacing:1.8px;color:var(--meta)">Story</th>
+                <th class="mono" style="padding:12px 8px;font-size:10px;font-weight:600;letter-spacing:1.8px;color:var(--meta)">Desk</th>
+                <th class="mono" style="padding:12px 8px;font-size:10px;font-weight:600;letter-spacing:1.8px;color:var(--meta)">Status</th>
+                <th class="mono" style="padding:12px 8px;font-size:10px;font-weight:600;letter-spacing:1.8px;color:var(--meta)">Views</th>
+                <th class="mono" style="padding:12px 8px;font-size:10px;font-weight:600;letter-spacing:1.8px;color:var(--meta)">Updated</th>
+                <th class="mono" style="padding:12px 16px;font-size:10px;font-weight:600;letter-spacing:1.8px;color:var(--meta);text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Who owns the fab?</td><td style="padding:12px 8px;color:var(--meta)">Investigations</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx);border:1px solid var(--ok-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">Live</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">842k</td><td class="mono" style="padding:12px 8px;color:var(--meta)">14:02</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Edit</button></td></tr>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Foldable bench test, round two</td><td style="padding:12px 8px;color:var(--meta)">Reviews</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx);border:1px solid var(--ok-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">Live</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">511k</td><td class="mono" style="padding:12px 8px;color:var(--meta)">13:40</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Edit</button></td></tr>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Every AI pin, ranked</td><td style="padding:12px 8px;color:var(--meta)">Reviews</td><td style="padding:12px 8px"><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx);border:1px solid var(--warn-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">In edit</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">—</td><td class="mono" style="padding:12px 8px;color:var(--meta)">13:12</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Review</button></td></tr>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Robotaxi permits expand</td><td style="padding:12px 8px;color:var(--meta)">Transportation</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx);border:1px solid var(--ok-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">Live</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">344k</td><td class="mono" style="padding:12px 8px;color:var(--meta)">12:55</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Edit</button></td></tr>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Moon lander, printed</td><td style="padding:12px 8px;color:var(--meta)">Science</td><td style="padding:12px 8px"><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx);border:1px solid var(--neu-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">Scheduled</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">—</td><td class="mono" style="padding:12px 8px;color:var(--meta)">12:30</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Preview</button></td></tr>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Exchange trial, final week</td><td style="padding:12px 8px;color:var(--meta)">Policy</td><td style="padding:12px 8px"><span class="badge" style="background:var(--bad-bg);color:var(--bad-tx);border:1px solid var(--bad-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">Legal hold</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">780k</td><td class="mono" style="padding:12px 8px;color:var(--meta)">11:48</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Open</button></td></tr>
+              <tr style="border-bottom:1px solid var(--frame)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Cassette synth review</td><td style="padding:12px 8px;color:var(--meta)">Reviews</td><td style="padding:12px 8px"><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx);border:1px solid var(--warn-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">In edit</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">—</td><td class="mono" style="padding:12px 8px;color:var(--meta)">11:05</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Review</button></td></tr>
+              <tr><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--mint)"></td><td style="padding:12px 8px;font-weight:700">Hearings in five charts</td><td style="padding:12px 8px;color:var(--meta)">Policy</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx);border:1px solid var(--ok-bd);border-radius:var(--r-tile);padding:3px 10px;font-size:11px;font-weight:700">Live</span></td><td class="mono" style="padding:12px 8px;color:var(--muted)">233k</td><td class="mono" style="padding:12px 8px;color:var(--meta)">10:20</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Edit</button></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--frame);color:var(--meta);font-size:13px">
+            <span class="mono" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase">Page 1 of 27</span>
+            <div style="display:flex;gap:8px">
+              <button class="btn-slate" disabled style="opacity:.4;cursor:default">Previous</button>
+              <button class="btn-slate">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Activity feed -->
+          <div class="panel" style="border-color:var(--white)">
+            <div class="panel-head"><h3>Newsroom activity</h3><span class="hint">live</span></div>
+            <div class="feed-item" style="padding-top:0">
+              <span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--mint);color:#000">NP</span>
+              <p><strong>Nilay Patel</strong> published <strong>Who owns the fab?</strong> to the stream <em>12 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--violet)">AR</span>
+              <p><strong>Adi Robertson</strong> flagged a story for legal review <em>38 min ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--slate);border:1px solid var(--frame)">MJ</span>
+              <p><strong>Mia Johnson</strong> scheduled the moon-lander feature for 6:00 AM <em>1 hr ago</em></p>
+            </div>
+            <div class="feed-item">
+              <span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--yellow);color:#000">SYS</span>
+              <p>Newsletter <strong>Vergecast Daily</strong> sent to 1.2M readers <em>2 hrs ago</em></p>
+            </div>
+            <div class="feed-item" style="border-bottom:none">
+              <span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--pink);color:#000">DK</span>
+              <p><strong>Dara Kam</strong> filed a correction on the exchange-trial story <em>3 hrs ago</em></p>
+            </div>
+          </div>
+
+          <!-- Quick settings -->
+          <div class="panel">
+            <div class="panel-head"><h3>CMS quick settings</h3></div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:8px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700">Masthead kicker
+                <input type="text" value="The frontier of tech, reported daily" style="background:var(--canvas);border:1px solid var(--meta);border-radius:var(--r-input);padding:10px 12px;font-family:'Space Grotesk';font-size:15px;font-weight:400;color:var(--white);outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--mint)'" onblur="this.style.borderColor='var(--meta)'">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700">Homepage layout
+                <select style="background:var(--canvas);border:1px solid var(--meta);border-radius:var(--r-input);padding:10px 12px;font-family:'Space Grotesk';font-size:15px;font-weight:400;color:var(--white);outline:none"><option>StoryStream timeline</option><option>Magazine grid</option><option>Live-wire first</option></select>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div><strong style="font-size:14px;font-weight:700">Breaking banner</strong><br><span class="hint" style="color:var(--meta);font-size:12px">Mint strip above the fold</span></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row">
+              <div><strong style="font-size:14px;font-weight:700">Comment moderation</strong><br><span class="hint" style="color:var(--meta);font-size:12px">AI-assisted, human appeal</span></div>
+              <span class="toggle on"><i></i></span>
+            </div>
+            <div class="setting-row" style="border-bottom:none">
+              <div><strong style="font-size:14px;font-weight:700">Auto-syndicate to Apple News</strong><br><span class="hint" style="color:var(--meta);font-size:12px">Excluding exclusives</span></div>
+              <span class="toggle"><i></i></span>
+            </div>
+            <button class="btn-mint" style="width:100%;justify-content:center;margin-top:16px">Save settings</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<style>
+.badge{font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1.1px}
+.row-act{font-family:'Space Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);border:1px solid var(--frame);border-radius:var(--r-tile);padding:6px 12px;transition:border-color .15s ease,color .15s ease}
+.row-act:hover{border-color:var(--mint);color:var(--mint)}
+.feed-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--frame)}
+.feed-item p{font-size:13px;line-height:1.5;color:var(--meta)}
+.feed-item strong{color:var(--white);font-weight:700}
+.feed-item em{font-style:normal;font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.1px;color:var(--meta);display:block;margin-top:2px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--frame)}
+.toggle{width:40px;height:22px;border-radius:var(--r-tile);background:var(--slate);border:1px solid var(--frame);position:relative;flex:none;transition:background-color .15s ease}
+.toggle i{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--meta);transition:left .15s ease,background-color .15s ease}
+.toggle.on{background:var(--mint);border-color:var(--mint)}
+.toggle.on i{left:20px;background:#000}
+</style>
+
+</body>
+</html>

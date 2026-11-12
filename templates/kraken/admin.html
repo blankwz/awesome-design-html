@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kraken Admin — Exchange Operations Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#7132f5; --purple-dark:#5741d8; --purple-deep:#5b1ecf;
+  --purple-subtle:rgba(133,91,251,0.16);
+  --ink:#101114; --cool-gray:#686b82; --silver:#9497a9;
+  --white:#ffffff; --border:#dedee5;
+  --green:#149e61; --green-bg:rgba(20,158,97,0.16); --green-dark:#026b3f;
+  --red:#d9304e; --red-bg:rgba(217,48,78,0.12); --red-dark:#a02039;
+  --amber:#b45309; --amber-bg:rgba(180,83,9,0.12);
+  --neutral-bg:rgba(104,107,130,0.12); --neutral-text:#484b5e;
+  --shadow-subtle:rgba(0,0,0,0.03) 0px 4px 24px;
+  --font:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fafafc;color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.38}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font)}
+.shell{display:grid;grid-template-columns:256px 1fr;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-0.5px;padding:4px 8px 20px}
+.logo svg{flex:none}
+.nav-group{margin-bottom:20px}
+.nav-group h6{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--silver);padding:0 10px 8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;font-size:14px;font-weight:500;color:var(--cool-gray);cursor:pointer}
+.nav-item:hover{background:rgba(148,151,169,0.08);color:var(--ink)}
+.nav-item.active{background:var(--purple);color:#fff}
+.nav-item .n{margin-left:auto;font-size:12px;font-weight:600;background:var(--purple-subtle);color:var(--purple);border-radius:9999px;padding:2px 8px}
+.nav-item.active .n{background:rgba(255,255,255,.2);color:#fff}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px 8px;border-top:1px solid var(--border)}
+.avatar{width:36px;height:36px;border-radius:12px;background:var(--purple);color:#fff;font-size:13px;font-weight:600;display:grid;place-items:center;flex:none}
+.user-card b{display:block;font-size:14px;font-weight:600}
+.user-card span{font-size:12px;color:var(--silver)}
+
+/* ---------- main + topbar ---------- */
+.main{padding:0 24px 24px;min-width:0}
+.topbar{height:64px;display:flex;align-items:center;gap:16px;margin:0 -24px 0;padding:0 24px;background:#fafafc;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.crumb{font-size:14px;color:var(--silver)}
+.crumb b{color:var(--ink);font-weight:600}
+.top-spacer{flex:1}
+.top-search{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:9px 14px;width:280px}
+.top-search input{border:0;outline:0;background:transparent;font:inherit;font-size:14px;width:100%;color:var(--ink)}
+.top-search input::placeholder{color:var(--silver)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:12px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.icon-btn:hover{background:var(--neutral-bg)}
+.icon-btn .dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid #fafafc}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;padding:11px 16px;border-radius:12px;border:0;cursor:pointer}
+.btn-primary{background:var(--purple);color:#fff}
+.btn-outlined{background:#fff;color:var(--purple-dark);border:1px solid var(--purple-dark)}
+.btn-subtle{background:var(--neutral-bg);color:var(--ink);font-weight:500}
+
+/* ---------- KPI row ---------- */
+h1.page-title{font-size:28px;font-weight:700;letter-spacing:-0.5px;margin:20px 0 16px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px}
+.kpi h3{font-size:14px;font-weight:500;color:var(--cool-gray)}
+.kpi .v{font-size:30px;font-weight:700;letter-spacing:-1px;margin:4px 0 2px}
+.delta{font-size:13px;font-weight:600}
+.delta.up{color:var(--green-dark)}
+.delta.down{color:var(--red-dark)}
+.kpi .vs{font-size:12px;color:var(--silver);margin-left:6px}
+.mini{display:flex;align-items:flex-end;gap:4px;height:36px;margin-top:12px}
+.mini i{flex:1;background:var(--neutral-bg);border-radius:3px 3px 0 0}
+.mini i.hot{background:var(--purple)}
+
+/* ---------- charts row ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin:16px 0}
+.panel{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.panel-head h3{font-size:18px;font-weight:700;letter-spacing:-0.5px}
+.panel-head span{font-size:13px;color:var(--silver)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:200px;padding-top:8px}
+.barcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.barcol i{width:100%;background:var(--purple-subtle);border-radius:4px 4px 0 0}
+.barcol.cur i{background:var(--purple)}
+.barcol span{font-size:12px;color:var(--silver)}
+.donut-wrap{display:flex;align-items:center;gap:20px}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:22}
+.donut .center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut .center b{font-size:24px;font-weight:700}
+.donut .center span{font-size:12px;color:var(--silver)}
+.legend{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:14px}
+.legend li{display:flex;align-items:center;gap:10px;color:var(--cool-gray)}
+.legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:600}
+
+/* ---------- table ---------- */
+.cols{display:grid;grid-template-columns:1fr 340px;gap:16px}
+.table-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{text-align:left;font-size:12px;font-weight:600;color:var(--silver);padding:12px 16px;border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--border);white-space:nowrap;vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fafafc}
+.tname b{display:block;font-weight:600}
+.tname span{font-size:12px;color:var(--silver)}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px}
+.badge.success{background:var(--green-bg);color:var(--green-dark)}
+.badge.danger{background:var(--red-bg);color:var(--red-dark)}
+.badge.warning{background:var(--amber-bg);color:var(--amber)}
+.badge.neutral{background:var(--neutral-bg);color:var(--neutral-text)}
+.rowcheck{width:15px;height:15px;accent-color:var(--purple)}
+.tamount{font-weight:600}
+.up{color:var(--green-dark)}
+.down{color:var(--red-dark)}
+.tactions{color:var(--silver);letter-spacing:3px;font-weight:700;cursor:pointer}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:13px;color:var(--silver)}
+.pager .pg{display:flex;gap:6px}
+.pager button{width:32px;height:32px;border-radius:8px;border:0;background:transparent;cursor:pointer;color:var(--cool-gray);font:inherit;font-size:13px}
+.pager button.cur{background:var(--purple);color:#fff}
+.pager button:hover:not(.cur){background:var(--neutral-bg)}
+
+/* ---------- side panels ---------- */
+.sidepanel{display:flex;flex-direction:column;gap:16px}
+.feed-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.feed-item:last-child{border-bottom:0}
+.fdot{width:32px;height:32px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+.feed-item p{font-size:14px;color:var(--cool-gray)}
+.feed-item p b{color:var(--ink);font-weight:600}
+.feed-item time{font-size:12px;color:var(--silver)}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.set-row:last-child{border-bottom:0}
+.set-row p{font-size:14px;font-weight:500}
+.set-row span{font-size:12px;color:var(--silver)}
+.switch{position:relative;width:40px;height:22px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch i{position:absolute;inset:0;background:var(--neutral-bg);border:1px solid var(--border);border-radius:9999px;cursor:pointer;transition:.15s}
+.switch i:before{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:var(--shadow-subtle)}
+.switch input:checked + i{background:var(--purple);border-color:var(--purple)}
+.switch input:checked + i:before{transform:translateX(17px)}
+
+@media (max-width:1180px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.cols{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <a class="logo" href="#">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path fill="#7132f5" d="M13 1C6.4 1 1 6.4 1 13s5.4 12 12 12 12-5.4 12-12S19.6 1 13 1zm0 4.5c3.1 0 5.8 2 6.8 4.8h-3.4a3.9 3.9 0 00-6.8 0H6.2A7.5 7.5 0 0113 5.5zM9.1 13a3.9 3.9 0 017.8 0 3.9 3.9 0 01-7.8 0zm-2.9 1.7A7.5 7.5 0 0013 20.5c3.1 0 5.8-2 6.8-4.8h-3.4a3.9 3.9 0 01-6.8 0H6.2z"/></svg>
+      Kraken
+    </a>
+    <div class="nav-group">
+      <h6>Operations</h6>
+      <a class="nav-item active" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+        Orders <span class="n">342</span></a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        Staking positions</a>
+    </div>
+    <div class="nav-group">
+      <h6>People</h6>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+        Clients</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        Compliance queue <span class="n">17</span></a>
+    </div>
+    <div class="nav-group">
+      <h6>Insights</h6>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        Analytics</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Settlement</a>
+    </div>
+    <div class="nav-group">
+      <h6>System</h6>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 00-2-1.2L14 3h-4l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 000 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 002 1.2L10 21h4l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.4-2-1.6c.06-.4.1-.8.1-1.2z"/></svg>
+        Settings</a>
+    </div>
+    <div class="user-card">
+      <span class="avatar">TR</span>
+      <div><b>Tomasz Reiner</b><span>Operations lead</span></div>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <main class="main">
+    <div class="topbar">
+      <span class="crumb">Exchange / <b>Operations dashboard</b></span>
+      <div class="top-spacer"></div>
+      <label class="top-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9497a9" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search orders, clients, wallets…">
+      </label>
+      <button class="icon-btn" aria-label="Alerts">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <a class="btn btn-outlined" href="#">Open terminal</a>
+      <a class="btn btn-primary" href="#">New listing</a>
+    </div>
+
+    <h1 class="page-title">Operations dashboard</h1>
+
+    <!-- KPI row -->
+    <section class="kpis">
+      <div class="kpi">
+        <h3>24h trade volume</h3>
+        <div class="v">$1.82B</div>
+        <span class="delta up">↑ 12.6%</span><span class="vs">vs yesterday</span>
+        <div class="mini"><i style="height:50%"></i><i style="height:64%"></i><i style="height:42%"></i><i style="height:78%"></i><i style="height:60%"></i><i style="height:84%"></i><i class="hot" style="height:100%"></i></div>
+      </div>
+      <div class="kpi">
+        <h3>Open orders</h3>
+        <div class="v">342,880</div>
+        <span class="delta up">↑ 4.1%</span><span class="vs">vs yesterday</span>
+        <div class="mini"><i style="height:44%"></i><i style="height:52%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:70%"></i><i style="height:74%"></i><i class="hot" style="height:82%"></i></div>
+      </div>
+      <div class="kpi">
+        <h3>Staked AUM</h3>
+        <div class="v">$2.41B</div>
+        <span class="delta up">↑ 2.3%</span><span class="vs">vs last week</span>
+        <div class="mini"><i style="height:58%"></i><i style="height:62%"></i><i style="height:60%"></i><i style="height:66%"></i><i style="height:72%"></i><i style="height:78%"></i><i class="hot" style="height:84%"></i></div>
+      </div>
+      <div class="kpi">
+        <h3>Failed settlements</h3>
+        <div class="v">6</div>
+        <span class="delta down">↑ 3</span><span class="vs">needs review</span>
+        <div class="mini"><i style="height:30%"></i><i style="height:24%"></i><i style="height:40%"></i><i style="height:36%"></i><i style="height:52%"></i><i style="height:44%"></i><i class="hot" style="height:70%"></i></div>
+      </div>
+    </section>
+
+    <!-- charts row -->
+    <section class="charts">
+      <div class="panel">
+        <div class="panel-head"><h3>Monthly trade volume</h3><span>Oct 2025 — Sep 2026 · USD</span></div>
+        <div class="bars">
+          <div class="barcol"><i style="height:48%"></i><span>Oct</span></div>
+          <div class="barcol"><i style="height:55%"></i><span>Nov</span></div>
+          <div class="barcol"><i style="height:68%"></i><span>Dec</span></div>
+          <div class="barcol"><i style="height:44%"></i><span>Jan</span></div>
+          <div class="barcol"><i style="height:52%"></i><span>Feb</span></div>
+          <div class="barcol"><i style="height:61%"></i><span>Mar</span></div>
+          <div class="barcol"><i style="height:57%"></i><span>Apr</span></div>
+          <div class="barcol"><i style="height:66%"></i><span>May</span></div>
+          <div class="barcol"><i style="height:63%"></i><span>Jun</span></div>
+          <div class="barcol"><i style="height:74%"></i><span>Jul</span></div>
+          <div class="barcol"><i style="height:80%"></i><span>Aug</span></div>
+          <div class="barcol cur"><i style="height:95%"></i><span>Sep</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Volume by product</h3><span>last 30 days</span></div>
+        <div class="donut-wrap">
+          <div class="donut">
+            <svg width="170" height="170" viewBox="0 0 170 170">
+              <circle cx="85" cy="85" r="64" stroke="#dedee5"/>
+              <circle cx="85" cy="85" r="64" stroke="#7132f5" stroke-dasharray="221.2 402.1"/>
+              <circle cx="85" cy="85" r="64" stroke="#5741d8" stroke-dasharray="92.5 402.1" stroke-dashoffset="-221.2"/>
+              <circle cx="85" cy="85" r="64" stroke="#149e61" stroke-dasharray="64.3 402.1" stroke-dashoffset="-313.7"/>
+              <circle cx="85" cy="85" r="64" stroke="#9497a9" stroke-dasharray="24.1 402.1" stroke-dashoffset="-378"/>
+            </svg>
+            <div class="center"><b>$54.6B</b><span>30-day volume</span></div>
+          </div>
+          <ul class="legend">
+            <li><i style="background:#7132f5"></i>Spot<b>55%</b></li>
+            <li><i style="background:#5741d8"></i>Futures<b>23%</b></li>
+            <li><i style="background:#149e61"></i>Earn / staking<b>16%</b></li>
+            <li><i style="background:#9497a9"></i>NFT &amp; other<b>6%</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- table + side panels -->
+    <section class="cols">
+      <div class="table-card">
+        <div class="panel-head" style="padding:16px 16px 0">
+          <h3>Recent orders</h3>
+          <span>8 of 342,880</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th></th><th>Order</th><th>Pair</th><th>Status</th><th>Amount</th><th>Date</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884120</b><span>Client #C-20581 · institutional</span></td>
+              <td>ETH/USD</td>
+              <td><span class="badge success">Filled</span></td>
+              <td class="tamount">142.5 ETH</td><td>Oct 26, 09:14</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884118</b><span>Client #C-11972 · verified</span></td>
+              <td>SOL/EUR</td>
+              <td><span class="badge success">Filled</span></td>
+              <td class="tamount">2,300 SOL</td><td>Oct 26, 09:02</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884097</b><span>Client #C-33016 · interim KYC</span></td>
+              <td>BTC/USD</td>
+              <td><span class="badge warning">Under review</span></td>
+              <td class="tamount">6.4 BTC</td><td>Oct 26, 08:47</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884081</b><span>Client #C-20581 · institutional</span></td>
+              <td>DOT/USD</td>
+              <td><span class="badge success">Filled</span></td>
+              <td class="tamount">85,000 DOT</td><td>Oct 26, 08:30</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884064</b><span>Client #C-40227 · verified</span></td>
+              <td>USDT/EUR</td>
+              <td><span class="badge neutral">Partial</span></td>
+              <td class="tamount">500,000 USDT</td><td>Oct 26, 08:11</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884059</b><span>Client #C-27890 · verified</span></td>
+              <td>ADA/USD</td>
+              <td><span class="badge danger">Rejected</span></td>
+              <td class="tamount">92,400 ADA</td><td>Oct 26, 07:58</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884041</b><span>Client #C-15304 · verified</span></td>
+              <td>AVAX/USD</td>
+              <td><span class="badge success">Filled</span></td>
+              <td class="tamount">11,250 AVAX</td><td>Oct 26, 07:36</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>ORD-884033</b><span>Client #C-08176 · institutional</span></td>
+              <td>MATIC/USD</td>
+              <td><span class="badge neutral">Open</span></td>
+              <td class="tamount">310,000 MATIC</td><td>Oct 26, 07:12</td><td class="tactions">···</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pager">
+          <span>Showing 8 of 342,880 orders</span>
+          <div class="pg">
+            <button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>…</button><button>42,860</button><button>›</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidepanel">
+        <div class="panel">
+          <div class="panel-head"><h3>Recent activity</h3><a href="#" style="font-size:13px;color:var(--cool-gray)">View all</a></div>
+          <div class="feed-item">
+            <span class="fdot" style="background:var(--green)">✓</span>
+            <div><p><b>Batch payout executed</b> — 18,420 DOT rewards sent to 9,140 clients.</p><time>22 min ago</time></div>
+          </div>
+          <div class="feed-item">
+            <span class="fdot" style="background:var(--amber)">!</span>
+            <div><p>Order <b>ORD-884097</b> flagged by interim-KYC limits — awaiting ops review.</p><time>1 hr ago</time></div>
+          </div>
+          <div class="feed-item">
+            <span class="fdot" style="background:var(--purple)">K</span>
+            <div><p><b>Solana validator eu-4</b> rotated keys after scheduled maintenance.</p><time>3 hrs ago</time></div>
+          </div>
+          <div class="feed-item">
+            <span class="fdot" style="background:var(--red)">×</span>
+            <div><p>Settlement <b>STL-5521</b> failed — correspondent bank rejected wire.</p><time>5 hrs ago</time></div>
+          </div>
+          <div class="feed-item">
+            <span class="fdot" style="background:var(--neutral-text)">T</span>
+            <div><p><b>Tomasz Reiner</b> enabled enhanced margin checks for futures tier 3.</p><time>Yesterday</time></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Quick settings</h3></div>
+          <div class="set-row">
+            <div><p>Maintenance mode</p><span>Pause new order intake</span></div>
+            <label class="switch"><input type="checkbox"><i></i></label>
+          </div>
+          <div class="set-row">
+            <div><p>Auto-settle earn payouts</p><span>2× weekly batches</span></div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+          <div class="set-row">
+            <div><p>Enhanced KYC flags</p><span>Route to compliance queue</span></div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:12px">Save changes</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

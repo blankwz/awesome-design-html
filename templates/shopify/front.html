@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopifi — Theme &amp; App Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#000000;
+  --ink:#000000;
+  --on-primary:#ffffff;
+  --on-dark:#ffffff;
+  --canvas-night:#000000;
+  --canvas-night-elevated:#0a0a0a;
+  --canvas-light:#ffffff;
+  --canvas-cream:#fbfbf5;
+  --surface-elevated-dark:#1e2c31;
+  --shade-30:#d4d4d8;
+  --shade-40:#a1a1aa;
+  --shade-50:#71717a;
+  --shade-60:#52525b;
+  --shade-70:#3f3f46;
+  --hairline-light:#e4e4e7;
+  --hairline-dark:#1e2c31;
+  --aloe:#c1fbd4;
+  --pistachio:#d4f9e0;
+  --link-cool:#9dabad;
+  --link-mint:#99b3ad;
+  --success:#3f6212;
+  --warning:#a16207;
+  --danger:#9f1239;
+  --neutral:#71717a;
+  --display:'Inter Tight','Inter',Helvetica,Arial,sans-serif;
+  --sans:'Inter',Helvetica,Arial,sans-serif;
+  --r-xs:4px;--r-sm:5px;--r-md:8px;--r-lg:12px;--r-xl:20px;--r-pill:9999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas-light);color:var(--ink);font-family:var(--sans);font-size:16px;font-weight:400;line-height:1.5;font-feature-settings:"ss03"}
+a{color:inherit;text-decoration:none}
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+
+/* ===== Nav (dark track) ===== */
+.nav{background:var(--canvas-night);color:var(--on-dark);height:64px;display:flex;align-items:center;position:sticky;top:0;z-index:50}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;gap:32px}
+.logo{font-family:var(--display);font-weight:500;font-size:20px;letter-spacing:0.3px;display:flex;align-items:center;gap:10px}
+.logo .glyph{width:22px;height:22px;background:var(--on-dark);border-radius:50% 50% 50% 0}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:16px;font-weight:420;color:rgba(255,255,255,0.85)}
+.nav-links a:hover{color:#fff}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.search{display:flex;align-items:center;gap:8px;background:var(--canvas-night-elevated);border:1px solid var(--hairline-dark);border-radius:var(--r-md);height:40px;padding:0 12px;width:220px}
+.search svg{flex:none;stroke:#a1a1aa}
+.search input{background:none;border:none;outline:none;color:#fff;font-family:var(--sans);font-size:14px;width:100%}
+.search input::placeholder{color:#71717a}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-pill);background:var(--canvas-night-elevated);border:1px solid var(--hairline-dark);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff}
+.icon-btn .badge{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:#fff;color:#000;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:16px;font-weight:420;height:44px;padding:12px 24px;border-radius:var(--r-pill);cursor:pointer;border:1px solid transparent;letter-spacing:0.16px}
+.btn-outline-dark{background:transparent;color:var(--on-dark);border:2px solid var(--on-dark)}
+.btn-outline-dark:hover{background:#fff;color:#000}
+.btn-primary-pill{background:var(--primary);color:var(--on-primary)}
+.btn-primary-pill:hover{background:var(--shade-70)}
+.btn-outline-light{background:var(--canvas-light);color:var(--ink);border:1px solid var(--ink)}
+.btn-aloe{background:var(--aloe);color:var(--ink)}
+.btn-aloe:hover{filter:brightness(0.96)}
+.btn-sm{height:40px;padding:8px 18px;font-size:14px}
+
+/* ===== Cinematic hero ===== */
+.hero{background:var(--canvas-night);color:var(--on-dark);padding:96px 0 0;position:relative}
+.hero h1{font-family:var(--display);font-weight:300;font-size:88px;line-height:1.0;letter-spacing:2.4px;max-width:1000px}
+.hero .lede{font-size:18px;font-weight:550;color:rgba(255,255,255,0.85);max-width:520px;margin-top:24px;line-height:1.56}
+.hero-cta{display:flex;gap:16px;margin-top:36px}
+.hero-photo{
+  margin:72px auto 0;max-width:1100px;height:380px;border-radius:var(--r-xl) var(--r-xl) 0 0;
+  background:
+    radial-gradient(ellipse 55% 90% at 75% 15%,rgba(120,160,180,0.5),transparent 60%),
+    radial-gradient(ellipse 45% 80% at 15% 90%,rgba(190,150,120,0.4),transparent 55%),
+    linear-gradient(180deg,#141a1e 0%,#05070a 100%);
+  position:relative;overflow:hidden;
+}
+.hero-photo .storefront{position:absolute;left:12%;bottom:0;width:26%;height:78%;background:linear-gradient(180deg,#20282e,#101418);border-radius:8px 8px 0 0;border:1px solid var(--hairline-dark);border-bottom:none}
+.hero-photo .storefront .win{position:absolute;top:18%;left:14%;right:14%;height:30%;background:linear-gradient(135deg,rgba(193,251,212,0.25),rgba(25,40,46,1));border-radius:4px}
+.hero-photo .storefront .door{position:absolute;bottom:0;left:32%;width:36%;height:34%;background:#0c1013;border-radius:4px 4px 0 0}
+.hero-photo .sp2{position:absolute;left:44%;bottom:0;width:26%;height:92%;background:linear-gradient(180deg,#262f35,#12171b);border-radius:8px 8px 0 0;border:1px solid var(--hairline-dark);border-bottom:none}
+.hero-photo .sp2 .win{position:absolute;top:14%;left:14%;right:14%;height:26%;background:linear-gradient(135deg,rgba(157,179,173,0.3),rgba(20,28,32,1));border-radius:4px}
+
+/* ===== Filter chips (light track) ===== */
+.catalog{background:var(--canvas-cream);padding:0 0 96px}
+.filter-row{display:flex;align-items:center;gap:10px;padding:24px 0;flex-wrap:wrap}
+.chip{
+  font-size:14px;font-weight:420;letter-spacing:0.16px;color:var(--ink);
+  background:var(--canvas-light);border:1px solid var(--hairline-light);
+  border-radius:var(--r-pill);padding:8px 18px;cursor:pointer;
+}
+.chip:hover{border-color:var(--ink)}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip-count{margin-left:auto;font-size:13px;color:var(--shade-50)}
+
+/* ===== Grid ===== */
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}
+.section-head h2{font-family:var(--display);font-weight:300;font-size:48px;line-height:1.14;letter-spacing:0}
+.section-head a{margin-left:auto;font-weight:500;font-size:14px;letter-spacing:0.28px;color:var(--shade-60)}
+.section-head a:hover{color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.theme-card{
+  background:var(--canvas-light);border:1px solid var(--hairline-light);
+  border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;cursor:pointer;
+  box-shadow:0 8px 8px rgba(0,0,0,0.1),0 4px 4px rgba(0,0,0,0.1),0 2px 2px rgba(0,0,0,0.1),0 0 0 1px rgba(0,0,0,0.1);
+}
+.theme-shot{height:180px;border-radius:var(--r-md);position:relative;overflow:hidden;margin-bottom:20px}
+.ts1{background:linear-gradient(160deg,#dfe9e4 0%,#b9ccc2 100%)}
+.ts2{background:linear-gradient(160deg,#f0e6da 0%,#d6c2ac 100%)}
+.ts3{background:linear-gradient(160deg,#dde4f0 0%,#b4c2dc 100%)}
+.ts4{background:linear-gradient(160deg,#ece1ee 0%,#cbb3d1 100%)}
+.ts5{background:linear-gradient(160deg,#e2ede0 0%,#c2d6bd 100%)}
+.ts6{background:linear-gradient(160deg,#f4e3e3 0%,#dcb9b9 100%)}
+.theme-shot .mock-nav{position:absolute;top:12px;left:12px;right:12px;height:10px;border-radius:5px;background:rgba(0,0,0,0.14)}
+.theme-shot .mock-hero{position:absolute;top:34px;left:12px;right:12px;height:70px;border-radius:var(--r-sm);background:rgba(255,255,255,0.55)}
+.theme-shot .mock-grid{position:absolute;bottom:12px;left:12px;right:12px;display:flex;gap:8px}
+.theme-shot .mock-grid i{flex:1;height:38px;border-radius:var(--r-sm);background:rgba(255,255,255,0.45)}
+.tag-row{display:flex;gap:8px;margin-bottom:12px}
+.pill-tag{font-size:12px;font-weight:400;letter-spacing:0.72px;text-transform:uppercase;border-radius:var(--r-pill);padding:4px 12px}
+.pill-mint{background:var(--aloe);color:var(--ink)}
+.pill-shade{background:var(--shade-30);color:var(--ink)}
+.theme-card h3{font-family:var(--display);font-weight:500;font-size:22px;letter-spacing:0.42px}
+.theme-card .desc{font-size:14px;color:var(--shade-50);margin-top:6px}
+.theme-meta{display:flex;align-items:center;gap:8px;margin-top:18px}
+.stars{color:#3f3f46;font-size:13px;letter-spacing:2px}
+.rating{font-size:13px;color:var(--shade-50)}
+.price{margin-left:auto;font-family:var(--display);font-weight:500;font-size:20px}
+.price sub{font-size:12px;color:var(--shade-50);font-family:var(--sans);font-weight:400}
+.theme-meta .btn-sm{margin-left:12px}
+
+/* ===== Featured detail (pistachio band) ===== */
+.featured{background:var(--pistachio);border-radius:var(--r-lg);padding:40px;display:grid;grid-template-columns:1.1fr 1fr;gap:48px;margin:56px 0}
+.featured-shot{height:340px;border-radius:var(--r-xl) var(--r-xl) var(--r-md) var(--r-md);background:linear-gradient(165deg,#e9f4ea 0%,#c4dcc6 100%);position:relative;overflow:hidden;box-shadow:0 8px 8px rgba(0,0,0,0.08),0 4px 4px rgba(0,0,0,0.08)}
+.featured-shot .fs-nav{position:absolute;top:16px;left:20px;right:20px;height:12px;border-radius:6px;background:rgba(0,0,0,0.12)}
+.featured-shot .fs-hero{position:absolute;top:44px;left:20px;width:55%;height:110px;border-radius:var(--r-sm);background:rgba(255,255,255,0.6)}
+.featured-shot .fs-cards{position:absolute;bottom:20px;left:20px;right:20px;display:flex;gap:12px}
+.featured-shot .fs-cards i{flex:1;height:64px;border-radius:var(--r-md);background:rgba(255,255,255,0.5)}
+.detail h2{font-family:var(--display);font-weight:300;font-size:52px;line-height:1.14;letter-spacing:0}
+.detail .lede{font-size:18px;font-weight:550;line-height:1.56;margin-top:16px;max-width:440px}
+.opt-group{margin-top:28px}
+.opt-label{font-size:14px;font-weight:500;letter-spacing:0.28px;margin-bottom:10px;color:var(--shade-60)}
+.opt-row{display:flex;gap:8px;flex-wrap:wrap}
+.opt{background:var(--canvas-light);border:1px solid var(--hairline-light);border-radius:var(--r-pill);padding:10px 20px;font-size:14px;font-weight:420;cursor:pointer;color:var(--ink)}
+.opt:hover{border-color:var(--ink)}
+.opt.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--shade-30);border-radius:var(--r-pill);height:44px;margin-top:10px;background:var(--canvas-light)}
+.qty button{width:44px;height:100%;background:none;border:none;color:var(--shade-60);font-size:16px;cursor:pointer}
+.qty span{width:52px;text-align:center;font-size:15px;font-weight:500}
+.buy-row{display:flex;align-items:center;gap:20px;margin-top:32px;flex-wrap:wrap}
+.price-xl{font-family:var(--display);font-weight:400;font-size:40px}
+.review{margin-top:32px;border-top:1px solid rgba(0,0,0,0.12);padding-top:24px}
+.review .r{display:flex;gap:14px;margin-top:16px}
+.avatar{width:40px;height:40px;border-radius:var(--r-full);background:var(--shade-30);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--ink);flex:none}
+.review p{font-size:14px;color:var(--shade-60);line-height:1.5}
+.review .who{font-size:13px;color:var(--shade-50);margin-top:4px}
+
+/* ===== Cart summary (light) ===== */
+.cart-section{padding-bottom:96px}
+.cart-grid{display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start}
+.cart-list{border:1px solid var(--hairline-light);border-radius:var(--r-lg);background:var(--canvas-light);overflow:hidden}
+.cart-item{display:flex;align-items:center;gap:16px;padding:20px 24px;border-bottom:1px solid var(--hairline-light)}
+.cart-item:last-child{border-bottom:none}
+.ci-shot{width:88px;height:60px;border-radius:var(--r-sm);flex:none}
+.ci-info{flex:1}
+.ci-name{font-weight:600;font-size:16px;letter-spacing:0.16px}
+.ci-var{font-size:13px;color:var(--shade-50);margin-top:2px}
+.ci-price{font-weight:500}
+.ci-x{color:var(--shade-40);cursor:pointer;font-size:18px;background:none;border:none}
+.ci-x:hover{color:var(--ink)}
+.summary{background:var(--canvas-light);border-radius:var(--r-lg);padding:32px;position:sticky;top:88px;
+  box-shadow:0 8px 8px rgba(0,0,0,0.1),0 4px 4px rgba(0,0,0,0.1),0 2px 2px rgba(0,0,0,0.1),0 0 0 1px rgba(0,0,0,0.1)}
+.summary h3{font-family:var(--display);font-weight:500;font-size:22px;letter-spacing:0.42px;margin-bottom:20px}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--shade-50);padding:8px 0}
+.sum-row.total{border-top:1px solid var(--shade-30);margin-top:12px;padding-top:16px;color:var(--ink);font-family:var(--display);font-weight:500;font-size:24px}
+.summary .btn{width:100%;margin-top:8px}
+.summary .note{font-size:13px;color:var(--shade-50);text-align:center;margin-top:14px}
+
+/* ===== Footer (dark) ===== */
+footer{background:var(--canvas-night);color:rgba(255,255,255,0.85);padding:64px 0 32px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:48px}
+.foot-brand p{font-size:14px;color:var(--link-cool);max-width:300px;margin-top:14px;line-height:1.5}
+.newsletter{display:flex;gap:8px;margin-top:16px}
+.newsletter input{flex:1;background:var(--canvas-night-elevated);border:1px solid var(--hairline-dark);border-radius:var(--r-pill);height:44px;padding:0 20px;color:#fff;font-family:var(--sans);font-size:14px;outline:none}
+.newsletter input::placeholder{color:#71717a}
+.foot-col h4{font-size:14px;font-weight:500;letter-spacing:0.28px;color:#fff;margin-bottom:16px}
+.foot-col a{display:block;font-size:14px;padding:6px 0;color:var(--link-cool)}
+.foot-col a:hover{color:#fff}
+.foot-bottom{display:flex;align-items:center;gap:24px;border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;font-size:13px;color:#71717a}
+.socials{margin-left:auto;display:flex;gap:10px}
+.socials span{width:34px;height:34px;border-radius:var(--r-pill);background:var(--canvas-night-elevated);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--link-cool)}
+
+@media(max-width:1024px){
+  .nav-links{display:none}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .featured,.cart-grid{grid-template-columns:1fr}
+  .hero h1{font-size:56px;letter-spacing:1px}
+  .detail h2{font-size:38px}
+  .section-head h2{font-size:36px}
+}
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:40px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#"><span class="glyph"></span>Shopifi Store</a>
+    <nav class="nav-links">
+      <a href="#">Themes</a>
+      <a href="#">Apps</a>
+      <a href="#">Experts</a>
+      <a href="#">Pricing</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search the store">
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="badge">2</span>
+      </button>
+      <button class="icon-btn" aria-label="Cart">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+        <span class="badge">3</span>
+      </button>
+      <button class="btn btn-outline-dark btn-sm">Log in</button>
+    </div>
+  </div>
+</header>
+
+<!-- CINEMATIC HERO -->
+<section class="hero">
+  <div class="container">
+    <h1>Design your store.<br>Own every pixel.</h1>
+    <p class="lede">Premium themes and apps, reviewed by hand and built for conversion. Try any theme on your real catalog before you pay a cent.</p>
+    <div class="hero-cta">
+      <button class="btn btn-outline-dark">Browse themes</button>
+      <button class="btn btn-outline-dark">Hire an expert</button>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="storefront"><div class="win"></div><div class="door"></div></div>
+    <div class="sp2"><div class="win"></div></div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="catalog">
+  <div class="container">
+    <div class="filter-row">
+      <button class="chip active">All themes</button>
+      <button class="chip">Fashion</button>
+      <button class="chip">Food &amp; drink</button>
+      <button class="chip">Home goods</button>
+      <button class="chip">Free</button>
+      <span class="chip-count">6 of 214 themes</span>
+    </div>
+    <div class="section-head">
+      <h2>Best sellers</h2>
+      <a href="#">SEE ALL THEMES →</a>
+    </div>
+    <div class="grid">
+
+      <div class="theme-card">
+        <div class="theme-shot ts1"><div class="mock-nav"></div><div class="mock-hero"></div><div class="mock-grid"><i></i><i></i><i></i></div></div>
+        <div class="tag-row"><span class="pill-tag pill-mint">Featured</span><span class="pill-tag pill-shade">Fashion</span></div>
+        <h3>Meridian</h3>
+        <p class="desc">Editorial fashion layout with lookbook pages and a drag-free mobile story feed.</p>
+        <div class="theme-meta">
+          <span class="stars">★★★★★</span><span class="rating">4.9 (2.1k)</span>
+          <span class="price">$320</span>
+          <button class="btn btn-primary-pill btn-sm">Add</button>
+        </div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-shot ts2"><div class="mock-nav"></div><div class="mock-hero"></div><div class="mock-grid"><i></i><i></i><i></i></div></div>
+        <div class="tag-row"><span class="pill-tag pill-shade">Food &amp; drink</span></div>
+        <h3>Provisions</h3>
+        <p class="desc">Warm pantry aesthetic, subscription blocks built in, and a one-page checkout.</p>
+        <div class="theme-meta">
+          <span class="stars">★★★★★</span><span class="rating">4.8 (1.4k)</span>
+          <span class="price">$280</span>
+          <button class="btn btn-outline-light btn-sm">Add</button>
+        </div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-shot ts3"><div class="mock-nav"></div><div class="mock-hero"></div><div class="mock-grid"><i></i><i></i><i></i></div></div>
+        <div class="tag-row"><span class="pill-tag pill-shade">Home goods</span></div>
+        <h3>Atrium</h3>
+        <p class="desc">Big-catalog performance: 40% faster LCP on stores over 5,000 SKUs.</p>
+        <div class="theme-meta">
+          <span class="stars">★★★★☆</span><span class="rating">4.7 (980)</span>
+          <span class="price">$240</span>
+          <button class="btn btn-outline-light btn-sm">Add</button>
+        </div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-shot ts4"><div class="mock-nav"></div><div class="mock-hero"></div><div class="mock-grid"><i></i><i></i><i></i></div></div>
+        <div class="tag-row"><span class="pill-tag pill-shade">Beauty</span></div>
+        <h3>Petal &amp; Co.</h3>
+        <p class="desc">Soft gradients, shade-finder section, and UGC galleries that actually load.</p>
+        <div class="theme-meta">
+          <span class="stars">★★★★★</span><span class="rating">4.9 (1.1k)</span>
+          <span class="price">$300</span>
+          <button class="btn btn-outline-light btn-sm">Add</button>
+        </div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-shot ts5"><div class="mock-nav"></div><div class="mock-hero"></div><div class="mock-grid"><i></i><i></i><i></i></div></div>
+        <div class="tag-row"><span class="pill-tag pill-shade">Free</span></div>
+        <h3>Sapling</h3>
+        <p class="desc">Our free starter theme — clean, fast, and honest enough to grow on.</p>
+        <div class="theme-meta">
+          <span class="stars">★★★★☆</span><span class="rating">4.6 (4.2k)</span>
+          <span class="price">Free</span>
+          <button class="btn btn-outline-light btn-sm">Add</button>
+        </div>
+      </div>
+
+      <div class="theme-card">
+        <div class="theme-shot ts6"><div class="mock-nav"></div><div class="mock-hero"></div><div class="mock-grid"><i></i><i></i><i></i></div></div>
+        <div class="tag-row"><span class="pill-tag pill-shade">Fashion</span></div>
+        <h3>Runway Row</h3>
+        <p class="desc">Full-bleed campaign heroes and a size-guide drawer shoppers actually open.</p>
+        <div class="theme-meta">
+          <span class="stars">★★★★★</span><span class="rating">4.8 (760)</span>
+          <span class="price">$350</span>
+          <button class="btn btn-outline-light btn-sm">Add</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FEATURED DETAIL -->
+    <div class="featured">
+      <div class="featured-shot">
+        <div class="fs-nav"></div>
+        <div class="fs-hero"></div>
+        <div class="fs-cards"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="detail">
+        <div class="tag-row"><span class="pill-tag pill-mint">Featured</span><span class="pill-tag pill-shade">Fashion</span></div>
+        <h2 style="margin-top:12px">Meridian — the storefront your brand photos deserve</h2>
+        <p class="lede">Full-height campaign heroes, lookbook storytelling, and a cart drawer that keeps shoppers moving. Works on your live catalog in trial mode before you commit.</p>
+        <div class="opt-group">
+          <div class="opt-label">License</div>
+          <div class="opt-row">
+            <span class="opt active">One store</span>
+            <span class="opt">Unlimited stores +$640</span>
+          </div>
+        </div>
+        <div class="opt-group">
+          <div class="opt-label">Quantity</div>
+          <div class="qty">
+            <button aria-label="Decrease">−</button>
+            <span>1</span>
+            <button aria-label="Increase">+</button>
+          </div>
+        </div>
+        <div class="buy-row">
+          <span class="price-xl">$320</span>
+          <button class="btn btn-primary-pill">Add to cart</button>
+          <button class="btn btn-outline-light">Try on my store</button>
+        </div>
+        <div class="review">
+          <span class="stars">★★★★★</span> <span class="rating">4.9 · 2,142 reviews</span>
+          <div class="r">
+            <div class="avatar">IW</div>
+            <div>
+              <p>Replatformed onto Meridian in a weekend. Mobile conversion went up 18% with zero ad spend change.</p>
+              <div class="who">Isolde Weiss — founder, Atelier Nord</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="cart-section">
+      <div class="cart-grid">
+        <div>
+          <div class="section-head"><h2>Your cart</h2><a href="#">EDIT ITEMS</a></div>
+          <div class="cart-list">
+            <div class="cart-item">
+              <div class="ci-shot ts1"></div>
+              <div class="ci-info">
+                <div class="ci-name">Meridian</div>
+                <div class="ci-var">Theme · one store license · lifetime updates</div>
+              </div>
+              <span class="ci-price">$320.00</span>
+              <button class="ci-x" aria-label="Remove">×</button>
+            </div>
+            <div class="cart-item">
+              <div class="ci-shot ts5"></div>
+              <div class="ci-info">
+                <div class="ci-name">Sapling</div>
+                <div class="ci-var">Theme · free</div>
+              </div>
+              <span class="ci-price">$0.00</span>
+              <button class="ci-x" aria-label="Remove">×</button>
+            </div>
+            <div class="cart-item">
+              <div class="ci-shot" style="background:linear-gradient(160deg,#dfe7f0,#b9c9dd)"></div>
+              <div class="ci-info">
+                <div class="ci-name">ShipLite Fulfillment</div>
+                <div class="ci-var">App · 14-day trial then $29/mo</div>
+              </div>
+              <span class="ci-price">$0.00</span>
+              <button class="ci-x" aria-label="Remove">×</button>
+            </div>
+          </div>
+        </div>
+        <aside class="summary">
+          <h3>Checkout summary</h3>
+          <div class="sum-row"><span>Themes</span><span>$320.00</span></div>
+          <div class="sum-row"><span>Apps (trials)</span><span>$0.00</span></div>
+          <div class="sum-row"><span>Tax (est. 8%)</span><span>$25.60</span></div>
+          <div class="sum-row total"><span>Total today</span><span>$345.60</span></div>
+          <button class="btn btn-primary-pill" style="margin-top:16px">Complete purchase</button>
+          <div class="note">One-click install to your store. 30-day money-back on every theme.</div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#"><span class="glyph" style="background:#fff"></span>Shopifi Store</a>
+        <p>Themes, apps, and experts for merchants who sweat the details. Every listing reviewed, every refund honored.</p>
+        <div class="newsletter">
+          <input type="email" placeholder="Email address">
+          <button class="btn btn-outline-dark btn-sm">Get updates</button>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Store</h4>
+        <a href="#">Themes</a>
+        <a href="#">Apps</a>
+        <a href="#">Experts</a>
+        <a href="#">New releases</a>
+      </div>
+      <div class="foot-col">
+        <h4>Merchants</h4>
+        <a href="#">Help centre</a>
+        <a href="#">Community</a>
+        <a href="#">Changelog</a>
+        <a href="#">Refund policy</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Press</a>
+        <a href="#">Legal</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Shopifi Store Ltd. Trial themes are free until you publish.</span>
+      <div class="socials"><span>X</span><span>IG</span><span>YT</span><span>in</span></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

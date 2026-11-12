@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nintendo Store Ops — Control Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#e60012; --signal:#f68d1f; --amber:#ecab37; --nav-gold:#e48600;
+  --canvas:#7a8aba; --canvas-soft:#9fbee7; --lavender:#acace7; --ice:#c0d5e6;
+  --periwinkle:#8ba1d4; --chrome-indigo:#3d4f97; --muted-indigo:#60619c;
+  --platinum:#dedede; --surface:#ffffff; --carbon:#21242e; --hairline:#5a5f8c;
+  --ink:#21242e; --ink-soft:#3d4f97; --on-primary:#ffffff;
+  --systems-teal:#206479; --success:#2e7d5b; --warning:#ecab37; --danger:#a7282b; --neutral:#60619c;
+  --font-ui:Arial,Helvetica,sans-serif;
+  --font-display:'Arial Black',Arial,sans-serif;
+  --font-pixel:'Press Start 2P',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);font-family:var(--font-ui);font-size:12px;color:var(--ink);line-height:1.4;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:100% 4px}
+
+/* shell */
+.shell{width:1060px;margin:0 auto;padding:14px 0 32px;display:grid;grid-template-columns:210px 1fr;gap:14px}
+
+/* ── sidebar: carbon rail ────────────────────────────────── */
+.side{display:flex;flex-direction:column;gap:0}
+.side-plate{background:var(--carbon);
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:5px 5px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 2px 0 var(--chrome-indigo)}
+.side-logo{padding:12px;display:flex;align-items:center;gap:8px;border-bottom:1px dotted var(--muted-indigo)}
+.logo-pill{background:var(--surface);border:2px solid var(--primary);border-radius:9999px;padding:2px 8px;display:flex;align-items:center}
+.logo-pill b{font-family:var(--font-display);color:var(--primary);font-size:11px}
+.side-logo b{color:var(--canvas-soft);font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+.side nav{padding:8px 0 10px;flex:1}
+.side .group{font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--muted-indigo);text-transform:uppercase;padding:10px 12px 4px}
+.side nav a{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--canvas-soft);padding:7px 12px;border-left:3px solid transparent}
+.side nav a .i{color:var(--amber);font-size:11px;width:14px;text-align:center}
+.side nav a:hover{color:#fff}
+.side nav a.active{border-left-color:var(--signal);background:rgba(255,255,255,.06);color:#fff}
+.side nav a .count{margin-left:auto;background:var(--signal);color:#fff;font-size:9px;padding:1px 5px;border-radius:2px}
+.user-card{margin-top:10px;background:var(--platinum);border:1px solid var(--chrome-indigo);border-radius:6px;padding:10px;display:flex;gap:8px;align-items:center;box-shadow:inset -1px -1px 0 rgba(255,255,255,.7)}
+.avatar{width:34px;height:34px;border-radius:9999px;background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none}
+.user-card .u-name{font-size:11px;font-weight:700}
+.user-card .u-role{font-size:9px;color:var(--ink-soft)}
+
+/* ── main column ─────────────────────────────────────────── */
+.main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.topbar{display:flex;align-items:center;gap:10px;background:var(--carbon);
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:5px 5px;
+  padding:8px 12px;box-shadow:0 2px 0 var(--chrome-indigo)}
+.crumb{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted-indigo);text-transform:uppercase}
+.crumb b{color:var(--canvas-soft)}
+.crumb i{font-style:normal;color:var(--muted-indigo);margin:0 6px}
+.topbar .fld{width:200px}
+.fld{background:var(--surface);border:1px solid var(--hairline);border-radius:2px;height:24px;padding:0 6px;font-family:var(--font-ui);font-size:12px;color:var(--ink);outline:none;box-shadow:inset 1px 1px 0 var(--chrome-indigo)}
+.topbar .searchline{margin-left:auto;display:flex;gap:4px;align-items:center}
+.bell{position:relative;width:26px;height:26px;background:var(--amber);border-radius:2px;display:inline-flex;align-items:center;justify-content:center;color:var(--carbon);font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 var(--nav-gold)}
+.bell .dot{position:absolute;top:-4px;right:-4px;background:var(--primary);color:#fff;font-size:8px;font-weight:700;width:13px;height:13px;border-radius:9999px;display:flex;align-items:center;justify-content:center;border:1px solid var(--carbon)}
+.avatar.sm{width:26px;height:26px;font-size:9px}
+
+/* ── plate & label bar ───────────────────────────────────── */
+.plate{background:var(--canvas);border:1px solid var(--chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 var(--chrome-indigo),2px 3px 0 rgba(33,36,46,.25)}
+.inset{background:var(--platinum);border:1px solid var(--chrome-indigo);
+  box-shadow:inset 1px 1px 0 var(--chrome-indigo),inset -1px -1px 0 rgba(255,255,255,.7)}
+.label-bar{background:var(--canvas);padding:7px 10px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);
+  border-bottom:1px solid var(--chrome-indigo);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.label-bar .glyph{color:var(--games-red, #a7282b);font-family:var(--font-pixel);font-size:8px}
+.label-bar .more{margin-left:auto;color:var(--ink-soft);font-size:10px}
+
+/* ── page head + buttons ─────────────────────────────────── */
+.page-head{display:flex;align-items:center;justify-content:space-between}
+.page-head h1{font-family:var(--font-display);font-size:22px;font-weight:900;color:#fff;-webkit-text-stroke:1px var(--carbon);text-shadow:2px 2px 0 var(--carbon)}
+.page-head p{font-size:10px;color:#e6ebff;text-shadow:1px 1px 0 var(--chrome-indigo);margin-top:2px}
+.btn{background:var(--amber);color:var(--carbon);border-radius:2px;padding:7px 14px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 var(--nav-gold)}
+.btn-signal{background:var(--signal);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 0 #c26306}
+.head-actions{display:flex;gap:5px}
+
+/* ── KPI row ─────────────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--chrome-indigo);border-radius:4px;padding:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),1px 2px 0 rgba(33,36,46,.2)}
+.kpi .k-label{font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--ink-soft);text-transform:uppercase}
+.kpi .k-value{font-family:var(--font-display);font-size:20px;color:var(--ink);margin-top:4px}
+.kpi .k-delta{font-size:10px;font-weight:700;margin-top:2px}
+.up{color:var(--success)} .down{color:var(--danger)}
+.kpi .k-delta span{color:var(--neutral);font-weight:400}
+.spark{display:flex;align-items:flex-end;gap:2px;height:26px;margin-top:8px}
+.spark i{flex:1;background:var(--canvas-soft);border:1px solid var(--chrome-indigo);border-radius:1px}
+.spark i.hi{background:var(--signal)}
+
+/* ── charts ──────────────────────────────────────────────── */
+.charts{display:grid;grid-template-columns:1.8fr 1fr;gap:14px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:150px;padding:10px 12px 6px}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bcol .bar{width:100%;background:var(--canvas-soft);border:1px solid var(--chrome-indigo);border-radius:1px}
+.bcol .bar.hi{background:var(--signal)}
+.bcol small{font-size:9px;color:var(--ink-soft);font-weight:700}
+.donut-wrap{display:flex;gap:12px;align-items:center;padding:12px}
+.donut{width:120px;height:120px;border-radius:9999px;flex:none;position:relative;
+  background:conic-gradient(var(--signal) 0 44%,var(--amber) 44% 70%,var(--systems-teal) 70% 86%,var(--primary) 86% 100%);
+  border:1px solid var(--chrome-indigo)}
+.donut::after{content:"64";position:absolute;inset:30px;background:var(--platinum);border:1px solid var(--chrome-indigo);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;color:var(--ink-soft)}
+.legend{flex:1}
+.legend li{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.legend i{width:10px;height:10px;border-radius:9999px;flex:none;border:1px solid var(--chrome-indigo)}
+.legend b{margin-left:auto;color:var(--ink-soft)}
+.legend .pct{margin-left:auto}
+
+/* ── table ───────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead th{background:var(--canvas-soft);text-align:left;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);padding:6px 8px;border-bottom:1px solid var(--chrome-indigo)}
+tbody td{padding:7px 8px;border-bottom:1px dotted var(--muted-indigo);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.45)}
+.o-num{font-weight:700;color:var(--ink-soft)}
+.o-item{color:var(--ink-soft);font-size:10px}
+.checkbox{width:12px;height:12px;border:1px solid var(--carbon);background:#fff;display:inline-block;vertical-align:middle;border-radius:1px}
+.badge{display:inline-block;border-radius:2px;padding:2px 6px;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border:1px solid}
+.b-success{background:#dff0e6;color:#1e5e40;border-color:#1e5e40}
+.b-warning{background:#fdf3d7;color:#7c5708;border-color:var(--nav-gold)}
+.b-danger{background:#f6dede;color:var(--danger);border-color:var(--danger)}
+.b-neutral{background:#ececf6;color:var(--neutral);border-color:var(--neutral)}
+.amount{font-weight:700}
+.actions a{color:var(--ink-soft);font-size:10px;font-weight:700;text-decoration:underline;margin-right:8px}
+tfoot td{padding:6px 8px;font-size:10px;color:var(--ink-soft)}
+.pager{display:flex;gap:3px;justify-content:flex-end}
+.pager button{background:var(--platinum);border:1px solid var(--chrome-indigo);border-radius:2px;min-width:20px;height:20px;font-size:9px;color:var(--ink);box-shadow:inset -1px -1px 0 rgba(255,255,255,.7)}
+.pager button.cur{background:var(--carbon);color:var(--canvas-soft)}
+
+/* ── below row ───────────────────────────────────────────── */
+.below{display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:start}
+.feed li{display:flex;gap:8px;padding:8px 12px;border-bottom:1px dotted var(--muted-indigo);font-size:11px}
+.feed li:last-child{border-bottom:none}
+.feed .f-dot{width:20px;height:20px;border-radius:9999px;flex:none;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:1px solid var(--carbon)}
+.feed .f-dot.ok{background:#dff0e6;color:#1e5e40}
+.feed .f-dot.warn{background:#fdf3d7;color:#7c5708}
+.feed .f-dot.dgr{background:#f6dede;color:var(--danger)}
+.feed .f-dot.nt{background:var(--canvas-soft);color:var(--ink)}
+.feed p b{font-weight:700}
+.feed time{display:block;font-size:9px;color:var(--neutral)}
+.quick{padding:12px}
+.quick label{display:block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft);margin:10px 0 4px}
+.quick input,.quick select{width:100%}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-top:10px}
+.switch{width:34px;height:18px;border-radius:9999px;background:var(--platinum);border:1px solid var(--chrome-indigo);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:9999px;background:#fff;border:1px solid var(--muted-indigo)}
+.switch.on{background:var(--signal);border-color:#c26306}
+.switch.on::after{left:auto;right:2px}
+.quick .btn{width:100%;margin-top:14px}
+
+@media (max-width:1090px){.shell{width:100%;padding:8px;grid-template-columns:1fr}.side{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- carbon rail -->
+  <aside class="side">
+    <div class="side-plate">
+      <div class="side-logo">
+        <span class="logo-pill"><b>NINTENDO</b></span><b>STORE OPS</b>
+      </div>
+      <nav>
+        <p class="group">Overview</p>
+        <a href="#" class="active"><span class="i">■</span>Control Deck</a>
+        <a href="#"><span class="i">▤</span>Sales Reports</a>
+        <p class="group">Catalog</p>
+        <a href="#"><span class="i">▶</span>Games<span class="count">412</span></a>
+        <a href="#"><span class="i">▣</span>Systems &amp; Hardware</a>
+        <a href="#"><span class="i">◆</span>Accessories</a>
+        <p class="group">Orders</p>
+        <a href="#"><span class="i">☑</span>Order Queue<span class="count">58</span></a>
+        <a href="#"><span class="i">↺</span>Returns &amp; Repairs</a>
+        <p class="group">People</p>
+        <a href="#"><span class="i">☺</span>Players &amp; Accounts</a>
+        <p class="group">System</p>
+        <a href="#"><span class="i">⚙</span>Settings</a>
+      </nav>
+    </div>
+    <div class="user-card">
+      <span class="avatar">KH</span>
+      <div><p class="u-name">Katie Hopper</p><p class="u-role">Store Ops · Redmond HQ</p></div>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <div class="main">
+    <header class="topbar">
+      <p class="crumb">Store Ops <i>/</i> <b>Control Deck</b></p>
+      <form class="searchline">
+        <input class="fld" type="text" placeholder="Search orders, players, SKUs" aria-label="Search">
+        <button class="go btn" type="button" style="padding:5px 10px">GO</button>
+        <span class="bell" aria-label="Notifications, 7 unread">✉<span class="dot">7</span></span>
+        <span class="avatar sm">KH</span>
+      </form>
+    </header>
+
+    <div class="page-head">
+      <div><h1>CONTROL DECK</h1><p>Wed, Nov 14, 2001 · Holiday season live · Redmond fulfillment center</p></div>
+      <div class="head-actions">
+        <button class="btn">Export Report</button>
+        <button class="btn btn-signal">New Promo</button>
+      </div>
+    </div>
+
+    <!-- KPI row -->
+    <section class="kpis">
+      <div class="kpi">
+        <p class="k-label">Revenue MTD</p>
+        <p class="k-value">$1.84M</p>
+        <p class="k-delta up">▲ 18.2% <span>vs Oct</span></p>
+        <div class="spark"><i style="height:40%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:78%"></i><i class="hi" style="height:94%"></i></div>
+      </div>
+      <div class="kpi">
+        <p class="k-label">Cartridges Shipped</p>
+        <p class="k-value">61,240</p>
+        <p class="k-delta up">▲ 12.6% <span>vs Oct</span></p>
+        <div class="spark"><i style="height:44%"></i><i style="height:50%"></i><i style="height:62%"></i><i style="height:58%"></i><i style="height:70%"></i><i style="height:74%"></i><i class="hi" style="height:88%"></i></div>
+      </div>
+      <div class="kpi">
+        <p class="k-label">Cart Conversion</p>
+        <p class="k-value">2.9%</p>
+        <p class="k-delta down">▼ 0.3 pts <span>vs Oct</span></p>
+        <div class="spark"><i style="height:66%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:52%"></i><i style="height:55%"></i><i style="height:48%"></i><i class="hi" style="height:44%"></i></div>
+      </div>
+      <div class="kpi">
+        <p class="k-label">Open Repairs</p>
+        <p class="k-value">127</p>
+        <p class="k-delta up">▼ 9 <span>vs last week</span></p>
+        <div class="spark"><i style="height:80%"></i><i style="height:72%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:50%"></i><i style="height:42%"></i><i class="hi" style="height:36%"></i></div>
+      </div>
+    </section>
+
+    <!-- charts -->
+    <section class="charts">
+      <div class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> MONTHLY REVENUE · FY2001 (USD $K)</div>
+        <div class="bars">
+          <div class="bcol"><div class="bar" style="height:34%"></div><small>Nov</small></div>
+          <div class="bcol"><div class="bar" style="height:58%"></div><small>Dec</small></div>
+          <div class="bcol"><div class="bar" style="height:40%"></div><small>Jan</small></div>
+          <div class="bcol"><div class="bar" style="height:46%"></div><small>Feb</small></div>
+          <div class="bcol"><div class="bar" style="height:44%"></div><small>Mar</small></div>
+          <div class="bcol"><div class="bar" style="height:52%"></div><small>Apr</small></div>
+          <div class="bcol"><div class="bar" style="height:56%"></div><small>May</small></div>
+          <div class="bcol"><div class="bar" style="height:50%"></div><small>Jun</small></div>
+          <div class="bcol"><div class="bar" style="height:60%"></div><small>Jul</small></div>
+          <div class="bcol"><div class="bar" style="height:64%"></div><small>Aug</small></div>
+          <div class="bcol"><div class="bar" style="height:72%"></div><small>Sep</small></div>
+          <div class="bcol"><div class="bar hi" style="height:92%"></div><small>Oct</small></div>
+        </div>
+      </div>
+      <div class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> SALES BY SYSTEM</div>
+        <div class="donut-wrap">
+          <div class="donut" role="img" aria-label="Donut chart: N64 44%, Game Boy Color 26%, SNES 16%, Accessories 14%"></div>
+          <ul class="legend">
+            <li><i style="background:var(--signal)"></i>Nintendo 64<b class="pct">44%</b></li>
+            <li><i style="background:var(--amber)"></i>Game Boy Color<b class="pct">26%</b></li>
+            <li><i style="background:var(--systems-teal)"></i>Super Nintendo<b class="pct">16%</b></li>
+            <li><i style="background:var(--primary)"></i>Accessories<b class="pct">14%</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- table + rail -->
+    <section class="below">
+      <div class="plate">
+        <div class="label-bar"><span class="glyph">≡</span> ORDER QUEUE <span class="more">58 OPEN</span></div>
+        <table>
+          <thead><tr>
+            <th style="width:24px"><span class="checkbox"></span></th>
+            <th>Order</th><th>Player</th><th>Items</th><th>Status</th><th>Amount</th><th>Date</th><th>Actions</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80641</td><td>Dylan Reyes<br><span class="o-item">Portland OR</span></td><td class="o-item">Mario Kart 64 ×1</td><td><span class="badge b-success">Shipped</span></td><td class="amount">$69.95</td><td>Nov 13</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80640</td><td>Amara Diallo<br><span class="o-item">Seattle WA</span></td><td class="o-item">GBC Berry ×1, Tetris DX ×1</td><td><span class="badge b-warning">Picking</span></td><td class="amount">$104.90</td><td>Nov 13</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80639</td><td>Sofia Marchetti<br><span class="o-item">San Jose CA</span></td><td class="o-item">Zelda: Ocarina ×1</td><td><span class="badge b-success">Shipped</span></td><td class="amount">$54.95</td><td>Nov 12</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80638</td><td>Grant Whitmore<br><span class="o-item">Denver CO</span></td><td class="o-item">Donkey Kong 64 ×1</td><td><span class="badge b-danger">Backordered</span></td><td class="amount">$54.95</td><td>Nov 12</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80637</td><td>Yuki Tanaka<br><span class="o-item">Los Angeles CA</span></td><td class="o-item">N64 Rumble Pak ×2</td><td><span class="badge b-neutral">Awaiting Pay</span></td><td class="amount">$39.90</td><td>Nov 11</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80636</td><td>Patrick O'Neal<br><span class="o-item">Boise ID</span></td><td class="o-item">Pokemon Gold ×3</td><td><span class="badge b-warning">Picking</span></td><td class="amount">$104.85</td><td>Nov 11</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+            <tr><td><span class="checkbox"></span></td><td class="o-num">#NP-80635</td><td>Lena Fischer<br><span class="o-item">Sacramento CA</span></td><td class="o-item">Star Fox 64 ×1</td><td><span class="badge b-success">Shipped</span></td><td class="amount">$44.95</td><td>Nov 10</td><td class="actions"><a href="#">View</a><a href="#">Track</a></td></tr>
+          </tbody>
+          <tfoot><tr>
+            <td colspan="5">Showing 1–7 of 2,891 orders</td>
+            <td colspan="3"><div class="pager"><button>◄</button><button class="cur">1</button><button>2</button><button>3</button><button>413</button><button>►</button></div></td>
+          </tr></tfoot>
+        </table>
+      </div>
+
+      <div class="stack-rail" style="display:flex;flex-direction:column;gap:14px">
+        <div class="plate">
+          <div class="label-bar"><span class="glyph">≡</span> WAREHOUSE LOG</div>
+          <ul class="feed">
+            <li><span class="f-dot ok">✓</span><div><p><b>#NP-80641</b> handed to UPS — Portland, ETA Fri.</p><time>22 min ago</time></div></li>
+            <li><span class="f-dot warn">!</span><div><p><b>Low stock:</b> Donkey Kong 64 — 6 cartridges left.</p><time>48 min ago</time></div></li>
+            <li><span class="f-dot nt">＋</span><div><p><b>412 Nsider accounts</b> created overnight.</p><time>2 hrs ago</time></div></li>
+            <li><span class="f-dot dgr">✕</span><div><p><b>Repair intake:</b> Control Deck stick drift — RMA #5521.</p><time>3 hrs ago</time></div></li>
+            <li><span class="f-dot nt">↻</span><div><p><b>Promo applied:</b> "Buy 2, get Pokemon Pinball free."</p><time>4 hrs ago</time></div></li>
+          </ul>
+        </div>
+        <div class="plate">
+          <div class="label-bar"><span class="glyph">≡</span> STORE SETTINGS</div>
+          <div class="quick">
+            <label>Holiday shipping cutoff</label>
+            <input class="fld" type="text" value="Dec 18, 12:00 PM PT">
+            <label>Backorder notice e-mail</label>
+            <input class="fld" type="text" value="ops@nintendo.store">
+            <div class="toggle-row"><span>Auto-flag orders over $200</span><span class="switch on"></span></div>
+            <div class="toggle-row"><span>Hide sold-out cartridges</span><span class="switch"></span></div>
+            <button class="btn">SAVE SETTINGS</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- infra strip -->
+    <section class="kpis">
+      <div class="kpi">
+        <p class="k-label">Store Uptime (30d)</p>
+        <p class="k-value" style="font-size:18px">99.92%</p>
+        <p class="k-delta up">▲ stable <span>2 blips</span></p>
+        <div class="spark"><i style="height:56%"></i><i style="height:60%"></i><i style="height:58%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:66%"></i><i class="hi" style="height:70%"></i></div>
+      </div>
+      <div class="kpi">
+        <p class="k-label">Modem Pool</p>
+        <p class="k-value" style="font-size:18px">71%</p>
+        <p class="k-delta up">▲ in use <span>56.6k lines</span></p>
+        <div class="spark"><i style="height:44%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:68%"></i><i class="hi" style="height:74%"></i></div>
+      </div>
+      <div class="kpi">
+        <p class="k-label">Checkout Latency</p>
+        <p class="k-value" style="font-size:18px">1.4s</p>
+        <p class="k-delta up">▼ 0.2s <span>vs last week</span></p>
+        <div class="spark"><i style="height:70%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:46%"></i><i class="hi" style="height:40%"></i></div>
+      </div>
+      <div class="kpi">
+        <p class="k-label">Site Update</p>
+        <p class="k-value" style="font-size:18px">v01.12</p>
+        <p class="k-delta up">▲ queues Fri <span>holiday banners</span></p>
+        <div class="spark"><i style="height:30%"></i><i style="height:38%"></i><i style="height:46%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:64%"></i><i class="hi" style="height:72%"></i></div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple Store — Shop iPhone, Mac, iPad and more</title>
+<style>
+:root{
+  --primary:#0066cc; --primary-focus:#0071e3; --primary-on-dark:#2997ff;
+  --ink:#1d1d1f; --body:#1d1d1f; --body-on-dark:#ffffff; --body-muted:#cccccc;
+  --ink-80:#333333; --ink-48:#7a7a7a;
+  --divider-soft:#f0f0f0; --hairline:#e0e0e0;
+  --canvas:#ffffff; --parchment:#f5f5f7; --pearl:#fafafc;
+  --tile-1:#272729; --tile-2:#2a2a2c; --tile-3:#252527; --black:#000000;
+  --chip-gray:#d2d2d7;
+  --on-primary:#ffffff;
+  --r-xs:5px; --r-sm:8px; --r-md:11px; --r-lg:18px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:17px; --sp-lg:24px; --sp-xl:32px; --sp-xxl:48px; --sp-section:80px;
+  --font-sf:'SF Pro Display','SF Pro Text',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+  --product-shadow:rgba(0,0,0,.22) 3px 5px 30px 0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sf);color:var(--ink);background:var(--canvas);font-size:17px;letter-spacing:-.374px;line-height:1.44;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:var(--primary)}
+button{font-family:var(--font-sf);cursor:pointer;border:none;background:none;color:inherit}
+button:active{transform:scale(.95)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 32px}
+.narrow{max-width:980px;margin:0 auto;padding:0 32px}
+
+/* ===== GLOBAL NAV ===== */
+.gnav{background:var(--black);height:44px}
+.gnav .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.gnav-links{display:flex;gap:20px;flex:1;justify-content:center}
+.gnav a{color:rgba(255,255,255,.8);font-size:12px;letter-spacing:-.12px;line-height:1}
+.gnav a:hover{color:#fff}
+.gnav .gic{width:16px;height:16px;color:rgba(255,255,255,.8)}
+.gnav .bagdot{position:relative}
+.gnav .bagdot::after{content:"";position:absolute;top:-4px;right:-6px;width:7px;height:7px;border-radius:9999px;background:var(--primary-focus);border:1px solid #000}
+
+/* ===== SUB NAV ===== */
+.subnav{position:sticky;top:0;z-index:60;height:52px;background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+.subnav .wrap{height:100%;display:flex;align-items:center;gap:24px}
+.subnav .cat{font-size:21px;font-weight:600;letter-spacing:.231px;line-height:1.19;color:var(--ink)}
+.subnav .lnks{margin-left:auto;display:flex;align-items:center;gap:24px}
+.subnav .lnks a{color:var(--ink);font-size:14px;letter-spacing:-.224px}
+.subnav .lnks a:hover{color:var(--primary)}
+.btn-pill{display:inline-block;background:var(--primary);color:var(--on-primary);font-size:17px;font-weight:400;letter-spacing:-.374px;border-radius:var(--r-pill);padding:8px 16px}
+.btn-pill:hover{background:var(--primary-focus)}
+.btn-pill.lg{font-size:18px;font-weight:300;padding:12px 24px}
+.btn-ghost{display:inline-block;color:var(--primary);border:1px solid var(--primary);border-radius:var(--r-pill);padding:8px 21px;font-size:17px;letter-spacing:-.374px}
+.btn-dark-utility{display:inline-block;background:var(--ink);color:#fff;font-size:14px;letter-spacing:-.224px;border-radius:var(--r-sm);padding:7px 14px}
+
+/* ===== HERO TILE ===== */
+.tile{padding:var(--sp-section) 0;text-align:center}
+.tile.white{background:var(--canvas)}
+.tile.parchment{background:var(--parchment)}
+.tile.dark{background:var(--tile-1);color:var(--body-on-dark)}
+.tile.dark .tagline{color:var(--body-muted)}
+.tile.dark a.inline{color:var(--primary-on-dark)}
+.tile h1{font-size:56px;font-weight:600;line-height:1.07;letter-spacing:-.28px}
+.tile h2{font-size:40px;font-weight:600;line-height:1.1}
+.tile .tagline{font-size:28px;font-weight:400;line-height:1.14;letter-spacing:.196px;color:var(--ink-80);margin-top:8px}
+.tile .cta-row{display:flex;gap:20px;justify-content:center;margin-top:20px}
+.render{width:min(720px,82%);margin:40px auto 0;border-radius:var(--r-sm);box-shadow:var(--product-shadow)}
+.r-iphone{aspect-ratio:16/9;background:linear-gradient(160deg,#3a3a3c 0%,#1c1c1e 55%,#48484a 100%);position:relative;overflow:hidden}
+.render svg{position:absolute;inset:0;width:100%;height:100%}
+.tile .fine{font-size:12px;color:var(--ink-48);margin-top:16px}
+
+/* ===== CATEGORY STRIP ===== */
+.catstrip{background:var(--canvas);padding:32px 0;border-bottom:1px solid var(--divider-soft)}
+.catrow{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.catitem{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px;color:var(--ink);min-width:72px}
+.catitem .cico{width:56px;height:56px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center}
+.catitem:hover .cico{outline:2px solid var(--primary-focus)}
+.catitem span{letter-spacing:-.224px}
+
+/* ===== STORE GRID ===== */
+.storegrid{background:var(--parchment);padding:64px 0 80px}
+.gridhead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px}
+.gridhead h2{font-size:34px;font-weight:600;letter-spacing:-.374px}
+.gridhead a{font-size:17px}
+.utilgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.ucard{background:var(--canvas);border:1px solid rgba(0,0,0,.08);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column}
+.ucard .img{aspect-ratio:1/1;border-radius:var(--r-sm);margin-bottom:16px;position:relative;overflow:hidden}
+.ucard .img svg{position:absolute;inset:0;width:100%;height:100%}
+.ucard h3{font-size:17px;font-weight:600;letter-spacing:-.374px;line-height:1.24}
+.ucard .pill-badge{position:absolute;top:12px;left:12px;font-size:12px;letter-spacing:-.12px;background:var(--primary-focus);color:#fff;border-radius:var(--r-pill);padding:3px 10px}
+.ucard .pill-badge.warm{background:#b64400}
+.ucard .price{font-size:17px;letter-spacing:-.374px;color:var(--ink-80);margin-top:4px}
+.ucard .buyrow{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.ucard .rate{font-size:14px;color:var(--ink-80);letter-spacing:-.224px}
+.ucard .rate b{color:var(--ink)}
+.bg-a{background:linear-gradient(150deg,#f5e6d8,#e3c3a3)}
+.bg-b{background:linear-gradient(150deg,#d8e4f0,#aac4dd)}
+.bg-c{background:linear-gradient(150deg,#e6e6e6,#b9b9bd)}
+.bg-d{background:linear-gradient(150deg,#e0ecdf,#b3cbb2)}
+.bg-e{background:linear-gradient(150deg,#efe3ee,#cba7c8)}
+.bg-f{background:linear-gradient(150deg,#f0ece2,#d4ccb8)}
+
+/* ===== CONFIGURATOR DETAIL ===== */
+.config{background:var(--canvas);padding:80px 0}
+.config-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:start}
+.stage{position:relative;background:var(--parchment);border-radius:var(--r-lg);aspect-ratio:4/3;overflow:hidden}
+.stage .dotnav{position:absolute;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:8px}
+.stage .dotnav i{width:8px;height:8px;border-radius:9999px;background:var(--chip-gray)}
+.stage .dotnav i.on{background:var(--ink)}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.thumbs .th{aspect-ratio:4/3;border-radius:var(--r-sm);border:3px solid transparent}
+.thumbs .th.sel{border-color:var(--primary-focus)}
+.t2{background:linear-gradient(140deg,#2c2c2e,#0f0f10)}
+.t3{background:linear-gradient(140deg,#d8e4f0,#aac4dd)}
+.t4{background:linear-gradient(140deg,#e6e6e6,#b9b9bd)}
+.config-side .kick{font-size:14px;letter-spacing:-.224px;color:var(--primary);font-weight:600}
+.config-side h2{font-size:40px;font-weight:600;line-height:1.1;margin-top:4px}
+.config-side .sub{font-size:17px;color:var(--ink-80);margin-top:8px}
+.optlabel{font-size:17px;font-weight:600;letter-spacing:-.374px;margin:28px 0 12px}
+.optlabel span{font-weight:400;color:var(--ink-80)}
+.optgrid{display:flex;gap:10px;flex-wrap:wrap}
+.optchip{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.08);border-radius:var(--r-pill);padding:12px 16px;font-size:14px;letter-spacing:-.224px;background:var(--canvas);color:var(--ink)}
+.optchip .sw{width:18px;height:18px;border-radius:9999px}
+.optchip.sel{border:2px solid var(--primary-focus);padding:11px 15px}
+.qtyrow{display:flex;align-items:center;gap:16px}
+.qbtn{width:36px;height:36px;border-radius:9999px;background:var(--parchment);font-size:17px;color:var(--ink)}
+.revbox{margin-top:28px;border-top:1px solid var(--divider-soft);padding-top:20px}
+.revbox .head{display:flex;align-items:baseline;justify-content:space-between}
+.revbox .head b{font-size:17px;font-weight:600}
+.revbox .head a{font-size:14px}
+.revbox .stars{color:var(--ink);font-size:14px;letter-spacing:2px}
+.revbox p{font-size:14px;letter-spacing:-.224px;color:var(--ink-80);margin-top:10px;line-height:1.43}
+.revbox .who{font-size:14px;color:var(--ink-48);margin-top:8px}
+
+/* ===== STICKY BAG BAR ===== */
+.bagbar{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid rgba(0,0,0,.08)}
+.bagbar .wrap{height:64px;display:flex;align-items:center;gap:24px}
+.bagbar .totlab{font-size:14px;color:var(--ink-80);letter-spacing:-.224px}
+.bagbar .totval{font-size:21px;font-weight:600;letter-spacing:.231px}
+.bagbar .shipfree{margin-left:auto;font-size:12px;color:var(--ink-48);letter-spacing:-.12px}
+.bagbar .btn-pill{font-size:14px;padding:10px 22px}
+
+/* ===== FOOTER ===== */
+footer{background:var(--parchment);padding:40px 0 0;font-size:12px;letter-spacing:-.12px;color:var(--ink-80)}
+.fnotes{border-bottom:1px solid var(--hairline);padding-bottom:16px;color:var(--ink-48);line-height:1.5}
+.fcols{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding:24px 0}
+.fcol h6{font-size:14px;font-weight:600;letter-spacing:-.224px;color:var(--ink);margin-bottom:8px}
+.fcol a{display:block;color:var(--ink-80);line-height:2.41;font-size:17px;letter-spacing:0}
+.fcol a:hover{text-decoration:underline;color:var(--ink)}
+.fbottom{border-top:1px solid var(--hairline);padding:16px 0 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-48)}
+.fbottom .soc{display:flex;gap:16px}
+.fbottom a{color:var(--ink-80)}
+
+@media (max-width:1128px){.utilgrid{grid-template-columns:repeat(3,1fr)}.config-grid{grid-template-columns:1fr;gap:40px}}
+@media (max-width:960px){
+  .utilgrid{grid-template-columns:repeat(2,1fr)}
+  .tile h1{font-size:40px}
+  .gnav-links{display:none}
+  .subnav .lnks a:not(.btn-pill){display:none}
+  .bagbar .shipfree{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="gnav">
+  <div class="wrap">
+    <a href="#" aria-label="Apple">
+      <svg class="gic" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M16.6 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.6-1-2.6-3.6zM14.3 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.2 1.9-1 2.9 1.1.1 2.2-.5 2.8-1.3z"/></svg>
+    </a>
+    <div class="gnav-links">
+      <a href="#">Store</a><a href="#">Mac</a><a href="#">iPad</a><a href="#">iPhone</a><a href="#">Watch</a><a href="#">AirPods</a><a href="#">TV &amp; Home</a><a href="#">Accessories</a><a href="#">Support</a>
+    </div>
+    <div style="display:flex;gap:20px;align-items:center">
+      <svg class="gic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+      <a class="bagdot" href="#" aria-label="Bag">
+        <svg class="gic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="subnav">
+  <div class="wrap">
+    <span class="cat">Store</span>
+    <div class="lnks">
+      <a href="#">Mac</a><a href="#">iPad</a><a href="#">iPhone</a><a href="#">Watch</a><a href="#">Accessories</a>
+      <a class="btn-pill" href="#">Shop</a>
+    </div>
+  </div>
+</div>
+
+<section class="tile dark">
+  <div class="narrow">
+    <h1>iPhone 17 Pro</h1>
+    <p class="tagline">Forged in titanium. Powered by A19 Pro.</p>
+    <div class="cta-row">
+      <a class="btn-pill lg" href="#config">Buy</a>
+      <a class="btn-ghost" href="#">Learn more</a>
+    </div>
+    <div class="render r-iphone">
+      <svg viewBox="0 0 720 405" preserveAspectRatio="none"><rect x="240" y="40" width="240" height="360" rx="36" fill="#0a0a0b"/><rect x="250" y="50" width="220" height="340" rx="30" fill="#161618"/><rect x="262" y="62" width="196" height="240" rx="14" fill="url(#scr)" opacity=".9"/><defs><linearGradient id="scr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3d5a80"/><stop offset="1" stop-color="#0d1b2a"/></linearGradient></defs><rect x="330" y="52" width="60" height="10" rx="5" fill="#000"/><circle cx="452" cy="92" r="26" fill="#232326" stroke="#3c3c40"/><circle cx="452" cy="92" r="10" fill="#0c0c0d"/><circle cx="452" cy="152" r="26" fill="#232326" stroke="#3c3c40"/><circle cx="452" cy="152" r="10" fill="#0c0c0d"/></svg>
+    </div>
+    <p class="fine">From $41.62/mo. for 24 mo. or $999 before trade-in</p>
+  </div>
+</section>
+
+<div class="catstrip">
+  <div class="wrap catrow">
+    <a class="catitem" href="#"><span class="cico" style="background:linear-gradient(150deg,#d8e4f0,#aac4dd)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/></svg></span><span>iPhone</span></a>
+    <a class="catitem" href="#"><span class="cico" style="background:linear-gradient(150deg,#e6e6e6,#b9b9bd)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"><rect x="3.5" y="4" width="17" height="12" rx="2"/><path d="M8 20h8"/></svg></span><span>Mac</span></a>
+    <a class="catitem" href="#"><span class="cico" style="background:linear-gradient(150deg,#e0ecdf,#b3cbb2)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2.5"/><circle cx="12" cy="17.5" r="1"/></svg></span><span>iPad</span></a>
+    <a class="catitem" href="#"><span class="cico" style="background:linear-gradient(150deg,#efe3ee,#cba7c8)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"><rect x="7" y="6" width="10" height="12" rx="3"/><path d="M9.5 6V4.5a2.5 2.5 0 0 1 5 0V6"/></svg></span><span>Watch</span></a>
+    <a class="catitem" href="#"><span class="cico" style="background:linear-gradient(150deg,#f5e6d8,#e3c3a3)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"><path d="M5 15v3a2 2 0 0 0 2 2h1l1-2M19 15v3a2 2 0 0 1-2 2h-1l-1-2"/><path d="M9 11a3 3 0 0 1 6 0v6H9z"/></svg></span><span>AirPods</span></a>
+    <a class="catitem" href="#"><span class="cico" style="background:linear-gradient(150deg,#f0ece2,#d4ccb8)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M12 9v6M9 12h6"/></svg></span><span>Accessories</span></a>
+  </div>
+</div>
+
+<section class="storegrid">
+  <div class="wrap">
+    <div class="gridhead">
+      <h2>The essentials. Right now.</h2>
+      <a href="#">Shop all products ›</a>
+    </div>
+    <div class="utilgrid">
+      <div class="ucard">
+        <div class="img bg-a"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="70" y="45" width="60" height="110" rx="12" fill="#1d1d1f"/><rect x="76" y="51" width="48" height="98" rx="8" fill="#2f2f31"/><rect x="82" y="58" width="36" height="70" rx="4" fill="#4b6b8a"/></svg></div>
+        <span class="pill-badge">New</span>
+        <h3>iPhone 17 Pro</h3>
+        <p class="price">From $999</p>
+        <div class="buyrow"><span class="rate">★ 4.9 <b>(3.2k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-b"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="45" y="60" width="110" height="72" rx="6" fill="#c8c8cc"/><rect x="52" y="67" width="96" height="58" rx="3" fill="#eef2f6"/><rect x="80" y="132" width="40" height="8" fill="#b0b0b4"/></svg></div>
+        <span class="pill-badge warm">Save $150</span>
+        <h3>MacBook Air 15"</h3>
+        <p class="price">From $949</p>
+        <div class="buyrow"><span class="rate">★ 4.8 <b>(1.8k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-d"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="62" y="42" width="76" height="116" rx="12" fill="#f7f7f9" stroke="#d0d0d4"/><rect x="70" y="52" width="60" height="88" rx="4" fill="#e8ecef"/><circle cx="100" cy="152" r="6" fill="#c0c0c4"/></svg></div>
+        <h3>iPad Air 11"</h3>
+        <p class="price">From $599</p>
+        <div class="buyrow"><span class="rate">★ 4.9 <b>(2.6k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-e"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="72" y="62" width="56" height="76" rx="26" fill="#1d1d1f"/><rect x="80" y="72" width="40" height="42" rx="18" fill="#2e2e30"/><path d="M86 62v-8a14 14 0 0 1 28 0v8" stroke="#3a3a3c" stroke-width="6" fill="none"/></svg></div>
+        <h3>Apple Watch Series 11</h3>
+        <p class="price">From $399</p>
+        <div class="buyrow"><span class="rate">★ 4.8 <b>(1.1k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-f"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><ellipse cx="100" cy="110" rx="46" ry="52" fill="#f4f0e8"/><ellipse cx="100" cy="110" rx="30" ry="36" fill="#ddd6c8"/><ellipse cx="100" cy="110" rx="12" ry="16" fill="#b9b0a0"/></svg></div>
+        <h3>AirPods Max</h3>
+        <p class="price">From $549</p>
+        <div class="buyrow"><span class="rate">★ 4.7 <b>(940)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-c"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="70" y="50" width="60" height="60" rx="10" fill="#f2f2f4" stroke="#cfcfd3"/><rect x="76" y="56" width="48" height="48" rx="6" fill="#e4e4e8"/><path d="M80 140h40" stroke="#b9b9bd" stroke-width="8" stroke-linecap="round"/><path d="M70 156h60" stroke="#b9b9bd" stroke-width="8" stroke-linecap="round"/></svg></div>
+        <span class="pill-badge">New</span>
+        <h3>Mac mini M4</h3>
+        <p class="price">From $599</p>
+        <div class="buyrow"><span class="rate">★ 4.9 <b>(2.0k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-b"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="50" y="70" width="100" height="60" rx="30" fill="#f7f7f9" stroke="#d0d0d4"/><rect x="58" y="78" width="84" height="44" rx="22" fill="#e8ecef"/><circle cx="72" cy="100" r="12" fill="#c9c9cd"/><circle cx="128" cy="100" r="12" fill="#c9c9cd"/></svg></div>
+        <h3>AirPods Pro 3</h3>
+        <p class="price">From $249</p>
+        <div class="buyrow"><span class="rate">★ 4.8 <b>(4.4k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+      <div class="ucard">
+        <div class="img bg-d"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="86" y="46" width="28" height="70" rx="10" fill="#1d1d1f"/><circle cx="100" cy="150" r="18" fill="none" stroke="#1d1d1f" stroke-width="7"/></svg></div>
+        <span class="pill-badge warm">Free engraving</span>
+        <h3>Apple Pencil Pro</h3>
+        <p class="price">From $129</p>
+        <div class="buyrow"><span class="rate">★ 4.9 <b>(1.5k)</b></span><a href="#">Buy ›</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="config" id="config">
+  <div class="wrap config-grid">
+    <div>
+      <div class="stage">
+        <svg viewBox="0 0 640 480" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><rect x="215" y="70" width="210" height="340" rx="32" fill="#101012"/><rect x="224" y="79" width="192" height="322" rx="26" fill="#1c1c1e"/><rect x="234" y="90" width="172" height="250" rx="10" fill="url(#g2)"/><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#29323c"/><stop offset="1" stop-color="#0b0f14"/></linearGradient></defs><rect x="296" y="82" width="48" height="8" rx="4" fill="#000"/><circle cx="396" cy="112" r="24" fill="#26262a" stroke="#3e3e42"/><circle cx="396" cy="112" r="9" fill="#0c0c0d"/><circle cx="396" cy="170" r="24" fill="#26262a" stroke="#3e3e42"/><circle cx="396" cy="170" r="9" fill="#0c0c0d"/></svg>
+        <div class="dotnav"><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="thumbs">
+        <div class="th t2 sel"></div>
+        <div class="th t3"></div>
+        <div class="th t4"></div>
+        <div class="th bg-a" style="border:none"></div>
+      </div>
+    </div>
+    <aside class="config-side">
+      <span class="kick">New</span>
+      <h2>iPhone 17 Pro</h2>
+      <p class="sub">6.3" Super Retina XDR · A19 Pro chip · 48MP Fusion camera system</p>
+      <p class="optlabel">Finish <span>— Natural Titanium</span></p>
+      <div class="optgrid">
+        <button class="optchip sel"><span class="sw" style="background:linear-gradient(140deg,#8f8d88,#5f5d59)"></span>Natural Titanium</button>
+        <button class="optchip"><span class="sw" style="background:linear-gradient(140deg,#3a3a3c,#1c1c1e)"></span>Black Titanium</button>
+        <button class="optchip"><span class="sw" style="background:linear-gradient(140deg,#e8e6e1,#c9c7c2)"></span>White Titanium</button>
+        <button class="optchip"><span class="sw" style="background:linear-gradient(140deg,#7fa3c4,#4a6f92)"></span>Desert Titanium</button>
+      </div>
+      <p class="optlabel">Storage <span>— 512GB</span></p>
+      <div class="optgrid">
+        <button class="optchip">256GB <span style="color:#7a7a7a">+$0</span></button>
+        <button class="optchip sel">512GB <span style="color:#7a7a7a">+$200</span></button>
+        <button class="optchip">1TB <span style="color:#7a7a7a">+$400</span></button>
+      </div>
+      <p class="optlabel">Trade in <span>— iPhone 14 Pro</span></p>
+      <div class="optgrid">
+        <button class="optchip sel">Trade in · save $430</button>
+        <button class="optchip">No trade-in</button>
+      </div>
+      <p class="optlabel">Quantity</p>
+      <div class="qtyrow">
+        <button class="qbtn">−</button><b style="font-size:21px">1</b><button class="qbtn">+</button>
+      </div>
+      <div class="revbox">
+        <div class="head"><b>Rated 4.9 out of 5 by 3,214 customers</b><a href="#">Read all reviews ›</a></div>
+        <p class="stars">★★★★★</p>
+        <p>“The titanium finish is stunning in person and the camera is another leap forward. Setup from my old iPhone took under ten minutes.”</p>
+        <p class="who">— Priya M., Verified purchaser</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="bagbar">
+  <div class="wrap">
+    <span class="totlab">Your bag · 1 item</span>
+    <span class="totval">$769.00</span>
+    <span class="shipfree">Free delivery Thu, Oct 29 · Or pick up today at Apple Fifth Avenue</span>
+    <a class="btn-pill" href="#">Check Out</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="fnotes">1. Trade-in values vary based on condition, year, and configuration of your eligible device. Monthly pricing requires a qualifying carrier agreement. AppleCare+ is sold separately.<br>2. Delivery estimates are based on available inventory and your shipping address. Some features require iOS 26 and a compatible device.</p>
+    <div class="fcols">
+      <div class="fcol"><h6>Shop and Learn</h6><a href="#">Store</a><a href="#">Mac</a><a href="#">iPad</a><a href="#">iPhone</a><a href="#">Watch</a><a href="#">AirPods</a></div>
+      <div class="fcol"><h6>Services</h6><a href="#">Apple Music</a><a href="#">Apple TV+</a><a href="#">Apple Arcade</a><a href="#">iCloud+</a><a href="#">Apple Pay</a></div>
+      <div class="fcol"><h6>Apple Store</h6><a href="#">Find a Store</a><a href="#">Genius Bar</a><a href="#">Today at Apple</a><a href="#">Trade In</a><a href="#">Financing</a></div>
+      <div class="fcol"><h6>For Business</h6><a href="#">Apple and Business</a><a href="#">Shop for Business</a><a href="#">Education</a><a href="#">Healthcare</a><a href="#">Government</a></div>
+      <div class="fcol"><h6>About Apple</h6><a href="#">Newsroom</a><a href="#">Leadership</a><a href="#">Careers</a><a href="#">Investors</a><a href="#">Environment</a></div>
+    </div>
+    <div class="fbottom">
+      <span>Copyright © 2026 Apple Inc. All rights reserved. | Privacy Policy | Terms of Use | Sales Policy | Legal | Site Map</span>
+      <div class="soc"><a href="#">United States</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

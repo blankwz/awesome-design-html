@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supabaze — Build in a weekend, scale to millions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Colors */
+  --primary:#3ecf8e;
+  --primary-deep:#24b47e;
+  --primary-soft:#4ade80;
+  --ink:#171717;
+  --ink-secondary:#212121;
+  --ink-mute:#707070;
+  --ink-mute-2:#9a9a9a;
+  --ink-faint:#b2b2b2;
+  --on-primary:#171717;
+  --on-dark:#ffffff;
+  --canvas:#ffffff;
+  --canvas-soft:#fafafa;
+  --canvas-night:#1c1c1c;
+  --canvas-night-soft:#202020;
+  --hairline:#dfdfdf;
+  --hairline-strong:#c7c7c7;
+  --hairline-cool:#ededed;
+  --hairline-cool-2:#efefef;
+  --hairline-cool-3:#d4d4d4;
+  --accent-purple:#6b01c2;
+  --accent-violet:#644fc1;
+  --accent-yellow:#ffdb13;
+  /* Radii */
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  /* Spacing */
+  --s-xxs:2px; --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:24px; --s-xxl:32px; --s-huge:64px;
+  /* Type */
+  --font:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono',monospace;
+  --shadow-1:0 1px 3px rgba(0,0,0,.06);
+  --shadow-2:0 8px 24px rgba(0,0,0,.08);
+  --shadow-3:0 16px 48px rgba(0,0,0,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);font-weight:400;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;line-height:1.5;}
+a{text-decoration:none;color:inherit;}
+
+/* ---------- Showcase banner ---------- */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);
+  padding:10px var(--s-xl);
+  background:var(--canvas-night);
+  color:var(--on-dark);
+  border-bottom:1px solid #333;
+}
+.sg-banner .sg-left{display:flex;align-items:baseline;gap:var(--s-md);}
+.sg-banner .sg-slug{
+  font-family:var(--mono);font-size:11px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--primary);
+  border:1px solid rgba(62,207,142,.4);
+  border-radius:var(--r-sm);
+  padding:2px 10px;
+}
+.sg-banner .sg-brand{font-size:15px;font-weight:500;color:#fff;}
+.sg-banner .sg-desc{font-size:12px;color:#a0a0a0;}
+
+/* ---------- Section chrome ---------- */
+main{background:var(--canvas);}
+.sg-section-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--primary-deep);
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--hairline);
+  border-radius:var(--r-full);
+  padding:4px 12px;
+  background:var(--canvas);
+}
+.sg-section-label::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--primary);}
+.sg-section-head{max-width:1280px;margin:0 auto;padding:0 var(--s-xl);}
+.sg-section-title{font-size:48px;font-weight:500;line-height:1.1;letter-spacing:-1.44px;margin-top:var(--s-lg);}
+.sg-section-sub{font-size:18px;font-weight:400;line-height:1.55;color:var(--ink-mute);margin-top:var(--s-md);max-width:620px;}
+
+/* ---------- Components gallery ---------- */
+#components{background:var(--canvas-soft);padding:var(--s-huge) 0 var(--s-xxl);border-bottom:1px solid var(--hairline-cool);}
+.cmp-grid{max-width:1280px;margin:0 auto;padding:var(--s-huge) var(--s-xl) 0;display:grid;grid-template-columns:1fr 1fr;gap:var(--s-lg);}
+.cmp-block{background:var(--canvas);border:1px solid var(--hairline-cool);border-radius:var(--r-lg);padding:var(--s-xxl);}
+.cmp-block.wide{grid-column:1 / -1;}
+.cmp-label{font-family:var(--mono);font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-mute-2);margin-bottom:var(--s-lg);padding-bottom:var(--s-sm);border-bottom:1px solid var(--hairline-cool);}
+
+/* Color swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));gap:var(--s-md);}
+.swatch{border:1px solid var(--hairline-cool);border-radius:var(--r-md);overflow:hidden;}
+.swatch .chip{height:54px;}
+.swatch .meta{padding:8px 10px;}
+.swatch .name{font-size:11px;font-weight:500;color:var(--ink);}
+.swatch .hex{font-family:var(--mono);font-size:10px;color:var(--ink-mute-2);margin-top:2px;}
+
+/* Typography specimen */
+.type-row{display:flex;align-items:baseline;gap:var(--s-lg);padding:var(--s-md) 0;border-bottom:1px dashed var(--hairline-cool);}
+.type-row:last-child{border-bottom:none;}
+.type-token{flex:0 0 168px;font-family:var(--mono);font-size:10px;color:var(--ink-mute-2);}
+.t-display-xxl{font-size:64px;font-weight:500;line-height:1.1;letter-spacing:-1.92px;}
+.t-display-xl{font-size:48px;font-weight:500;line-height:1.1;letter-spacing:-1.44px;}
+.t-display-lg{font-size:36px;font-weight:500;line-height:1.15;letter-spacing:-.72px;}
+.t-display-md{font-size:28px;font-weight:500;line-height:1.2;letter-spacing:-.42px;}
+.t-heading-lg{font-size:22px;font-weight:500;line-height:1.2;}
+.t-heading-md{font-size:18px;font-weight:500;line-height:1.4;}
+.t-body-lg{font-size:18px;font-weight:400;line-height:1.55;}
+.t-body-md{font-size:16px;font-weight:400;line-height:1.5;}
+.t-button-md{font-size:14px;font-weight:500;line-height:1;}
+.t-caption{font-size:13px;font-weight:400;line-height:1.45;}
+.t-micro{font-size:12px;font-weight:400;line-height:1.45;}
+.t-code{font-family:var(--mono);font-size:14px;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;cursor:pointer;font-family:var(--font);font-size:14px;font-weight:500;line-height:1;padding:8px 16px;border-radius:var(--r-sm);transition:background .15s ease,color .15s ease,border-color .15s ease;}
+.btn-primary{background:var(--primary);color:var(--on-primary);}
+.btn-primary:hover{background:var(--primary-soft);}
+.btn-primary:active{background:var(--primary-deep);}
+.btn-secondary{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong);}
+.btn-secondary:hover{background:var(--canvas-soft);}
+.btn-ghost{background:transparent;color:var(--ink);padding:8px 12px;}
+.btn-ghost:hover{background:var(--canvas-soft);}
+.btn-on-dark{background:var(--canvas-night);color:var(--on-dark);}
+.btn-on-dark:hover{background:#333;}
+.btn-link{background:transparent;color:var(--ink);padding:0;border-radius:var(--r-xs);}
+.btn-link:hover{text-decoration:underline;}
+.btn-pressed{background:var(--primary-deep) !important;}
+.btn-sm{font-size:13px;padding:6px 12px;}
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-md);}
+
+/* Inputs */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:var(--s-lg);}
+.field label{font-size:13px;font-weight:500;color:var(--ink-secondary);}
+.input{
+  font-family:var(--font);font-size:16px;font-weight:400;color:var(--ink);
+  background:var(--canvas);padding:8px 12px;border-radius:var(--r-sm);
+  border:1px solid var(--hairline);outline:none;width:100%;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+.input::placeholder{color:var(--ink-faint);}
+.input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(62,207,142,.25);}
+.input.focus-look{border-color:var(--primary);box-shadow:0 0 0 2px rgba(62,207,142,.25);}
+.input.disabled{background:var(--canvas-soft);color:var(--ink-faint);border-color:var(--hairline-cool);cursor:not-allowed;}
+.select-wrap{position:relative;width:100%;}
+.select{appearance:none;-webkit-appearance:none;font-family:var(--font);font-size:16px;color:var(--ink);background:var(--canvas);padding:8px 32px 8px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline);width:100%;cursor:pointer;}
+.select:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(62,207,142,.25);outline:none;}
+.select-wrap::after{content:"";position:absolute;right:14px;top:50%;width:7px;height:7px;border-right:1.5px solid var(--ink-mute);border-bottom:1.5px solid var(--ink-mute);transform:translateY(-70%) rotate(45deg);pointer-events:none;}
+.switch-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap;}
+.switch{position:relative;width:36px;height:20px;display:inline-block;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:var(--hairline-cool-3);border-radius:var(--r-full);cursor:pointer;transition:background .18s ease;}
+.slider::before{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .18s ease;box-shadow:0 1px 2px rgba(0,0,0,.2);}
+.switch input:checked + .slider{background:var(--primary);}
+.switch input:checked + .slider::before{transform:translateX(16px);}
+.switch input:disabled + .slider{opacity:.4;cursor:not-allowed;}
+.checkbox{width:16px;height:16px;appearance:none;border:1px solid var(--hairline-strong);border-radius:var(--r-xs);cursor:pointer;position:relative;vertical-align:middle;transition:background .15s,border-color .15s;}
+.checkbox:checked{background:var(--primary);border-color:var(--primary);}
+.checkbox:checked::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:8px;border-right:2px solid var(--on-primary);border-bottom:2px solid var(--on-primary);transform:rotate(45deg);}
+.switch-label,.cb-label{font-size:14px;color:var(--ink-secondary);}
+
+/* ---------- Product page ---------- */
+#product{background:var(--canvas);}
+.prod-nav{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);
+  padding:var(--s-lg) var(--s-xl);
+  border-bottom:1px solid var(--hairline-cool);
+  background:var(--canvas);
+}
+.wordmark{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:500;letter-spacing:-.4px;color:var(--ink);}
+.prod-nav .links{display:flex;gap:var(--s-xl);}
+.prod-nav .links a{font-size:16px;color:var(--ink-mute);transition:color .15s ease;}
+.prod-nav .links a:hover{color:var(--ink);}
+.prod-nav .actions{display:flex;align-items:center;gap:var(--s-lg);}
+.prod-nav .actions .signin{font-size:16px;color:var(--ink);transition:color .15s;}
+.prod-nav .actions .signin:hover{color:var(--primary-deep);}
+
+.hero{max-width:1280px;margin:0 auto;padding:var(--s-huge) var(--s-xl) var(--s-xxl);text-align:center;}
+.hero h1{font-size:64px;font-weight:500;line-height:1.1;letter-spacing:-1.92px;}
+.hero h1 .accent{color:var(--primary);}
+.hero .sub{font-size:18px;font-weight:400;line-height:1.55;color:var(--ink-mute);max-width:640px;margin:var(--s-lg) auto 0;}
+.hero .cta{display:flex;justify-content:center;gap:var(--s-md);margin-top:var(--s-xl);}
+.hero .cta .btn{padding:10px 20px;}
+.hero .meta-line{font-family:var(--mono);font-size:12px;color:var(--ink-mute-2);margin-top:var(--s-lg);}
+
+/* Stacked product panes */
+.stack{max-width:1080px;margin:var(--s-huge) auto 0;padding:0 var(--s-xl);position:relative;}
+.pane{background:var(--canvas-night);border-radius:var(--r-lg);box-shadow:var(--shadow-2);border:1px solid #2c2c2c;overflow:hidden;text-align:left;}
+.pane.front{max-width:860px;margin:0 auto;position:relative;z-index:2;}
+.pane.back{position:absolute;left:50%;transform:translateX(-50%);width:76%;top:-22px;z-index:1;opacity:.85;}
+.pane-bar{display:flex;align-items:center;gap:6px;padding:9px 14px;border-bottom:1px solid #2e2e2e;background:var(--canvas-night-soft);}
+.pane-bar .dot{width:9px;height:9px;border-radius:50%;background:#3a3a3a;}
+.pane-bar .tab{margin-left:var(--s-md);font-family:var(--mono);font-size:10px;color:#8a8a8a;}
+.pane-body{padding:var(--s-lg);}
+.code{font-family:var(--mono);font-size:13px;line-height:1.7;color:#e0e0e0;white-space:pre;}
+.code .kw{color:var(--primary);} .code .st{color:#ffd479;} .code .cm{color:#6a6a6a;} .code .fn{color:#8ab8ff;}
+
+/* Logos strip */
+.logos{border-top:1px solid var(--hairline-cool);border-bottom:1px solid var(--hairline-cool);background:var(--canvas);margin-top:var(--s-huge);}
+.logos-inner{max-width:1280px;margin:0 auto;padding:var(--s-xxl) var(--s-xl);display:flex;align-items:center;justify-content:space-between;gap:var(--s-xl);flex-wrap:wrap;}
+.logos-inner .note{font-size:12px;color:var(--ink-mute-2);}
+.logos-inner .logo{font-size:16px;font-weight:500;letter-spacing:-.2px;color:var(--ink-mute-2);}
+
+/* Features */
+.features{background:var(--canvas);padding:var(--s-huge) 0;}
+.features .inner,.dark-feature .inner,.pricing .inner,.quote .inner,.cta-band .inner{max-width:1280px;margin:0 auto;padding:0 var(--s-xl);}
+.feature-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-lg);margin-top:var(--s-xxl);}
+.fcard{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-xxl);transition:box-shadow .2s ease,transform .2s ease;}
+.fcard:hover{box-shadow:var(--shadow-2);transform:translateY(-2px);}
+.fcard .icon{width:38px;height:38px;border-radius:var(--r-md);background:rgba(62,207,142,.14);display:flex;align-items:center;justify-content:center;margin-bottom:var(--s-lg);}
+.fcard h3{font-size:22px;font-weight:500;line-height:1.2;letter-spacing:0;}
+.fcard p{font-size:16px;line-height:1.5;color:var(--ink-mute);margin-top:var(--s-sm);}
+.fcard .mini{margin-top:var(--s-lg);background:var(--canvas-night);border-radius:var(--r-sm);padding:var(--s-md);font-family:var(--mono);font-size:11px;line-height:1.6;color:#d8d8d8;}
+.fcard .mini .kw{color:var(--primary);}
+
+/* Dark feature band */
+.dark-feature{background:var(--canvas-night);color:var(--on-dark);padding:var(--s-huge) 0;}
+.dark-feature h2{font-size:36px;font-weight:500;line-height:1.15;letter-spacing:-.72px;color:#fff;}
+.dark-feature .lead{font-size:18px;line-height:1.55;color:#a0a0a0;margin-top:var(--s-md);max-width:560px;}
+.dark-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-huge);align-items:center;}
+.dark-feature .points{list-style:none;margin-top:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-md);}
+.dark-feature .points li{display:flex;gap:10px;align-items:flex-start;font-size:16px;color:#d6d6d6;}
+.dark-feature .points li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--primary);flex:0 0 7px;margin-top:8px;}
+.log-pane{background:var(--canvas-night-soft);border:1px solid #333;border-radius:var(--r-lg);padding:var(--s-lg);font-family:var(--mono);font-size:12px;line-height:1.8;color:#c9c9c9;}
+.log-pane .t{color:#6a6a6a;} .log-pane .ok{color:var(--primary);} .log-pane .warn{color:var(--accent-yellow);}
+
+/* Pricing */
+.pricing{background:var(--canvas-soft);padding:var(--s-huge) 0;}
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);margin-top:var(--s-xxl);align-items:stretch;}
+.pcard{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-xxl);display:flex;flex-direction:column;}
+.pcard h4{font-size:18px;font-weight:500;}
+.pcard .for{font-size:13px;color:var(--ink-mute-2);margin-top:4px;}
+.pcard .price{font-size:28px;font-weight:500;letter-spacing:-.42px;margin-top:var(--s-lg);}
+.pcard .price small{font-size:13px;font-weight:400;letter-spacing:0;color:var(--ink-mute);}
+.pcard ul{list-style:none;margin-top:var(--s-lg);display:flex;flex-direction:column;gap:9px;flex:1;}
+.pcard li{font-size:14px;color:var(--ink-secondary);display:flex;gap:8px;align-items:flex-start;}
+.pcard li svg{flex:0 0 14px;margin-top:3px;}
+.pcard .btn{margin-top:var(--s-xl);justify-content:center;}
+.pcard.featured{background:var(--canvas-night);color:var(--on-dark);border-color:var(--canvas-night);}
+.pcard.featured .for,.pcard.featured .price small{color:#9a9a9a;}
+.pcard.featured li{color:#d6d6d6;}
+.pcard.featured li svg path{stroke:var(--primary);}
+
+/* Quote */
+.quote{background:var(--canvas);padding:var(--s-huge) 0;}
+.quote-card{border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-huge) var(--s-xxl);text-align:center;box-shadow:var(--shadow-1);}
+.quote-card blockquote{font-size:28px;font-weight:500;line-height:1.2;letter-spacing:-.42px;max-width:840px;margin:var(--s-lg) auto 0;}
+.quote-card .who{margin-top:var(--s-lg);font-size:13px;color:var(--ink-mute);}
+.quote-card .who b{font-weight:500;color:var(--ink);}
+
+/* CTA band */
+.cta-band{background:var(--canvas);padding:0 0 var(--s-huge);}
+.cta-inner{background:var(--canvas-night);border-radius:var(--r-xl);padding:var(--s-huge) var(--s-xxl);text-align:center;}
+.cta-inner h2{font-size:36px;font-weight:500;letter-spacing:-.72px;color:#fff;}
+.cta-inner p{font-size:16px;color:#a0a0a0;margin-top:var(--s-md);}
+.cta-inner .row{display:flex;justify-content:center;gap:var(--s-md);margin-top:var(--s-xl);}
+
+/* Footer */
+.site-footer{background:var(--canvas);border-top:1px solid var(--hairline-cool);padding:var(--s-huge) var(--s-xl);}
+.footer-inner{max-width:1280px;margin:0 auto;}
+.footer-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s-xl);}
+.fcol h5{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:var(--s-md);}
+.fcol a{display:block;font-size:13px;color:var(--ink-mute);padding:4px 0;transition:color .15s;}
+.fcol a:hover{color:var(--primary-deep);}
+.footer-legal{display:flex;justify-content:space-between;align-items:center;margin-top:var(--s-huge);padding-top:var(--s-lg);border-top:1px solid var(--hairline-cool);font-size:13px;color:var(--ink-mute);}
+
+@media (max-width:980px){
+  .cmp-grid{grid-template-columns:1fr;}
+  .feature-cards,.dark-split{grid-template-columns:1fr;}
+  .price-grid{grid-template-columns:1fr;}
+  .footer-cols{grid-template-columns:repeat(2,1fr);}
+  .prod-nav .links{display:none;}
+  .hero h1{font-size:36px;letter-spacing:-.72px;}
+  .pane.back{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== Showcase banner ===================== -->
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-slug">supabase</span>
+    <span class="sg-brand">Supabaze</span>
+  </div>
+  <div class="sg-desc">Open-source database platform: white canvas, near-black ink, and one emerald-green CTA as the only chromatic event.</div>
+</header>
+
+<main>
+<!-- ===================== Components gallery ===================== -->
+<section id="components">
+  <div class="sg-section-head">
+    <span class="sg-section-label">Components</span>
+    <h2 class="sg-section-title">Quietly technical, token by token</h2>
+    <p class="sg-section-sub">A calibrated grey ladder, a single emerald primary, and 6px button radii. The green never appears twice in a viewport.</p>
+  </div>
+
+  <div class="cmp-grid">
+
+    <!-- 1. Color tokens -->
+    <div class="cmp-block wide">
+      <div class="cmp-label">1 · Color tokens</div>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#3ecf8e"></div><div class="meta"><div class="name">primary</div><div class="hex">#3ECF8E</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#24b47e"></div><div class="meta"><div class="name">primary-deep</div><div class="hex">#24B47E</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#4ade80"></div><div class="meta"><div class="name">primary-soft</div><div class="hex">#4ADE80</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#171717"></div><div class="meta"><div class="name">ink</div><div class="hex">#171717</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#707070"></div><div class="meta"><div class="name">ink-mute</div><div class="hex">#707070</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#b2b2b2"></div><div class="meta"><div class="name">ink-faint</div><div class="hex">#B2B2B2</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid #dfdfdf"></div><div class="meta"><div class="name">canvas</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#fafafa"></div><div class="meta"><div class="name">canvas-soft</div><div class="hex">#FAFAFA</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#1c1c1c"></div><div class="meta"><div class="name">canvas-night</div><div class="hex">#1C1C1C</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#dfdfdf"></div><div class="meta"><div class="name">hairline</div><div class="hex">#DFDFDF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ededed"></div><div class="meta"><div class="name">hairline-cool</div><div class="hex">#EDEDED</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#6b01c2"></div><div class="meta"><div class="name">accent-purple</div><div class="hex">#6B01C2</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffdb13"></div><div class="meta"><div class="name">accent-yellow</div><div class="hex">#FFDB13</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#054cff"></div><div class="meta"><div class="name">accent-indigo</div><div class="hex">#054CFF</div></div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography specimen -->
+    <div class="cmp-block wide">
+      <div class="cmp-label">2 · Typography specimen — Circular 500 display, 400 body, mono for code</div>
+      <div class="type-row"><span class="type-token">display-xxl · 64/500</span><span class="t-display-xxl">Build in a weekend</span></div>
+      <div class="type-row"><span class="type-token">display-xl · 48/500</span><span class="t-display-xl">Scale to millions</span></div>
+      <div class="type-row"><span class="type-token">display-lg · 36/500</span><span class="t-display-lg">Your backend, in an instant</span></div>
+      <div class="type-row"><span class="type-token">display-md · 28/500</span><span class="t-display-md">The open Firebase alternative</span></div>
+      <div class="type-row"><span class="type-token">heading-lg · 22/500</span><span class="t-heading-lg">Postgres database</span></div>
+      <div class="type-row"><span class="type-token">heading-md · 18/500</span><span class="t-heading-md">Authentication, storage, edge functions</span></div>
+      <div class="type-row"><span class="type-token">body-lg · 18/400</span><span class="t-body-lg">Marketing body lead for section openers and product intros.</span></div>
+      <div class="type-row"><span class="type-token">body-md · 16/400</span><span class="t-body-md">Default UI body text across dashboard and marketing surfaces.</span></div>
+      <div class="type-row"><span class="type-token">button-md · 14/500</span><span class="t-button-md">Start your project</span></div>
+      <div class="type-row"><span class="type-token">caption · 13/400</span><span class="t-caption">Helper text, footnotes, and form labels</span></div>
+      <div class="type-row"><span class="type-token">micro · 12/400</span><span class="t-micro">Pill label and fine print</span></div>
+      <div class="type-row"><span class="type-token">code · mono 14</span><span class="t-code">select * from users where plan = 'pro';</span></div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="cmp-block">
+      <div class="cmp-label">3 · Buttons — 6px radius, near-black type on green</div>
+      <div class="btn-row" style="margin-bottom:var(--s-lg);">
+        <button class="btn btn-primary">Start your project</button>
+        <button class="btn btn-secondary">Documentation</button>
+        <button class="btn btn-ghost">Sign in</button>
+        <button class="btn btn-on-dark">Open SQL editor</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary btn-pressed">Pressed state</button>
+        <button class="btn btn-link">Request a demo</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="cmp-block">
+      <div class="cmp-label">4 · Inputs — 6px radius, emerald focus ring</div>
+      <div class="field">
+        <label>Project name</label>
+        <input class="input" type="text" placeholder="acme-production">
+      </div>
+      <div class="field">
+        <label>Focused</label>
+        <input class="input focus-look" type="text" value="postgres://db.yjfdmclv.supabaze.co">
+      </div>
+      <div class="field" style="margin-bottom:var(--s-lg);">
+        <label>Region</label>
+        <div class="select-wrap">
+          <select class="select"><option>US East (Ohio)</option><option>US West (Oregon)</option><option>EU Central (Frankfurt)</option><option>AP Southeast (Singapore)</option></select>
+        </div>
+      </div>
+      <div class="switch-row" style="margin-bottom:var(--s-lg);">
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <span class="switch-label">Row level security</span>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        <span class="switch-label">Realtime enabled</span>
+      </div>
+      <div class="switch-row">
+        <input class="checkbox" type="checkbox" checked><span class="cb-label">Back up daily</span>
+      </div>
+      <div class="field" style="margin-top:var(--s-lg);margin-bottom:0;">
+        <label>Disabled</label>
+        <input class="input disabled" type="text" value="proj_yjfdmclv_9x2q" disabled>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="cmp-block">
+      <div class="cmp-label">5 · Cards — hairline content card + dark feature card</div>
+      <div style="background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-xxl);">
+        <h3 style="font-size:22px;font-weight:500;line-height:1.2;">Card · light</h3>
+        <p style="font-size:16px;color:var(--ink-mute);margin-top:8px;">1px hairline, 12px radius, flat by default. The white canvas is the design.</p>
+      </div>
+      <div style="background:var(--canvas-night);border-radius:var(--r-lg);padding:var(--s-xxl);margin-top:var(--s-lg);">
+        <div style="font-size:28px;font-weight:500;letter-spacing:-.42px;color:#fff;">99.99%</div>
+        <div style="font-size:13px;color:#9a9a9a;margin-top:6px;">Uptime across all regions · dark feature card</div>
+      </div>
+    </div>
+
+    <!-- 6. Badges / pills -->
+    <div class="cmp-block">
+      <div class="cmp-label">6 · Badges · tags · pills</div>
+      <div class="btn-row" style="margin-bottom:var(--s-lg);">
+        <span style="background:var(--primary);color:var(--on-primary);font-size:12px;border-radius:var(--r-full);padding:2px 10px;">New</span>
+        <span style="background:var(--canvas-soft);color:var(--ink);font-size:12px;border-radius:var(--r-full);padding:2px 10px;border:1px solid var(--hairline-cool);">v2.4 GA</span>
+        <span style="background:rgba(255,219,19,.15);color:#8a6d00;font-size:12px;border-radius:var(--r-full);padding:2px 10px;">Beta</span>
+        <span style="background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-mute-2);font-size:12px;border-radius:var(--r-full);padding:2px 10px;">Deprecated</span>
+      </div>
+      <div class="btn-row">
+        <span style="background:var(--canvas-night);color:#fff;font-size:12px;border-radius:var(--r-full);padding:2px 10px;">On dark</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-mute);"><span style="width:8px;height:8px;border-radius:50%;background:var(--primary);"></span>Active</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-mute);"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent-yellow);"></span>Migrating</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-mute);"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent-purple);"></span>Chart-only accent</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="cmp-block wide">
+      <div class="cmp-label">7 · Navigation — nav-bar-light</div>
+      <nav style="display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);padding:var(--s-lg) var(--s-xl);background:var(--canvas);border:1px solid var(--hairline-cool);border-radius:var(--r-xs);">
+        <div class="wordmark">
+          <svg width="22" height="22" viewBox="0 0 22 22"><path d="M12.5 1.5 3 13h7l-1.5 7.5L19 9h-7l.5-7.5Z" fill="#3ecf8e"/></svg>
+          Supabaze
+        </div>
+        <div style="display:flex;gap:var(--s-xl);">
+          <a href="#" style="font-size:16px;color:var(--ink-mute);">Product</a>
+          <a href="#" style="font-size:16px;color:var(--ink-mute);">Database</a>
+          <a href="#" style="font-size:16px;color:var(--ink-mute);">Integrations</a>
+          <a href="#" style="font-size:16px;color:var(--ink-mute);">Pricing</a>
+          <a href="#" style="font-size:16px;color:var(--ink-mute);">Docs</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--s-lg);">
+          <a href="#" style="font-size:16px;color:var(--ink);">Sign in</a>
+          <button class="btn btn-primary btn-sm">Start your project</button>
+        </div>
+      </nav>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="cmp-block wide">
+      <div class="cmp-label">8 · Table — dashboard row style with status dots</div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr>
+            <th style="text-align:left;font-size:12px;font-weight:500;color:var(--ink-mute-2);padding:8px 10px;border-bottom:1px solid var(--hairline-cool);">Table</th>
+            <th style="text-align:left;font-size:12px;font-weight:500;color:var(--ink-mute-2);padding:8px 10px;border-bottom:1px solid var(--hairline-cool);">Rows</th>
+            <th style="text-align:left;font-size:12px;font-weight:500;color:var(--ink-mute-2);padding:8px 10px;border-bottom:1px solid var(--hairline-cool);">RLS</th>
+            <th style="text-align:left;font-size:12px;font-weight:500;color:var(--ink-mute-2);padding:8px 10px;border-bottom:1px solid var(--hairline-cool);">Last write</th>
+          </tr>
+        </thead>
+        <tbody style="color:var(--ink-secondary);">
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);font-family:var(--mono);font-size:13px;">public.profiles</td>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);">18,204</td>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--primary);"></span>Enabled</span></td>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);color:var(--ink-mute);">2 min ago</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);font-family:var(--mono);font-size:13px;">public.events</td>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);">1,204,551</td>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--primary);"></span>Enabled</span></td>
+            <td style="padding:10px;border-bottom:1px solid var(--hairline-cool-2);color:var(--ink-mute);">just now</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;font-family:var(--mono);font-size:13px;">public.legacy_keys</td>
+            <td style="padding:10px;">412</td>
+            <td style="padding:10px;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent-yellow);"></span>Partial</span></td>
+            <td style="padding:10px;color:var(--ink-mute);">6 days ago</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== Finished product ===================== -->
+<section id="product">
+  <nav class="prod-nav">
+    <div class="wordmark">
+      <svg width="24" height="24" viewBox="0 0 22 22"><path d="M12.5 1.5 3 13h7l-1.5 7.5L19 9h-7l.5-7.5Z" fill="#3ecf8e"/></svg>
+      Supabaze
+    </div>
+    <div class="links">
+      <a href="#">Product</a><a href="#">Database</a><a href="#">Auth</a><a href="#">Integrations</a><a href="#">Pricing</a><a href="#">Docs</a>
+    </div>
+    <div class="actions">
+      <a class="signin" href="#">Sign in</a>
+      <button class="btn btn-primary">Start your project</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Build in a weekend,<br><span class="accent">scale to millions</span></h1>
+    <p class="sub">Supabaze is an open-source backend in a box: a dedicated Postgres database, authentication, instant APIs, realtime subscriptions, and storage — deployed to the edge in seconds.</p>
+    <div class="cta">
+      <button class="btn btn-primary">Start your project</button>
+      <button class="btn btn-secondary">Request a demo</button>
+    </div>
+    <div class="meta-line">postgres 16 · edge runtime · 9 regions · no credit card required</div>
+
+    <!-- Stacked product panes -->
+    <div class="stack">
+      <div class="pane back" aria-hidden="true">
+        <div class="pane-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tab">Table editor — public.events</span></div>
+        <div class="pane-body">
+          <div class="code"><span class="cm">id</span>  <span class="cm">user_id</span>  <span class="cm">event</span>        <span class="cm">created_at</span>
+ <span class="kw">8241</span>  usr_71f   page_view    2026-10-25 09:41:02</div>
+        </div>
+      </div>
+      <div class="pane front">
+        <div class="pane-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tab">SQL editor — query_1.sql</span></div>
+        <div class="pane-body">
+          <div class="code"><span class="cm">-- Top plans by MRR this quarter</span>
+<span class="kw">select</span> plan, <span class="fn">count</span>(*) as teams, <span class="fn">sum</span>(mrr) as revenue
+<span class="kw">from</span> public.organizations
+<span class="kw">where</span> created_at &gt; <span class="st">'2026-10-01'</span>
+<span class="kw">group by</span> plan
+<span class="kw">order by</span> revenue <span class="kw">desc</span>;
+
+<span class="cm">✔ 3 rows · 18 ms · plan = 'pro' leads with $412k</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social proof -->
+  <div class="logos">
+    <div class="logos-inner">
+      <span class="note">Trusted by 400,000+ developers at</span>
+      <span class="logo">NIMBUS</span>
+      <span class="logo">Orbital</span>
+      <span class="logo">LATTICE</span>
+      <span class="logo">Openfield</span>
+      <span class="logo">hallow</span>
+      <span class="logo">Plexo</span>
+    </div>
+  </div>
+
+  <!-- Feature cards -->
+  <div class="features">
+    <div class="inner">
+      <span class="sg-section-label">Platform</span>
+      <h2 class="sg-section-title">Everything you need<br>in one backend</h2>
+      <div class="feature-cards">
+        <div class="fcard">
+          <div class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><ellipse cx="9" cy="4.5" rx="6.5" ry="2.8" stroke="#24b47e" stroke-width="1.5"/><path d="M2.5 4.5v9c0 1.55 2.9 2.8 6.5 2.8s6.5-1.25 6.5-2.8v-9M2.5 9c0 1.55 2.9 2.8 6.5 2.8s6.5-1.25 6.5-2.8" stroke="#24b47e" stroke-width="1.5"/></svg></div>
+          <h3>Postgres database</h3>
+          <p>A dedicated Postgres instance with row-level security, extensions, and full SQL — no abstractions between you and your data.</p>
+          <div class="mini"><span class="kw">create</span> policy "own rows"<br><span class="kw">using</span> (auth.uid() = user_id);</div>
+        </div>
+        <div class="fcard">
+          <div class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2.5" y="7.5" width="13" height="8" rx="1.5" stroke="#24b47e" stroke-width="1.5"/><path d="M5.5 7.5V5.5a3.5 3.5 0 0 1 7 0v2" stroke="#24b47e" stroke-width="1.5"/><circle cx="9" cy="11.5" r="1.3" fill="#24b47e"/></svg></div>
+          <h3>Authentication</h3>
+          <p>Email, OAuth, magic links, and SSO out of the box. Users live in your own database, so joins and policies just work.</p>
+          <div class="mini">supabaze.auth.<span class="kw">signInWithOAuth</span>({<br>&nbsp;&nbsp;provider: <span class="st">'github'</span><br>})</div>
+        </div>
+        <div class="fcard">
+          <div class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v8m0 0 3-3m-3 3L6 7" stroke="#24b47e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3" stroke="#24b47e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <h3>Instant APIs</h3>
+          <p>Every table introspected and served over REST and GraphQL with realtime subscriptions — generated, versioned, documented.</p>
+          <div class="mini"><span class="kw">const</span> { data } = <span class="kw">await</span> db<br>&nbsp;&nbsp;.from(<span class="st">'events'</span>)<br>&nbsp;&nbsp;.select(<span class="st">'*'</span>)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark feature band -->
+  <div class="dark-feature">
+    <div class="inner">
+      <div class="dark-split">
+        <div>
+          <span class="sg-section-label" style="background:transparent;">Realtime &amp; logs</span>
+          <h2 style="margin-top:16px;">Watch every query<br>as it happens</h2>
+          <p class="lead">Stream database changes to every connected client, and audit every query from a single log pane. Supabaze ships with the observability your production workload demands.</p>
+          <ul class="points">
+            <li>Postgres logical replication streamed over websockets</li>
+            <li>Per-query logs with 90-day retention</li>
+            <li>Slow-query insights and index recommendations</li>
+          </ul>
+        </div>
+        <div class="log-pane">
+<span class="t">09:41:02.114</span>  <span class="ok">SELECT</span>   public.events        4.2 ms<br>
+<span class="t">09:41:02.309</span>  <span class="ok">INSERT</span>   public.profiles      2.8 ms<br>
+<span class="t">09:41:02.511</span>  <span class="ok">SELECT</span>   auth.users           1.9 ms<br>
+<span class="t">09:41:03.004</span>  <span class="warn">UPDATE</span>   public.organizations 38.1 ms<br>
+<span class="t">09:41:03.128</span>  realtime  channel <span class="ok">events:insert</span> → 214 clients<br>
+<span class="t">09:41:03.440</span>  <span class="ok">SELECT</span>   public.meters        3.5 ms<br>
+<span class="t">09:41:04.001</span>  <span class="ok">COMMIT</span>                        0.4 ms
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="pricing">
+    <div class="inner">
+      <span class="sg-section-label">Pricing</span>
+      <h2 class="sg-section-title">Predictable pricing,<br>generous free tier</h2>
+      <p class="sg-section-sub">Start free, upgrade when you outgrow it. No per-seat charges, no egress surprises.</p>
+      <div class="price-grid">
+        <div class="pcard">
+          <h4>Free</h4>
+          <div class="for">Side projects &amp; prototypes</div>
+          <div class="price">$0 <small>/ month</small></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>500 MB database</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>50,000 monthly active users</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>1 GB storage</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Community support</li>
+          </ul>
+          <button class="btn btn-secondary">Start for free</button>
+        </div>
+        <div class="pcard featured">
+          <h4>Pro</h4>
+          <div class="for">Production apps</div>
+          <div class="price">$25 <small>/ month</small></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>8 GB database, daily backups</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>100,000 monthly active users</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>100 GB storage &amp; egress</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>No project pausing</li>
+          </ul>
+          <button class="btn btn-primary">Choose Pro</button>
+        </div>
+        <div class="pcard">
+          <h4>Team</h4>
+          <div class="for">Growing engineering orgs</div>
+          <div class="price">$599 <small>/ month</small></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Pro</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>SSO &amp; audit logs</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Read replicas</li>
+          </ul>
+          <button class="btn btn-secondary">Choose Team</button>
+        </div>
+        <div class="pcard">
+          <h4>Enterprise</h4>
+          <div class="for">Compliance-heavy scale</div>
+          <div class="price">Custom</div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Team</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>SOC 2 &amp; HIPAA BAA</li>
+            <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#3ecf8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated support engineer</li>
+          </ul>
+          <button class="btn btn-on-dark">Contact sales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial -->
+  <div class="quote">
+    <div class="inner">
+      <div class="quote-card">
+        <span class="sg-section-label">Customers</span>
+        <blockquote>&ldquo;We shipped our entire MVP on Supabaze in nine days — auth, database, storage, all of it. Two years later we're at two million users and still haven't moved off it.&rdquo;</blockquote>
+        <div class="who"><b>Priya Raman</b> · CTO, Openfield</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA band -->
+  <div class="cta-band">
+    <div class="inner">
+      <div class="cta-inner">
+        <h2>Your backend is waiting</h2>
+        <p>Create an organization, spin up a database, and make your first query in under two minutes.</p>
+        <div class="row">
+          <button class="btn btn-primary" style="padding:10px 20px;">Start your project</button>
+          <button class="btn btn-secondary" style="background:transparent;color:#fff;border-color:#444;padding:10px 20px;">Read the docs</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-cols">
+        <div class="fcol">
+          <h5>Product</h5>
+          <a href="#">Database</a><a href="#">Auth</a><a href="#">Storage</a><a href="#">Realtime</a><a href="#">Edge Functions</a>
+        </div>
+        <div class="fcol">
+          <h5>Resources</h5>
+          <a href="#">Documentation</a><a href="#">API reference</a><a href="#">Guides</a><a href="#">Changelog</a>
+        </div>
+        <div class="fcol">
+          <h5>Integrations</h5>
+          <a href="#">Framework guides</a><a href="#">Auth providers</a><a href="#">Partners</a><a href="#">Marketplace</a>
+        </div>
+        <div class="fcol">
+          <h5>Company</h5>
+          <a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Open source</a>
+        </div>
+        <div class="fcol">
+          <h5>Legal</h5>
+          <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a><a href="#">DPA</a>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <span>© 2026 Supabaze, Inc. · Open source under Apache 2.0</span>
+        <span>status: all systems operational</span>
+      </div>
+    </div>
+  </footer>
+</section>
+</main>
+</body>
+</html>

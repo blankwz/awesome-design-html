@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lamborghini — Design Showcase</title>
+<style>
+/* ============================================================
+   TOKENS — from design-md/lamborghini/DESIGN.md
+   LamboType → Archivo (condensed neo-grotesk substitute), weight 400
+   ============================================================ */
+:root{
+  /* colors */
+  --gold:#FFC000;
+  --dark-gold:#917300;
+  --gold-text:#FFCE3E;
+  --cyan-pulse:#29ABE2;
+  --link-blue:#3860BE;
+  --teal-action:#1EAEDB;
+  --black:#000000;
+  --charcoal:#202020;
+  --dark-iron:#181818;
+  --near-white:#F8F8F8;
+  --mist:#E6E6E6;
+  --white:#FFFFFF;
+  --smoke:#F5F5F5;
+  --graphite:#494949;
+  --ash:#7D7D7D;
+  --steel:#969696;
+  --slate:#666666;
+  --iron:#555555;
+  --shadow-gray:#313131;
+  /* type */
+  --font-display:'LamboType','Archivo','Helvetica Neue',Arial,sans-serif;
+}
+@font-face{font-family:'Archivo-local';src:local('Archivo')}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-display);
+  background:var(--black);
+  color:var(--white);
+  font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;transition:color .15s ease}
+a:hover{color:var(--link-blue)}
+img,svg{display:block}
+::selection{background:var(--gold);color:#000}
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  height:64px;padding:0 32px;
+  background:var(--black);
+  border-bottom:1px solid var(--charcoal);
+}
+.sg-banner .sg-folder{
+  font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;color:var(--steel);
+  margin-right:16px;
+}
+.sg-banner .sg-brand{
+  font-size:18px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:var(--white);
+  display:flex;align-items:center;gap:14px;
+}
+.sg-banner .sg-desc{font-size:13px;color:var(--ash);text-align:right;max-width:560px}
+@media(max-width:900px){.sg-banner .sg-desc{display:none}}
+
+/* ============================================================
+   SHOWCASE LAYOUT
+   ============================================================ */
+main{max-width:1280px;margin:0 auto;padding:0 40px}
+.sg-section-title{
+  font-size:54px;font-weight:400;line-height:1.19;text-transform:uppercase;
+  padding:64px 0 24px;
+  border-bottom:1px solid var(--charcoal);
+  margin-bottom:32px;
+}
+.sg-block{
+  background:var(--charcoal);
+  padding:40px;margin-bottom:32px;
+}
+.sg-block-label{
+  font-size:14px;font-weight:600;color:var(--ash);text-transform:uppercase;letter-spacing:-0.42px;
+  margin-bottom:32px;
+}
+.sg-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:1024px){.sg-grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.sg-grid-3{grid-template-columns:1fr}}
+
+/* 1. COLORS */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+@media(max-width:1024px){.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+.swatch .chip{height:64px;border-radius:0;border:1px solid var(--shadow-gray)}
+.swatch .name{font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:0.225px;color:var(--smoke);margin-top:8px}
+.swatch .hex{font-family:ui-monospace,monospace;font-size:11px;color:var(--ash)}
+
+/* 2. TYPOGRAPHY */
+.specimen > div{padding:16px 0;border-bottom:1px solid var(--charcoal)}
+.specimen > div:last-child{border-bottom:none}
+.specimen .row{display:flex;align-items:baseline;gap:24px;flex-wrap:wrap}
+.specimen .tag{font-family:ui-monospace,monospace;font-size:10px;color:var(--steel);width:190px;flex:none}
+.t-hero{font-size:96px;font-weight:400;line-height:0.92;text-transform:uppercase}
+.t-d2{font-size:80px;font-weight:400;line-height:1.13;text-transform:uppercase}
+.t-sec{font-size:54px;font-weight:400;line-height:1.19;text-transform:uppercase}
+.t-sub{font-size:40px;font-weight:400;line-height:1.15;text-transform:uppercase}
+.t-feat{font-size:27px;font-weight:400;line-height:1.37;text-transform:uppercase}
+.t-card{font-size:24px;font-weight:400;text-transform:uppercase}
+.t-body-l{font-size:18px;font-weight:400;line-height:1.56;color:var(--smoke)}
+.t-body{font-size:16px;font-weight:400;line-height:1.5;color:var(--smoke)}
+.t-body-700{font-size:16px;font-weight:700;letter-spacing:0.16px;text-transform:uppercase}
+.t-btn{font-size:14.4px;font-weight:300;letter-spacing:0.2px;text-transform:uppercase}
+.t-cap{font-size:14px;font-weight:700;line-height:1.14;letter-spacing:-0.42px;text-transform:uppercase}
+.t-label{font-size:12px;font-weight:500;line-height:1.83;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash)}
+.t-micro{font-size:10px;font-weight:400;letter-spacing:0.225px;text-transform:uppercase;color:var(--steel)}
+
+/* 3. BUTTONS — zero radius everywhere */
+.btn-row{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:16px;font-weight:400;
+  border:none;border-radius:0;cursor:pointer;
+  transition:background-color .15s ease,color .15s ease,opacity .15s ease;
+}
+.btn-accent{
+  background:var(--gold);color:#000;padding:24px 32px;
+}
+.btn-accent:hover{background:var(--dark-gold);color:#000}
+.btn-accent-lg{font-size:16px}
+.btn-accent-sm{padding:14px 20px;font-size:13px;font-weight:500}
+.btn-ghost{
+  background:transparent;color:var(--white);border:1px solid var(--white);
+  opacity:0.5;padding:16px 24px;
+  font-size:14.4px;font-weight:300;letter-spacing:0.2px;text-transform:uppercase;
+}
+.btn-ghost:hover{background:var(--teal-action);opacity:0.7;color:#fff}
+.btn-white{background:var(--white);color:var(--charcoal);padding:16px 32px}
+.btn-white:hover{background:var(--mist);color:var(--charcoal)}
+.btn-black{background:var(--black);color:var(--charcoal);border:1px solid var(--charcoal);padding:16px 32px}
+.btn-black:hover{background:var(--charcoal)}
+.btn-gray{background:var(--steel);color:var(--charcoal);padding:14px 24px;font-size:13px;font-weight:500}
+.btn-hover-look{outline:2px solid var(--gold);outline-offset:3px}
+.btn-pressed{background:var(--dark-gold);color:#000}
+
+/* 4. INPUTS */
+.input-row{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.field{display:flex;flex-direction:column;gap:8px;min-width:240px}
+.field label{font-size:10px;text-transform:uppercase;letter-spacing:0.225px;color:var(--ash)}
+.input{
+  font-family:var(--font-display);font-size:16px;
+  background:var(--black);color:var(--white);
+  border:1px solid var(--shadow-gray);border-radius:0;
+  padding:14px 16px;outline:none;
+  transition:border-color .15s ease;
+}
+.input::placeholder{color:var(--steel)}
+.input:hover{border-color:var(--iron)}
+.input:focus{border-color:var(--white)}
+.input.focus-look{border-color:var(--white);background:var(--dark-iron)}
+.input:disabled{color:var(--steel);border-color:var(--charcoal);cursor:not-allowed}
+select.input{appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23969696' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.switch-row{display:flex;align-items:center;gap:14px;padding-top:28px}
+.switch{position:relative;width:52px;height:28px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;border-radius:20px;border:1px solid #DDDDDD;background:var(--black);cursor:pointer;transition:background .15s}
+.switch .track::after{content:'';position:absolute;top:3px;left:4px;width:20px;height:20px;border-radius:50%;background:var(--steel);transition:transform .15s,background .15s}
+.switch input:checked + .track{border-color:var(--gold)}
+.switch input:checked + .track::after{transform:translateX(22px);background:var(--gold)}
+.checkbox{display:flex;align-items:center;gap:12px;padding-top:28px}
+.checkbox input{width:18px;height:18px;accent-color:var(--gold)}
+
+/* 5. CARDS — charcoal surfaces, zero radius */
+.card{background:var(--charcoal);padding:32px}
+.card .ico{margin-bottom:24px}
+.card h3{font-size:27px;font-weight:400;line-height:1.37;text-transform:uppercase;margin-bottom:12px}
+.card p{font-size:16px;color:var(--ash);margin-bottom:20px}
+.card .readmore{
+  font-size:14.4px;font-weight:300;letter-spacing:0.2px;text-transform:uppercase;
+  color:var(--white);text-decoration:underline;text-underline-offset:6px;
+}
+.card .readmore:hover{color:var(--link-blue)}
+.stat-card{background:var(--charcoal);padding:32px}
+.stat-card .big{font-size:80px;font-weight:400;line-height:1.13;text-transform:uppercase}
+.stat-card .label{font-size:12px;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash);margin-top:8px}
+.badge-metal{
+  display:inline-block;background:var(--steel);color:#fff;
+  font-size:10px;text-transform:uppercase;letter-spacing:0.225px;
+  padding:8px;border-radius:2px;margin-top:16px;
+}
+
+/* 6. BADGES */
+.badge-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:0.225px;
+  padding:8px 12px;border-radius:2px;
+}
+.badge-metallic{background:var(--steel);color:#fff}
+.badge-outline{background:transparent;border:1px solid var(--shadow-gray);color:var(--smoke)}
+.badge-gold{background:transparent;border:1px solid var(--gold);color:var(--gold-text)}
+.badge-cyan{background:transparent;border:1px solid var(--cyan-pulse);color:var(--cyan-pulse)}
+.badge-solid-gold{background:var(--gold);color:#000;font-weight:500}
+
+/* 7. NAVIGATION — floats in darkness */
+.topnav{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--black);padding:24px 0;margin-bottom:8px;
+}
+.topnav .menu{display:flex;align-items:center;gap:12px;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+.topnav .menu .bars{display:flex;flex-direction:column;gap:5px}
+.topnav .menu .bars i{width:22px;height:2px;background:var(--white)}
+.topnav .bull{font-size:18px;letter-spacing:4px;text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.topnav .bull svg{height:22px;width:auto}
+.topnav .icons{display:flex;gap:20px;align-items:center}
+.topnav .icons svg{width:20px;height:20px;stroke:var(--white);fill:none;stroke-width:1.5}
+@media(max-width:900px){.topnav .icons{display:none}}
+
+/* hexagonal pause button */
+.hex-btn{
+  width:48px;height:52px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
+  background:transparent;border:none;cursor:pointer;
+  position:relative;
+}
+.hex-btn::before{content:'';position:absolute;inset:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:var(--white)}
+.hex-btn span{
+  position:relative;z-index:1;width:46px;height:50px;
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+}
+.hex-btn .bars{display:flex;gap:4px}
+.hex-btn .bars i{width:4px;height:16px;background:var(--white)}
+
+/* 8. LIST ROWS */
+.row-list{border-top:1px solid var(--charcoal)}
+.row-item{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:24px 0;border-bottom:1px solid var(--charcoal);
+}
+.row-item .t{font-size:18px;text-transform:uppercase}
+.row-item .m{font-size:12px;color:var(--ash);letter-spacing:0.225px;text-transform:uppercase}
+.row-item .arrow{color:var(--white);font-size:20px}
+.row-item:hover .arrow{color:var(--link-blue)}
+
+/* progress bar (hero horizon line) */
+.progress{height:2px;background:var(--charcoal);position:relative;overflow:hidden}
+.progress i{position:absolute;left:0;top:0;bottom:0;width:34%;background:var(--white)}
+
+/* ============================================================
+   PRODUCT — Lamborghini landing
+   ============================================================ */
+#product{padding-top:64px}
+
+/* hero — full viewport darkness */
+.hero{
+  min-height:92vh;
+  display:flex;flex-direction:column;justify-content:center;position:relative;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, #141414 0%, rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, #000 0%, #0a0a0a 55%, #000 100%);
+  padding:48px 0 0;
+}
+.hero .kicker{font-size:12px;letter-spacing:0.96px;text-transform:uppercase;color:var(--gold-text);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.hero .kicker::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero h1{
+  font-size:120px;font-weight:400;line-height:0.92;text-transform:uppercase;
+  margin-bottom:24px;
+}
+@media(max-width:1024px){.hero h1{font-size:72px}}
+@media(max-width:640px){.hero h1{font-size:48px}}
+.hero .sub{font-size:18px;line-height:1.56;color:var(--ash);max-width:520px;margin-bottom:40px}
+.hero .cta-row{display:flex;gap:20px;flex-wrap:wrap}
+.hero .hex-row{position:absolute;right:0;bottom:64px;display:flex;align-items:center;gap:16px}
+.hero .progress{position:absolute;left:0;right:0;bottom:0}
+
+/* marquee stats under hero */
+.marquee{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  border-top:1px solid var(--charcoal);border-bottom:1px solid var(--charcoal);
+  margin-bottom:96px;
+}
+@media(max-width:900px){.marquee{grid-template-columns:1fr}}
+.marquee .cell{padding:40px;border-right:1px solid var(--charcoal)}
+.marquee .cell:last-child{border-right:none}
+@media(max-width:900px){.marquee .cell{border-right:none;border-bottom:1px solid var(--charcoal)}}
+.marquee .n{font-size:80px;font-weight:400;line-height:1.13;text-transform:uppercase}
+.marquee .n small{font-size:27px}
+.marquee .l{font-size:10px;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash);margin-top:8px}
+
+/* model lineup cards */
+.models{margin-bottom:96px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:40px}
+.sec-head h2{font-size:54px;font-weight:400;line-height:1.19;text-transform:uppercase}
+@media(max-width:900px){.sec-head{flex-direction:column}}
+.sec-head .all{font-size:14.4px;font-weight:300;letter-spacing:0.2px;text-transform:uppercase;text-decoration:underline;text-underline-offset:6px}
+.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:1024px){.model-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.model-grid{grid-template-columns:1fr}}
+.model-card{
+  background:var(--charcoal);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:background .15s ease;
+}
+.model-card:hover{background:#262626}
+.model-card .visual{
+  aspect-ratio:16/9;position:relative;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 78%, rgba(255,192,0,0.18) 0%, rgba(255,192,0,0) 55%),
+    linear-gradient(180deg,#0d0d0d 0%,#1a1a1a 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.model-card .visual svg{width:70%;height:auto}
+.model-card .visual .tag{position:absolute;left:16px;top:16px}
+.model-card .body{padding:24px 24px 32px}
+.model-card .name{font-size:27px;font-weight:400;line-height:1.37;text-transform:uppercase;margin-bottom:4px}
+.model-card .spec{font-size:12px;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash);margin-bottom:20px}
+.model-card .specs{display:flex;gap:32px;margin-bottom:24px}
+.model-card .specs div span{display:block;font-size:24px;font-weight:400}
+.model-card .specs div small{font-size:10px;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash)}
+.model-card .link{font-size:14.4px;font-weight:300;letter-spacing:0.2px;text-transform:uppercase;text-decoration:underline;text-underline-offset:6px}
+
+/* news grid */
+.news{margin-bottom:96px}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:1024px){.news-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.news-grid{grid-template-columns:1fr}}
+.news-card{background:var(--charcoal);padding:32px;display:flex;flex-direction:column}
+.news-card .meta{font-size:10px;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash);margin-bottom:16px}
+.news-card h3{font-size:27px;font-weight:400;line-height:1.37;text-transform:uppercase;margin-bottom:16px;flex:1}
+.news-card p{font-size:16px;color:var(--ash);margin-bottom:24px}
+.news-card a{font-size:14.4px;font-weight:300;letter-spacing:0.2px;text-transform:uppercase;text-decoration:underline;text-underline-offset:6px}
+.news-card a:hover{color:var(--link-blue)}
+
+/* motorsport quote band */
+.quote-band{
+  background:var(--dark-iron);
+  padding:96px 40px;text-align:center;margin-bottom:96px;
+}
+.quote-band .q{font-size:40px;font-weight:400;line-height:1.15;text-transform:uppercase;max-width:900px;margin:0 auto 24px}
+.quote-band .a{font-size:12px;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash)}
+
+/* events CTA */
+.events{
+  display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-bottom:96px;
+}
+@media(max-width:900px){.events{grid-template-columns:1fr}}
+.events .panel{background:var(--charcoal);padding:48px;display:flex;flex-direction:column;justify-content:space-between;min-height:360px}
+.events .panel h2{font-size:40px;font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:16px}
+.events .panel p{font-size:16px;color:var(--ash);margin-bottom:32px}
+.events .panel .date{font-size:12px;letter-spacing:0.96px;text-transform:uppercase;color:var(--gold-text);margin-bottom:16px}
+
+/* footer */
+footer{background:var(--dark-iron);border-top:1px solid var(--charcoal);padding:64px 40px}
+.foot-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:900px){.foot-grid{grid-template-columns:repeat(2,1fr)}}
+.foot-grid .col h4{font-size:12px;font-weight:500;letter-spacing:0.96px;text-transform:uppercase;color:var(--ash);margin-bottom:20px}
+.foot-grid .col a{display:block;font-size:14px;color:var(--smoke);padding:6px 0}
+.foot-grid .col a:hover{color:var(--link-blue)}
+.foot-brand{font-size:20px;letter-spacing:4px;text-transform:uppercase;margin-bottom:16px}
+.foot-note{font-size:10px;letter-spacing:0.225px;text-transform:uppercase;color:var(--steel);max-width:280px;line-height:2}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div style="display:flex;align-items:center">
+    <span class="sg-folder">lamborghini</span>
+    <span class="sg-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 4v5c0 4-3 7-7 9-4-2-7-5-7-9V7l7-4z" stroke="#FFC000" stroke-width="1.6"/></svg>
+      Automobili Lamborghini
+    </span>
+  </div>
+  <div class="sg-desc">A cathedral of darkness — true black surfaces, white Neo-Grotesk type and Lamborghini Gold reserved exclusively for primary CTAs.</div>
+</header>
+
+<main>
+
+  <!-- ==================== COMPONENTS ==================== -->
+  <section id="components">
+    <h2 class="sg-section-title">Components</h2>
+
+    <!-- 1. Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens — monochrome plus a single gold</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#FFC000"></div><div class="name">lamborghini gold</div><div class="hex">#FFC000</div></div>
+        <div class="swatch"><div class="chip" style="background:#917300"></div><div class="name">dark gold (hover)</div><div class="hex">#917300</div></div>
+        <div class="swatch"><div class="chip" style="background:#FFCE3E"></div><div class="name">gold text</div><div class="hex">#FFCE3E</div></div>
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="name">absolute black</div><div class="hex">#000000</div></div>
+        <div class="swatch"><div class="chip" style="background:#202020"></div><div class="name">charcoal</div><div class="hex">#202020</div></div>
+        <div class="swatch"><div class="chip" style="background:#181818"></div><div class="name">dark iron</div><div class="hex">#181818</div></div>
+        <div class="swatch"><div class="chip" style="background:#FFFFFF"></div><div class="name">pure white</div><div class="hex">#FFFFFF</div></div>
+        <div class="swatch"><div class="chip" style="background:#F5F5F5"></div><div class="name">smoke</div><div class="hex">#F5F5F5</div></div>
+        <div class="swatch"><div class="chip" style="background:#7D7D7D"></div><div class="name">ash</div><div class="hex">#7D7D7D</div></div>
+        <div class="swatch"><div class="chip" style="background:#969696"></div><div class="name">steel</div><div class="hex">#969696</div></div>
+        <div class="swatch"><div class="chip" style="background:#29ABE2"></div><div class="name">cyan pulse</div><div class="hex">#29ABE2</div></div>
+        <div class="swatch"><div class="chip" style="background:#3860BE"></div><div class="name">link blue</div><div class="hex">#3860BE</div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen — LamboType, all caps, weight 400, tight leading</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">hero / 120 / 400 / 0.92</span><span class="t-hero" style="font-size:84px">Temerario</span></div>
+        <div class="row"><span class="tag">display-2 / 80 / 400</span><span class="t-d2" style="font-size:56px">Revuelto</span></div>
+        <div class="row"><span class="tag">section / 54 / 400</span><span class="t-sec" style="font-size:44px">Beyond performance</span></div>
+        <div class="row"><span class="tag">sub-section / 40 / 400</span><span class="t-sub" style="font-size:34px">The V12 hybrid era</span></div>
+        <div class="row"><span class="tag">feature / 27 / 400</span><span class="t-feat">Ad personam customization</span></div>
+        <div class="row"><span class="tag">card title / 24 / 400</span><span class="t-card">Urus Performante</span></div>
+        <div class="row"><span class="tag">body / 16 / 400</span><span class="t-body">Every Lamborghini is engineered in Sant'Agata Bolognese, where design and engineering share one roof.</span></div>
+        <div class="row"><span class="tag">body 700 / 16</span><span class="t-body-700">Directed thrust · active aero</span></div>
+        <div class="row"><span class="tag">button / 14.4 / 300</span><span class="t-btn">Start configuration</span></div>
+        <div class="row"><span class="tag">caption / 14 / 700 / −0.42</span><span class="t-cap">0–100 km/h in 2.7 seconds</span></div>
+        <div class="row"><span class="tag">label / 12 / +0.96</span><span class="t-label">Fuel consumption combined</span></div>
+        <div class="row"><span class="tag">micro / 10 / +0.225</span><span class="t-micro">WLTP data · valid for EU market</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons — zero border-radius, gold reserved for primary actions</div>
+      <div class="btn-row" style="margin-bottom:24px">
+        <button class="btn btn-accent btn-accent-lg">Start configuration</button>
+        <button class="btn btn-ghost">Discover more</button>
+        <button class="btn btn-white">Book a test drive</button>
+        <button class="btn btn-gray">Downloads</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-accent btn-accent-sm">Small gold</button>
+        <button class="btn btn-ghost" style="opacity:0.7;background:var(--teal-action)">Ghost hover</button>
+        <button class="btn btn-accent btn-pressed">Pressed</button>
+        <button class="btn btn-accent btn-hover-look">Focus state</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs — sharp rectangles on black, white focus border</div>
+      <div class="input-row">
+        <div class="field">
+          <label>Email address</label>
+          <input class="input" type="text" placeholder="name@email.com">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="input focus-look" type="text" value="g.rossi@santagata.it">
+        </div>
+        <div class="field">
+          <label>Model interest</label>
+          <select class="input">
+            <option>Revuelto</option>
+            <option selected>Temerario</option>
+            <option>Urus SE</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input" type="text" value="Sold out — Ad Personam" disabled>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span class="t-micro" style="color:var(--smoke)">RACE MODE</span>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" checked id="cb"><label for="cb" class="t-micro" style="color:var(--smoke)">ACCEPT NEWSLETTER</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">Cards — charcoal elevated from black, zero radius, no shadows</div>
+      <div class="sg-grid-3">
+        <div class="card">
+          <div class="ico"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4l10 6v7c0 6-4.5 10-10 12-5.5-2-10-6-10-12v-7l10-6z" stroke="#FFC000" stroke-width="1.5"/><path d="M11 16.5l3.5 3.5 7-7" stroke="#FFC000" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <h3>Carbon fiber monocoque</h3>
+          <p>The forged composite industry, developed in-house, delivers a 10% weight reduction over the previous generation.</p>
+          <a class="readmore" href="#">Read more</a>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 24L12 12l6 5 10-13" stroke="#FFC000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 4h7v7" stroke="#FFC000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>10,000 rpm flat-plane V8</h3>
+          <p>The twin-turbo V8 hybrid reaches a 10,000 rpm redline — the highest of any production Lamborghini engine.</p>
+          <a class="readmore" href="#">Read more</a>
+        </div>
+        <div class="stat-card">
+          <div class="big">10,000<small style="font-size:27px"> RPM</small></div>
+          <div class="label">Maximum engine speed</div>
+          <span class="badge-metal">V8 twin-turbo hybrid</span>
+          <div style="margin-top:24px" class="progress"><i></i></div>
+          <div class="t-micro" style="margin-top:8px">POWER DELIVERY · 34% THROTTLE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">Badges — tiny metallic pills at 2px radius</div>
+      <div class="badge-row">
+        <span class="badge badge-metallic">New</span>
+        <span class="badge badge-outline">Hybrid V12</span>
+        <span class="badge badge-gold">Ad Personam</span>
+        <span class="badge badge-cyan">Squadra Corse</span>
+        <span class="badge badge-solid-gold">Few-off</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block" style="background:transparent;border:1px solid var(--charcoal)">
+      <div class="sg-block-label">Navigation — transparent, floating in darkness, hexagonal controls</div>
+      <nav class="topnav">
+        <div class="menu"><span class="bars"><i></i><i></i><i></i></span>Menu</div>
+        <div class="bull">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 4v5c0 4-3 7-7 9-4-2-7-5-7-9V7l7-4z" stroke="#fff" stroke-width="1.6"/></svg>
+          Lamborghini
+        </div>
+        <div class="icons">
+          <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5L18 18"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M4 3h12v14l-6-4-6 4V3z"/></svg>
+        </div>
+      </nav>
+      <div style="display:flex;align-items:center;gap:24px;border-top:1px solid var(--charcoal);padding-top:24px">
+        <div class="hex-btn"><span><span class="bars"><i></i><i></i></span></span></div>
+        <div style="flex:1">
+          <div class="progress"><i style="width:62%"></i></div>
+          <div class="t-micro" style="margin-top:8px">HERO FILM · 00:42 / 01:08</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. List rows -->
+    <div class="sg-block">
+      <div class="sg-block-label">List rows — 1px #202020 dividers on black</div>
+      <div class="row-list">
+        <a class="row-item" href="#"><span class="t">Heritage &amp; Museum</span><span class="m">Sant'Agata Bolognese</span><span class="arrow">→</span></a>
+        <a class="row-item" href="#"><span class="t">Squadra Corse</span><span class="m">Motorsport</span><span class="arrow">→</span></a>
+        <a class="row-item" href="#"><span class="t">Ad Personam Studio</span><span class="m">Bespoke Commission</span><span class="arrow">→</span></a>
+        <a class="row-item" href="#"><span class="t">Careers</span><span class="m">Join the herd</span><span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT ==================== -->
+  <section id="product">
+    <div class="hero">
+      <div class="kicker">The new V8 hybrid super sports car</div>
+      <h1>Temerario</h1>
+      <p class="sub">Nine thousand revolutions of fury. A twin-turbo V8 hybrid that rewrites what a super sports car can be — born in Sant'Agata Bolognese.</p>
+      <div class="cta-row">
+        <button class="btn btn-accent">Discover more</button>
+        <button class="btn btn-ghost">Start configuration</button>
+      </div>
+      <div class="hex-row">
+        <span class="t-micro">MODEL FILM</span>
+        <div class="hex-btn"><span><span class="bars"><i></i><i></i></span></span></div>
+      </div>
+      <div class="progress"><i style="width:62%"></i></div>
+    </div>
+
+    <!-- marquee stats -->
+    <div class="marquee">
+      <div class="cell"><div class="n">920<small> CV</small></div><div class="l">Combined power</div></div>
+      <div class="cell"><div class="n">2.7<small> s</small></div><div class="l">0–100 km/h</div></div>
+      <div class="cell"><div class="n">343<small> km/h</small></div><div class="l">Top speed</div></div>
+    </div>
+
+    <!-- models -->
+    <div class="models">
+      <div class="sec-head">
+        <h2>The lineup</h2>
+        <a class="all" href="#">All models</a>
+      </div>
+      <div class="model-grid">
+        <div class="model-card">
+          <div class="visual">
+            <span class="tag badge badge-metallic">V12 Hybrid</span>
+            <svg viewBox="0 0 320 120" fill="none">
+              <path d="M20 92c10-22 34-38 62-44l48-22c22-4 78-4 100 0l48 22c28 6 22 24 32 44" stroke="#FFC000" stroke-width="2"/>
+              <path d="M30 92h260" stroke="#fff" stroke-width="2"/>
+              <circle cx="80" cy="96" r="16" stroke="#969696" stroke-width="2"/><circle cx="80" cy="96" r="7" stroke="#969696" stroke-width="1.5"/>
+              <circle cx="240" cy="96" r="16" stroke="#969696" stroke-width="2"/><circle cx="240" cy="96" r="7" stroke="#969696" stroke-width="1.5"/>
+              <path d="M120 48l14-10h52l14 10" stroke="#494949" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="name">Revuelto</div>
+            <div class="spec">V12 · Hybrid AWD</div>
+            <div class="specs">
+              <div><span>1,015</span><small>CV</small></div>
+              <div><span>2.5</span><small>0–100 S</small></div>
+              <div><span>350</span><small>KM/H</small></div>
+            </div>
+            <a class="link" href="#">Discover more</a>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="visual">
+            <span class="tag badge badge-metallic">V8 Hybrid</span>
+            <svg viewBox="0 0 320 120" fill="none">
+              <path d="M24 90c8-20 30-34 58-40l50-20c24-4 72-4 96 0l50 20c28 6 18 20 28 40" stroke="#FFC000" stroke-width="2"/>
+              <path d="M34 90h252" stroke="#fff" stroke-width="2"/>
+              <circle cx="84" cy="94" r="15" stroke="#969696" stroke-width="2"/><circle cx="84" cy="94" r="6" stroke="#969696" stroke-width="1.5"/>
+              <circle cx="236" cy="94" r="15" stroke="#969696" stroke-width="2"/><circle cx="236" cy="94" r="6" stroke="#969696" stroke-width="1.5"/>
+              <path d="M128 46h64" stroke="#494949" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="name">Temerario</div>
+            <div class="spec">V8 · Hybrid AWD</div>
+            <div class="specs">
+              <div><span>920</span><small>CV</small></div>
+              <div><span>2.7</span><small>0–100 S</small></div>
+              <div><span>343</span><small>KM/H</small></div>
+            </div>
+            <a class="link" href="#">Discover more</a>
+          </div>
+        </div>
+        <div class="model-card">
+          <div class="visual">
+            <span class="tag badge badge-metallic">Super SUV</span>
+            <svg viewBox="0 0 320 120" fill="none">
+              <path d="M28 88c6-14 20-26 42-30l36-24c8-6 24-8 44-8h60c20 0 36 4 46 12l28 20c22 4 16 16 22 30" stroke="#FFC000" stroke-width="2"/>
+              <path d="M38 88h244" stroke="#fff" stroke-width="2"/>
+              <circle cx="90" cy="92" r="16" stroke="#969696" stroke-width="2"/><circle cx="90" cy="92" r="7" stroke="#969696" stroke-width="1.5"/>
+              <circle cx="232" cy="92" r="16" stroke="#969696" stroke-width="2"/><circle cx="232" cy="92" r="7" stroke="#969696" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="name">Urus SE</div>
+            <div class="spec">V8 · Plug-in Hybrid</div>
+            <div class="specs">
+              <div><span>800</span><small>CV</small></div>
+              <div><span>3.4</span><small>0–100 S</small></div>
+              <div><span>312</span><small>KM/H</small></div>
+            </div>
+            <a class="link" href="#">Discover more</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- news -->
+    <div class="news">
+      <div class="sec-head">
+        <h2>News</h2>
+        <a class="all" href="#">All news</a>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="meta">Motorsport · 12 October 2026</div>
+          <h3>SC63 takes overall victory at the desert 8 hours</h3>
+          <p>The LMDh prototype closes its debut season with a maiden outright win after a strategic masterclass in the final stint.</p>
+          <a href="#">Read more</a>
+        </div>
+        <div class="news-card">
+          <div class="meta">Company · 28 September 2026</div>
+          <h3>Record deliveries for the seventh consecutive year</h3>
+          <p>Global sales grew 8% year over year, led by demand for hybrid models across Europe, the Middle East and Asia-Pacific.</p>
+          <a href="#">Read more</a>
+        </div>
+        <div class="news-card">
+          <div class="meta">Ad Personam · 03 September 2026</div>
+          <h3>Four hundred shades of one commission</h3>
+          <p>Inside the Ad Personam Studio, where a single client specified a unique full-carbon bodywork finish over eleven months.</p>
+          <a href="#">Read more</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- quote band -->
+    <div class="quote-band">
+      <div class="q">“Expect the unexpected.”</div>
+      <div class="a">Ferruccio Lamborghini · Founder</div>
+    </div>
+
+    <!-- events -->
+    <div class="events">
+      <div class="panel">
+        <div>
+          <div class="date">18–20 November 2026</div>
+          <h2>Finali Lamborghini — Misano</h2>
+          <p>Three continents of one-make racing converge on the Emilia-Romagna circuit for the season finale, with the Huracán ST EVO2 headlining the grid.</p>
+        </div>
+        <div><button class="btn btn-accent">Buy tickets</button></div>
+      </div>
+      <div class="panel">
+        <div>
+          <div class="date">Museo · Open daily</div>
+          <h2>Visit the museum</h2>
+          <p>Walk through six decades of super sports cars at the Lamborghini Museum, next to the production line in Sant'Agata Bolognese.</p>
+        </div>
+        <div><button class="btn btn-ghost">Plan your visit</button></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div class="col">
+      <div class="foot-brand">Lamborghini</div>
+      <div class="foot-note">Automobili Lamborghini S.p.A. · Via Modena 12 · Sant'Agata Bolognese, Italy</div>
+    </div>
+    <div class="col">
+      <h4>Models</h4>
+      <a href="#">Revuelto</a><a href="#">Temerario</a><a href="#">Urus SE</a><a href="#">Few-off</a><a href="#">Pre-owned</a>
+    </div>
+    <div class="col">
+      <h4>World</h4>
+      <a href="#">Motorsport</a><a href="#">Museum</a><a href="#">Ad Personam</a><a href="#">News</a><a href="#">Events</a>
+    </div>
+    <div class="col">
+      <h4>Company</h4>
+      <a href="#">Heritage</a><a href="#">Sustainability</a><a href="#">Careers</a><a href="#">Dealers</a><a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superhuman Admin — Library Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@460;540;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1b1938;
+  --primary-deep:#0e0c1f;
+  --on-primary:#ffffff;
+  --ink:#292827;
+  --ink-mute:#73706d;
+  --ink-faint:#9a9794;
+  --canvas:#ffffff;
+  --canvas-soft:#fafaf8;
+  --violet-soft:#c9b4fa;
+  --teal-deep:#0e3030;
+  --teal-mid:#155555;
+  --hairline:#e8e4dd;
+  --hairline-dark:#3f3a52;
+  --on-dark-mute:#bcbac9;
+  --on-dark-faint:#5a5772;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --sh-1:0 1px 3px rgba(0,0,0,.08);
+  --sh-2:0 8px 24px rgba(0,0,0,.12);
+  --ok-bg:#e2efeb; --ok-tx:#155555;
+  --warn-bg:#ece5fb; --warn-tx:#5b47a8;
+  --bad-bg:#f3e2e0; --bad-tx:#7a3128;
+  --neu-bg:#f1eee8; --neu-tx:#73706d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  font-weight:460;color:var(--ink);background:var(--canvas-soft);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+svg{display:block}
+
+/* ---------- Shell ---------- */
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ---------- Sidebar ---------- */
+.sidebar{background:var(--primary);color:var(--on-primary);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-brand{display:flex;align-items:center;gap:10px;padding:20px 24px;border-bottom:1px solid var(--hairline-dark);font-size:18px;font-weight:600;letter-spacing:-.3px}
+.logo-mark{width:26px;height:26px;border-radius:var(--r-sm);background:radial-gradient(120% 120% at 20% 15%,#c9b4fa 0%,#7f68d9 45%,#1b1938 100%);flex:none}
+.side-group{padding:20px 16px 4px}
+.side-label{font-size:12px;font-weight:540;letter-spacing:.1em;text-transform:uppercase;color:var(--on-dark-faint);padding:0 8px;margin-bottom:8px}
+.side-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r-md);font-size:14px;font-weight:540;color:var(--on-dark-mute);transition:background-color .15s,color .15s}
+.side-item:hover{background:rgba(255,255,255,.06);color:var(--on-primary)}
+.side-item.active{background:rgba(201,180,250,.16);color:var(--on-primary)}
+.side-item.active .bar{opacity:1}
+.side-item .bar{width:3px;height:16px;border-radius:2px;background:var(--violet-soft);opacity:0;margin-left:-4px}
+.side-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex:none}
+.side-item .count{margin-left:auto;font-size:11px;background:rgba(255,255,255,.1);border-radius:var(--r-full);padding:2px 8px;color:var(--on-dark-mute)}
+.side-user{margin-top:auto;padding:16px;border-top:1px solid var(--hairline-dark);display:flex;gap:12px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:13px;font-weight:700}
+.av-indigo{background:var(--violet-soft);color:var(--primary)}
+.side-user .who{flex:1;min-width:0}
+.side-user .who strong{display:block;font-size:14px;font-weight:600}
+.side-user .who span{font-size:12px;color:var(--on-dark-faint)}
+
+/* ---------- Topbar ---------- */
+.topbar{background:var(--canvas);border-bottom:1px solid var(--hairline);padding:14px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:40}
+.crumbs{font-size:14px;color:var(--ink-faint)}
+.crumbs strong{color:var(--ink);font-weight:540}
+.crumbs span{margin:0 6px}
+.topbar .search{display:flex;align-items:center;gap:8px;border:1px solid var(--hairline);border-radius:var(--r-sm);padding:8px 12px;width:300px;margin-left:auto;color:var(--ink-faint);background:var(--canvas)}
+.topbar .search input{border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink);background:transparent}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--hairline);display:grid;place-items:center;color:var(--ink-mute);transition:border-color .15s}
+.icon-btn:hover{border-color:var(--hairline-dark)}
+.icon-btn .dot{position:absolute;top:7px;right:7px;min-width:15px;height:15px;border-radius:var(--r-full);background:var(--teal-mid);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;padding:0 3px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;line-height:1;border-radius:var(--r-md);padding:12px 20px;transition:background-color .18s}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-deep)}
+.btn-outline{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-dark)}
+.btn-sm{font-size:14px;font-weight:600;padding:10px 16px}
+
+/* ---------- Content ---------- */
+.content{padding:32px;display:flex;flex-direction:column;gap:32px}
+.page-head{display:flex;align-items:end;justify-content:space-between;gap:24px}
+.page-head h1{font-size:28px;font-weight:540;line-height:1.14;letter-spacing:-.63px}
+.page-head p{font-size:14px;color:var(--ink-mute);margin-top:4px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:24px}
+.kpi .label{font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)}
+.kpi .value{font-size:28px;font-weight:540;letter-spacing:-.63px;margin:8px 0 6px}
+.kpi .delta{font-size:13px;font-weight:600}
+.delta.up{color:var(--teal-mid)}
+.delta.down{color:var(--bad-tx)}
+.kpi .sub{font-size:12px;color:var(--ink-faint);margin-top:2px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:14px}
+.spark i{flex:1;border-radius:2px 2px 0 0;background:var(--violet-soft)}
+.spark i.hi{background:var(--primary)}
+
+/* ---------- Charts ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:24px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.panel-head h3{font-size:20px;font-weight:540;letter-spacing:-.4px}
+.panel-head .hint{font-size:12px;color:var(--ink-faint)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px;padding-top:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:38px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--violet-soft),#8f7bd6)}
+.bar-col.hi i{background:linear-gradient(180deg,#8f7bd6,var(--primary))}
+.bar-col .v{font-size:11px;font-weight:600;color:var(--ink-mute)}
+.bar-col .m{font-size:11px;font-weight:540;color:var(--ink-faint)}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:20;stroke-linecap:butt}
+.donut .c1{stroke:var(--primary);stroke-dasharray:236 660;stroke-dashoffset:0}
+.donut .c2{stroke:var(--teal-mid);stroke-dasharray:172 660;stroke-dashoffset:-236}
+.donut .c3{stroke:var(--violet-soft);stroke-dasharray:150 660;stroke-dashoffset:-408}
+.donut .c4{stroke:var(--hairline);stroke-dasharray:102 660;stroke-dashoffset:-558}
+.donut-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut-center strong{display:block;font-size:24px;font-weight:540;letter-spacing:-.5px}
+.donut-center span{font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em}
+.legend{display:flex;flex-direction:column;gap:10px;font-size:13px}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--ink-mute)}
+.legend .sw{width:10px;height:10px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="side-brand"><span class="logo-mark"></span>Superhuman <span style="font-size:11px;font-weight:540;color:var(--on-dark-faint);border:1px solid var(--hairline-dark);border-radius:var(--r-full);padding:2px 8px;margin-left:2px">ADMIN</span></div>
+    <nav class="side-group">
+      <p class="side-label">Overview</p>
+      <a class="side-item" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard</a>
+      <a class="side-item active" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>Workflow Library</a>
+      <a class="side-item" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>Orders<span class="count">23</span></a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Operations</p>
+      <a class="side-item" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M19 8v6M22 11h-6"/></svg>Creators</a>
+      <a class="side-item" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 5-6"/></svg>Analytics</a>
+      <a class="side-item" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 1 10-10"/><path d="M12 6v6l4 2"/></svg>Payouts<span class="count">4</span></a>
+    </nav>
+    <nav class="side-group">
+      <p class="side-label">Settings</p>
+      <a class="side-item" href="#"><span class="bar"></span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>Console settings</a>
+    </nav>
+    <div class="side-user">
+      <span class="avatar av-indigo">MO</span>
+      <div class="who"><strong>Mara Okafor</strong><span>Library Operations</span></div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--on-dark-faint)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div>
+    <header class="topbar">
+      <div class="crumbs">Library <span>/</span> <strong>Workflow orders</strong></div>
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search orders, creators, teams…">
+      </label>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot">3</span>
+      </button>
+      <button class="icon-btn" aria-label="Help"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></button>
+      <span class="avatar av-indigo" style="width:34px;height:34px;font-size:12px">MO</span>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Library console</h1>
+          <p>Workflow orders, creator payouts, and storefront health — Tuesday, 26 Oct 2026.</p>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn btn-outline btn-sm">Export CSV</button>
+          <button class="btn btn-primary btn-sm">New payout run</button>
+        </div>
+      </div>
+      <!-- ============ KPI ROW ============ -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="label">Orders this week</p>
+          <p class="value">1,842</p>
+          <p class="delta up">↑ 12.4% vs last week</p>
+          <p class="sub">312 team licenses</p>
+          <div class="spark"><i style="height:38%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:74%"></i><i style="height:62%"></i><i style="height:88%"></i><i class="hi" style="height:100%"></i><i style="height:70%"></i><i style="height:80%"></i><i style="height:92%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Revenue (net)</p>
+          <p class="value">$41,208</p>
+          <p class="delta up">↑ 8.1% vs last week</p>
+          <p class="sub">After 15% member discount</p>
+          <div class="spark"><i style="height:30%"></i><i style="height:42%"></i><i style="height:38%"></i><i style="height:50%"></i><i class="hi" style="height:96%"></i><i style="height:60%"></i><i style="height:54%"></i><i style="height:72%"></i><i style="height:66%"></i><i style="height:78%"></i><i style="height:70%"></i><i style="height:84%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Avg. install time</p>
+          <p class="value">46 sec</p>
+          <p class="delta up">↓ 6 sec faster</p>
+          <p class="sub">P95 under 2 min</p>
+          <div class="spark"><i style="height:88%"></i><i style="height:80%"></i><i style="height:84%"></i><i style="height:70%"></i><i style="height:74%"></i><i style="height:62%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:48%"></i><i class="hi" style="height:30%"></i><i style="height:36%"></i><i style="height:34%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="label">Refund requests</p>
+          <p class="value">17</p>
+          <p class="delta down">↑ 4 vs last week</p>
+          <p class="sub">0.9% of orders</p>
+          <div class="spark"><i style="height:22%"></i><i style="height:30%"></i><i style="height:26%"></i><i style="height:40%"></i><i style="height:34%"></i><i style="height:46%"></i><i class="hi" style="height:92%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:36%"></i></div>
+        </div>
+      </section>
+
+      <!-- ============ CHARTS ============ -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head"><h3>Orders by month</h3><span class="hint">FY2026 · workflow library only</span></div>
+          <div class="bars">
+            <div class="bar-col"><span class="v">1.1k</span><i style="height:34%"></i><span class="m">Nov</span></div>
+            <div class="bar-col"><span class="v">0.9k</span><i style="height:28%"></i><span class="m">Dec</span></div>
+            <div class="bar-col"><span class="v">1.3k</span><i style="height:40%"></i><span class="m">Jan</span></div>
+            <div class="bar-col"><span class="v">1.5k</span><i style="height:47%"></i><span class="m">Feb</span></div>
+            <div class="bar-col"><span class="v">1.4k</span><i style="height:44%"></i><span class="m">Mar</span></div>
+            <div class="bar-col"><span class="v">1.8k</span><i style="height:56%"></i><span class="m">Apr</span></div>
+            <div class="bar-col"><span class="v">2.1k</span><i style="height:65%"></i><span class="m">May</span></div>
+            <div class="bar-col"><span class="v">1.9k</span><i style="height:60%"></i><span class="m">Jun</span></div>
+            <div class="bar-col"><span class="v">2.4k</span><i style="height:74%"></i><span class="m">Jul</span></div>
+            <div class="bar-col"><span class="v">2.6k</span><i style="height:80%"></i><span class="m">Aug</span></div>
+            <div class="bar-col"><span class="v">2.3k</span><i style="height:71%"></i><span class="m">Sep</span></div>
+            <div class="bar-col hi"><span class="v">3.1k</span><i style="height:96%"></i><span class="m">Oct</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Category mix</h3><span class="hint">share of orders</span></div>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="170" height="170" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="105" stroke="var(--canvas-soft)" stroke-width="20"></circle>
+                <circle class="c1" cx="110" cy="110" r="105"></circle>
+                <circle class="c2" cx="110" cy="110" r="105"></circle>
+                <circle class="c3" cx="110" cy="110" r="105"></circle>
+                <circle class="c4" cx="110" cy="110" r="105"></circle>
+              </svg>
+              <div class="donut-center"><div><strong>14.8k</strong><span>orders YTD</span></div></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:var(--primary)"></span>Sales &amp; outreach<b>36%</b></div>
+              <div class="row"><span class="sw" style="background:var(--teal-mid)"></span>Triage systems<b>26%</b></div>
+              <div class="row"><span class="sw" style="background:var(--violet-soft)"></span>Calendar &amp; focus<b>23%</b></div>
+              <div class="row"><span class="sw" style="background:var(--hairline)"></span>Founder ops<b>15%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TABLE + SIDE PANELS ============ -->
+      <section style="display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start">
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="panel-head" style="padding:24px 24px 0;margin-bottom:16px">
+            <h3>Recent orders</h3>
+            <span class="hint">Showing 8 of 1,842</span>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead>
+              <tr style="border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);background:var(--canvas-soft);text-align:left">
+                <th style="padding:12px 16px;width:36px"><input type="checkbox" style="accent-color:var(--primary)"></th>
+                <th style="padding:12px 8px;font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Workflow</th>
+                <th style="padding:12px 8px;font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Category</th>
+                <th style="padding:12px 8px;font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Status</th>
+                <th style="padding:12px 8px;font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Amount</th>
+                <th style="padding:12px 8px;font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Date</th>
+                <th style="padding:12px 16px;font-size:12px;font-weight:540;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rows">
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Cadence OS — Team</td><td style="padding:12px 8px;color:var(--ink-mute)">Sales</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Completed</span></td><td style="padding:12px 8px;font-weight:600">$196.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 26</td><td style="padding:12px 16px;text-align:right"><button class="row-act">View</button></td></tr>
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Inbox Zero Sprint</td><td style="padding:12px 8px;color:var(--ink-mute)">Triage</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Completed</span></td><td style="padding:12px 8px;font-weight:600">$29.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 26</td><td style="padding:12px 16px;text-align:right"><button class="row-act">View</button></td></tr>
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Recruiting Fast-Lane</td><td style="padding:12px 8px;color:var(--ink-mute)">Founder</td><td style="padding:12px 8px"><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">Pending</span></td><td style="padding:12px 8px;font-weight:600">$176.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 25</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Review</button></td></tr>
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Team Handoff Pack</td><td style="padding:12px 8px;color:var(--ink-mute)">Teams</td><td style="padding:12px 8px"><span class="badge" style="background:var(--bad-bg);color:var(--bad-tx)">Refunded</span></td><td style="padding:12px 8px;font-weight:600">−$24.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 25</td><td style="padding:12px 16px;text-align:right"><button class="row-act">View</button></td></tr>
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">AI Draft Personalities</td><td style="padding:12px 8px;color:var(--ink-mute)">Triage</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Completed</span></td><td style="padding:12px 8px;font-weight:600">$156.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 24</td><td style="padding:12px 16px;text-align:right"><button class="row-act">View</button></td></tr>
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Calendar Choreography</td><td style="padding:12px 8px;color:var(--ink-mute)">Calendar</td><td style="padding:12px 8px"><span class="badge" style="background:var(--neu-bg);color:var(--neu-tx)">Draft</span></td><td style="padding:12px 8px;font-weight:600">$19.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 23</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Edit</button></td></tr>
+              <tr style="border-bottom:1px solid var(--hairline)"><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Founder Weekly Loop</td><td style="padding:12px 8px;color:var(--ink-mute)">Founder</td><td style="padding:12px 8px"><span class="badge" style="background:var(--warn-bg);color:var(--warn-tx)">Pending</span></td><td style="padding:12px 8px;font-weight:600">$59.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 23</td><td style="padding:12px 16px;text-align:right"><button class="row-act">Review</button></td></tr>
+              <tr><td style="padding:12px 16px"><input type="checkbox" style="accent-color:var(--primary)"></td><td style="padding:12px 8px;font-weight:540">Shortcut Mastery Deck</td><td style="padding:12px 8px;color:var(--ink-mute)">Teams</td><td style="padding:12px 8px"><span class="badge" style="background:var(--ok-bg);color:var(--ok-tx)">Completed</span></td><td style="padding:12px 8px;font-weight:600">$12.00</td><td style="padding:12px 8px;color:var(--ink-mute)">Oct 22</td><td style="padding:12px 16px;text-align:right"><button class="row-act">View</button></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--hairline);font-size:13px;color:var(--ink-mute)">
+            <span>Page 1 of 231</span>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" disabled style="opacity:.5;cursor:default">Previous</button>
+              <button class="btn btn-outline btn-sm">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Activity feed -->
+          <div class="panel">
+            <div class="panel-head"><h3>Activity</h3><span class="hint">live</span></div>
+            <div style="display:flex;flex-direction:column;gap:0">
+              <div class="feed-item"><span class="avatar av-indigo" style="width:28px;height:28px;font-size:10px">DK</span><p><strong>Dana Kim</strong> installed <strong>Cadence OS</strong> for 12 seats <em>2 min ago</em></p></div>
+              <div class="feed-item"><span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--teal-deep);color:#fff">P</span><p>Payout of <strong>$6,412</strong> released to Field &amp; Frame Studio <em>26 min ago</em></p></div>
+              <div class="feed-item"><span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--violet-soft);color:var(--primary)">LN</span><p><strong>Leo Nash</strong> requested a refund on Team Handoff Pack <em>1 hr ago</em></p></div>
+              <div class="feed-item"><span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--hairline);color:var(--ink-mute)">A</span><p><strong>Aria Solano</strong> published workflow v2.3 — Recruiting Fast-Lane <em>3 hrs ago</em></p></div>
+              <div class="feed-item" style="border-bottom:none"><span class="avatar" style="width:28px;height:28px;font-size:10px;background:var(--canvas-soft);border:1px solid var(--hairline);color:var(--ink-mute)">SY</span><p>System flagged 3 listings for keyword review <em>5 hrs ago</em></p></div>
+            </div>
+          </div>
+
+          <!-- Quick settings -->
+          <div class="panel">
+            <div class="panel-head"><h3>Quick settings</h3></div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:540">Storefront title
+                <input type="text" value="The Workflow Library" style="border:1px solid var(--hairline);border-radius:var(--r-sm);padding:10px 12px;font-family:inherit;font-size:14px;font-weight:460;outline:none;background:var(--canvas)">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:540">Member discount
+                <select style="border:1px solid var(--hairline);border-radius:var(--r-sm);padding:10px 12px;font-family:inherit;font-size:14px;outline:none;background:var(--canvas)"><option>15% — standard</option><option>10% — promotional</option><option>0% — none</option></select>
+              </label>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+                <div><strong style="font-weight:540">Auto-approve refunds</strong><br><span style="font-size:12px;color:var(--ink-faint)">Under $50, no review</span></div>
+                <span class="toggle on"><i></i></span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+                <div><strong style="font-weight:540">Creator payouts</strong><br><span style="font-size:12px;color:var(--ink-faint)">Weekly on Fridays</span></div>
+                <span class="toggle on"><i></i></span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+                <div><strong style="font-weight:540">New-listing alerts</strong><br><span style="font-size:12px;color:var(--ink-faint)">Email the ops channel</span></div>
+                <span class="toggle"><i></i></span>
+              </div>
+              <button class="btn btn-primary" style="justify-content:center;margin-top:4px">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<style>
+.badge{display:inline-block;font-size:12px;font-weight:600;border-radius:var(--r-xs);padding:3px 8px}
+.row-act{font-size:13px;font-weight:600;color:var(--primary);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:6px 10px;transition:border-color .15s}
+.row-act:hover{border-color:var(--hairline-dark)}
+.feed-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--hairline)}
+.feed-item p{font-size:13px;line-height:1.5;color:var(--ink-mute)}
+.feed-item strong{color:var(--ink);font-weight:600}
+.feed-item em{font-style:normal;font-size:11px;color:var(--ink-faint);display:block;margin-top:2px}
+.toggle{width:38px;height:22px;border-radius:var(--r-full);background:var(--hairline);position:relative;flex:none;transition:background-color .15s}
+.toggle i{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:var(--sh-1);transition:left .15s}
+.toggle.on{background:var(--primary)}
+.toggle.on i{left:19px}
+</style>
+
+</body>
+</html>

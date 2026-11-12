@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intercom Admin — Workspace Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111111; --on-primary:#ffffff;
+  --ink-muted:#626260; --ink-subtle:#7b7b78; --ink-tertiary:#9c9fa5;
+  --canvas:#f5f1ec; --surface-1:#ffffff; --surface-2:#ebe7e1;
+  --inverse-canvas:#000000; --inverse-surface:#313130; --inverse-ink:#ffffff;
+  --hairline:#d3cec6; --hairline-soft:#ebe7e1;
+  --fin-orange:#ff5600; --brand-blue:#0007cb;
+  --r-blue:#65b5ff; --r-pink:#ff2067; --r-lime:#b3e01c; --r-cyan:#03b2cb;
+  --success:#0a8f3c; --success-bg:rgba(11,223,80,.14);
+  --warning:#b45309; --warning-bg:rgba(180,83,9,.12);
+  --danger:#c41c1c; --danger-bg:rgba(196,28,28,.08);
+  --neutral:#626260; --neutral-bg:#ebe7e1;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+  --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:24px; --s-xl:32px; --s-xxl:48px;
+  --font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font)}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.sidebar{background:var(--surface-1);border-right:1px solid var(--hairline-soft);padding:var(--s-md);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:500;letter-spacing:-0.4px;padding:6px 8px var(--s-md)}
+.logo-mark{width:26px;height:26px;border-radius:var(--r-sm);background:var(--ink);display:grid;place-items:center}
+.logo-mark i{width:12px;height:6px;border-bottom:2px solid var(--on-primary);border-left:2px solid var(--on-primary);border-right:2px solid var(--on-primary);border-radius:0 0 6px 6px;display:block}
+.nav-group{margin-bottom:var(--s-md)}
+.nav-group h6{font-size:12px;font-weight:500;color:var(--ink-tertiary);padding:0 8px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r-md);font-size:14px;color:var(--ink-muted);cursor:pointer}
+.nav-item:hover{background:var(--canvas);color:var(--ink)}
+.nav-item.active{background:var(--ink);color:var(--on-primary);font-weight:500}
+.nav-item .n{margin-left:auto;font-size:12px;color:var(--ink-subtle);background:var(--surface-2);border-radius:var(--r-pill);padding:1px 8px}
+.nav-item.active .n{background:var(--inverse-surface);color:var(--inverse-ink)}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:10px;padding:var(--s-sm);border-top:1px solid var(--hairline-soft)}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3a3a38,#111);color:var(--on-primary);font-size:12px;font-weight:500;display:grid;place-items:center;flex:none}
+.user-card b{display:block;font-size:14px;font-weight:500}
+.user-card span{font-size:12px;color:var(--ink-subtle)}
+
+/* ---------- main + topbar ---------- */
+.main{padding:0 var(--s-xl) var(--s-xl);min-width:0}
+.topbar{height:56px;display:flex;align-items:center;gap:var(--s-md);border-bottom:1px solid var(--hairline-soft);margin:0 calc(-1 * var(--s-xl));padding:0 var(--s-xl);background:var(--canvas);position:sticky;top:0;z-index:20}
+.crumb{font-size:14px;color:var(--ink-subtle)}
+.crumb b{color:var(--ink);font-weight:500}
+.top-spacer{flex:1}
+.top-search{display:flex;align-items:center;gap:8px;background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--r-md);padding:8px 14px;width:280px}
+.top-search input{border:0;outline:0;background:transparent;font:inherit;font-size:14px;width:100%;color:var(--ink)}
+.top-search input::placeholder{color:var(--ink-tertiary)}
+.icon-btn{position:relative;width:38px;height:38px;border-radius:var(--r-md);display:grid;place-items:center;background:transparent;border:0;cursor:pointer}
+.icon-btn:hover{background:var(--surface-1)}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--fin-orange);border:2px solid var(--canvas)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;border:0;cursor:pointer;padding:9px 18px;border-radius:var(--r-md)}
+.btn-ink{background:var(--ink);color:var(--on-primary)}
+.btn-secondary{background:var(--surface-1);color:var(--ink);border:1px solid var(--hairline)}
+
+/* ---------- KPI row ---------- */
+h1.page-title{font-size:28px;font-weight:500;letter-spacing:-0.5px;margin:var(--s-lg) 0 var(--s-md)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-md)}
+.kpi{background:var(--surface-1);border-radius:var(--r-lg);padding:var(--s-md)}
+.kpi h3{font-size:14px;font-weight:400;color:var(--ink-subtle)}
+.kpi .v{font-size:32px;font-weight:500;letter-spacing:-0.8px;margin:4px 0 2px}
+.delta{font-size:13px;font-weight:500}
+.delta.up{color:var(--success)}
+.delta.down{color:var(--danger)}
+.kpi .vs{font-size:12px;color:var(--ink-tertiary);margin-left:6px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:34px;margin-top:var(--s-sm)}
+.spark i{flex:1;background:var(--surface-2);border-radius:2px 2px 0 0}
+.spark i.hot{background:var(--ink)}
+.kpi.fin .spark i.hot{background:var(--fin-orange)}
+
+/* ---------- charts row ---------- */
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-md);margin:var(--s-md) 0}
+.panel{background:var(--surface-1);border-radius:var(--r-lg);padding:var(--s-md)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s-md)}
+.panel-head h3{font-size:18px;font-weight:500;letter-spacing:-0.3px}
+.panel-head span{font-size:13px;color:var(--ink-subtle)}
+.bars{display:flex;align-items:flex-end;gap:var(--s-sm);height:200px;padding-top:var(--s-sm)}
+.barcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.barcol i{width:100%;background:var(--surface-2);border-radius:4px 4px 0 0}
+.barcol.cur i{background:var(--ink)}
+.barcol span{font-size:12px;color:var(--ink-tertiary)}
+.donut-wrap{display:flex;align-items:center;gap:var(--s-lg)}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:22;stroke-linecap:butt}
+.donut .center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut .center b{font-size:26px;font-weight:500;letter-spacing:-0.6px}
+.donut .center span{font-size:12px;color:var(--ink-subtle)}
+.legend{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.legend li{display:flex;align-items:center;gap:10px;list-style:none;color:var(--ink-muted)}
+.legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:500}
+
+/* ---------- table + activity ---------- */
+.cols{display:grid;grid-template-columns:1fr 340px;gap:var(--s-md)}
+.table-card{background:var(--surface-1);border-radius:var(--r-lg);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{text-align:left;font-size:12px;font-weight:500;color:var(--ink-subtle);padding:12px 16px;border-bottom:1px solid var(--hairline-soft);white-space:nowrap}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--hairline-soft);white-space:nowrap;vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--canvas)}
+.tname b{display:block;font-weight:500}
+.tname span{font-size:12px;color:var(--ink-subtle)}
+.badge{display:inline-block;font-size:12px;font-weight:500;padding:3px 10px;border-radius:var(--r-xs)}
+.badge.success{background:var(--success-bg);color:var(--success)}
+.badge.warning{background:var(--warning-bg);color:var(--warning)}
+.badge.danger{background:var(--danger-bg);color:var(--danger)}
+.badge.neutral{background:var(--neutral-bg);color:var(--neutral)}
+.badge.fin{background:rgba(255,86,0,.1);color:var(--fin-orange)}
+.rowcheck{width:15px;height:15px;accent-color:var(--ink)}
+.tamount{font-weight:500}
+.tactions{color:var(--ink-tertiary);letter-spacing:3px;font-weight:600;cursor:pointer}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:13px;color:var(--ink-subtle)}
+.pager .pg{display:flex;gap:6px}
+.pager button{width:30px;height:30px;border-radius:var(--r-sm);border:0;background:transparent;cursor:pointer;color:var(--ink-muted);font:inherit;font-size:13px}
+.pager button.cur{background:var(--ink);color:var(--on-primary)}
+.pager button:hover:not(.cur){background:var(--surface-2)}
+/* activity feed */
+.feed{display:flex;flex-direction:column}
+.feed-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hairline-soft)}
+.feed-item:last-child{border-bottom:0}
+.fdot{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:500;color:#fff}
+.feed-item p{font-size:14px;color:var(--ink-muted)}
+.feed-item p b{color:var(--ink);font-weight:500}
+.feed-item time{font-size:12px;color:var(--ink-tertiary)}
+/* quick settings toggle */
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hairline-soft)}
+.set-row:last-child{border-bottom:0}
+.set-row p{font-size:14px}
+.set-row span{font-size:12px;color:var(--ink-subtle)}
+.switch{position:relative;width:38px;height:22px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch i{position:absolute;inset:0;background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--r-pill);cursor:pointer;transition:.15s}
+.switch i:before{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.switch input:checked + i{background:var(--ink);border-color:var(--ink)}
+.switch input:checked + i:before{transform:translateX(15px)}
+
+@media (max-width:1180px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.cols{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <a class="logo" href="#"><span class="logo-mark"><i></i></span>intercom</a>
+    <div class="nav-group">
+      <h6>Overview</h6>
+      <a class="nav-item active" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H4l2.5-2.5A8 8 0 1121 12z"/></svg>
+        Inbox <span class="n">128</span></a>
+    </div>
+    <div class="nav-group">
+      <h6>Manage</h6>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+        Customers</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4"/></svg>
+        Apps &amp; Billing</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5M15.5 15.5c2.8.3 5 1.9 5 4.5"/></svg>
+        Team</a>
+    </div>
+    <div class="nav-group">
+      <h6>Insights</h6>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        Reports</a>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 7.2H22l-6 4.5 2.3 7.3-6.3-4.5-6.3 4.5L8 13.7l-6-4.5h7.6z"/></svg>
+        Fin Performance <span class="n">New</span></a>
+    </div>
+    <div class="nav-group">
+      <h6>Settings</h6>
+      <a class="nav-item" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 00-2-1.2L14 3h-4l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 000 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 002 1.2L10 21h4l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.4-2-1.6c.06-.4.1-.8.1-1.2z"/></svg>
+        Workspace</a>
+    </div>
+    <div class="user-card">
+      <span class="avatar">MK</span>
+      <div><b>Maya Kessler</b><span>Workspace admin</span></div>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <main class="main">
+    <div class="topbar">
+      <span class="crumb">Workspaces / Northwind Support / <b>Dashboard</b></span>
+      <div class="top-spacer"></div>
+      <label class="top-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9c9fa5" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search conversations, customers…">
+      </label>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.6"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <a class="btn btn-secondary" href="#">View inbox</a>
+    </div>
+
+    <h1 class="page-title">Support overview</h1>
+
+    <!-- KPI row -->
+    <section class="kpis">
+      <div class="kpi">
+        <h3>Conversations resolved</h3>
+        <div class="v">12,482</div>
+        <span class="delta up">↑ 8.4%</span><span class="vs">vs last month</span>
+        <div class="spark"><i style="height:45%"></i><i style="height:60%"></i><i style="height:38%"></i><i style="height:72%"></i><i style="height:55%"></i><i style="height:80%"></i><i class="hot" style="height:100%"></i></div>
+      </div>
+      <div class="kpi fin">
+        <h3>Fin resolution rate</h3>
+        <div class="v">64%</div>
+        <span class="delta up">↑ 5.1%</span><span class="vs">vs last month</span>
+        <div class="spark"><i style="height:40%"></i><i style="height:48%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:66%"></i><i style="height:74%"></i><i class="hot" style="height:88%"></i></div>
+      </div>
+      <div class="kpi">
+        <h3>First response time</h3>
+        <div class="v">2m 14s</div>
+        <span class="delta up">↓ 18%</span><span class="vs">faster than last month</span>
+        <div class="spark"><i style="height:95%"></i><i style="height:80%"></i><i style="height:86%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:40%"></i><i class="hot" style="height:28%"></i></div>
+      </div>
+      <div class="kpi">
+        <h3>CSAT</h3>
+        <div class="v">4.7<span style="font-size:18px;color:var(--ink-subtle)">/5</span></div>
+        <span class="delta down">↓ 0.2</span><span class="vs">vs last month</span>
+        <div class="spark"><i style="height:70%"></i><i style="height:78%"></i><i style="height:82%"></i><i style="height:88%"></i><i style="height:80%"></i><i style="height:76%"></i><i class="hot" style="height:72%"></i></div>
+      </div>
+    </section>
+
+    <!-- charts row -->
+    <section class="charts">
+      <div class="panel">
+        <div class="panel-head"><h3>Resolved conversations</h3><span>Oct 2025 — Sep 2026</span></div>
+        <div class="bars">
+          <div class="barcol"><i style="height:52%"></i><span>Oct</span></div>
+          <div class="barcol"><i style="height:60%"></i><span>Nov</span></div>
+          <div class="barcol"><i style="height:74%"></i><span>Dec</span></div>
+          <div class="barcol"><i style="height:48%"></i><span>Jan</span></div>
+          <div class="barcol"><i style="height:56%"></i><span>Feb</span></div>
+          <div class="barcol"><i style="height:66%"></i><span>Mar</span></div>
+          <div class="barcol"><i style="height:58%"></i><span>Apr</span></div>
+          <div class="barcol"><i style="height:70%"></i><span>May</span></div>
+          <div class="barcol"><i style="height:64%"></i><span>Jun</span></div>
+          <div class="barcol"><i style="height:78%"></i><span>Jul</span></div>
+          <div class="barcol"><i style="height:82%"></i><span>Aug</span></div>
+          <div class="barcol cur"><i style="height:95%"></i><span>Sep</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Resolution channels</h3><span>last 30 days</span></div>
+        <div class="donut-wrap">
+          <div class="donut">
+            <svg width="170" height="170" viewBox="0 0 170 170">
+              <circle cx="85" cy="85" r="64" stroke="#ebe7e1"/>
+              <circle cx="85" cy="85" r="64" stroke="#ff5600" stroke-dasharray="257.6 402.1"/>
+              <circle cx="85" cy="85" r="64" stroke="#111111" stroke-dasharray="104.5 402.1" stroke-dashoffset="-257.6"/>
+              <circle cx="85" cy="85" r="64" stroke="#65b5ff" stroke-dasharray="28.1 402.1" stroke-dashoffset="-362.1"/>
+              <circle cx="85" cy="85" r="64" stroke="#b3e01c" stroke-dasharray="12 402.1" stroke-dashoffset="-390.2"/>
+            </svg>
+            <div class="center"><b>12,482</b><span>resolutions</span></div>
+          </div>
+          <ul class="legend">
+            <li><i style="background:#ff5600"></i>Fin AI Agent<b>64%</b></li>
+            <li><i style="background:#111111"></i>Human teammate<b>26%</b></li>
+            <li><i style="background:#65b5ff"></i>Help center article<b>7%</b></li>
+            <li><i style="background:#b3e01c"></i>Community<b>3%</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- table + activity -->
+    <section class="cols">
+      <div class="table-card">
+        <div class="panel-head" style="padding:var(--s-md) var(--s-md) 0">
+          <h3>App orders &amp; subscriptions</h3>
+          <span>8 of 34</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th></th><th>Order</th><th>Category</th><th>Status</th><th>Amount</th><th>Date</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>Fin AI Agent — Team Pack</b><span>ORD-20841 · Starter ×3 seats</span></td>
+              <td>AI &amp; Fin</td>
+              <td><span class="badge success">Active</span></td>
+              <td class="tamount">$297.00</td><td>Sep 28, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>Resolution Reports</b><span>ORD-20835 · Analytics</span></td>
+              <td>Reports</td>
+              <td><span class="badge success">Active</span></td>
+              <td class="tamount">$49.00</td><td>Sep 24, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>SLA Command Center</b><span>ORD-20798 · Ferrostack</span></td>
+              <td>Reports</td>
+              <td><span class="badge warning">Trial ends 5d</span></td>
+              <td class="tamount">$44.00</td><td>Sep 20, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>Knowledge Sync</b><span>ORD-20771 · Cirrus Labs</span></td>
+              <td>Productivity</td>
+              <td><span class="badge fin">New</span></td>
+              <td class="tamount">$39.00</td><td>Sep 14, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>Paywall Resolver</b><span>ORD-20744 · Ledgerly</span></td>
+              <td>CRM</td>
+              <td><span class="badge danger">Past due</span></td>
+              <td class="tamount">$59.00</td><td>Sep 02, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>CSAT Pulse</b><span>ORD-20690 · Veritant</span></td>
+              <td>Reports</td>
+              <td><span class="badge success">Active</span></td>
+              <td class="tamount">$19.00</td><td>Aug 21, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>Inbox Themes Pro</b><span>ORD-20612 · Northbeam</span></td>
+              <td>Messaging</td>
+              <td><span class="badge neutral">Cancelled</span></td>
+              <td class="tamount">$29.00</td><td>Aug 09, 2026</td><td class="tactions">···</td>
+            </tr>
+            <tr>
+              <td><input class="rowcheck" type="checkbox"></td>
+              <td class="tname"><b>Copilot Answers</b><span>ORD-20588 · 6 seats</span></td>
+              <td>AI &amp; Fin</td>
+              <td><span class="badge success">Active</span></td>
+              <td class="tamount">$150.00</td><td>Jul 30, 2026</td><td class="tactions">···</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pager">
+          <span>Showing 8 of 34 orders</span>
+          <div class="pg">
+            <button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>…</button><button>5</button><button>›</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel" style="margin-bottom:var(--s-md)">
+          <div class="panel-head"><h3>Recent activity</h3><a href="#" style="font-size:13px;color:var(--ink-muted)">View all</a></div>
+          <div class="feed">
+            <div class="feed-item">
+              <span class="fdot" style="background:var(--fin-orange)">F</span>
+              <div><p><b>Fin resolved 214 conversations</b> overnight without escalation.</p><time>25 min ago</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="fdot" style="background:#0007cb">MK</span>
+              <div><p><b>Maya Kessler</b> invited 3 new teammates to the Accelerate seat group.</p><time>2 hrs ago</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="fdot" style="background:#111">·</span>
+              <div><p>Payment for <b>Paywall Resolver</b> failed — card ending 4412 expired.</p><time>5 hrs ago</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="fdot" style="background:#0a8f3c">JL</span>
+              <div><p><b>Jonas Lindqvist</b> published 12 new help center articles to Fin's knowledge.</p><time>Yesterday</time></div>
+            </div>
+            <div class="feed-item">
+              <span class="fdot" style="background:#b45309">S</span>
+              <div><p>SLA breach warning on <b>Enterprise queue</b> — 2 conversations at risk.</p><time>Yesterday</time></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Quick settings</h3></div>
+          <div class="set-row">
+            <div><p>Fin autonomous mode</p><span>Resolve without approval</span></div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+          <div class="set-row">
+            <div><p>Office hours rerouting</p><span>Off-hours → Fin first</span></div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+          <div class="set-row">
+            <div><p>CSAT surveys</p><span>After every resolution</span></div>
+            <label class="switch"><input type="checkbox"><i></i></label>
+          </div>
+          <button class="btn btn-ink" style="width:100%;margin-top:var(--s-sm)">Save changes</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

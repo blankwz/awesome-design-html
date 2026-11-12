@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>notion — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --c-primary:#5645d4;
+  --c-primary-pressed:#4534b3;
+  --c-primary-deep:#3a2a99;
+  --c-on-primary:#ffffff;
+  --c-brand-navy:#0a1530;
+  --c-brand-navy-deep:#070f24;
+  --c-brand-navy-mid:#1a2a52;
+  --c-link-blue:#0075de;
+  --c-brand-orange:#dd5b00;
+  --c-brand-orange-deep:#793400;
+  --c-brand-pink:#ff64c8;
+  --c-brand-pink-deep:#a02e6d;
+  --c-brand-purple:#7b3ff2;
+  --c-brand-purple-300:#d6b6f6;
+  --c-brand-purple-800:#391c57;
+  --c-brand-teal:#2a9d99;
+  --c-brand-green:#1aae39;
+  --c-brand-yellow:#f5d75e;
+  --c-brand-brown:#523410;
+  --c-tint-peach:#ffe8d4;
+  --c-tint-rose:#fde0ec;
+  --c-tint-mint:#d9f3e1;
+  --c-tint-lavender:#e6e0f5;
+  --c-tint-sky:#dcecfa;
+  --c-tint-yellow:#fef7d6;
+  --c-tint-yellow-bold:#f9e79f;
+  --c-tint-cream:#f8f5e8;
+  --c-tint-gray:#f0eeec;
+  --c-canvas:#ffffff;
+  --c-surface:#f6f5f4;
+  --c-surface-soft:#fafaf9;
+  --c-hairline:#e5e3df;
+  --c-hairline-soft:#ede9e4;
+  --c-hairline-strong:#c8c4be;
+  --c-ink-deep:#000000;
+  --c-ink:#1a1a1a;
+  --c-charcoal:#37352f;
+  --c-slate:#5d5b54;
+  --c-steel:#787671;
+  --c-stone:#a4a097;
+  --c-muted:#bbb8b1;
+  --c-on-dark:#ffffff;
+  --c-on-dark-muted:#a4a097;
+  --c-success:#1aae39;
+  --c-warning:#dd5b00;
+  --c-error:#e03131;
+  /* rounded */
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px;
+  --r-xl:16px; --r-xxl:20px; --r-xxxl:24px; --r-full:9999px;
+  /* spacing */
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px;
+  --s-lg:20px; --s-xl:24px; --s-xxl:32px; --s-xxxl:40px;
+  --s-section-sm:48px; --s-section:64px; --s-section-lg:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Notion Sans','Inter',-apple-system,system-ui,'Segoe UI',Helvetica,sans-serif;
+  color:var(--c-ink);
+  background:var(--c-canvas);
+  font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+/* ═══ banner ═══ */
+.sg-banner{
+  background:var(--c-brand-navy);
+  color:var(--c-on-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;
+  position:relative;overflow:hidden;
+}
+.sg-banner::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle 5px at 8% 60%, var(--c-brand-pink) 98%, transparent),
+    radial-gradient(circle 4px at 22% 30%, var(--c-brand-yellow) 98%, transparent),
+    radial-gradient(circle 5px at 55% 70%, var(--c-brand-teal) 98%, transparent),
+    radial-gradient(circle 4px at 78% 35%, var(--c-brand-orange) 98%, transparent),
+    radial-gradient(circle 4px at 92% 65%, var(--c-brand-purple-300) 98%, transparent);
+  pointer-events:none;
+}
+.sg-banner .sg-left{display:flex;align-items:baseline;gap:16px;position:relative;}
+.sg-banner .sg-folder{
+  font-family:'Courier New',monospace;
+  font-size:12px;color:var(--c-on-dark-muted);
+}
+.sg-banner .sg-brand{font-size:22px;font-weight:600;letter-spacing:-0.5px;}
+.sg-banner .sg-desc{
+  position:relative;
+  font-size:13px;color:var(--c-on-dark-muted);
+  max-width:560px;text-align:right;
+}
+main{max-width:1280px;margin:0 auto;padding:0 32px;}
+.sg-section-title{
+  font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;
+  color:var(--c-steel);
+  padding-bottom:var(--s-sm);
+  border-bottom:1px solid var(--c-hairline);
+  margin-bottom:var(--s-section);
+}
+.sg-block-label{
+  font-size:13px;font-weight:600;
+  margin-bottom:var(--s-sm);color:var(--c-charcoal);
+}
+.sg-block{margin-bottom:var(--s-section);}
+/* ── color tokens ── */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--s-sm);}
+.swatch{border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden;}
+.swatch .chip{height:64px;}
+.swatch .meta{padding:8px 10px;background:var(--c-canvas);}
+.swatch .name{font-size:12px;font-weight:500;}
+.swatch .hex{font-size:11px;color:var(--c-steel);font-family:'Courier New',monospace;}
+/* ── typography ── */
+.type-spec{border-top:1px solid var(--c-hairline);}
+.type-row{
+  padding:var(--s-md) 0;
+  border-bottom:1px solid var(--c-hairline);
+  display:flex;align-items:baseline;gap:var(--s-xl);flex-wrap:wrap;
+}
+.type-row .tag{
+  font-size:11px;font-weight:500;color:var(--c-steel);
+  font-family:'Courier New',monospace;min-width:200px;
+}
+.t-hero{font-size:80px;font-weight:600;line-height:1.05;letter-spacing:-2px;}
+.t-display{font-size:56px;font-weight:600;line-height:1.1;letter-spacing:-1px;}
+.t-h1{font-size:48px;font-weight:600;line-height:1.15;letter-spacing:-0.5px;}
+.t-h2{font-size:36px;font-weight:600;line-height:1.2;letter-spacing:-0.5px;}
+.t-h3{font-size:28px;font-weight:600;line-height:1.25;}
+.t-h4{font-size:22px;font-weight:600;line-height:1.3;}
+.t-h5{font-size:18px;font-weight:600;line-height:1.4;}
+.t-sub{font-size:18px;font-weight:400;line-height:1.5;color:var(--c-slate);}
+.t-body{font-size:16px;font-weight:400;line-height:1.55;}
+.t-bm{font-size:16px;font-weight:500;line-height:1.55;}
+.t-bsm{font-size:14px;font-weight:400;line-height:1.5;color:var(--c-slate);}
+.t-cap{font-size:13px;color:var(--c-steel);}
+.t-micro-up{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--c-steel);}
+/* ── buttons ── */
+.btn-row{display:flex;align-items:center;gap:var(--s-sm);flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;text-decoration:none;
+  font:500 14px/1.3 'Inter',system-ui,sans-serif;
+  border-radius:var(--r-md);
+  padding:10px 18px;
+  transition:background .15s ease;
+}
+.btn-primary{background:var(--c-primary);color:var(--c-on-primary);}
+.btn-primary:hover{background:var(--c-primary-pressed);}
+.btn-dark{background:var(--c-ink-deep);color:var(--c-on-dark);}
+.btn-secondary{background:transparent;color:var(--c-ink);border:1px solid var(--c-hairline-strong);}
+.btn-secondary:hover{background:var(--c-surface);}
+.btn-on-dark{background:var(--c-on-dark);color:var(--c-ink);}
+.btn-secondary-on-dark{background:transparent;color:var(--c-on-dark);border:1px solid var(--c-on-dark-muted);}
+.btn-ghost{background:transparent;color:var(--c-ink);padding:8px 12px;border-radius:var(--r-sm);}
+.btn-ghost:hover{background:var(--c-surface);}
+.btn-link{background:transparent;color:var(--c-link-blue);padding:0;text-decoration:underline;}
+.btn-disabled{background:var(--c-hairline);color:var(--c-muted);cursor:not-allowed;}
+/* ── inputs ── */
+.input-row{display:flex;align-items:center;gap:var(--s-sm);flex-wrap:wrap;}
+.text-input{
+  background:var(--c-canvas);color:var(--c-ink);
+  font:400 16px/1.5 'Inter',system-ui,sans-serif;
+  border:1px solid var(--c-hairline-strong);
+  border-radius:var(--r-md);
+  padding:8px 16px;height:44px;width:260px;outline:none;
+}
+.text-input.focus{border:2px solid var(--c-primary);padding:7px 15px;}
+.search-pill{
+  display:inline-flex;align-items:center;gap:var(--s-xs);
+  background:var(--c-surface);color:var(--c-steel);
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-md);
+  padding:8px 16px;height:44px;width:280px;
+}
+.search-pill input{border:none;background:transparent;outline:none;font:inherit;width:100%;color:var(--c-ink);}
+.search-pill input::placeholder{color:var(--c-steel);}
+.select{
+  appearance:none;
+  background:var(--c-canvas);
+  border:1px solid var(--c-hairline-strong);
+  border-radius:var(--r-md);
+  font:400 14px/1.5 'Inter',system-ui,sans-serif;
+  padding:8px 36px 8px 14px;height:44px;cursor:pointer;color:var(--c-ink);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path d='M6 9l6 6 6-6' fill='none' stroke='%2337352f' stroke-width='2'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.switch{position:relative;display:inline-block;width:36px;height:20px;vertical-align:middle;}
+.switch input{opacity:0;width:0;height:0;}
+.switch .track{position:absolute;inset:0;background:var(--c-hairline-strong);border-radius:var(--r-full);transition:background .15s;}
+.switch .track::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:var(--r-full);transition:transform .15s;box-shadow:0 1px 2px rgba(15,15,15,.2);}
+.switch input:checked + .track{background:var(--c-primary);}
+.switch input:checked + .track::after{transform:translateX(16px);}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;cursor:pointer;}
+.check .box{width:18px;height:18px;border:1px solid var(--c-hairline-strong);border-radius:var(--r-xs);display:inline-flex;align-items:center;justify-content:center;color:transparent;font-size:12px;}
+.check.on .box{background:var(--c-primary);border-color:var(--c-primary);color:#fff;}
+.check.disabled{color:var(--c-muted);cursor:not-allowed;}
+.check.disabled .box{background:var(--c-surface);}
+/* ── cards ── */
+.card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md);}
+.card-base{
+  background:var(--c-canvas);
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-xl);
+}
+.card-base h4{font-size:22px;font-weight:600;margin-bottom:var(--s-xs);}
+.card-base p{font-size:14px;color:var(--c-slate);}
+.card-feature-yellow{background:var(--c-tint-yellow-bold);color:var(--c-charcoal);border-radius:var(--r-lg);padding:var(--s-xxl);}
+.card-feature-yellow h4{font-size:22px;font-weight:600;margin-bottom:var(--s-xs);}
+.card-feature-yellow p{font-size:14px;color:#6b5b1a;margin-bottom:var(--s-md);}
+.card-mint{background:var(--c-tint-mint);border-radius:var(--r-lg);padding:var(--s-xxl);}
+.card-mint h5{font-size:18px;font-weight:600;margin-bottom:6px;color:var(--c-charcoal);}
+.card-mint p{font-size:14px;color:#2f6b47;}
+.card-rose{background:var(--c-tint-rose);border-radius:var(--r-lg);padding:var(--s-xxl);}
+.card-rose h5{font-size:18px;font-weight:600;margin-bottom:6px;color:var(--c-charcoal);}
+.card-rose p{font-size:14px;color:#a02e6d;}
+/* ── badges & tabs ── */
+.badge-row{display:flex;gap:var(--s-xs);flex-wrap:wrap;align-items:center;}
+.badge{font-size:13px;font-weight:600;border-radius:var(--r-full);padding:4px 10px;display:inline-flex;align-items:center;}
+.badge-purple{background:var(--c-primary);color:#fff;}
+.badge-pink{background:var(--c-brand-pink);color:#fff;}
+.badge-orange{background:var(--c-brand-orange);color:#fff;}
+.badge-tag{font-size:13px;font-weight:600;border-radius:var(--r-sm);padding:2px 8px;display:inline-flex;align-items:center;}
+.tag-purple{background:var(--c-tint-lavender);color:var(--c-brand-purple-800);}
+.tag-orange{background:var(--c-tint-peach);color:var(--c-brand-orange-deep);}
+.tag-green{background:var(--c-tint-mint);color:var(--c-brand-green);}
+.tag-yellow{background:var(--c-tint-yellow);color:#8a6d00;}
+.pill-tabs{display:inline-flex;gap:var(--s-xs);}
+.pill-tab{font-size:14px;font-weight:500;border:1px solid var(--c-hairline);border-radius:var(--r-full);background:transparent;color:var(--c-steel);padding:6px 16px;cursor:pointer;}
+.pill-tab.active{background:var(--c-ink-deep);color:#fff;border-color:var(--c-ink-deep);}
+.seg-tabs{display:inline-flex;gap:var(--s-md);border-bottom:1px solid var(--c-hairline);}
+.seg-tab{font-size:14px;font-weight:500;background:transparent;border:none;color:var(--c-steel);padding:8px 16px;cursor:pointer;border-bottom:2px solid transparent;}
+.seg-tab.active{color:var(--c-ink);border-bottom-color:var(--c-ink);}
+/* ── nav ── */
+.nav-demo{
+  border:1px solid var(--c-hairline);border-radius:var(--r-lg);overflow:hidden;
+}
+.promo-banner{
+  background:var(--c-surface);color:var(--c-ink);
+  font-size:14px;font-weight:500;
+  padding:var(--s-sm) var(--s-md);
+  display:flex;justify-content:center;gap:var(--s-xs);
+}
+.promo-banner a{color:var(--c-link-blue);}
+.topnav{
+  background:var(--c-canvas);
+  height:64px;display:flex;align-items:center;gap:var(--s-lg);
+  padding:0 var(--s-xl);
+  border-top:1px solid var(--c-hairline);
+}
+.topnav .logo{
+  display:flex;align-items:center;gap:8px;
+  font-size:18px;font-weight:600;
+}
+.topnav .links{display:flex;gap:var(--s-md);flex:1;}
+.topnav .links a{
+  font-size:14px;font-weight:500;color:var(--c-charcoal);
+  text-decoration:none;padding:6px 10px;border-radius:var(--r-sm);
+}
+.topnav .links a:hover{background:var(--c-surface);}
+.topnav .right{display:flex;align-items:center;gap:var(--s-md);}
+/* ── table ── */
+.comparison-table{
+  width:100%;border-collapse:collapse;
+  background:var(--c-canvas);
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-md);
+  overflow:hidden;
+  font-size:14px;
+}
+.comparison-table th{
+  text-align:left;font-size:13px;font-weight:600;color:var(--c-charcoal);
+  padding:12px 20px;border-bottom:1px solid var(--c-hairline);
+}
+.comparison-table td{padding:12px 20px;border-bottom:1px solid var(--c-hairline-soft);color:var(--c-ink);}
+.comparison-table tr:last-child td{border-bottom:none;}
+.tick{color:var(--c-brand-green);font-weight:600;}
+/* ═══ product ═══ */
+#product{margin-top:var(--s-section);}
+.hero-band{
+  background:var(--c-brand-navy);
+  color:var(--c-on-dark);
+  padding:96px 32px 0;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-band::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle 10px at 10% 22%, var(--c-brand-pink) 98%, transparent),
+    radial-gradient(circle 7px at 26% 55%, var(--c-brand-yellow) 98%, transparent),
+    radial-gradient(circle 8px at 46% 18%, var(--c-brand-teal) 98%, transparent),
+    radial-gradient(circle 7px at 70% 40%, var(--c-brand-orange) 98%, transparent),
+    radial-gradient(circle 9px at 88% 24%, var(--c-brand-purple-300) 98%, transparent),
+    radial-gradient(circle 6px at 60% 70%, var(--c-brand-pink) 98%, transparent);
+}
+.hero-band .inner{position:relative;max-width:820px;margin:0 auto;}
+.hero-band .eyebrow{font-size:13px;font-weight:500;color:var(--c-on-dark-muted);margin-bottom:var(--s-md);}
+.hero-band h1{font-size:80px;font-weight:600;line-height:1.05;letter-spacing:-2px;}
+.hero-band .sub{font-size:18px;color:var(--c-on-dark-muted);margin:var(--s-md) auto var(--s-xl);max-width:560px;}
+.hero-band .cta{display:flex;justify-content:center;gap:var(--s-sm);margin-bottom:var(--s-section-lg);}
+.workspace-mockup{
+  position:relative;
+  background:var(--c-canvas);
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  box-shadow:rgba(15,15,15,0.2) 0px 24px 48px -8px;
+  max-width:880px;margin:0 auto;
+  text-align:left;
+  overflow:hidden;
+}
+.wm-titlebar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--c-hairline);font-size:13px;font-weight:500;color:var(--c-charcoal);}
+.wm-titlebar .dots{display:flex;gap:5px;}
+.wm-titlebar .dots span{width:9px;height:9px;border-radius:var(--r-full);}
+.wm-body{display:grid;grid-template-columns:180px 1fr;min-height:320px;}
+.wm-sidebar{border-right:1px solid var(--c-hairline);padding:12px;font-size:13px;color:var(--c-slate);}
+.wm-sidebar .item{padding:6px 8px;border-radius:var(--r-sm);display:flex;gap:8px;align-items:center;}
+.wm-sidebar .item.active{background:var(--c-surface);font-weight:500;color:var(--c-ink);}
+.wm-main{padding:16px;}
+.wm-main .page-title{font-size:20px;font-weight:600;margin-bottom:12px;}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.kanban .col h6{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--c-steel);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.kanban .col h6 .pdot{width:8px;height:8px;border-radius:var(--r-full);display:inline-block;}
+.kanban .card{background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:var(--r-sm);padding:10px;margin-bottom:8px;box-shadow:rgba(15,15,15,.04) 0 1px 2px 0;}
+.kanban .card .ttl{font-size:13px;font-weight:500;margin-bottom:6px;}
+.kanban .card .row{display:flex;gap:6px;flex-wrap:wrap;}
+.kanban .card .tag{font-size:10px;font-weight:600;padding:2px 6px;border-radius:var(--r-xs);}
+.logo-strip{
+  display:flex;align-items:center;justify-content:center;gap:var(--s-xxl);
+  padding:var(--s-xl) 0;flex-wrap:wrap;
+  font-size:16px;font-weight:500;color:var(--c-steel);
+}
+.logo-strip span{opacity:.75;}
+.section-head{margin:var(--s-section) 0 var(--s-lg);}
+.section-head h2{font-size:36px;font-weight:600;letter-spacing:-0.5px;}
+.section-head p{font-size:16px;color:var(--c-slate);margin-top:var(--s-xs);max-width:560px;}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md);}
+.yellow-banner{
+  background:var(--c-tint-yellow-bold);
+  border-radius:var(--r-lg);
+  padding:var(--s-xxl);
+  display:grid;grid-template-columns:1.1fr 1fr;gap:var(--s-xxl);align-items:center;
+  margin:var(--s-section) 0;
+}
+.yellow-banner h3{font-size:28px;font-weight:600;color:var(--c-charcoal);margin-bottom:var(--s-xs);}
+.yellow-banner p{font-size:14px;color:#6b5b1a;margin-bottom:var(--s-md);}
+.pastel-pair{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-md);}
+.mini-mock{
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-md);
+  background:var(--c-canvas);
+  padding:12px;font-size:12px;color:var(--c-slate);
+}
+.mini-mock .line{height:8px;border-radius:4px;background:var(--c-tint-gray);margin:6px 0;}
+.mini-mock .line.w60{width:60%;}
+.mini-mock .line.w80{width:80%;}
+.mini-mock .chiprow{display:flex;gap:6px;margin-top:8px;}
+.mini-mock .chiprow span{font-size:10px;font-weight:600;padding:2px 6px;border-radius:var(--r-xs);}
+.stat-row{
+  background:var(--c-surface);
+  border-radius:var(--r-lg);
+  padding:var(--s-section-sm);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);
+  margin:var(--s-section) 0;
+}
+.stat .num{font-size:36px;font-weight:600;letter-spacing:-1px;}
+.stat .num em{font-style:normal;color:var(--c-primary);}
+.stat .lbl{font-size:14px;color:var(--c-slate);margin-top:4px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-md);}
+.pricing-card{
+  background:var(--c-canvas);
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-xxl);
+  position:relative;
+}
+.pricing-card.featured{background:var(--c-surface);border:2px solid var(--c-primary);}
+.pricing-card .pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--c-primary);color:#fff;font-size:13px;font-weight:600;border-radius:var(--r-full);padding:4px 10px;}
+.pricing-card h5{font-size:18px;font-weight:600;}
+.pricing-card .desc{font-size:14px;color:var(--c-slate);margin:4px 0 var(--s-md);}
+.pricing-card .price{font-size:36px;font-weight:600;letter-spacing:-1px;}
+.pricing-card .price span{font-size:14px;font-weight:400;color:var(--c-slate);}
+.pricing-card ul{list-style:none;margin:var(--s-md) 0 var(--s-lg);}
+.pricing-card li{font-size:14px;color:var(--c-charcoal);padding:4px 0;display:flex;gap:8px;}
+.pricing-card li::before{content:"✓";color:var(--c-brand-green);font-weight:600;}
+.testimonial{
+  border:1px solid var(--c-hairline);
+  border-radius:var(--r-lg);
+  padding:var(--s-xxl);
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s-xxl);
+  margin:var(--s-section) 0;
+  background:var(--c-tint-cream);
+}
+.testimonial .mark{font-size:64px;font-weight:600;line-height:.7;color:var(--c-brand-purple-300);}
+.testimonial blockquote{font-size:22px;font-weight:600;line-height:1.3;max-width:720px;color:var(--c-charcoal);}
+.testimonial cite{display:block;font-style:normal;font-size:14px;color:var(--c-slate);margin-top:var(--s-sm);}
+.cta-banner{
+  background:var(--c-surface);
+  border-radius:var(--r-lg);
+  padding:var(--s-section);
+  text-align:center;
+  margin:var(--s-section) 0;
+}
+.cta-banner h2{font-size:36px;font-weight:600;letter-spacing:-0.5px;margin-bottom:var(--s-md);}
+.cta-banner .row{display:flex;justify-content:center;gap:var(--s-sm);flex-wrap:wrap;}
+footer.sg-footer{
+  border-top:1px solid var(--c-hairline);
+  padding:var(--s-section) 0;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;gap:var(--s-lg);
+}
+.sg-footer .brandcol .logo{font-size:18px;font-weight:600;margin-bottom:var(--s-xs);}
+.sg-footer .brandcol p{font-size:14px;color:var(--c-steel);max-width:220px;}
+.sg-footer h6{font-size:14px;font-weight:600;color:var(--c-ink);margin-bottom:var(--s-xs);}
+.sg-footer ul{list-style:none;}
+.sg-footer li a{font-size:14px;color:var(--c-steel);text-decoration:none;line-height:2;display:inline-block;}
+.sg-footer li a:hover{color:var(--c-ink);}
+@media (max-width:900px){
+  .hero-band h1{font-size:56px;}
+  .card-row,.feature-grid,.pricing-grid{grid-template-columns:1fr 1fr;}
+  .wm-body{grid-template-columns:1fr;}
+  .wm-sidebar{display:none;}
+  .kanban{grid-template-columns:1fr;}
+  .yellow-banner{grid-template-columns:1fr;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  footer.sg-footer{grid-template-columns:1fr 1fr;}
+  .topnav .links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-folder">notion</span>
+    <span class="sg-brand">Notion</span>
+  </div>
+  <div class="sg-desc">The all-in-one workspace — deep navy hero bands, signature purple CTA, and pastel feature cards echoing colorful database properties.</div>
+</header>
+
+<main>
+  <!-- ═══════════ COMPONENTS ═══════════ -->
+  <section id="components" style="padding-top:var(--s-section);">
+    <div class="sg-section-title">Components</div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#5645d4"></div><div class="meta"><div class="name">Notion Purple</div><div class="hex">#5645D4</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a1530"></div><div class="meta"><div class="name">Brand Navy</div><div class="hex">#0A1530</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#0075de"></div><div class="meta"><div class="name">Link Blue</div><div class="hex">#0075DE</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ff64c8"></div><div class="meta"><div class="name">Brand Pink</div><div class="hex">#FF64C8</div></div></div>
+        <div class="swatch"><div class="src" style="height:64px;background:linear-gradient(120deg,#ffe8d4,#fde0ec,#d9f3e1,#e6e0f5,#dcecfa);display:flex;align-items:flex-end;padding:6px 8px;"><span style="font-size:10px;font-weight:600;color:#37352f;">PASTEL TINTS</span></div><div class="meta"><div class="name">Card Tints</div><div class="hex">6 variants</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f9e79f"></div><div class="meta"><div class="name">Tint Yellow Bold</div><div class="hex">#F9E79F</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#37352f"></div><div class="meta"><div class="name">Charcoal</div><div class="hex">#37352F</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f6f5f4"></div><div class="meta"><div class="name">Surface</div><div class="hex">#F6F5F4</div></div></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="tag">hero-display · 80/600/-2px</span><span class="t-hero">Meet the night shift</span></div>
+        <div class="type-row"><span class="tag">heading-1 · 48/600</span><span class="t-h1">Try for free</span></div>
+        <div class="type-row"><span class="tag">heading-2 · 36/600</span><span class="t-h2">Keep work moving 24/7</span></div>
+        <div class="type-row"><span class="tag">heading-3 · 28/600</span><span class="t-h3">Bring all your work together</span></div>
+        <div class="type-row"><span class="tag">heading-4 · 22/600</span><span class="t-h4">On-demand assistants</span></div>
+        <div class="type-row"><span class="tag">subtitle · 18/400</span><span class="t-sub">One workspace for your team's docs, tasks and AI.</span></div>
+        <div class="type-row"><span class="tag">body-md · 16/400/1.55</span><span class="t-body">Notion keeps your notes, projects and knowledge in one connected workspace your whole team actually enjoys using.</span></div>
+        <div class="type-row"><span class="tag">micro-uppercase · 11/600/+1px</span><span class="t-micro-up">Trusted by teams worldwide</span></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Get Notion free</button>
+        <button class="btn btn-primary" style="background:var(--c-primary-pressed);">Pressed</button>
+        <button class="btn btn-dark">Download</button>
+        <button class="btn btn-secondary">Request a demo</button>
+        <button class="btn btn-on-dark" style="outline:2px solid var(--c-primary);outline-offset:2px;">On-dark primary</button>
+        <button class="btn btn-secondary-on-dark" style="background:var(--c-brand-navy);">On-dark secondary</button>
+        <button class="btn btn-ghost">Log in</button>
+        <button class="btn btn-disabled">Disabled</button>
+        <button class="btn btn-link">See pricing →</button>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs &amp; tabs</div>
+      <div class="input-row" style="margin-bottom:var(--s-md);">
+        <input class="text-input" type="text" placeholder="Email address">
+        <input class="text-input focus" type="text" value="ada@lovelace.dev">
+        <label class="search-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#787671" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search (⌘K)">
+        </label>
+        <select class="select"><option>Business (4–100)</option><option>Enterprise</option></select>
+        <label class="check on"><span class="box">✓</span>Weekly digest</label>
+        <label class="check disabled"><span class="box">✓</span>SSO enforced</label>
+        <span class="switch"><input type="checkbox" checked><span class="track"></span></span>
+      </div>
+      <div style="display:flex;gap:var(--s-lg);flex-wrap:wrap;align-items:center;">
+        <div class="pill-tabs">
+          <button class="pill-tab active">AI</button>
+          <button class="pill-tab">Agents</button>
+          <button class="pill-tab">Calendar</button>
+          <button class="pill-tab">Mail</button>
+        </div>
+        <div class="seg-tabs">
+          <button class="seg-tab active">Monthly</button>
+          <button class="seg-tab">Yearly · save 20%</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Cards</div>
+      <div class="card-row">
+        <div class="card-base">
+          <h4>Wikis</h4>
+          <p>Centralize your team knowledge in one searchable, always-current place.</p>
+        </div>
+        <div class="card-base">
+          <h4>Projects</h4>
+          <p>Manage any project from brainstorm to launch, with timelines and owners.</p>
+        </div>
+        <div class="card-feature-yellow">
+          <h4>Ask your on-demand assistants</h4>
+          <p>Notion AI answers from your docs, wiki and connected apps — instantly.</p>
+          <button class="btn btn-dark">Try Notion AI</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Badges &amp; tags</div>
+      <div class="badge-row">
+        <span class="badge badge-purple">Most Popular</span>
+        <span class="badge badge-pink">New</span>
+        <span class="badge badge-orange">Beta</span>
+        <span class="badge-tag tag-purple">AI</span>
+        <span class="badge-tag tag-orange">Agents</span>
+        <span class="badge-tag tag-green">Autofill</span>
+        <span class="badge-tag tag-yellow">Q4 Planning</span>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation</div>
+      <div class="nav-demo">
+        <div class="promo-banner">Developers: Get a first look at our new Developer Platform on May 13. <a href="#">Read more</a></div>
+        <nav class="topnav">
+          <div class="logo">
+            <svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3" fill="#1a1a1a"/><path d="M8 17V7l8 10V7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Notion
+          </div>
+          <div class="links">
+            <a href="#">Product</a><a href="#">AI</a><a href="#">Solutions</a><a href="#">Resources</a><a href="#">Enterprise</a><a href="#">Pricing</a>
+          </div>
+          <div class="right">
+            <a href="#" style="font-size:14px;font-weight:500;color:var(--c-charcoal);text-decoration:none;">Log in</a>
+            <button class="btn btn-primary">Get Notion free</button>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Table</div>
+      <table class="comparison-table">
+        <thead><tr><th>Compare plans</th><th>Free</th><th>Plus</th><th>Business</th></tr></thead>
+        <tbody>
+          <tr><td>Block limit for teams</td><td>Trial</td><td>Unlimited</td><td>Unlimited</td></tr>
+          <tr><td>Notion AI included</td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+          <tr><td>Private teamspaces</td><td>—</td><td>—</td><td><span class="tick">✓</span></td></tr>
+          <tr><td>SAML SSO</td><td>—</td><td>—</td><td>Coming soon</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ PRODUCT ═══════════ -->
+  <section id="product">
+    <div class="sg-section-title">Finished Product</div>
+
+    <div class="hero-band">
+      <div class="inner">
+        <div class="eyebrow">Notion — the connected workspace</div>
+        <h1>Meet the<br>night shift.</h1>
+        <p class="sub">Notion is the all-in-one workspace for your notes, docs, projects and AI agents — working while you sleep.</p>
+        <div class="cta">
+          <button class="btn btn-primary" style="padding:12px 24px;font-size:16px;">Get Notion free</button>
+          <button class="btn btn-secondary-on-dark">Request a demo</button>
+        </div>
+        <div class="workspace-mockup">
+          <div class="wm-titlebar">
+            <span class="dots"><span style="background:#ff5f56;"></span><span style="background:#ffbd2e;"></span><span style="background:#27c93f;"></span></span>
+            Ramp HQ — Notion
+          </div>
+          <div class="wm-body">
+            <div class="wm-sidebar">
+              <div class="item">🏠 Home</div>
+              <div class="item active">📋 Roadmap</div>
+              <div class="item">📚 Engineering Wiki</div>
+              <div class="item">🗓 Meetings</div>
+              <div class="item">🤖 Agents</div>
+            </div>
+            <div class="wm-main">
+              <div class="page-title">Q4 Product Roadmap</div>
+              <div class="kanban">
+                <div class="col">
+                  <h6><span class="pdot" style="background:#ff64c8;"></span>Not started</h6>
+                  <div class="card"><div class="ttl">Ship mobile offline mode</div><div class="row"><span class="tag" style="background:#dcecfa;color:#005bab;">Mobile</span><span class="tag" style="background:#e6e0f5;color:#391c57;">P1</span></div></div>
+                  <div class="card"><div class="ttl">Database automations v2</div><div class="row"><span class="tag" style="background:#d9f3e1;color:#1aae39;">Platform</span></div></div>
+                </div>
+                <div class="col">
+                  <h6><span class="pdot" style="background:#f5d75e;"></span>In progress</h6>
+                  <div class="card"><div class="ttl">AI connectors: Slack &amp; Drive</div><div class="row"><span class="tag" style="background:#ffe8d4;color:#793400;">AI</span><span class="tag" style="background:#fde0ec;color:#a02e6d;">Q4</span></div></div>
+                </div>
+                <div class="col">
+                  <h6><span class="pdot" style="background:#1aae39;"></span>Done</h6>
+                  <div class="card"><div class="ttl">New pricing page launch</div><div class="row"><span class="tag" style="background:#d9f3e1;color:#1aae39;">Web</span></div></div>
+                </div>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo-strip">
+      <span>▲ Vercel</span><span>◆ Ramp</span><span>● Figma</span><span>■ Match Group</span><span>✦ Toyota</span><span>◉ Headspot</span>
+    </div>
+
+    <div class="section-head">
+      <h2>Keep work moving 24/7</h2>
+      <p>Projects, docs and agents in one place — so nothing waits for Monday morning.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="card-base">
+        <div style="font-size:28px;margin-bottom:8px;">📊</div>
+        <h4>Projects &amp; tasks</h4>
+        <p>Timelines, sprints and owners — connected directly to the docs and specs behind them.</p>
+      </div>
+      <div class="card-base">
+        <div style="font-size:28px;margin-bottom:8px;">📚</div>
+        <h4>Wikis</h4>
+        <p>Your company knowledge, always current. Everyone finds the answer, not the meeting.</p>
+      </div>
+      <div class="card-base">
+        <div style="font-size:28px;margin-bottom:8px;">🤖</div>
+        <h4>Notion AI</h4>
+        <p>Search, summarize and draft across every connected tool without leaving your workspace.</p>
+      </div>
+    </div>
+
+    <div class="yellow-banner">
+      <div>
+        <h3>Ask your on-demand assistants</h3>
+        <p>Delegate multi-step work to agents that read your docs, update databases and report back.</p>
+        <button class="btn btn-dark">Meet Notion AI</button>
+      </div>
+      <div class="pastel-pair">
+        <div class="card-mint">
+          <h5>🍋 Meeting notes → action items</h5>
+          <div class="mini-mock" style="margin-top:8px;">
+            <div class="line w80"></div><div class="line"></div><div class="line w60"></div>
+            <div class="chiprow"><span style="background:#d9f3e1;color:#1aae39;">3 tasks</span><span style="background:#e6e0f5;color:#391c57;">Auto-filed</span></div>
+          </div>
+        </div>
+        <div class="card-rose">
+          <h5>🌸 Weekly report drafting</h5>
+          <div class="mini-mock" style="margin-top:8px;">
+            <div class="line w60"></div><div class="line w80"></div><div class="line"></div>
+            <div class="chiprow"><span style="background:#ffe8d4;color:#793400;">Drafting</span><span style="background:#dcecfa;color:#005bab;">Slack</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">100M<em>+</em></div><div class="lbl">Users worldwide</div></div>
+      <div class="stat"><div class="num"><em>50%</em></div><div class="lbl">Less time in status meetings</div></div>
+      <div class="stat"><div class="num">4<em>hrs</em></div><div class="lbl">Saved per person, per week</div></div>
+      <div class="stat"><div class="num"><em>#1</em></div><div class="lbl">Rated UI in G2's workspace grid</div></div>
+    </div>
+
+    <div class="section-head">
+      <h2>Try for free</h2>
+      <p>Start free, add AI when you're ready. Upgrade any time.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h5>Free</h5>
+        <div class="desc">For organizing every corner of your work &amp; life.</div>
+        <div class="price">$0</div>
+        <ul><li>Unlimited personal blocks</li><li>Up to 10 guests</li><li>Basic page analytics</li></ul>
+        <button class="btn btn-secondary" style="width:100%;">Get started</button>
+      </div>
+      <div class="pricing-card featured">
+        <span class="pop">Most Popular</span>
+        <h5>Plus</h5>
+        <div class="desc">A place for small groups to plan and get organized.</div>
+        <div class="price">$10 <span>per member / month</span></div>
+        <ul><li>Unlimited team members</li><li>Unlimited file uploads</li><li>7-day page history</li></ul>
+        <button class="btn btn-primary" style="width:100%;">Get started</button>
+      </div>
+      <div class="pricing-card">
+        <h5>Business</h5>
+        <div class="desc">For companies connecting teams and tools with AI.</div>
+        <div class="price">$20 <span>per member / month</span></div>
+        <ul><li>SAML SSO</li><li>Private teamspaces</li><li>Everything in Plus</li></ul>
+        <button class="btn btn-secondary" style="width:100%;">Get started</button>
+      </div>
+      <div class="pricing-card">
+        <h5>Enterprise</h5>
+        <div class="desc">Advanced controls and support to run your whole org.</div>
+        <div class="price">Custom</div>
+        <ul><li>Advanced security</li><li>Dedicated manager</li><li>Everything in Business</li></ul>
+        <button class="btn btn-dark" style="width:100%;">Request a demo</button>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      <div class="mark">&ldquo;</div>
+      <div>
+        <blockquote>Notion replaced five tools on day one. Our docs, roadmap and weekly reviews now live in one place — and the AI writes half my status updates.</blockquote>
+        <cite>Maya Chen — Head of Product, Ramp</cite>
+      </div>
+    </div>
+
+    <div class="cta-banner">
+      <h2>Meet the night shift.</h2>
+      <div class="row">
+        <button class="btn btn-primary" style="padding:12px 24px;font-size:16px;">Get Notion free</button>
+        <button class="btn btn-secondary">Request a demo</button>
+      </div>
+    </div>
+
+    <footer class="sg-footer">
+      <div class="brandcol">
+        <div class="logo">Notion</div>
+        <p>The connected workspace where better, faster work happens.</p>
+      </div>
+      <div><h6>Product</h6><ul><li><a href="#">AI</a></li><li><a href="#">Calendar</a></li><li><a href="#">Mail</a></li><li><a href="#">Agents</a></li></ul></div>
+      <div><h6>Download</h6><ul><li><a href="#">iOS &amp; Android</a></li><li><a href="#">Mac &amp; Windows</a></li><li><a href="#">Web Clipper</a></li></ul></div>
+      <div><h6>Solutions</h6><ul><li><a href="#">Enterprise</a></li><li><a href="#">Small business</a></li><li><a href="#">Startups</a></li><li><a href="#">Education</a></li></ul></div>
+      <div><h6>Resources</h6><ul><li><a href="#">Pricing</a></li><li><a href="#">Blog</a></li><li><a href="#">Help center</a></li><li><a href="#">Community</a></li></ul></div>
+      <div><h6>Company</h6><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Security</a></li><li><a href="#">Status</a></li></ul></div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

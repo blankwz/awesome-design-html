@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nintendo-2001 — Design Showcase</title>
+<style>
+:root{
+  /* colors */
+  --c-primary:#e60012;
+  --c-signal:#f68d1f;
+  --c-amber:#ecab37;
+  --c-nav-gold:#e48600;
+  --c-canvas:#7a8aba;
+  --c-canvas-soft:#9fbee7;
+  --c-sky:#9fbee7;
+  --c-lavender:#acace7;
+  --c-ice:#c0d5e6;
+  --c-periwinkle:#8ba1d4;
+  --c-chrome-indigo:#3d4f97;
+  --c-muted-indigo:#60619c;
+  --c-platinum:#dedede;
+  --c-surface:#ffffff;
+  --c-carbon:#21242e;
+  --c-hairline:#5a5f8c;
+  --c-ink:#21242e;
+  --c-ink-soft:#3d4f97;
+  --c-on-primary:#ffffff;
+  --c-systems-teal:#206479;
+  --c-games-red:#a7282b;
+  --c-error:#e60012;
+  /* rounded */
+  --r-none:0px; --r-xs:2px; --r-sm:4px; --r-md:6px; --r-lg:10px; --r-full:9999px;
+  /* spacing */
+  --s-xxs:2px; --s-xs:4px; --s-sm:8px; --s-md:12px;
+  --s-lg:16px; --s-xl:24px; --s-xxl:32px; --s-section:48px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;line-height:1.4;
+  color:var(--c-ink);
+  background:#3a3f58;
+}
+/* ═══ banner (in chrome language) ═══ */
+.sg-banner{
+  background:var(--c-carbon);
+  background-image:radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size:6px 6px;
+  color:var(--c-nav-gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;
+}
+.sg-banner .sg-left{display:flex;align-items:center;gap:14px;}
+.sg-banner .sg-folder{
+  font-size:11px;font-weight:700;letter-spacing:0.5px;
+  color:var(--c-canvas-soft);
+  font-family:'Courier New',monospace;
+}
+.sg-banner .sg-brand{
+  font-family:'Arial Black',Arial,sans-serif;
+  font-size:24px;line-height:1;color:var(--c-primary);
+  background:var(--c-surface);
+  padding:4px 18px;border-radius:var(--r-full);
+  box-shadow:inset 0 0 0 2px var(--c-carbon);
+  text-transform:uppercase;
+}
+.sg-banner .sg-desc{
+  font-size:11px;font-weight:700;color:var(--c-canvas-soft);
+  max-width:520px;text-align:right;letter-spacing:0.3px;
+}
+/* ═══ page machine faceplate ═══ */
+.machine{
+  width:860px;margin:24px auto 48px;
+  background:var(--c-canvas);
+  padding:10px;
+  border:2px solid var(--c-chrome-indigo);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    0 10px 30px rgba(0,0,0,0.35);
+}
+main{display:block;}
+.sg-section-title{
+  background:var(--c-canvas);
+  color:var(--c-ink-soft);
+  font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+  padding:8px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.sg-section-title::before{content:"≡";}
+.sg-block-label{font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--c-ink-soft);margin:0 0 8px;}
+.sg-block{padding:12px;border-bottom:1px dotted var(--c-muted-indigo);}
+.sg-block:last-child{border-bottom:none;}
+/* ═══ bevel helpers ═══ */
+.plate{
+  background:var(--c-canvas);
+  border:1px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -2px 0 var(--c-chrome-indigo);
+}
+.plate-inset{
+  background:var(--c-platinum);
+  border:1px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 2px 0 var(--c-chrome-indigo), inset 0 -1px 0 rgba(255,255,255,0.7);
+}
+.raised-chip{
+  background:var(--c-amber);
+  color:var(--c-carbon);
+  font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+  border:none;cursor:pointer;
+  border-radius:var(--r-xs);
+  padding:6px 12px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 0 var(--c-chrome-indigo);
+  font-family:Arial,sans-serif;
+}
+.raised-chip:active{background:var(--c-nav-gold);transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 0 var(--c-chrome-indigo);}
+/* ═══ components ═══ */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;}
+.swatch{border:1px solid var(--c-chrome-indigo);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);}
+.swatch .chip{height:52px;border-bottom:1px solid var(--c-chrome-indigo);}
+.swatch .meta{background:var(--c-surface);padding:4px 6px;}
+.swatch .name{font-size:10px;font-weight:700;}
+.swatch .hex{font-size:9px;color:var(--c-muted-indigo);font-family:'Courier New',monospace;}
+.type-row{display:flex;align-items:baseline;gap:16px;padding:6px 0;border-bottom:1px dotted var(--c-muted-indigo);flex-wrap:wrap;}
+.type-row:last-child{border-bottom:none;}
+.type-row .tag{font-size:9px;font-weight:700;color:var(--c-muted-indigo);font-family:'Courier New',monospace;min-width:170px;}
+.t-display{
+  font-family:'Arial Black',Arial,sans-serif;font-size:44px;font-weight:900;line-height:1;
+  color:var(--c-surface);
+  text-shadow:-2px -2px 0 var(--c-chrome-indigo), 2px -2px 0 var(--c-chrome-indigo), -2px 2px 0 var(--c-chrome-indigo), 2px 2px 0 var(--c-chrome-indigo), 4px 4px 0 var(--c-carbon);
+  padding:4px 10px;background:var(--c-lavender);
+}
+.t-nav{font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--c-nav-gold);}
+.t-ui{font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--c-ink);}
+.t-link{font-size:12px;font-weight:700;color:var(--c-ink-soft);}
+.t-body{font-size:12px;color:var(--c-ink);}
+.t-micro{font-size:10px;color:var(--c-muted-indigo);}
+.btn-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.btn-primary{background:var(--c-amber);color:var(--c-carbon);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:var(--r-xs);padding:8px 14px;border:none;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 2px 0 var(--c-chrome-indigo);font-family:Arial;}
+.btn-primary:hover{background:var(--c-nav-gold);}
+.btn-submit{background:var(--c-signal);color:var(--c-on-primary);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:var(--r-xs);padding:8px 18px;border:none;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 2px 0 var(--c-chrome-indigo);font-family:Arial;}
+.btn-submit:active{transform:translateY(1px);}
+.btn-secondary{
+  background:var(--c-carbon);color:var(--c-on-primary);
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  border:none;cursor:pointer;padding:8px 14px;
+  background-image:radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size:5px 5px;
+  font-family:Arial;
+}
+.btn-secondary::before{content:"▶ ";color:var(--c-signal);font-size:8px;}
+.btn-icon-arrow{
+  width:22px;height:22px;border-radius:var(--r-full);
+  background:var(--c-signal);color:#fff;border:none;cursor:pointer;
+  font-size:11px;line-height:1;display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 1px 0 var(--c-chrome-indigo);
+}
+.btn-arrow-chip{
+  width:18px;height:18px;border-radius:var(--r-xs);
+  background:var(--c-signal);color:#fff;border:none;cursor:pointer;
+  font-size:10px;display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+}
+.input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.field-label{font-size:12px;font-weight:700;color:var(--c-ink);margin-right:2px;}
+.text-input{
+  background:var(--c-surface);color:var(--c-ink);
+  font:12px Arial;border:1px solid var(--c-hairline);
+  border-radius:var(--r-xs);padding:4px 6px;height:22px;width:170px;
+  box-shadow:inset 0 2px 0 var(--c-chrome-indigo);
+}
+.text-input.focus{border:1px solid var(--c-carbon);box-shadow:inset 0 2px 0 var(--c-chrome-indigo),0 0 0 2px var(--c-canvas-soft);}
+.select-dd{
+  background:var(--c-surface);color:var(--c-ink);font:12px Arial;
+  border:1px solid var(--c-carbon);border-radius:var(--r-xs);
+  padding:4px;height:24px;cursor:pointer;
+}
+.radio{display:inline-flex;align-items:center;gap:6px;font-size:12px;}
+.radio input{accent-color:var(--c-signal);}
+.check{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--c-ink);}
+.check input{accent-color:var(--c-carbon);}
+.check.disabled{color:var(--c-ash,#9a9898);color:#8a8fae;cursor:not-allowed;}
+.form-panel{
+  background:var(--c-platinum);
+  border:1px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 2px 0 var(--c-chrome-indigo), inset 0 -1px 0 rgba(255,255,255,.7);
+  border-radius:var(--r-md);
+  padding:16px;
+  max-width:420px;
+}
+.form-panel h4{
+  background:var(--c-canvas);
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--c-ink);padding:6px 10px;margin:-16px -16px 12px;
+}
+.dotted-divider{border-top:1px dotted var(--c-muted-indigo);margin:12px 0;}
+/* cards */
+.card-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.news-row{
+  display:flex;align-items:center;gap:8px;
+  background:var(--c-platinum);
+  border-radius:var(--r-sm);
+  padding:8px;
+  border:1px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+}
+.news-row .ico{
+  width:16px;height:16px;background:var(--c-canvas);
+  border:1px solid var(--c-chrome-indigo);
+  display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex:0 0 auto;
+}
+.news-row a{font-size:12px;font-weight:700;color:var(--c-ink-soft);flex:1;text-decoration:none;}
+.news-row a:hover{text-decoration:underline;}
+.feature-tile{
+  background:var(--c-carbon);color:var(--c-on-primary);
+  border-radius:var(--r-sm);
+  border:2px solid var(--c-chrome-indigo);
+  padding:2px;
+}
+.feature-tile .thumb{
+  height:88px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--c-systems-teal),#0d3a47);
+  font-family:'Arial Black',Arial,sans-serif;font-size:20px;color:#fff;
+  text-shadow:2px 2px 0 var(--c-carbon);
+}
+.feature-tile.alt .thumb{background:linear-gradient(135deg,var(--c-games-red),#4d0e10);}
+.feature-tile .url{font-size:10px;padding:4px 6px;background:var(--c-carbon);color:var(--c-canvas-soft);}
+.poll-panel{
+  background:var(--c-periwinkle);border-radius:var(--r-md);
+  border:1px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  padding:12px;
+}
+.poll-panel .q{font-size:12px;font-weight:700;margin-bottom:8px;}
+.poll-panel .opt{display:flex;align-items:center;gap:6px;padding:3px 0;}
+.info-box{
+  background:var(--c-surface);border-radius:var(--r-sm);
+  border:1px solid var(--c-chrome-indigo);
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+.info-box .tab{background:var(--c-amber);color:var(--c-carbon);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:6px 10px;}
+.info-box p{padding:10px;font-size:12px;}
+.stat-tile{
+  background:var(--c-periwinkle);border-radius:var(--r-sm);
+  border:1px solid var(--c-chrome-indigo);
+  padding:8px;text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+}
+.stat-tile .glyph{font-family:'Arial Black',Arial,sans-serif;font-size:18px;color:var(--c-chrome-indigo);}
+.stat-tile .lbl{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.esrb{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--c-amber);color:var(--c-carbon);
+  font-size:10px;border-radius:var(--r-xs);padding:3px 8px;
+}
+.esrb .sq{
+  width:20px;height:20px;background:var(--c-surface);color:var(--c-carbon);
+  border:1px solid var(--c-carbon);border-radius:var(--r-xs);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+}
+.badge-news{
+  display:inline-flex;align-items:center;
+  background:var(--c-carbon);color:var(--c-canvas-soft);
+  font-size:10px;border-radius:var(--r-xs);padding:2px 8px;letter-spacing:.5px;
+}
+.badge-platform{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--c-signal);color:#fff;
+  font-size:10px;font-weight:700;border-radius:var(--r-xs);padding:2px 8px;letter-spacing:.5px;
+}
+/* nav */
+.nav-demo{border:1px solid var(--c-chrome-indigo);}
+.nav-bar{
+  background:var(--c-carbon);
+  background-image:radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size:5px 5px;
+  color:var(--c-nav-gold);
+  height:32px;display:flex;align-items:center;gap:16px;padding:0 10px;
+}
+.nav-bar .logo-pill{
+  background:var(--c-surface);color:var(--c-primary);
+  font-family:'Arial Black',Arial,sans-serif;font-size:11px;
+  padding:3px 12px;border-radius:var(--r-full);
+  box-shadow:inset 0 0 0 1px var(--c-carbon);
+}
+.nav-bar a{
+  font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--c-nav-gold);text-decoration:none;
+}
+.nav-bar a.active{color:#fff;text-shadow:0 0 6px var(--c-amber);}
+.nav-bar .chips{margin-left:auto;display:flex;gap:6px;}
+.subnav-strip{
+  background:var(--c-canvas-soft);color:var(--c-ink);
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  display:flex;align-items:center;gap:0;padding:0 10px;height:26px;
+}
+.subnav-strip a{color:var(--c-ink);text-decoration:none;padding:0 10px;border-right:1px solid var(--c-chrome-indigo);}
+.subnav-strip a:last-child{border-right:none;}
+/* table */
+.data-table{width:100%;border-collapse:collapse;background:var(--c-surface);font-size:12px;}
+.data-table th{
+  background:var(--c-canvas-soft);color:var(--c-ink);
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:5px 8px;border:1px solid var(--c-chrome-indigo);text-align:left;
+}
+.data-table td{padding:5px 8px;border:1px solid var(--c-hairline);}
+.data-table td.b{font-weight:700;}
+/* ═══ product ═══ */
+.sg-product{padding:0 12px 12px;}
+.hero-panel{
+  position:relative;
+  border-radius:var(--r-md);
+  border:2px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.18), transparent 40%),
+    linear-gradient(120deg, var(--c-lavender) 0%, #8f92d8 45%, #7b7ecb 100%);
+  min-height:280px;
+  padding:24px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+.hero-panel .wordmark{
+  font-family:'Arial Black',Arial,sans-serif;
+  font-size:44px;line-height:1;color:#fff;
+  text-shadow:-2px -2px 0 var(--c-chrome-indigo),2px -2px 0 var(--c-chrome-indigo),-2px 2px 0 var(--c-chrome-indigo),2px 2px 0 var(--c-chrome-indigo),5px 5px 0 var(--c-carbon);
+}
+.hero-panel .tagline{font-size:15px;font-weight:700;margin:12px 0 16px;color:var(--c-carbon);}
+.hero-panel .mario{
+  position:absolute;right:28px;bottom:20px;
+  width:110px;height:110px;border-radius:var(--r-lg);
+  background:var(--c-surface);border:2px solid var(--c-chrome-indigo);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  font-size:10px;color:var(--c-carbon);
+  box-shadow:3px 3px 0 rgba(0,0,0,0.25);
+}
+.hero-panel .mario .face{font-size:34px;line-height:1;}
+.hero-panel .mario .tail{
+  position:absolute;left:-10px;top:30px;
+  width:0;height:0;border:8px solid transparent;
+  border-right-color:var(--c-surface);
+}
+.body-split{display:grid;grid-template-columns:2fr 1fr;gap:16px;}
+.panel-stack{display:grid;gap:12px;}
+.section-label-bar{
+  background:var(--c-canvas);color:var(--c-ink);
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:8px 10px;display:flex;align-items:center;gap:6px;
+}
+.section-label-bar::before{content:"▦";font-size:10px;}
+.featured-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:var(--c-canvas);}
+.rail-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--c-carbon);color:var(--c-on-primary);
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  border:none;cursor:pointer;width:100%;padding:10px 12px;
+  background-image:radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size:5px 5px;
+  font-family:Arial;margin-bottom:8px;
+}
+.rail-btn::before{content:"▶ ";color:var(--c-signal);font-size:8px;}
+.rail-btn:last-child{margin-bottom:0;}
+.promo-card{
+  background:var(--c-lavender);border-radius:var(--r-sm);
+  border:1px solid var(--c-chrome-indigo);
+  padding:12px;text-align:center;
+}
+.promo-card .wm{
+  font-family:'Arial Black',Arial,sans-serif;font-size:20px;color:#fff;
+  text-shadow:-1px -1px 0 var(--c-chrome-indigo),1px -1px 0 var(--c-chrome-indigo),-1px 1px 0 var(--c-chrome-indigo),1px 1px 0 var(--c-chrome-indigo),3px 3px 0 var(--c-carbon);
+  margin-bottom:6px;
+}
+.promo-card p{font-size:10px;color:var(--c-carbon);margin-bottom:8px;}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0;}
+.stat-strip-tile{
+  background:var(--c-platinum);border:1px solid var(--c-chrome-indigo);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+  padding:12px 8px;text-align:center;border-radius:var(--r-sm);
+}
+.stat-strip-tile .num{font-family:'Arial Black',Arial,sans-serif;font-size:22px;color:var(--c-ink-soft);}
+.stat-strip-tile .lbl{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--c-ink-soft);}
+.cta-strip{
+  background:var(--c-carbon);
+  background-image:radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size:5px 5px;
+  border-radius:var(--r-md);
+  border:1px solid var(--c-chrome-indigo);
+  color:var(--c-on-primary);
+  padding:20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin-bottom:16px;
+}
+.cta-strip .t{
+  font-family:'Arial Black',Arial,sans-serif;font-size:22px;
+  text-shadow:2px 2px 0 var(--c-chrome-indigo);
+}
+.footer-bar{
+  background:var(--c-carbon);
+  background-image:radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size:5px 5px;
+  color:var(--c-canvas-soft);
+  padding:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.footer-bar a{color:var(--c-canvas-soft);text-decoration:none;}
+.footer-links{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;}
+.footer-links a{text-decoration:underline;}
+@media (max-width:900px){
+  .machine{width:auto;margin:16px;}
+  .body-split{grid-template-columns:1fr;}
+  .card-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-folder">nintendo-2001</span>
+    <span class="sg-brand">Nintendo</span>
+  </div>
+  <div class="sg-desc">Brushed-periwinkle console chrome — every panel a beveled metal plate, gold nav glowing on carbon, orange reserved for forward motion.</div>
+</header>
+
+<div class="machine">
+  <!-- ═══════════ COMPONENTS ═══════════ -->
+  <main>
+  <section id="components">
+    <div class="sg-section-title">Components</div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#e60012"></div><div class="meta"><div class="name">Nintendo Red</div><div class="hex">#E60012</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f68d1f"></div><div class="meta"><div class="name">Signal Orange</div><div class="hex">#F68D1F</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ecab37"></div><div class="meta"><div class="name">Amber</div><div class="hex">#ECAB37</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#e48600"></div><div class="meta"><div class="name">Nav Gold</div><div class="hex">#E48600</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#7a8aba"></div><div class="meta"><div class="name">Periwinkle Canvas</div><div class="hex">#7A8ABA</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#9fbee7"></div><div class="meta"><div class="name">Pale Sky</div><div class="hex">#9FBEE7</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#acace7"></div><div class="meta"><div class="name">Pale Lavender</div><div class="hex">#ACACE7</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#3d4f97"></div><div class="meta"><div class="name">Chrome Indigo</div><div class="hex">#3D4F97</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#dedede"></div><div class="meta"><div class="name">Platinum</div><div class="hex">#DEDEDE</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#21242e"></div><div class="meta"><div class="name">Carbon Navy</div><div class="hex">#21242E</div></div></div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Typography specimen</div>
+      <div class="type-row"><span class="tag">display · 44/900</span><span class="t-display">SUPER MARIO</span></div>
+      <div class="type-row"><span class="tag">nav-link · 13/700</span><span class="t-nav">GAMES &nbsp; SYSTEMS &nbsp; NEWS &nbsp; NSIDER &nbsp; DOWNLOADS</span></div>
+      <div class="type-row"><span class="tag">ui-label · 11/700</span><span class="t-ui">OFFICIAL NEWS &middot; PLAYER'S POLL &middot; FEATURED SITES</span></div>
+      <div class="type-row"><span class="tag">hero-tagline · 15/700</span><span class="t-body" style="font-weight:700;font-size:15px;">Gorgeous graphics, great sound, and games on the go.</span></div>
+      <div class="type-row"><span class="tag">link · 12/700</span><span class="t-link">Read More &raquo;</span></div>
+      <div class="type-row"><span class="tag">body · 12/400</span><span class="t-body">Vote in the Player's Poll to tell us which games you want to see on Nintendo systems next year.</span></div>
+      <div class="type-row"><span class="tag">micro · 10/400</span><span class="t-micro">&copy;1997&ndash;2001 Nintendo. Games are property of their respective owners.</span></div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn-primary">Game Finder</button>
+        <button class="btn-primary" style="background:var(--c-nav-gold);">Code Bank</button>
+        <button class="btn-submit">Submit</button>
+        <button class="btn-secondary">Log In</button>
+        <button class="btn-secondary">Subscribe</button>
+        <button class="btn-icon-arrow">&#9654;</button>
+        <button class="btn-arrow-chip">&#187;</button>
+        <button class="btn-primary" style="outline:2px solid var(--c-carbon);outline-offset:2px;">Go</button>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Inputs</div>
+      <div class="input-row">
+        <span class="field-label">Username</span>
+        <input class="text-input" type="text" value="player_one">
+        <span class="field-label">Search</span>
+        <input class="text-input focus" type="text" value="zelda">
+        <select class="select-dd"><option>Click to choose</option><option>Month</option><option>Year</option></select>
+        <label class="check"><input type="checkbox" checked> Join Newsletter</label>
+        <label class="check disabled"><input type="checkbox" disabled> ESRB Verified</label>
+        <label class="radio"><input type="radio" name="poll" checked> Option A</label>
+        <label class="radio"><input type="radio" name="poll"> Option B</label>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Cards &amp; panels</div>
+      <div class="card-row">
+        <div class="news-row">
+          <span class="ico">G</span>
+          <a href="#">New Zelda title confirmed for fall launch</a>
+          <button class="btn-arrow-chip">&#187;</button>
+        </div>
+        <div class="news-row">
+          <span class="ico">N</span>
+          <a href="#">Game Boy Advance hits one million units</a>
+          <button class="btn-arrow-chip">&#187;</button>
+        </div>
+        <div class="poll-panel">
+          <div class="q">PLAYER'S POLL &mdash; Best system of 2001?</div>
+          <div class="opt"><input type="radio" checked name="pp"><span>Game Boy Advance</span></div>
+          <div class="opt"><input type="radio" name="pp"><span>Nintendo 64</span></div>
+          <button class="btn-submit" style="margin-top:8px;">Submit Vote</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Badges &amp; trust marks</div>
+      <div class="btn-row">
+        <span class="esrb"><span class="sq">E</span> Everyone &middot; ESRB</span>
+        <span class="esrb"><span class="sq">T</span> Teen &middot; ESRB</span>
+        <span class="badge-news">NEWS</span>
+        <span class="badge-news">BETA</span>
+        <span class="badge-platform">PLAY IT ON &#9654; GBA</span>
+        <span class="badge-platform">PLAY IT ON &#9654; N64</span>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Navigation</div>
+      <div class="nav-demo">
+        <div class="nav-bar">
+          <span class="logo-pill">NINTENDO</span>
+          <a href="#">Games</a>
+          <a href="#">Systems</a>
+          <a href="#" class="active">News</a>
+          <a href="#">Nsider</a>
+          <a href="#">Downloads</a>
+          <span class="chips"><button class="btn-primary">Code Bank</button><button class="btn-primary">Game Finder</button></span>
+        </div>
+        <div class="subnav-strip">
+          <a href="#">Parents</a><a href="#">Customer Service</a><a href="#">Corporate</a><a href="#">Global</a><a href="#">Privacy</a><a href="#">Store</a><a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-block">
+      <div class="sg-block-label">Table row &amp; form panel</div>
+      <table class="data-table" style="margin-bottom:14px;">
+        <thead><tr><th>Release</th><th>Title</th><th>System</th><th>Rating</th></tr></thead>
+        <tbody>
+          <tr><td>11.18.01</td><td class="b">Super Smash Bros. Melee</td><td>Nintendo GAMECUBE</td><td><span class="esrb"><span class="sq">T</span> Teen</span></td></tr>
+          <tr><td>11.05.01</td><td class="b">Luigi's Mansion</td><td>Nintendo GAMECUBE</td><td><span class="esrb"><span class="sq">E</span> Everyone</span></td></tr>
+          <tr><td>12.03.01</td><td class="b">Pikmin</td><td>Nintendo GAMECUBE</td><td><span class="esrb"><span class="sq">E</span> Everyone</span></td></tr>
+        </tbody>
+      </table>
+      <div class="form-panel">
+        <h4>&#8801; LOG IN</h4>
+        <div class="input-row" style="margin-bottom:8px;"><span class="field-label" style="width:70px;">Username</span><input class="text-input" type="text" style="flex:1;"></div>
+        <div class="input-row" style="margin-bottom:8px;"><span class="field-label" style="width:70px;">Password</span><input class="text-input" type="password" style="flex:1;"></div>
+        <button class="btn-submit">Log In</button>
+        <div class="dotted-divider"></div>
+        <span class="t-micro">Note: Your Nsider account works across all Nintendo.com services.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PRODUCT ═══════════ -->
+  <div class="sg-product">
+  <section id="product">
+    <div class="sg-section-title" style="margin:0 -12px 12px;">Finished Product</div>
+
+    <div class="hero-panel">
+      <div class="wordmark">NINTENDO GAMECUBE</div>
+      <div class="tagline">Gorgeous graphics, great sound, and games on the go. Born in 2001.</div>
+      <button class="btn-submit">Play It Now &#9654;</button>
+      <div class="mario">
+        <span class="tail"></span>
+        <span class="face">&#128081;</span>
+        <span>Welcome to Nintendo.com!</span>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-strip-tile"><div class="num">1997</div><div class="lbl">Online Since</div></div>
+      <div class="stat-strip-tile"><div class="num">5</div><div class="lbl">Game Systems</div></div>
+      <div class="stat-strip-tile"><div class="num">600+</div><div class="lbl">Games Released</div></div>
+      <div class="stat-strip-tile"><div class="num">2M</div><div class="lbl">Nsider Members</div></div>
+    </div>
+
+    <div class="body-split">
+      <div class="panel-stack">
+        <div class="plate">
+          <div class="section-label-bar">OFFICIAL NEWS</div>
+          <div style="display:grid;gap:8px;padding:10px;">
+            <div class="news-row"><span class="ico">G</span><a href="#">GAMECUBE launches worldwide this November &mdash; pre-orders open</a><button class="btn-arrow-chip">&#187;</button></div>
+            <div class="news-row"><span class="ico">P</span><a href="#">Pokemon Crystal ships to stores across North America</a><button class="btn-arrow-chip">&#187;</button></div>
+            <div class="news-row"><span class="ico">Z</span><a href="#">The Legend of Zelda: Ocarina of Time tops rental charts again</a><button class="btn-arrow-chip">&#187;</button></div>
+            <div class="news-row"><span class="ico">M</span><a href="#">Mario Kart: Super Circuit races onto Game Boy Advance</a><button class="btn-arrow-chip">&#187;</button></div>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="section-label-bar">FEATURED SITES</div>
+          <div class="featured-grid">
+            <div class="feature-tile"><div class="thumb">POK&eacute;MON</div><div class="url">www.pokemon.com</div></div>
+            <div class="feature-tile alt"><div class="thumb">ZELDA</div><div class="url">www.zelda.com</div></div>
+            <div class="feature-tile"><div class="thumb">MARIO</div><div class="url">www.mario.com</div></div>
+            <div class="feature-tile alt"><div class="thumb">METROID</div><div class="url">www.metroid.com</div></div>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="section-label-bar">SYSTEMS LINEUP</div>
+          <div class="featured-grid" style="grid-template-columns:repeat(3,1fr);">
+            <div class="stat-tile"><div class="glyph">GC</div><div class="lbl">GAMECUBE</div></div>
+            <div class="stat-tile"><div class="glyph">64</div><div class="lbl">Nintendo 64</div></div>
+            <div class="stat-tile"><div class="glyph">GBA</div><div class="lbl">Game Boy Advance</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button class="rail-btn">Log In</button>
+        <button class="rail-btn">Subscribe</button>
+        <button class="rail-btn">Newsletter</button>
+        <button class="rail-btn">Help</button>
+        <div class="info-box">
+          <div class="tab">What Is &mdash; Game Finder</div>
+          <p>Answer three quick questions and Game Finder matches your family to the right games, rated by the ESRB.</p>
+        </div>
+        <div class="promo-card">
+          <div class="wm">GAME BOY ADVANCE</div>
+          <p>Play anywhere. The next generation of handheld is here.</p>
+          <button class="btn-submit">See It &#9654;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-strip">
+      <div class="t">REGISTER YOUR GAMECUBE TODAY</div>
+      <button class="btn-submit">Register &#9654;</button>
+    </div>
+
+    <div class="footer-bar">
+      <span style="font-size:10px;">&copy;1997&ndash;2001 Nintendo. Games are property of their respective owners. Nintendo of America Inc.</span>
+      <span class="esrb"><span class="sq">E</span> ESRB &mdash; Privacy Certified</span>
+      <span class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Store</a></span>
+    </div>
+  </section>
+  </div>
+  </main>
+</div>
+
+</body>
+</html>

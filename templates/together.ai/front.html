@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Together AI — Model Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#000000;
+  --on-primary:#ffffff;
+  --ink:#000000;
+  --body:#959494;
+  --canvas:#ffffff;
+  --canvas-dark:#010120;
+  --surface-dark-soft:#26263a;
+  --surface-dark-soft-2:#313641;
+  --on-dark:#ffffff;
+  --accent-orange:#fc4c02;
+  --accent-magenta:#ef2cc1;
+  --accent-periwinkle:#bdbbff;
+  --accent-mint:#c8f6f9;
+  --hairline:#ebebeb;
+  --brand-gradient:linear-gradient(100deg,var(--accent-orange) 0%,var(--accent-magenta) 50%,var(--accent-periwinkle) 100%);
+  --r-xs:3.25px; --r-sm:4px; --r-md:8px; --r-full:9999px;
+  --sh-orb:rgba(1,1,32,.1) 0px 4px 10px 0px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',Helvetica Neue,Arial,sans-serif;
+  font-weight:400;color:var(--ink);background:var(--canvas);
+  font-size:16px;line-height:1.3;letter-spacing:-.16px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;color:var(--body)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;letter-spacing:.08px;text-transform:uppercase;line-height:1;border-radius:var(--r-sm);padding:12px 24px;transition:background-color .18s,color .18s}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:#1c1c1c}
+.btn-mint{background:var(--accent-mint);color:var(--ink)}
+.btn-mint:hover{background:#b3f0f4}
+.btn-white{background:var(--canvas);color:var(--ink)}
+.btn-white:hover{background:var(--hairline)}
+.btn-ghost-dark{background:var(--surface-dark-soft-2);color:var(--on-dark)}
+.btn-ghost-dark:hover{background:#3c414c}
+.btn-outline{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r-xs);font-size:14px;padding:8px 16px}
+.btn-outline:hover{border-color:var(--body)}
+
+/* ---------- Nav ---------- */
+.nav{background:var(--canvas-dark);color:var(--on-dark);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--surface-dark-soft)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:500;letter-spacing:-.17px}
+.logo-mark{width:24px;height:24px;border-radius:var(--r-sm);background:var(--brand-gradient)}
+.nav-links{display:flex;gap:24px;margin:0 auto}
+.nav-links a{font-size:16px;color:var(--on-dark);transition:color .18s}
+.nav-links a:hover{color:var(--accent-periwinkle)}
+.nav-links a.active{color:var(--accent-mint)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-icon{position:relative;width:36px;height:36px;border-radius:var(--r-sm);display:grid;place-items:center;color:var(--on-dark);border:1px solid var(--surface-dark-soft);transition:border-color .18s}
+.nav-icon:hover{border-color:#4a4a66}
+.nav-dot{position:absolute;top:6px;right:6px;min-width:14px;height:14px;border-radius:var(--r-full);background:var(--accent-magenta);color:#fff;font-family:'JetBrains Mono';font-size:9px;font-weight:500;display:grid;place-items:center;padding:0 3px}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--surface-dark-soft);border-radius:var(--r-sm);padding:8px 12px;width:220px;color:#8a8aa8}
+.search input{background:transparent;border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--on-dark)}
+.search input::placeholder{color:#8a8aa8}
+
+/* ---------- Hero (dark band) ---------- */
+.hero{background:var(--canvas-dark);color:var(--on-dark)}
+.hero-inner{max-width:1280px;margin:0 auto;padding:80px 32px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.eyebrow-dark{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;color:#8a8aa8;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--surface-dark-soft);border-radius:var(--r-sm);padding:6px 12px}
+.eyebrow-dark .dot{width:6px;height:6px;border-radius:var(--r-full);background:var(--brand-gradient)}
+.hero h1{font-size:64px;font-weight:500;line-height:1.1;letter-spacing:-1.92px;margin:20px 0 16px}
+.hero p.lede{font-size:18px;line-height:1.3;letter-spacing:-.18px;color:#b9b9cc;max-width:460px;margin-bottom:32px}
+.hero-cta{display:flex;gap:12px}
+/* gradient ribbon — the brand's only decoration */
+.ribbon{position:relative;height:380px}
+.ribbon .band{position:absolute;inset:0;border-radius:var(--r-sm);background:var(--brand-gradient);opacity:.9;filter:saturate(1.05)}
+.ribbon .loop1{position:absolute;left:-8%;top:14%;width:70%;height:64%;border-radius:var(--r-full);border:56px solid rgba(1,1,32,.35)}
+.ribbon .loop2{position:absolute;right:-6%;bottom:-14%;width:62%;height:70%;border-radius:var(--r-full);border:44px solid rgba(255,255,255,.16)}
+.ribbon .code{
+  position:absolute;left:32px;bottom:32px;background:rgba(1,1,32,.72);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r-sm);padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05px;
+  color:var(--on-dark);backdrop-filter:blur(4px);line-height:1.6
+}
+.ribbon .code em{color:var(--accent-mint);font-style:normal}
+.ribbon .code .c{color:#8a8aa8}
+
+/* ---------- Model grid (white band) ---------- */
+.section{padding:80px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:32px}
+.section-head h2{font-size:40px;font-weight:500;line-height:1.2;letter-spacing:-.8px;margin-top:10px}
+.section-head p{font-size:16px;color:var(--body);max-width:520px;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:24px;display:flex;flex-direction:column;gap:12px;transition:border-color .18s}
+.card:hover{border-color:var(--body)}
+.card-top{display:flex;align-items:center;justify-content:space-between}
+.chip-icon{width:40px;height:40px;border-radius:var(--r-sm);display:grid;place-items:center;font-family:'JetBrains Mono';font-size:12px;font-weight:500}
+.ci-a{background:linear-gradient(135deg,var(--accent-orange),var(--accent-magenta));color:#fff}
+.ci-b{background:var(--accent-mint);color:var(--ink)}
+.ci-c{background:var(--accent-periwinkle);color:var(--ink)}
+.badge{font-family:'JetBrains Mono';font-size:11px;font-weight:500;letter-spacing:.55px;text-transform:uppercase;border:1px solid var(--hairline);border-radius:var(--r-sm);padding:3px 8px;color:var(--ink);background:var(--canvas)}
+.badge-hot{background:var(--ink);color:var(--on-primary);border-color:var(--ink)}
+.badge-mint{background:var(--accent-mint);border-color:var(--accent-mint)}
+.card h3{font-size:22px;font-weight:500;line-height:1.15;letter-spacing:-.22px}
+.card .desc{font-size:14px;line-height:1.4;color:var(--body)}
+.specs{display:flex;gap:6px;flex-wrap:wrap}
+.spec{font-family:'JetBrains Mono';font-size:10px;font-weight:400;letter-spacing:.05px;text-transform:uppercase;border:1px solid var(--hairline);border-radius:var(--r-xs);padding:3px 8px;color:var(--body)}
+.card-meta{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--hairline);padding-top:12px;margin-top:auto}
+.price{font-size:18px;font-weight:500;letter-spacing:-.22px}
+.price small{display:block;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.05px;text-transform:uppercase;color:var(--body);margin-top:2px}
+.rating{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.05px;color:var(--body);text-transform:uppercase}
+.rating b{color:var(--ink);font-weight:500}
+
+/* art-free code chip variants for featured thumbs */
+.thumb{position:relative;border-radius:var(--r-sm);overflow:hidden}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#"><span class="logo-mark"></span>together.ai</a>
+    <nav class="nav-links">
+      <a href="#" class="active">Models</a>
+      <a href="#">GPU Clusters</a>
+      <a href="#">Fine-tuning</a>
+      <a href="#">Docs</a>
+      <a href="#">Research</a>
+    </nav>
+    <div class="nav-right">
+      <label class="search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search 200+ models">
+      </label>
+      <button class="nav-icon" aria-label="Deployments"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6h15l-1.5 9h-12L5 3H2"/><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg><span class="nav-dot">3</span></button>
+      <a href="#deploy" class="btn btn-primary" style="font-size:14px;padding:10px 20px">Sign in</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow-dark"><span class="dot"></span>Model marketplace · serverless &amp; dedicated</span>
+      <h1>Build what's next on the AI Native Cloud.</h1>
+      <p class="lede">Deploy open and custom models on dedicated GPU clusters or serverless endpoints — one API, transparent per-token pricing.</p>
+      <div class="hero-cta">
+        <a href="#grid" class="btn btn-mint">Browse models</a>
+        <a href="#deploy" class="btn btn-white">Start building</a>
+      </div>
+    </div>
+    <div class="ribbon" aria-hidden="true">
+      <div class="band"></div>
+      <div class="loop1"></div>
+      <div class="loop2"></div>
+      <div class="code">
+        <em>POST</em> /v1/chat/completions <span class="c"># serverless</span><br>
+        model: <em>"deepseek-ai/DeepSeek-V3"</em><br>
+        <span class="c"># $1.25 / M input · $2.25 / M output</span><br>
+        tokens_s: <em>198</em> <span class="c">// p50 latency</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORY STRIP ============ -->
+<div style="border-bottom:1px solid var(--hairline)">
+  <div class="wrap" style="display:flex;gap:8px;padding:16px 32px;align-items:center;overflow-x:auto">
+    <button class="btn btn-primary" style="font-size:14px;padding:8px 16px">All models</button>
+    <button class="btn btn-outline">Chat</button>
+    <button class="btn btn-outline">Vision</button>
+    <button class="btn btn-outline">Image</button>
+    <button class="btn btn-outline">Audio</button>
+    <button class="btn btn-outline">Embeddings</button>
+    <span class="eyebrow" style="margin-left:auto;white-space:nowrap">217 models · updated daily</span>
+  </div>
+</div>
+<main class="wrap">
+
+  <!-- ============ MODEL GRID ============ -->
+  <section class="section" id="grid" style="padding-bottom:56px">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Serverless inference</p>
+        <h2>This week's most-deployed</h2>
+        <p>Serve any model with one OpenAI-compatible endpoint. Rates below are live from the pricing sheet.</p>
+      </div>
+      <a href="#" class="btn btn-outline">View all 217 models</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-a">DS</span><span class="badge badge-hot">Hot</span></div>
+        <h3>DeepSeek V3</h3>
+        <p class="desc">Frontier MoE reasoning at open-model pricing. 128k context.</p>
+        <div class="specs"><span class="spec">128k ctx</span><span class="spec">FP8</span><span class="spec">Function calls</span></div>
+        <div class="card-meta"><span class="price">$1.25<small>per M input</small></span><span class="rating"><b>4.9</b> · 2.1k deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-b">LL</span><span class="badge">Open</span></div>
+        <h3>Llama 3.3 70B</h3>
+        <p class="desc">The default general assistant. Balanced cost and quality.</p>
+        <div class="specs"><span class="spec">128k ctx</span><span class="spec">Chat</span><span class="spec">JSON mode</span></div>
+        <div class="card-meta"><span class="price">$0.88<small>per M input</small></span><span class="rating"><b>4.8</b> · 5.4k deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-c">FL</span><span class="badge badge-mint">New</span></div>
+        <h3>FLUX.1 [schnell]</h3>
+        <p class="desc">4-step image generation, sharp prompt adherence.</p>
+        <div class="specs"><span class="spec">1024²</span><span class="spec">4-step</span><span class="spec">Commercial</span></div>
+        <div class="card-meta"><span class="price">$0.003<small>per image</small></span><span class="rating"><b>4.9</b> · 8.8k deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-a">QW</span><span class="badge">Open</span></div>
+        <h3>Qwen 2.5 72B</h3>
+        <p class="desc">Strong multilingual chat and structured extraction.</p>
+        <div class="specs"><span class="spec">128k ctx</span><span class="spec">29 langs</span></div>
+        <div class="card-meta"><span class="price">$1.20<small>per M input</small></span><span class="rating"><b>4.7</b> · 1.9k deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-b">MX</span><span class="badge">Fast</span></div>
+        <h3>Mixtral 8x22B</h3>
+        <p class="desc">Sparse MoE with best-in-class throughput per dollar.</p>
+        <div class="specs"><span class="spec">64k ctx</span><span class="spec">MoE</span></div>
+        <div class="card-meta"><span class="price">$0.90<small>per M input</small></span><span class="rating"><b>4.6</b> · 1.2k deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-c">EM</span><span class="badge badge-mint">New</span></div>
+        <h3>M2-BERT Embeddings</h3>
+        <p class="desc">Retrieval embeddings tuned for RAG pipelines.</p>
+        <div class="specs"><span class="spec">8k ctx</span><span class="spec">768-dim</span></div>
+        <div class="card-meta"><span class="price">$0.02<small>per M tokens</small></span><span class="rating"><b>4.8</b> · 3.3k deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-a">VS</span><span class="badge">Vision</span></div>
+        <h3>Llama 3.2 Vision 11B</h3>
+        <p class="desc">Image understanding, OCR, and chart parsing.</p>
+        <div class="specs"><span class="spec">128k ctx</span><span class="spec">Img in</span></div>
+        <div class="card-meta"><span class="price">$0.32<small>per M input</small></span><span class="rating"><b>4.7</b> · 980 deploys</span></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="chip-icon ci-b">DB</span><span class="badge">Audio</span></div>
+        <h3>DeepDistil Whisper</h3>
+        <p class="desc">Streaming transcription across 58 languages.</p>
+        <div class="specs"><span class="spec">Realtime</span><span class="spec">58 langs</span></div>
+        <div class="card-meta"><span class="price">$0.10<small>per audio hour</small></span><span class="rating"><b>4.8</b> · 1.6k deploys</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED MODEL DETAIL ============ -->
+  <section class="section" id="featured" style="background:var(--canvas-dark);color:var(--on-dark);border-radius:var(--r-sm);padding:48px;margin-bottom:64px">
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:48px">
+      <div>
+        <div style="border:1px solid rgba(255,255,255,.12);border-radius:var(--r-sm);background:radial-gradient(80% 100% at 70% 10%,rgba(189,187,255,.28) 0%,rgba(1,1,32,0) 60%),var(--surface-dark-soft);padding:32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05px;line-height:1.9">
+          <p><span style="color:#8a8aa8">// endpoint</span></p>
+          <p style="color:var(--accent-mint)">POST https://api.together.xyz/v1/chat/completions</p>
+          <p style="margin-top:12px;color:#c5c5da">{</p>
+          <p style="padding-left:16px">"model": <span style="color:var(--accent-periwinkle)">"deepseek-ai/DeepSeek-V3"</span>,</p>
+          <p style="padding-left:16px">"messages": [{ "role": <span style="color:var(--accent-periwinkle)">"user"</span>,</p>
+          <p style="padding-left:34px">"content": <span style="color:var(--accent-periwinkle)">"Draft the Q3 recap"</span> }],</p>
+          <p style="padding-left:16px">"max_tokens": 2048</p>
+          <p>}</p>
+          <p style="margin-top:12px;color:#8a8aa8"># 200 OK · 198 tok/s · $0.0041</p>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button style="flex:1;height:60px;border-radius:var(--r-sm);border:1px solid var(--accent-mint);background:radial-gradient(80% 100% at 70% 10%,rgba(189,187,255,.28),var(--surface-dark-soft))"></button>
+          <button style="flex:1;height:60px;border-radius:var(--r-sm);border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,#fc4c02,#ef2cc1)"></button>
+          <button style="flex:1;height:60px;border-radius:var(--r-sm);border:1px solid rgba(255,255,255,.12);background:var(--surface-dark-soft-2);color:#8a8aa8;font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase">+3 more</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <p class="eyebrow" style="color:#8a8aa8">Featured · Model of the month</p>
+          <h2 style="font-size:28px;font-weight:500;line-height:1.15;letter-spacing:-.42px;margin-top:10px">DeepSeek V3 on a dedicated endpoint</h2>
+          <p style="color:#b9b9cc;margin-top:8px;font-size:16px">Reserve an 8×H100 deployment with autoscaling, private networking, and SOC 2-ready logs. Includes LoRA fine-tuning credits.</p>
+        </div>
+        <div style="display:flex;gap:24px;font-family:'JetBrains Mono';font-size:11px;letter-spacing:.05px;text-transform:uppercase;color:#8a8aa8">
+          <span><b style="display:block;font-size:22px;color:var(--on-dark);letter-spacing:-.22px;text-transform:none">198 t/s</b>p50 throughput</span>
+          <span><b style="display:block;font-size:22px;color:var(--on-dark);letter-spacing:-.22px;text-transform:none">99.99%</b>uptime SLA</span>
+          <span><b style="display:block;font-size:22px;color:var(--on-dark);letter-spacing:-.22px;text-transform:none">128k</b>context</span>
+        </div>
+        <div>
+          <p class="eyebrow" style="color:#8a8aa8;margin-bottom:8px">Deployment mode</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-mint" style="font-size:12px;padding:8px 14px">Dedicated · $2.49/hr</button>
+            <button class="btn btn-ghost-dark" style="font-size:12px;padding:8px 14px">Serverless · $1.25/M</button>
+            <button class="btn btn-ghost-dark" style="font-size:12px;padding:8px 14px">Fine-tuned</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;border:1px solid rgba(255,255,255,.12);border-radius:var(--r-sm)">
+            <button style="padding:10px 14px;font-size:16px;font-weight:500;color:var(--on-dark)">−</button>
+            <span style="padding:0 8px;font-family:'JetBrains Mono';font-weight:500">8</span>
+            <button style="padding:10px 14px;font-size:16px;font-weight:500;color:var(--on-dark)">+</button>
+          </div>
+          <span style="font-size:14px;color:#8a8aa8">H100 GPUs · minimum 8</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-mint" id="deploy">Add to deployment — $19.92/hr</button>
+          <button class="btn btn-ghost-dark">Run in playground</button>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.12);padding-top:16px">
+          <p style="font-size:16px;line-height:1.5;color:#e3e3ee">"We moved 40M daily requests off our legacy stack in a weekend. Latency dropped 38% and the invoice got simpler."</p>
+          <p class="eyebrow" style="margin-top:8px;color:#8a8aa8">Priya Raman · Head of Platform, Lumen Retail</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEPLOYMENT SUMMARY ============ -->
+  <section class="section" style="padding-top:0;padding-bottom:56px">
+    <div class="section-head"><div><p class="eyebrow">Your account</p><h2>Deployment summary</h2></div></div>
+    <div style="max-width:480px;margin-left:auto;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);padding:32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <strong style="font-size:22px;font-weight:500;letter-spacing:-.22px">Monthly estimate</strong>
+        <span class="badge">3 line items</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;border-bottom:1px solid var(--hairline);padding-bottom:20px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-sm);background:linear-gradient(135deg,var(--accent-orange),var(--accent-magenta));flex:none;display:grid;place-items:center;color:#fff;font-family:'JetBrains Mono';font-size:11px">DS</span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:500">DeepSeek V3 — dedicated</strong><br><span class="eyebrow">8× H100 · $19.92/hr · 720 hrs</span></div>
+          <strong style="font-size:14px;font-weight:500">$14,342.40</strong>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-sm);background:var(--accent-mint);flex:none;display:grid;place-items:center;font-family:'JetBrains Mono';font-size:11px">LL</span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:500">Llama 3.3 70B — serverless</strong><br><span class="eyebrow">18.4M tokens</span></div>
+          <strong style="font-size:14px;font-weight:500">$27.60</strong>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-sm);background:var(--accent-periwinkle);flex:none;display:grid;place-items:center;font-family:'JetBrains Mono';font-size:11px">EM</span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:500">M2-BERT embeddings</strong><br><span class="eyebrow">410M tokens</span></div>
+          <strong style="font-size:14px;font-weight:500">$8.20</strong>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:20px 0;border-bottom:1px solid var(--hairline);font-size:14px;color:var(--body)">
+        <div style="display:flex;justify-content:space-between"><span>Committed-use discount (−18%)</span><span style="color:var(--ink);font-weight:500">−$2,588.24</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Fine-tuning credits</span><span style="color:var(--ink);font-weight:500">$120.00</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 0 24px">
+        <span style="font-size:16px;font-weight:500">Estimated total</span>
+        <span style="font-size:28px;font-weight:500;letter-spacing:-.42px">$11,909.96<span style="font-size:14px;color:var(--body)">/mo</span></span>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center">Confirm deployment</button>
+      <p class="eyebrow" style="text-align:center;margin-top:12px">Usage billed per second · cancel anytime</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap" style="padding:48px 32px 0">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <a class="logo" href="#" style="color:var(--ink)"><span class="logo-mark"></span>together.ai</a>
+        <p style="font-size:14px;color:var(--body);margin-top:12px;max-width:300px;line-height:1.4">The AI native cloud. Inference, fine-tuning, and dedicated GPU clusters for teams shipping frontier work.</p>
+        <div style="display:flex;gap:8px;margin-top:20px;max-width:340px">
+          <input type="email" placeholder="you@company.com" style="flex:1;border:1px solid var(--hairline);border-radius:var(--r-sm);padding:10px 12px;font-family:inherit;font-size:14px;outline:none;color:var(--ink)">
+          <button class="btn btn-primary" style="font-size:12px;padding:8px 16px">Subscribe</button>
+        </div>
+      </div>
+      <div><p class="eyebrow" style="margin-bottom:14px">Products</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><a href="#">Serverless inference</a><a href="#">Dedicated endpoints</a><a href="#">GPU clusters</a><a href="#">Fine-tuning</a></div></div>
+      <div><p class="eyebrow" style="margin-bottom:14px">Resources</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><a href="#">Docs</a><a href="#">Model library</a><a href="#">Cookbook</a><a href="#">Status</a></div></div>
+      <div><p class="eyebrow" style="margin-bottom:14px">Company</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><a href="#">Research</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Trust center</a></div></div>
+    </div>
+  </div>
+  <!-- wordmark banner -->
+  <div style="overflow:hidden;margin-top:48px">
+    <p aria-hidden="true" style="font-size:clamp(80px,13.5vw,172px);font-weight:500;line-height:.95;letter-spacing:-1.92px;color:var(--hairline);white-space:nowrap;text-align:center;user-select:none">together.ai</p>
+  </div>
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;padding:16px 32px 24px;font-size:14px;color:var(--body)">
+    <span>© 2026 Together AI, Inc.</span>
+    <div style="display:flex;gap:16px">
+      <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.3 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.5l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.4 3.9H5.5L17.8 20Z"/></svg></a>
+      <a href="#" aria-label="GitHub"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .4.2.7.8.6A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

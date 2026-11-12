@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>挑选 · Design Hub</title>
+<style>
+  :root { --bg:#0d0e12; --panel:#15171e; --line:#262a35; --text:#e8eaf0; --muted:#8a90a0; --accent:#6c7bff; --accent-2:#9d6cff;
+    --like:#3fb96b; --maybe:#e0a63c; --dislike:#e05c5c; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; }
+  body { background:var(--bg); color:var(--text); font-family:"Segoe UI",system-ui,-apple-system,sans-serif; display:flex; flex-direction:column; overflow:hidden; }
+  a { color:inherit; text-decoration:none; }
+  button { font-family:inherit; }
+
+  .bar { display:flex; align-items:center; gap:12px; padding:9px 16px; border-bottom:1px solid var(--line); background:var(--panel); }
+  .bar .logo { font-size:13px; font-weight:700;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .bar .name { font-size:14px; font-weight:700; }
+  .bar .name small { color:var(--muted); font-weight:400; font-family:ui-monospace,monospace; margin-left:7px; font-size:10.5px; }
+  .tabs { display:flex; gap:4px; background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:3px; }
+  .tabs button { font-size:12px; padding:5px 14px; border-radius:7px; border:none; background:none; color:var(--muted); cursor:pointer; }
+  .tabs button.on { background:var(--accent); color:#fff; }
+  .tabs button kbd { font-size:9px; opacity:.7; margin-left:4px; }
+  .bar .spacer { flex:1; }
+  .bar .prog { font-size:11px; color:var(--muted); font-family:ui-monospace,monospace; }
+  .bar a.src, .bar button { font-size:11.5px; color:var(--muted); background:var(--bg); border:1px solid var(--line);
+    border-radius:8px; padding:5px 11px; cursor:pointer; }
+  .bar a.src:hover, .bar button:hover { color:var(--text); border-color:#3a4155; }
+
+  .stage { flex:1; background:#fff; position:relative; }
+  .stage iframe { width:100%; height:100%; border:0; display:block; }
+  .marks { position:absolute; top:10px; left:10px; z-index:10; display:flex; gap:6px; }
+  .marks span { display:none; font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; background:rgba(13,14,18,.85); border:1px solid var(--line); backdrop-filter:blur(6px); }
+  .marks[data-m="like"] .mk-like { display:inline-block; color:var(--like); border-color:var(--like); }
+  .marks[data-m="maybe"] .mk-maybe { display:inline-block; color:var(--maybe); border-color:var(--maybe); }
+  .marks[data-m="dislike"] .mk-dislike { display:inline-block; color:var(--dislike); border-color:var(--dislike); }
+
+  .dock { display:flex; align-items:center; justify-content:center; gap:10px; padding:10px; border-top:1px solid var(--line); background:var(--panel); }
+  .dock .rate { font-size:13px; font-weight:700; padding:10px 22px; border-radius:11px; cursor:pointer;
+    border:1px solid var(--line); background:var(--bg); color:var(--text); }
+  .dock .rate kbd { font-size:10px; font-weight:400; color:var(--muted); display:block; margin-top:2px; }
+  .dock .rate.like:hover, .dock .rate.like.set { border-color:var(--like); color:var(--like); }
+  .dock .rate.maybe:hover, .dock .rate.maybe.set { border-color:var(--maybe); color:var(--maybe); }
+  .dock .rate.dislike:hover, .dock .rate.dislike.set { border-color:var(--dislike); color:var(--dislike); }
+  .dock .next { font-size:13px; font-weight:700; padding:10px 26px; border-radius:11px; cursor:pointer; border:none;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff; }
+  .dock .next kbd { font-size:10px; font-weight:400; opacity:.8; display:block; margin-top:2px; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <span class="logo">✦ 挑选</span>
+  <span class="name" id="nm">—<small></small></span>
+  <div class="tabs" id="tabs">
+    <button data-p="design" class="on">设计方案<kbd>←→</kbd></button>
+    <button data-p="front">前台模板</button>
+    <button data-p="admin">后台管理</button>
+  </div>
+  <div class="spacer"></div>
+  <span class="prog" id="prog">0 / 74 已评</span>
+  <a class="src" href="index.html">返回 Hub</a>
+  <a class="src" id="openNew" href="#" target="_blank">新标签 ↗</a>
+</div>
+
+<div class="stage">
+  <iframe id="frame" title="preview"></iframe>
+  <div class="marks" id="marks" data-m="">
+    <span class="mk-like">❤ 喜欢</span>
+    <span class="mk-maybe">⏳ 待选</span>
+    <span class="mk-dislike">✗ 不喜欢</span>
+  </div>
+</div>
+
+<div class="dock">
+  <button class="rate like" data-r="like">❤ 喜欢<kbd>↑</kbd></button>
+  <button class="rate maybe" data-r="maybe">⏳ 待选<kbd>&lt;</kbd></button>
+  <button class="rate dislike" data-r="dislike">✗ 不喜欢<kbd>&gt;</kbd></button>
+  <button class="next" id="nextBtn">下一个风格<kbd>↓</kbd></button>
+</div>
+
+<script>
+const STYLES = ["airbnb","airtable","apple","binance","bmw-m","bmw","bugatti","cal","claude","clay","clickhouse","cohere","coinbase","composio","cursor","dell-1996","elevenlabs","expo","ferrari","figma","framer","hashicorp","hp","ibm","intercom","kraken","lamborghini","linear.app","lovable","mastercard","meta","minimax","mintlify","miro","mistral.ai","mongodb","nike","nintendo-2001","notion","nvidia","ollama","opencode.ai","pinterest","playstation","posthog","raycast","renault","replicate","resend","revolut","runwayml","sanity","sentry","shopify","slack","spacex","spotify","starbucks","stripe","supabase","superhuman","tesla","theverge","together.ai","uber","vercel","vodafone","voltagent","warp","webflow","wired","wise","x.ai","zapier"];
+const BRANDS = { "bmw":"BMW","bmw-m":"BMW M","x.ai":"xAI","linear.app":"Linear","mistral.ai":"Mistral AI","opencode.ai":"OpenCode","together.ai":"Together AI","dell-1996":"Dell 1996","nintendo-2001":"Nintendo 2001","theverge":"The Verge" };
+const brandOf = s => BRANDS[s] || s.replace(/\b\w/g,c=>c.toUpperCase());
+const PAGES = ["design","front","admin"];
+const PAGE_URL = { design:s=>`showcase/${s}/index.html`, front:s=>`templates/${s}/front.html`, admin:s=>`templates/${s}/admin.html` };
+
+const PICK_KEY = "designhub_picks_v1";
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(PICK_KEY) || "{}"); } catch(e) { picks = {}; }
+const savePicks = () => localStorage.setItem(PICK_KEY, JSON.stringify(picks));
+const markOf = s => picks[s] || null;
+
+let cur = 0, page = "design";
+const frame = document.getElementById('frame');
+
+function render() {
+  const s = STYLES[cur];
+  document.getElementById('nm').innerHTML = `${brandOf(s)}<small>${s}</small>`;
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.p === page));
+  frame.src = PAGE_URL[page](s);
+  document.getElementById('openNew').href = PAGE_URL[page](s);
+  const m = markOf(s);
+  document.getElementById('marks').dataset.m = m || "";
+  document.querySelectorAll('.dock .rate').forEach(b => b.classList.toggle('set', b.dataset.r === m));
+  const done = STYLES.filter(x => markOf(x)).length;
+  document.getElementById('prog').textContent = `${done} / ${STYLES.length} 已评`;
+  history.replaceState(null,'','#'+s+'/'+page);
+}
+function nextStyle(preferUnrated) {
+  if (preferUnrated) {
+    for (let k = 1; k <= STYLES.length; k++) { const i = (cur + k) % STYLES.length; if (!markOf(STYLES[i])) { cur = i; render(); return; } }
+  }
+  cur = (cur + 1) % STYLES.length; render();
+}
+function rate(r) {
+  const s = STYLES[cur];
+  picks[s] = (picks[s] === r) ? undefined : r;
+  if (!picks[s]) delete picks[s];
+  savePicks(); render();
+  if (picks[s]) nextStyle(true);          // 打标后自动跳到下一个未评
+}
+function setPage(d) { page = PAGES[(PAGES.indexOf(page) + d + PAGES.length) % PAGES.length]; render(); }
+
+document.getElementById('tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { page = b.dataset.p; render(); } });
+document.querySelectorAll('.dock .rate').forEach(b => b.addEventListener('click', () => rate(b.dataset.r)));
+document.getElementById('nextBtn').addEventListener('click', () => nextStyle(false));
+
+document.addEventListener('keydown', e => {
+  switch (e.key) {
+    case 'ArrowLeft':  setPage(-1); break;
+    case 'ArrowRight': setPage(1);  break;
+    case 'ArrowDown':  nextStyle(false); break;
+    case 'ArrowUp':    e.preventDefault(); rate('like'); break;
+    case '<': case ',': rate('maybe'); break;
+    case '>': case '.': rate('dislike'); break;
+  }
+});
+
+// deep link #style/page
+if (location.hash.length > 1) {
+  const [s, p] = location.hash.slice(1).split('/');
+  const i = STYLES.indexOf(s);
+  if (i >= 0) cur = i;
+  if (PAGES.includes(p)) page = p;
+}
+render();
+</script>
+</body>
+</html>

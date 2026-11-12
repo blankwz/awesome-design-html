@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framer — Design System Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mona+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --primary:#ffffff; --on-primary:#000000;
+  --accent-blue:#0099ff;
+  --ink:#ffffff; --ink-muted:#999999;
+  --canvas:#090909; --surface-1:#141414; --surface-2:#1c1c1c;
+  --hairline:#262626; --hairline-soft:#1a1a1a;
+  --inverse-canvas:#ffffff; --inverse-ink:#000000;
+  --gradient-magenta:#d44df0; --gradient-violet:#6a4cf5;
+  --gradient-orange:#ff7a3d; --gradient-coral:#ff5577;
+  --semantic-success:#22c55e;
+
+  --font:'Mona Sans','Inter',system-ui,-apple-system,sans-serif;
+
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:15px; --r-xl:20px; --r-xxl:30px; --r-pill:100px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:15px;
+  --sp-lg:20px; --sp-xl:30px; --sp-xxl:40px; --sp-section:96px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--canvas);color:var(--ink);
+  font-size:15px;line-height:1.30;letter-spacing:-0.15px;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"cv01","cv05","cv09","cv11","ss03";
+}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+
+/* type scale */
+.t-display-xxl{font-size:110px;font-weight:500;line-height:0.85;letter-spacing:-5.5px}
+.t-display-xl{font-size:85px;font-weight:500;line-height:0.95;letter-spacing:-4.25px}
+.t-display-lg{font-size:62px;font-weight:500;line-height:1.00;letter-spacing:-3.1px}
+.t-display-md{font-size:32px;font-weight:500;line-height:1.13;letter-spacing:-1.0px}
+.t-headline{font-size:22px;font-weight:700;line-height:1.20;letter-spacing:-0.8px}
+.t-subhead{font-size:24px;font-weight:400;line-height:1.30;letter-spacing:-0.01px}
+.t-body-lg{font-size:18px;font-weight:400;line-height:1.30;letter-spacing:-0.18px}
+.t-body{font-size:15px;font-weight:400;line-height:1.30;letter-spacing:-0.15px}
+.t-body-sm{font-size:14px;font-weight:500;line-height:1.40;letter-spacing:-0.14px}
+.t-caption{font-size:13px;font-weight:500;line-height:1.20;letter-spacing:-0.13px}
+.t-micro{font-size:12px;font-weight:400;line-height:1.20;letter-spacing:-0.12px}
+.t-button{font-size:14px;font-weight:500;line-height:1.0;letter-spacing:-0.14px}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--sp-xl)}
+
+/* ============ BANNER ============ */
+.sg-banner{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:var(--sp-sm) var(--sp-xl);
+  background:var(--canvas);border-bottom:1px solid var(--hairline);
+  position:sticky;top:0;z-index:50;
+}
+.sg-id{display:flex;align-items:baseline;gap:var(--sp-md)}
+.sg-folder{font-size:12px;letter-spacing:-0.12px;color:var(--ink-muted);font-weight:400}
+.sg-brand{font-size:16px;font-weight:500;letter-spacing:-0.32px;color:var(--ink)}
+.sg-desc{font-size:13px;letter-spacing:-0.13px;color:var(--ink-muted);font-weight:400}
+
+/* section labels */
+.sg-section{padding:var(--sp-section) 0 0}
+.sg-section-label{display:flex;align-items:center;gap:var(--sp-lg);margin-bottom:var(--sp-xxl)}
+.sg-section-label .line{flex:1;height:1px;background:var(--hairline)}
+.sg-section-label .txt{font-size:13px;letter-spacing:-0.13px;color:var(--ink);font-weight:500}
+.sg-block{margin-bottom:var(--sp-section)}
+.sg-block-label{font-size:13px;letter-spacing:-0.13px;color:var(--ink-muted);font-weight:500;margin-bottom:var(--sp-lg)}
+
+/* ============ 1. COLORS ============ */
+.swatch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.swatch{border-radius:var(--r-md);overflow:hidden;background:var(--surface-1)}
+.swatch .chip{height:80px}
+.swatch .meta{padding:var(--sp-sm);font-size:12px;letter-spacing:-0.12px;color:var(--ink-muted)}
+.swatch .meta b{display:block;color:var(--ink);font-weight:500;margin-bottom:2px}
+
+/* ============ 2. TYPE ============ */
+.specimen .row{display:flex;align-items:baseline;gap:var(--sp-xl);padding:var(--sp-lg) 0;border-bottom:1px solid var(--hairline-soft)}
+.specimen .tag{font-size:13px;color:var(--ink-muted);width:220px;flex-shrink:0;font-weight:500}
+.specimen .val{color:var(--ink)}
+
+/* ============ 3. BUTTONS ============ */
+.btn-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  height:40px;padding:0 var(--sp-md);
+  font-family:var(--font);font-size:14px;font-weight:500;letter-spacing:-0.14px;
+  border-radius:var(--r-pill);border:none;cursor:pointer;
+  transition:transform .15s ease,background .15s ease;
+}
+.btn:hover{transform:scale(1.04)}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-secondary{background:var(--surface-1);color:var(--ink)}
+.btn-secondary:hover{background:var(--surface-2)}
+.btn-translucent{background:var(--surface-2);color:var(--ink);border-radius:var(--r-xxl);padding:0 14px}
+.btn-icon{width:40px;height:40px;padding:0;background:var(--surface-1);border-radius:var(--r-full);font-size:16px}
+.btn-disabled{background:var(--surface-1);color:var(--ink-muted);transform:none;cursor:not-allowed}
+.btn-sm{height:32px;padding:0 12px;font-size:13px}
+.btn-lg{height:48px;padding:0 var(--sp-lg);font-size:15px}
+
+/* pricing tabs */
+.tab-row{display:inline-flex;gap:4px;padding:4px;background:var(--surface-1);border-radius:var(--r-pill)}
+.tab{border:none;cursor:pointer;background:transparent;color:var(--ink-muted);
+  font-family:var(--font);font-size:14px;font-weight:500;letter-spacing:-0.14px;
+  padding:8px 14px;border-radius:var(--r-pill);transition:background .15s,color .15s}
+.tab:hover{color:var(--ink)}
+.tab.on{background:var(--surface-2);color:var(--ink)}
+
+/* ============ 4. INPUTS ============ */
+.input-row{display:flex;flex-wrap:wrap;gap:var(--sp-lg);align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:var(--sp-xxs)}
+.field label{font-size:13px;color:var(--ink-muted);font-weight:500;letter-spacing:-0.13px}
+.ti{
+  height:44px;width:250px;
+  background:var(--surface-1);color:var(--ink);
+  font-family:var(--font);font-size:15px;letter-spacing:-0.15px;
+  border:1px solid var(--hairline);border-radius:var(--r-md);
+  padding:0 14px;outline:none;
+  transition:box-shadow .15s;
+}
+.ti::placeholder{color:var(--ink-muted)}
+.ti:focus{box-shadow:0 0 0 1px rgba(0,153,255,0.35);border-color:rgba(0,153,255,0.5)}
+select.ti{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23999999' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.ti.disabled{color:var(--ink-muted);cursor:not-allowed;opacity:.6}
+.switch{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;background:var(--surface-2);border-radius:var(--r-full);transition:background .2s}
+.switch .track::before{content:"";position:absolute;width:20px;height:20px;background:var(--ink-muted);border-radius:var(--r-full);top:3px;left:3px;transition:transform .2s,background .2s}
+.switch input:checked + .track{background:var(--accent-blue)}
+.switch input:checked + .track::before{transform:translateX(18px);background:#fff}
+.checkbox{width:18px;height:18px;border:1px solid var(--hairline);border-radius:var(--r-sm);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--surface-1)}
+.checkbox.on{background:var(--accent-blue);border-color:var(--accent-blue)}
+.check-row{display:flex;align-items:center;gap:var(--sp-xxs)}
+.check-row .lbl{font-size:14px;font-weight:500;letter-spacing:-0.14px}
+
+/* ============ 5. CARDS ============ */
+.card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-md)}
+.pricing-card{background:var(--surface-1);border-radius:var(--r-xl);padding:var(--sp-lg)}
+.pricing-card.featured{background:var(--surface-2)}
+.pricing-card h4{font-size:22px;font-weight:700;letter-spacing:-0.8px}
+.pricing-card .sub{font-size:15px;color:var(--ink-muted);margin-top:4px}
+.pricing-card .price{font-size:32px;font-weight:500;letter-spacing:-1.0px;margin:var(--sp-md) 0 var(--sp-sm)}
+.pricing-card .price span{font-size:14px;font-weight:400;color:var(--ink-muted);letter-spacing:-0.14px}
+.pricing-card ul{list-style:none;margin:0 0 var(--sp-lg)}
+.pricing-card li{font-size:14px;font-weight:400;padding:4px 0;display:flex;gap:8px;align-items:center;color:var(--ink)}
+.pricing-card li svg{flex-shrink:0}
+.stat-card{background:var(--surface-1);border-radius:var(--r-xl);padding:var(--sp-lg)}
+.stat-card .big{font-size:56px;font-weight:500;letter-spacing:-2.8px;line-height:0.9}
+.stat-card .lbl{font-size:13px;color:var(--ink-muted);margin-top:var(--sp-xs);font-weight:500}
+.mockup-tile{background:var(--surface-1);border-radius:var(--r-xl);padding:var(--sp-md);grid-column:1/-1;display:flex;gap:var(--sp-md)}
+.browser{flex:1;background:var(--surface-2);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--hairline)}
+.browser .bar{height:28px;display:flex;align-items:center;gap:6px;padding:0 10px;border-bottom:1px solid var(--hairline)}
+.browser .bar i{width:8px;height:8px;border-radius:var(--r-full);background:var(--hairline);display:block}
+.browser .view{height:110px;background:linear-gradient(135deg,#1c1c1c,#0d0d0d)}
+
+/* ============ 6. BADGES ============ */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-full);font-size:13px;font-weight:500;letter-spacing:-0.13px;background:var(--surface-1);color:var(--ink)}
+.badge-blue{color:var(--accent-blue)}
+.badge-success{color:var(--semantic-success)}
+.badge-muted{color:var(--ink-muted)}
+.badge-white{background:#fff;color:#000}
+
+/* ============ 7. NAV ============ */
+.nav-demo{border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden}
+.nav-top{display:flex;align-items:center;gap:var(--sp-xl);height:56px;padding:0 var(--sp-lg);background:var(--canvas)}
+.nav-top .logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--ink)}
+.nav-top .links{display:flex;gap:var(--sp-xs);flex:1;justify-content:center}
+.nav-top .links a{font-size:14px;font-weight:500;letter-spacing:-0.14px;color:var(--ink-muted);padding:6px 10px;border-radius:var(--r-pill);transition:color .15s}
+.nav-top .links a:hover{color:var(--ink)}
+.nav-top .links a.active{color:var(--ink)}
+.nav-top .cta{display:flex;gap:var(--sp-xxs);align-items:center}
+
+/* ============ 8. TABLE ============ */
+.cmp{width:100%;border-collapse:collapse}
+.cmp td,.cmp th{padding:var(--sp-md) var(--sp-sm);border-bottom:1px solid var(--hairline-soft);text-align:left;font-size:14px;font-weight:500;letter-spacing:-0.14px}
+.cmp th{color:var(--ink);font-weight:500}
+.cmp .feat{color:var(--ink-muted);font-weight:400}
+.cmp .ok{color:var(--semantic-success)}
+.cmp .no{color:var(--ink-muted);opacity:.5}
+
+/* gradient spotlights (component showcase) */
+.spot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-md)}
+.spot{border-radius:var(--r-xxl);padding:var(--sp-xl);min-height:220px;display:flex;flex-direction:column;justify-content:space-between}
+.spot h4{font-size:24px;font-weight:400;letter-spacing:-0.01px;line-height:1.2;color:#fff}
+.spot .tag{font-size:13px;font-weight:500;color:rgba(255,255,255,0.75)}
+.spot-violet{background:linear-gradient(150deg,#8b5cf6 0%,#6a4cf5 55%,#4c33c9 100%)}
+.spot-magenta{background:linear-gradient(150deg,#e879f9 0%,#d44df0 55%,#a32ec2 100%)}
+.spot-orange{background:linear-gradient(150deg,#ffb26b 0%,#ff7a3d 55%,#e05a1f 100%)}
+
+/* ============ PRODUCT ============ */
+.p-hero{padding:var(--sp-xxl) 0 var(--sp-xl);text-align:left}
+.p-hero h1{font-size:110px;font-weight:500;line-height:0.85;letter-spacing:-5.5px;max-width:980px}
+.p-hero .grad{background:linear-gradient(90deg,#6a4cf5,#d44df0,#ff7a3d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p-hero p{font-size:18px;font-weight:400;line-height:1.30;letter-spacing:-0.18px;color:var(--ink-muted);max-width:520px;margin-top:var(--sp-lg)}
+.p-hero .cta{display:flex;gap:var(--sp-sm);margin-top:var(--sp-xl)}
+.p-hero .note{font-size:13px;color:var(--ink-muted);margin-top:var(--sp-md)}
+
+.spotlight-band{margin:var(--sp-section) 0}
+.spotlight-band .row{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-md)}
+.spotlight-band .row2{display:grid;grid-template-columns:1fr 2fr;gap:var(--sp-md);margin-top:var(--sp-md)}
+.spot-wide{border-radius:var(--r-xxl);padding:var(--sp-xl);min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;
+  background:
+    radial-gradient(ellipse 90% 80% at 80% 0%,rgba(255,255,255,0.25),transparent 55%),
+    linear-gradient(140deg,#8b5cf6 0%,#6a4cf5 45%,#3b2b9e 100%)}
+.spot-wide h3{font-size:32px;font-weight:500;letter-spacing:-1.0px;line-height:1.13;color:#fff;max-width:480px}
+.spot-wide p{font-size:15px;color:rgba(255,255,255,0.8);margin-top:var(--sp-sm);max-width:420px}
+.spot-tall{border-radius:var(--r-xxl);padding:var(--sp-xl);display:flex;flex-direction:column;justify-content:flex-end;
+  background:
+    radial-gradient(ellipse 90% 90% at 20% 0%,rgba(255,255,255,0.3),transparent 60%),
+    linear-gradient(160deg,#ff9a5c 0%,#ff7a3d 50%,#e0490f 100%)}
+.spot-tall h3{font-size:32px;font-weight:500;letter-spacing:-1.0px;color:#fff}
+.spot-tall p{font-size:15px;color:rgba(255,255,255,0.85);margin-top:var(--sp-sm)}
+
+.feature-band{padding:var(--sp-section) 0;border-top:1px solid var(--hairline-soft)}
+.feature-band h2{font-size:62px;font-weight:500;letter-spacing:-3.1px;line-height:1.0;margin-bottom:var(--sp-sm)}
+.feature-band .lead{font-size:18px;color:var(--ink-muted);max-width:520px;margin-bottom:var(--sp-xl)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-md)}
+.feat{background:var(--surface-1);border-radius:var(--r-xl);padding:var(--sp-lg)}
+.feat .glyph{width:40px;height:40px;border-radius:var(--r-full);background:var(--surface-2);display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-md);font-size:16px}
+.feat h4{font-size:22px;font-weight:700;letter-spacing:-0.8px;margin-bottom:6px}
+.feat p{font-size:15px;color:var(--ink-muted)}
+
+.logos{display:flex;gap:var(--sp-xl);flex-wrap:wrap;align-items:center;padding:var(--sp-lg) 0;border-top:1px solid var(--hairline-soft);border-bottom:1px solid var(--hairline-soft)}
+.logos span{font-size:14px;font-weight:500;letter-spacing:-0.14px;color:var(--ink-muted)}
+
+.pricing{padding:var(--sp-section) 0;border-top:1px solid var(--hairline-soft)}
+.pricing h2{font-size:62px;font-weight:500;letter-spacing:-3.1px;margin-bottom:var(--sp-xl)}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-md)}
+.p-card{background:var(--surface-1);border-radius:var(--r-xl);padding:var(--sp-lg);display:flex;flex-direction:column}
+.p-card.featured{background:var(--surface-2)}
+.p-card h4{font-size:22px;font-weight:700;letter-spacing:-0.8px}
+.p-card .price{font-size:32px;font-weight:500;letter-spacing:-1.0px;margin:var(--sp-md) 0 4px}
+.p-card .per{font-size:13px;color:var(--ink-muted)}
+.p-card ul{list-style:none;margin:var(--sp-lg) 0;flex:1}
+.p-card li{font-size:14px;padding:5px 0;display:flex;gap:8px;align-items:center}
+.p-card .btn{justify-content:center}
+
+.quote{padding:var(--sp-section) 0;border-top:1px solid var(--hairline-soft)}
+.quote blockquote{font-size:32px;font-weight:500;letter-spacing:-1.0px;line-height:1.13;max-width:820px}
+.quote .who{display:flex;align-items:center;gap:var(--sp-sm);margin-top:var(--sp-xl)}
+.quote .ava{width:44px;height:44px;border-radius:var(--r-full);background:linear-gradient(135deg,#d44df0,#6a4cf5)}
+.quote .who b{display:block;font-size:14px;font-weight:500}
+.quote .who span{font-size:13px;color:var(--ink-muted)}
+
+.faq{padding:var(--sp-section) 0;border-top:1px solid var(--hairline-soft)}
+.faq h2{font-size:62px;font-weight:500;letter-spacing:-3.1px;margin-bottom:var(--sp-xl)}
+.faq .item{border-bottom:1px solid var(--hairline-soft);padding:var(--sp-lg) 0;display:flex;justify-content:space-between;align-items:center;gap:var(--sp-md)}
+.faq .item .q{font-size:15px;font-weight:400}
+.faq .item .a{font-size:15px;color:var(--ink-muted);max-width:560px;margin-top:6px}
+.faq .item .plus{font-size:20px;color:var(--ink-muted);flex-shrink:0}
+
+.cta-band{padding:var(--sp-section) 0;text-align:center;
+  background:
+    radial-gradient(ellipse 60% 90% at 50% 115%,rgba(106,76,245,0.35),transparent 70%),
+    var(--canvas)}
+.cta-band h2{font-size:85px;font-weight:500;line-height:0.95;letter-spacing:-4.25px;max-width:800px;margin:0 auto}
+.cta-band h2 .grad{background:linear-gradient(90deg,#6a4cf5,#d44df0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta-band p{font-size:18px;color:var(--ink-muted);margin:var(--sp-lg) 0 var(--sp-xl)}
+.cta-band .cta{display:flex;gap:var(--sp-sm);justify-content:center}
+
+footer.sg-footer{padding:var(--sp-xxl) 0 var(--sp-xl);border-top:1px solid var(--hairline-soft)}
+footer.sg-footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--sp-xl)}
+footer.sg-footer .logo{font-size:24px;font-weight:700;letter-spacing:-0.6px}
+footer.sg-footer h5{font-size:13px;color:var(--ink-muted);font-weight:500;margin-bottom:var(--sp-sm)}
+footer.sg-footer a{display:block;font-size:13px;color:var(--ink-muted);padding:4px 0;transition:color .15s}
+footer.sg-footer a:hover{color:var(--ink)}
+footer.sg-footer .legal{margin-top:var(--sp-xl);padding-top:var(--sp-lg);border-top:1px solid var(--hairline-soft);font-size:12px;color:var(--ink-muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-sm)}
+
+@media (max-width:900px){
+  .swatch-grid,.card-row,.spot-grid,.feat-grid,.p-grid{grid-template-columns:1fr}
+  .spotlight-band .row,.spotlight-band .row2{grid-template-columns:1fr}
+  .p-hero h1{font-size:56px;letter-spacing:-2.8px}
+  .cta-band h2{font-size:44px;letter-spacing:-2.2px}
+  .feature-band h2,.pricing h2,.faq h2{font-size:36px;letter-spacing:-1.8px}
+  footer.sg-footer .cols{grid-template-columns:repeat(2,1fr)}
+  .btn-row,.input-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">framer/</span>
+    <span class="sg-brand">Framer</span>
+  </div>
+  <span class="sg-desc">Black artboard, poster-grade negative tracking, gradient spotlight cards</span>
+</header>
+
+<main>
+
+<!-- ================= COMPONENTS ================= -->
+<section id="components" class="sg-section">
+  <div class="wrap">
+    <div class="sg-section-label"><span class="txt">Components</span><span class="line"></span></div>
+
+    <!-- 1 Colors -->
+    <div class="sg-block">
+      <div class="sg-block-label">01 · Color Tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#090909;border-bottom:1px solid var(--hairline)"></div><div class="meta"><b>Canvas</b>#090909</div></div>
+        <div class="swatch"><div class="chip" style="background:#141414"></div><div class="meta"><b>Surface 1</b>#141414</div></div>
+        <div class="swatch"><div class="chip" style="background:#1c1c1c"></div><div class="meta"><b>Surface 2</b>#1c1c1c</div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="meta"><b>Primary White</b>#ffffff</div></div>
+        <div class="swatch"><div class="chip" style="background:#999999"></div><div class="meta"><b>Ink Muted</b>#999999</div></div>
+        <div class="swatch"><div class="chip" style="background:#0099ff"></div><div class="meta"><b>Accent Blue</b>#0099ff</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#8b5cf6,#6a4cf5)"></div><div class="meta"><b>Gradient Violet</b>#6a4cf5</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#e879f9,#d44df0)"></div><div class="meta"><b>Gradient Magenta</b>#d44df0</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#ffb26b,#ff7a3d)"></div><div class="meta"><b>Gradient Orange</b>#ff7a3d</div></div>
+        <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#ff8ba5,#ff5577)"></div><div class="meta"><b>Gradient Coral</b>#ff5577</div></div>
+        <div class="swatch"><div class="chip" style="background:#22c55e"></div><div class="meta"><b>Success</b>#22c55e</div></div>
+        <div class="swatch"><div class="chip" style="background:#262626"></div><div class="meta"><b>Hairline</b>#262626</div></div>
+      </div>
+    </div>
+
+    <!-- 2 Type -->
+    <div class="sg-block">
+      <div class="sg-block-label">02 · Typography Specimen — GT Walsheim → Mona Sans, Inter with cv-variants</div>
+      <div class="specimen">
+        <div class="row"><span class="tag">display-xxl · 110/500</span><span class="val t-display-xxl">Just publish</span></div>
+        <div class="row"><span class="tag">display-xl · 85/500</span><span class="val t-display-xl">Design &amp; ship</span></div>
+        <div class="row"><span class="tag">display-lg · 62/500</span><span class="val t-display-lg">Start free</span></div>
+        <div class="row"><span class="tag">display-md · 32/500</span><span class="val t-display-md">One canvas, live on the web</span></div>
+        <div class="row"><span class="tag">headline · 22/700</span><span class="val t-headline">Pro — for growing sites</span></div>
+        <div class="row"><span class="tag">subhead · 24/400</span><span class="val t-subhead">The website builder loved by designers</span></div>
+        <div class="row"><span class="tag">body-lg · 18/400</span><span class="val t-body-lg">Publish a production-ready site straight from the canvas.</span></div>
+        <div class="row"><span class="tag">body · 15/400</span><span class="val t-body">Breakpoints, CMS, SEO, and hosting included with every plan.</span></div>
+        <div class="row"><span class="tag">body-sm · 14/500</span><span class="val t-body-sm">Renews annually · Cancel anytime</span></div>
+        <div class="row"><span class="tag">caption · 13/500</span><span class="val t-caption" style="color:var(--ink-muted)">Featured template of the week</span></div>
+        <div class="row"><span class="tag">micro · 12/400</span><span class="val t-micro" style="color:var(--ink-muted)">Prices in USD. Local taxes may apply.</span></div>
+        <div class="row"><span class="tag">hyperlink</span><span class="val t-body" style="color:var(--accent-blue)">Read the changelog →</span></div>
+      </div>
+    </div>
+
+    <!-- 3 Buttons -->
+    <div class="sg-block">
+      <div class="sg-block-label">03 · Buttons — white pill primary, charcoal secondary, blue reserved for links</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started for free</button>
+        <button class="btn btn-secondary">Sign in</button>
+        <button class="btn btn-translucent">Browse gallery</button>
+        <button class="btn btn-primary" style="transform:scale(.96)">Pressed</button>
+        <button class="btn btn-icon" aria-label="carousel">←</button>
+        <button class="btn btn-icon" aria-label="carousel">→</button>
+        <button class="btn btn-disabled">Disabled</button>
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+      <div class="sg-block-label" style="margin-top:var(--sp-xl)">Pricing tabs — selected = surface lift, not color</div>
+      <div class="tab-row">
+        <button class="tab">Basic</button>
+        <button class="tab on">Pro</button>
+        <button class="tab">Business</button>
+        <button class="tab">Enterprise</button>
+      </div>
+    </div>
+
+    <!-- 4 Inputs -->
+    <div class="sg-block">
+      <div class="sg-block-label">04 · Inputs — focus ring is the blue signal, rgba(0,153,255,.15)</div>
+      <div class="input-row">
+        <div class="field"><label>Work email</label><input class="ti" type="email" placeholder="you@studio.com"></div>
+        <div class="field"><label>Focus</label><input class="ti" type="text" value="my-portfolio" style="box-shadow:0 0 0 1px rgba(0,153,255,0.35);border-color:rgba(0,153,255,0.5)"></div>
+        <div class="field"><label>Workspace type</label><select class="ti"><option>Personal site</option><option>Startup</option><option>Agency</option></select></div>
+        <div class="field"><label>Disabled</label><input class="ti disabled" value="framer.com" disabled></div>
+      </div>
+      <div class="input-row" style="margin-top:var(--sp-lg)">
+        <div class="check-row">
+          <span class="checkbox on"><svg width="11" height="11" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke="#fff" stroke-width="1.8"/></svg></span>
+          <span class="lbl">Include CMS collections</span>
+        </div>
+        <div class="check-row">
+          <span class="checkbox"></span>
+          <span class="lbl">Enable staging subdomain</span>
+        </div>
+        <div class="check-row" style="gap:var(--sp-sm)">
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+          <span class="lbl">Auto-optimize images</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Cards -->
+    <div class="sg-block">
+      <div class="sg-block-label">05 · Cards — surface-1 / surface-2 lift + gradient spotlight tiles</div>
+      <div class="card-row">
+        <div class="pricing-card">
+          <h4>Basic</h4>
+          <div class="sub">One site, custom domain.</div>
+          <div class="price">$5 <span>/ mo</span></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#22c55e" stroke-width="1.8"/></svg>Custom domain</li>
+            <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#22c55e" stroke-width="1.8"/></svg>1,000 visitors / mo</li>
+            <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#22c55e" stroke-width="1.8"/></svg>Framer banner</li>
+          </ul>
+          <button class="btn btn-secondary" style="justify-content:center">Start Basic</button>
+        </div>
+        <div class="pricing-card featured">
+          <h4>Pro</h4>
+          <div class="sub">For freelancers &amp; growing teams.</div>
+          <div class="price">$20 <span>/ mo</span></div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#22c55e" stroke-width="1.8"/></svg>10,000 visitors / mo</li>
+            <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#22c55e" stroke-width="1.8"/></svg>CMS + password pages</li>
+            <li><svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="#22c55e" stroke-width="1.8"/></svg>Analytics dashboard</li>
+          </ul>
+          <button class="btn btn-primary" style="justify-content:center">Start Pro</button>
+        </div>
+        <div class="stat-card">
+          <div class="big">3M+</div>
+          <div class="lbl">Sites published with Framer</div>
+          <div class="big" style="margin-top:var(--sp-xl)">99.9%</div>
+          <div class="lbl">Global hosting uptime</div>
+        </div>
+      </div>
+      <div class="mockup-tile">
+        <div class="browser">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div class="view"></div>
+        </div>
+        <div class="browser" style="max-width:280px">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div class="view" style="background:linear-gradient(160deg,#6a4cf5,#0d0d0d)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Badges -->
+    <div class="sg-block">
+      <div class="sg-block-label">06 · Badges — surface-1 pills, chromatic only as signal</div>
+      <div class="badge-row">
+        <span class="badge">New</span>
+        <span class="badge badge-blue">AI</span>
+        <span class="badge badge-success">Live</span>
+        <span class="badge badge-muted">Template</span>
+        <span class="badge badge-white">Popular</span>
+      </div>
+    </div>
+
+    <!-- 7 Nav -->
+    <div class="sg-block">
+      <div class="sg-block-label">07 · Navigation — centered links, pill CTA pair right</div>
+      <div class="nav-demo">
+        <div class="nav-top">
+          <span class="logo">Framer</span>
+          <div class="links"><a href="#">AI</a><a href="#" class="active">Gallery</a><a href="#">Templates</a><a href="#">Pricing</a><a href="#">Enterprise</a></div>
+          <div class="cta">
+            <button class="btn btn-secondary">Sign in</button>
+            <button class="btn btn-primary">Get started</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Table + spotlights -->
+    <div class="sg-block" style="margin-bottom:0">
+      <div class="sg-block-label">08 · Comparison Rows</div>
+      <table class="cmp">
+        <thead><tr><th style="width:40%">Feature</th><th>Basic</th><th>Pro</th><th>Business</th></tr></thead>
+        <tbody>
+          <tr><td class="feat">Custom domains</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+          <tr><td class="feat">CMS collections</td><td class="no">—</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+          <tr><td class="feat">Staging + analytics</td><td class="no">—</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+          <tr><td class="feat">SSO / SCIM</td><td class="no">—</td><td class="no">—</td><td class="ok">✓</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sg-block-label" style="margin-top:var(--sp-xl)">Gradient Spotlight Cards — one or two per grid, never a section ground</div>
+      <div class="spot-grid">
+        <div class="spot spot-violet"><span class="tag">Showcase</span><h4>Sites that move like apps</h4></div>
+        <div class="spot spot-magenta"><span class="tag">AI</span><h4>From prompt to page</h4></div>
+        <div class="spot spot-orange"><span class="tag">Gallery</span><h4>Built by the community</h4></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PRODUCT ================= -->
+<section id="product">
+
+  <!-- nav -->
+  <div class="nav-demo" style="border-radius:0;border-left:none;border-right:none">
+    <div class="nav-top wrap" style="max-width:1200px;margin:0 auto;padding-left:var(--sp-xl);padding-right:var(--sp-xl)">
+      <span class="logo">Framer</span>
+      <div class="links"><a href="#">AI</a><a href="#" class="active">Design</a><a href="#">CMS</a><a href="#">Templates</a><a href="#">Pricing</a></div>
+      <div class="cta">
+        <button class="btn btn-secondary">Sign in</button>
+        <button class="btn btn-primary">Get started</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div class="wrap p-hero">
+    <h1>The website builder<br><span class="grad">designers dream</span><br>about.</h1>
+    <p>Design on a free-form canvas, publish to a globally hosted, production-grade site — no code, no handoff, no compromise.</p>
+    <div class="cta">
+      <button class="btn btn-primary btn-lg">Start publishing for free</button>
+      <button class="btn btn-secondary btn-lg">Talk to sales</button>
+    </div>
+    <div class="note">No credit card required · Free forever plan</div>
+  </div>
+
+  <!-- logo strip -->
+  <div class="wrap">
+    <div class="logos">
+      <span style="color:var(--ink)">Trusted by teams at</span>
+      <span>Perplexity</span><span>Superhuman</span><span>Literal</span><span>Remote</span><span>Attio</span><span>Raycast</span>
+    </div>
+  </div>
+
+  <!-- spotlight band -->
+  <div class="wrap spotlight-band">
+    <div class="row">
+      <div class="spot-wide">
+        <h3>AI that turns a prompt into a designed, published page.</h3>
+        <p>Describe the site. Framer draws it, wires the breakpoints, and ships it.</p>
+      </div>
+      <div class="spot-tall">
+        <h3>Made to rank.</h3>
+        <p>Built-in SEO, staging, and 99.9% uptime hosting.</p>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="spot-tall" style="background:
+    radial-gradient(ellipse 90% 90% at 80% 10%,rgba(255,255,255,0.25),transparent 60%),
+    linear-gradient(160deg,#ff8ba5 0%,#ff5577 55%,#c22a4d 100%)">
+        <h3>A canvas, not a form.</h3>
+        <p>Free-form layout, stacks, and effects — like the design tool you already know.</p>
+      </div>
+      <div class="spot-wide" style="background:
+    radial-gradient(ellipse 90% 80% at 20% 0%,rgba(255,255,255,0.2),transparent 55%),
+    linear-gradient(140deg,#f97066 0%,#e11d48 50%,#881337 100%)">
+        <h3>Scale from landing page to full marketing site with the same file.</h3>
+        <p>CMS collections, localization, and per-page overrides keep it manageable.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- feature band -->
+  <div class="wrap feature-band">
+    <h2>Everything included.</h2>
+    <p class="lead">Designing, publishing, and scaling a site — one tool, one subscription, zero plugins.</p>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="glyph">⌘</div>
+        <h4>Real-time canvas</h4>
+        <p>Layout, breakpoints, and effects on a truly free-form design surface.</p>
+      </div>
+      <div class="feat">
+        <div class="glyph">⚡</div>
+        <h4>Instant publish</h4>
+        <p>Global CDN, automatic image optimization, perfect Lighthouse scores.</p>
+      </div>
+      <div class="feat">
+        <div class="glyph">◈</div>
+        <h4>CMS built in</h4>
+        <p>Blog posts, changelogs, and careers pages driven by structured collections.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- pricing -->
+  <div class="wrap pricing">
+    <h2>Pricing</h2>
+    <div class="p-grid">
+      <div class="p-card">
+        <h4>Basic</h4>
+        <div class="price">$5</div>
+        <div class="per">per site / month, billed yearly</div>
+        <ul>
+          <li>Custom domain</li><li>1,000 visitors / mo</li><li>Community support</li>
+        </ul>
+        <button class="btn btn-secondary">Start Basic</button>
+      </div>
+      <div class="p-card featured">
+        <h4>Pro</h4>
+        <div class="price">$20</div>
+        <div class="per">per site / month, billed yearly</div>
+        <ul>
+          <li>10,000 visitors / mo</li><li>CMS + password pages</li><li>Analytics &amp; staging</li>
+        </ul>
+        <button class="btn btn-primary">Start Pro</button>
+      </div>
+      <div class="p-card">
+        <h4>Business</h4>
+        <div class="price">$200</div>
+        <div class="per">per workspace / month, billed yearly</div>
+        <ul>
+          <li>Unlimited sites</li><li>SSO &amp; shared libraries</li><li>Priority support</li>
+        </ul>
+        <button class="btn btn-secondary">Contact sales</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- quote -->
+  <div class="wrap quote">
+    <blockquote>“We replaced our old marketing stack with Framer. Design ships the same day the copy is final.”</blockquote>
+    <div class="who">
+      <div class="ava"></div>
+      <div><b>Maya Lindqvist</b><span>Head of Design, Remote</span></div>
+    </div>
+  </div>
+
+  <!-- faq -->
+  <div class="wrap faq">
+    <h2>Questions</h2>
+    <div class="item">
+      <div><div class="q">Do I need to know how to code?</div><div class="a">No. Everything is visual — publish straight from the canvas. Custom code embeds are available if you want them.</div></div>
+      <span class="plus">+</span>
+    </div>
+    <div class="item">
+      <div><div class="q">Can I use my own domain?</div><div class="a">Yes, every paid plan supports custom domains with automatic SSL.</div></div>
+      <span class="plus">+</span>
+    </div>
+    <div class="item">
+      <div><div class="q">What happens when I hit my visitor limit?</div><div class="a">Your site stays online — we'll notify you before soft limits apply.</div></div>
+      <span class="plus">+</span>
+    </div>
+  </div>
+
+  <!-- cta band -->
+  <div class="cta-band">
+    <h2>Your site, live<br><span class="grad">this afternoon</span>.</h2>
+    <p>Join millions of designers publishing with Framer.</p>
+    <div class="cta">
+      <button class="btn btn-primary btn-lg">Get started for free</button>
+      <button class="btn btn-secondary btn-lg">Browse the gallery</button>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="sg-footer">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <div class="logo">Framer</div>
+          <p style="font-size:13px;color:var(--ink-muted);margin-top:var(--sp-sm);max-width:260px">The website builder loved by designers.</p>
+        </div>
+        <div><h5>Product</h5><a href="#">AI</a><a href="#">Design</a><a href="#">CMS</a><a href="#">Hosting</a></div>
+        <div><h5>Resources</h5><a href="#">Templates</a><a href="#">Gallery</a><a href="#">Marketplace</a><a href="#">Changelog</a></div>
+        <div><h5>Company</h5><a href="#">About</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Contact</a></div>
+        <div><h5>Social</h5><a href="#">X / Twitter</a><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
+      </div>
+      <div class="legal">
+        <span>© 2026 Framer B.V.</span><span>Privacy · Terms · Status</span>
+      </div>
+    </div>
+  </footer>
+
+</section>
+
+</main>
+</body>
+</html>

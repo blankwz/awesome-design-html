@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supastore Admin — Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#3ecf8e; --primary-deep:#24b47e; --primary-soft:#4ade80;
+  --ink:#171717; --ink-secondary:#212121; --ink-mute:#707070; --ink-mute-2:#9a9a9a; --ink-faint:#b2b2b2;
+  --on-primary:#171717; --on-dark:#ffffff;
+  --canvas:#ffffff; --canvas-soft:#fafafa; --night:#1c1c1c; --night-soft:#202020;
+  --hairline:#dfdfdf; --hairline-strong:#c7c7c7; --hairline-cool:#ededed; --hairline-cool-3:#d4d4d4;
+  --ok:#24b47e; --warn:#c78f1d; --err:#e2005a; --info:#054cff;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-full:9999px;
+  --shadow-1:0 1px 3px rgba(0,0,0,0.06);
+  --shadow-2:0 8px 24px rgba(0,0,0,0.08);
+  --font:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,Menlo,Monaco,Consolas,'Liberation Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas-soft);font-size:14px;line-height:1.5}
+a{color:var(--ink);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:var(--font);cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+.btn{border-radius:var(--r-sm);font-weight:500;font-size:13.5px;padding:8px 16px;display:inline-flex;align-items:center;gap:8px;border:1px solid transparent}
+.btn-green{background:var(--primary);color:var(--on-primary)}
+.btn-green:hover{background:var(--primary-deep)}
+.btn-outline{background:#fff;color:var(--ink);border-color:var(--hairline-strong)}
+.btn-outline:hover{background:var(--canvas-soft)}
+
+/* ---------- sidebar (near-black) ---------- */
+.sidebar{position:fixed;inset:0 auto 0 0;width:252px;background:var(--night);color:#fff;display:flex;flex-direction:column;padding:22px 14px;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:10px;font-weight:500;font-size:18px;letter-spacing:-.3px;padding:0 8px 22px;color:#fff}
+.logo-mark{width:28px;height:28px;border-radius:var(--r-xs);background:#fff;display:grid;place-items:center;color:var(--night);font-size:15px}
+.side-group{font-size:11px;font-weight:500;color:#8a8a8a;padding:16px 10px 6px;letter-spacing:.2px}
+.side-item{display:flex;align-items:center;gap:12px;color:#c9c9c9;padding:8px 12px;border-radius:var(--r-sm);font-size:13.5px;font-weight:400}
+.side-item:hover{background:var(--night-soft);color:#fff;text-decoration:none}
+.side-item.active{background:var(--primary);color:var(--on-primary);font-weight:500}
+.side-badge{margin-left:auto;background:var(--err);color:#fff;border-radius:var(--r-full);font-size:10.5px;font-weight:500;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+.side-badge.dim{background:#333;color:#c9c9c9}
+.user-card{margin-top:auto;background:var(--night-soft);border-radius:var(--r-md);padding:13px;display:flex;gap:10px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--primary);color:var(--on-primary);display:grid;place-items:center;font-size:12px;font-weight:500}
+.user-card b{display:block;font-size:13px;font-weight:500}
+.user-card span{font-size:11.5px;color:#8a8a8a}
+.user-card button{margin-left:auto;background:none;border:none;color:#8a8a8a;font-size:15px}
+
+/* ---------- topbar ---------- */
+.main{margin-left:252px;padding:0 28px 48px}
+.topbar{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--hairline-cool);position:sticky;top:0;background:var(--canvas-soft);z-index:5}
+.crumb{font-size:13px;color:var(--ink-mute)}
+.crumb b{display:block;font-size:20px;font-weight:500;letter-spacing:-.3px;color:var(--ink);margin-top:2px}
+.top-search{flex:1;max-width:400px;margin-left:auto;position:relative}
+.top-search input{width:100%;border:1px solid var(--hairline);border-radius:var(--r-sm);padding:8px 12px 8px 34px;font-family:var(--font);font-size:13.5px;background:#fff}
+.top-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.45}
+.bell{position:relative;width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:#fff;display:grid;place-items:center;color:var(--ink-mute)}
+.bell .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--primary);border:2px solid #fff}
+.avatar.top{width:36px;height:36px}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:22px 0}
+.kpi{background:#fff;border:1px solid var(--hairline-cool);border-radius:var(--r-md);padding:18px 20px}
+.kpi .label{font-size:12px;color:var(--ink-mute)}
+.kpi .value{font-size:26px;font-weight:500;letter-spacing:-.3px;margin:6px 0 2px}
+.kpi .delta{font-size:12px;font-weight:500}
+.up{color:var(--ok)} .down{color:var(--err)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px;margin-top:12px}
+.spark i{flex:1;background:#e9f9f1;border-radius:1px}
+.spark i.hi{background:var(--primary)}
+
+/* ---------- charts ---------- */
+.charts{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:22px}
+.panel{background:#fff;border:1px solid var(--hairline-cool);border-radius:var(--r-md);padding:20px}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.panel-head h3{font-size:16px;font-weight:500}
+.panel-head span{font-size:12px;color:var(--ink-mute)}
+.bars{display:flex;align-items:flex-end;gap:12px;height:150px;padding-top:6px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar i{width:100%;max-width:38px;background:var(--primary);border-radius:3px 3px 0 0;display:block}
+.bar:nth-child(even) i{background:var(--primary-deep)}
+.bar b{font-size:11px;color:var(--ink-mute);font-weight:400}
+.donut-wrap{display:flex;align-items:center;gap:20px}
+.donut{position:relative;width:150px;height:150px;flex:none}
+.donut .center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut .center b{font-size:22px;font-weight:500;letter-spacing:-.3px}
+.donut .center span{font-size:11px;color:var(--ink-mute);display:block}
+.legend{display:grid;gap:10px;font-size:13px;flex:1}
+.legend .row{display:flex;align-items:center;gap:10px;color:var(--ink-secondary)}
+.legend .sw{width:12px;height:12px;border-radius:4px;flex:none}
+.legend .val{margin-left:auto;font-weight:500;color:var(--ink)}
+
+/* ---------- table ---------- */
+.layout{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start}
+.table-wrap{background:#fff;border:1px solid var(--hairline-cool);border-radius:var(--r-md);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{text-align:left;font-size:12px;color:var(--ink-mute);padding:11px 14px;border-bottom:1px solid var(--hairline-cool);font-weight:500}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--hairline-cool);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--canvas-soft)}
+.tbl-name b{display:block;font-size:13.5px;font-weight:500}
+.tbl-name span{font-family:var(--mono);font-size:11.5px;color:var(--ink-mute)}
+.badge{display:inline-block;border-radius:var(--r-full);font-size:11.5px;font-weight:500;padding:3px 10px}
+.b-ok{background:#e2f6ee;color:var(--ok)}
+.b-warn{background:#fbf1da;color:var(--warn)}
+.b-err{background:#fbe3ec;color:var(--err)}
+.b-mute{background:var(--hairline-cool);color:var(--ink-mute)}
+.money{text-align:right;font-weight:500}
+.date{color:var(--ink-mute)}
+.row-actions{display:flex;gap:6px}
+.act{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:#fff;display:grid;place-items:center;color:var(--ink-mute);font-size:12px}
+.act:hover{border-color:var(--ink);color:var(--ink)}
+.tfoot{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;font-size:12.5px;color:var(--ink-mute)}
+.pager{display:flex;gap:6px}
+.pager button{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:#fff;color:var(--ink);font-size:12px}
+.pager button.on{background:var(--night);border-color:var(--night);color:#fff}
+
+/* ---------- activity ---------- */
+.activity .item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--hairline-cool);font-size:13px;color:var(--ink-secondary)}
+.activity .item:last-child{border:none}
+.a-dot{width:30px;height:30px;border-radius:var(--r-full);flex:none;display:grid;place-items:center;font-size:11px;font-weight:500}
+.activity time{display:block;font-size:11px;color:var(--ink-mute-2);margin-top:2px;font-family:var(--mono)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1200px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.layout{grid-template-columns:1fr}
+}
+@media(max-width:960px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:0 14px 40px}
+  thead th,tbody td{padding:8px}
+}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="logo" href="#"><span class="logo-mark">⚡</span>Supastore</a>
+  <div class="side-group">General</div>
+  <a class="side-item" href="#">▦ Dashboard</a>
+  <a class="side-item active" href="#">◉ Purchases</a>
+  <a class="side-item" href="#">◈ Templates</a>
+  <div class="side-group">Users</div>
+  <a class="side-item" href="#">☺ Customers</a>
+  <a class="side-item" href="#">✦ Publishers</a>
+  <a class="side-item" href="#">⚑ Refund queue <span class="side-badge">5</span></a>
+  <div class="side-group">Insights</div>
+  <a class="side-item" href="#">◔ Analytics</a>
+  <a class="side-item" href="#">⇄ Payouts <span class="side-badge dim">3</span></a>
+  <div class="side-group">Config</div>
+  <a class="side-item" href="#">✎ Categories</a>
+  <a class="side-item" href="#">⚙ Settings</a>
+  <div class="user-card">
+    <span class="avatar">RT</span>
+    <div><b>Rin Takeda</b><span>Platform ops</span></div>
+    <button aria-label="Menu">⋯</button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="crumb">Purchases <b>Recent purchases</b></div>
+    <div class="top-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" placeholder="Search purchase, org, or license key" aria-label="Search">
+    </div>
+    <button class="btn btn-outline">Export CSV</button>
+    <button class="bell" aria-label="Notifications"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+    <span class="avatar top">RT</span>
+  </div>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="label">Revenue · Oct</div>
+      <div class="value num">$97,240</div>
+      <div class="delta up">↑ 11.8% vs Sep</div>
+      <div class="spark"><i style="height:38%"></i><i style="height:50%"></i><i style="height:44%"></i><i style="height:60%"></i><i style="height:56%"></i><i class="hi" style="height:86%"></i><i style="height:72%"></i><i style="height:66%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Purchases</div>
+      <div class="value num">2,104</div>
+      <div class="delta up">↑ 7.2% vs Sep</div>
+      <div class="spark"><i style="height:34%"></i><i style="height:46%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:64%"></i><i class="hi" style="height:80%"></i><i style="height:70%"></i><i style="height:60%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Refund rate</div>
+      <div class="value num">1.4%</div>
+      <div class="delta up">↓ 0.3 pts improved</div>
+      <div class="spark"><i style="height:76%"></i><i style="height:70%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:52%"></i><i class="hi" style="height:44%"></i><i style="height:40%"></i><i style="height:36%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Published templates</div>
+      <div class="value num">486</div>
+      <div class="delta up">↑ 28 this month</div>
+      <div class="spark"><i style="height:48%"></i><i style="height:52%"></i><i style="height:56%"></i><i class="hi" style="height:70%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:54%"></i><i style="height:58%"></i></div>
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="panel">
+      <div class="panel-head"><h3>Purchase revenue by month</h3><span>FY 2026 · USD</span></div>
+      <div class="bars">
+        <div class="bar"><i style="height:40%"></i><b>Jan</b></div>
+        <div class="bar"><i style="height:48%"></i><b>Feb</b></div>
+        <div class="bar"><i style="height:44%"></i><b>Mar</b></div>
+        <div class="bar"><i style="height:56%"></i><b>Apr</b></div>
+        <div class="bar"><i style="height:52%"></i><b>May</b></div>
+        <div class="bar"><i style="height:64%"></i><b>Jun</b></div>
+        <div class="bar"><i style="height:60%"></i><b>Jul</b></div>
+        <div class="bar"><i style="height:72%"></i><b>Aug</b></div>
+        <div class="bar"><i style="height:68%"></i><b>Sep</b></div>
+        <div class="bar"><i style="height:84%"></i><b>Oct</b></div>
+        <div class="bar"><i style="height:78%"></i><b>Nov</b></div>
+        <div class="bar"><i style="height:92%"></i><b>Dec</b></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Purchases by category</h3><span>Oct</span></div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg width="150" height="150" viewBox="0 0 150 150" style="transform:rotate(-90deg)">
+            <circle cx="75" cy="75" r="58" fill="none" stroke="#e9f9f1" stroke-width="22"/>
+            <circle cx="75" cy="75" r="58" fill="none" stroke="#3ecf8e" stroke-width="22" stroke-dasharray="146 365"/>
+            <circle cx="75" cy="75" r="58" fill="none" stroke="#6b01c2" stroke-width="22" stroke-dasharray="102 365" stroke-dashoffset="-146"/>
+            <circle cx="75" cy="75" r="58" fill="none" stroke="#054cff" stroke-width="22" stroke-dasharray="73 365" stroke-dashoffset="-248"/>
+            <circle cx="75" cy="75" r="58" fill="none" stroke="#ffdb13" stroke-width="22" stroke-dasharray="44 365" stroke-dashoffset="-321"/>
+          </svg>
+          <div class="center"><div><b class="num">2,104</b><span>Purchases · Oct</span></div></div>
+        </div>
+        <div class="legend">
+          <div class="row"><span class="sw" style="background:#3ecf8e"></span>SaaS starters<b class="val num">40%</b></div>
+          <div class="row"><span class="sw" style="background:#6b01c2"></span>AI apps<b class="val num">28%</b></div>
+          <div class="row"><span class="sw" style="background:#054cff"></span>Realtime chat<b class="val num">20%</b></div>
+          <div class="row"><span class="sw" style="background:#ffdb13"></span>Dashboards<b class="val num">12%</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="layout">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+          <th>Purchase</th><th>Category</th><th>Status</th><th style="text-align:right">Amount</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>SaaS Kit Pro · Team</b><span>lic_sk82f1 · Shelfline Inc</span></div></td>
+            <td>SaaS starters</td>
+            <td><span class="badge b-ok">Completed</span></td>
+            <td class="money num">$249.00</td><td class="date">Oct 26, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>AI Doc Chat · Solo</b><span>lic_ai19c7 · Fieldnote</span></div></td>
+            <td>AI apps</td>
+            <td><span class="badge b-ok">Completed</span></td>
+            <td class="money num">$79.00</td><td class="date">Oct 26, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>Realtime Canvas · Team</b><span>lic_rc44a0 · Loopcast</span></div></td>
+            <td>Realtime chat</td>
+            <td><span class="badge b-warn">Awaiting PO</span></td>
+            <td class="money num">$349.00</td><td class="date">Oct 25, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>Storefront Starter · Solo</b><span>lic_ss77b2 · Marrow Goods</span></div></td>
+            <td>E-commerce</td>
+            <td><span class="badge b-err">Refunded</span></td>
+            <td class="money num">$59.00</td><td class="date">Oct 25, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>Analytics Dashboard · Unlimited</b><span>lic_ad30e5 · Beacon Rail</span></div></td>
+            <td>Dashboards</td>
+            <td><span class="badge b-ok">Completed</span></td>
+            <td class="money num">$899.00</td><td class="date">Oct 24, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>Multi-tenant CRM · Team</b><span>lic_mc51d9 · Fernfield Health</span></div></td>
+            <td>SaaS starters</td>
+            <td><span class="badge b-mute">Trial</span></td>
+            <td class="money num">$0.00</td><td class="date">Oct 24, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" aria-label="Select"></td>
+            <td><div><b>Waitlist App · Solo</b><span>lic_wa66f4 · Corvid &amp; Co</span></div></td>
+            <td>SaaS starters</td>
+            <td><span class="badge b-ok">Completed</span></td>
+            <td class="money num">$49.00</td><td class="date">Oct 23, 2026</td>
+            <td><div class="row-actions"><button class="act">↗</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tfoot">
+        <span>Showing 7 of 2,104 purchases</span>
+        <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>301</button><button>›</button></div>
+      </div>
+    </div>
+
+    <aside class="panel activity">
+      <div class="panel-head"><h3>Recent activity</h3><span>Live</span></div>
+      <div class="item"><span class="a-dot" style="background:#e2f6ee;color:#24b47e">✓</span><div><b>Shelfline Inc</b> purchased SaaS Kit Pro (Team).<time>09:41:02</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#fbe3ec;color:#e2005a">R</span><div>Refund issued for <b>lic_ss77b2</b> — license revoked.<time>08:57:44</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#efe7fb;color:#6b01c2">+</span><div><b>AI Doc Chat v1.9</b> published by Fieldnote Labs.<time>08:12:19</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#fbf1da;color:#c78f1d">!</span><div>PO <b>PO-2207</b> still awaiting approval from Loopcast finance.<time>Yesterday</time></div></div>
+      <div class="item"><span class="a-dot" style="background:#e9f9f1;color:#24b47e">✓</span><div>October publisher payouts scheduled — 214 accounts.<time>Yesterday</time></div></div>
+    </aside>
+  </section>
+</main>
+</body>
+</html>

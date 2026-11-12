@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohere — Deployment Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#17171c; --cohere-black:#000000;
+  --ink:#212121; --deep-green:#003c33; --dark-navy:#071829;
+  --canvas:#ffffff; --soft-stone:#eeece7; --pale-green:#edfce9; --pale-blue:#f1f5ff;
+  --hairline:#d9d9dd; --border-light:#e5e7eb; --card-border:#f2f2f2;
+  --muted:#93939f; --slate:#75758a; --body-muted:#616161;
+  --action-blue:#1863dc; --focus-blue:#4c6ee6; --coral:#ff7759; --coral-soft:#ffad9b;
+  --form-focus:#9b60aa; --on-primary:#ffffff; --on-dark:#ffffff; --error:#b30000;
+  --font-display:"Space Grotesk","CohereText",Inter,sans-serif;
+  --font-body:"Inter",Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --r-xs:4px; --r-sm:8px; --r-md:16px; --r-lg:22px; --r-xl:30px; --r-pill:32px;
+  --sp-xxs:2px; --sp-xs:6px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:24px; --sp-xxl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-body)}
+h1,h2,h3{color:var(--ink)}
+.shell{display:grid;grid-template-columns:252px 1fr;min-height:100vh}
+.mono-label{font-family:var(--font-mono);font-size:12px;letter-spacing:.28px;text-transform:uppercase;color:var(--slate)}
+
+/* sidebar */
+.side{background:var(--soft-stone);border-right:1px solid var(--hairline);padding:var(--sp-md);display:flex;flex-direction:column;gap:2px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:18px;color:var(--ink);padding:var(--sp-sm) var(--sp-md) var(--sp-lg)}
+.logo .mark{width:22px;height:22px;border-radius:6px;background:conic-gradient(from 45deg,var(--deep-green),var(--coral),var(--dark-navy),var(--deep-green))}
+.m-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.28px;text-transform:uppercase;color:var(--slate);padding:var(--sp-lg) var(--sp-md) var(--sp-xs)}
+.menu a{display:flex;align-items:center;gap:var(--sp-sm);padding:9px var(--sp-md);border-radius:var(--r-sm);color:var(--body-muted);font-weight:400}
+.menu a .ico{width:18px;text-align:center;font-style:normal}
+.menu a:hover{background:#e2ded6;color:var(--ink)}
+.menu a.active{background:var(--canvas);color:var(--ink);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.menu a .cnt{margin-left:auto;background:var(--coral);color:#0a0a0a;border-radius:var(--r-pill);font-size:11px;font-weight:500;padding:1px 8px}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-md);background:var(--canvas);border-radius:var(--r-md)}
+.ava{width:36px;height:36px;border-radius:var(--r-pill);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex:none;background:var(--deep-green)}
+.user-card .nm{font-weight:500;color:var(--ink)}
+.user-card .rl{font-size:12px;color:var(--muted)}
+
+/* topbar */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:64px;border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-xl)}
+.crumb{font-size:14px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:500}
+.search{margin-left:auto;position:relative}
+.search input{height:40px;width:280px;border:1px solid var(--hairline);border-radius:var(--r-xs);padding:0 var(--sp-md) 0 36px;font-size:14px;background:var(--canvas);font-family:var(--font-body)}
+.search input:focus{outline:none;border-color:var(--form-focus)}
+.search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--r-pill);background:var(--canvas);border:1px solid var(--hairline);color:var(--ink)}
+.bell{position:relative}
+.bell .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--error);color:#fff;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* content */
+.content{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-xl)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-md);flex-wrap:wrap}
+.page-head h1{font-family:var(--font-display);font-size:34px;font-weight:400;letter-spacing:-0.4px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 24px;background:var(--primary);color:#fff;border:1px solid var(--primary);border-radius:var(--r-pill);font-size:14px;font-weight:500}
+.btn--outline-pill{background:transparent;color:var(--primary);border:1px solid var(--primary);border-radius:var(--r-xl);height:40px;padding:0 18px;font-size:13px}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.kpi{background:var(--canvas);border:1px solid var(--card-border);border-radius:var(--r-sm);padding:var(--sp-lg)}
+.kpi .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.28px;text-transform:uppercase;color:var(--slate);margin-bottom:var(--sp-xs)}
+.kpi .val{font-family:var(--font-display);font-size:26px;color:var(--ink);letter-spacing:-0.3px}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-md)}
+.delta{font-size:13px;font-weight:500}
+.up{color:#15803d} .down{color:var(--error)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:6px;border-radius:2px;background:var(--border-light)}
+.spark i.hot{background:#c9c4ba}
+.spark i.y{background:var(--deep-green)}
+
+/* charts */
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-md)}
+.card{background:var(--canvas);border:1px solid var(--card-border);border-radius:var(--r-md);padding:var(--sp-lg)}
+.card h3{font-size:16px;font-weight:500;margin-bottom:var(--sp-md)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:190px;border-bottom:1px solid var(--hairline)}
+.bcol{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:60%;background:var(--soft-stone);border-radius:6px 6px 0 0}
+.bcol.hot .bar{background:var(--deep-green)}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.donut-wrap{display:flex;gap:var(--sp-lg);align-items:center}
+.donut{position:relative;width:168px;height:168px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-family:var(--font-display);font-size:22px;color:var(--ink)}
+.donut .center .t{font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--body-muted)}
+.leg i{width:10px;height:10px;border-radius:3px;flex:none}
+.leg .pct{margin-left:auto;font-weight:500;color:var(--ink)}
+
+/* table + panel */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-md);align-items:start}
+.table-card{background:var(--canvas);border:1px solid var(--card-border);border-radius:var(--r-md);overflow:hidden}
+.tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--border-light)}
+.tc-head h3{font-size:16px;font-weight:500}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.28px;text-transform:uppercase;color:var(--slate);text-align:left;padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--hairline);background:var(--soft-stone);font-weight:400}
+td{padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--border-light);vertical-align:middle}
+.cell-name{font-weight:500;color:var(--ink)}
+.cell-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+.num{font-family:var(--font-mono);font-size:13px;color:var(--ink);white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:500;border-radius:var(--r-pill);padding:3px 12px}
+.badge.success{background:var(--pale-green);color:#166534}
+.badge.warning{background:#fdf3e7;color:#92400e}
+.badge.danger{background:#fdeaea;color:var(--error)}
+.badge.neutral{background:var(--soft-stone);color:var(--slate)}
+.badge.coral{background:var(--coral);color:#0a0a0a}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--hairline);border-radius:var(--r-xs);background:var(--canvas);vertical-align:middle}
+input[type=checkbox]:checked{background:var(--primary);border-color:var(--primary)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+.row-actions button{border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-sm);font-size:12px;color:var(--body-muted);padding:5px 12px}
+.row-actions button:hover{color:var(--ink);border-color:var(--slate)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg)}
+.pager .info{font-size:13px;color:var(--muted);font-family:var(--font-mono)}
+.pg{display:flex;gap:6px}
+.pg button{min-width:32px;height:32px;border:1px solid var(--hairline);background:var(--canvas);border-radius:var(--r-sm);font-size:13px;color:var(--muted)}
+.pg button.cur{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* activity */
+.feed-item{display:flex;gap:var(--sp-sm);padding:var(--sp-md) 0;border-bottom:1px solid var(--border-light)}
+.feed-item:last-child{border-bottom:0}
+.fdot{width:32px;height:32px;border-radius:var(--r-pill);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;font-size:12px;flex:none;color:var(--ink)}
+.fdot.ok{border-color:#6ee7b7;color:#15803d}
+.fdot.bad{border-color:#fca5a5;color:var(--error)}
+.fdot.warn{border-color:#fcd34d;color:#92400e}
+.feed-item p{font-size:13px;color:var(--body-muted)}
+.feed-item p b{color:var(--ink);font-weight:500}
+.feed-item .time{font-size:11px;color:var(--muted);margin-top:2px;font-family:var(--font-mono)}
+.quick{margin-top:var(--sp-md);padding-top:var(--sp-md);border-top:1px solid var(--border-light)}
+.quick label{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--body-muted);padding:6px 0}
+.toggle{appearance:none;width:36px;height:20px;border-radius:var(--r-pill);background:var(--hairline);position:relative}
+.toggle:checked{background:var(--deep-green)}
+.quick .btn{width:100%;margin-top:var(--sp-md)}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .search input{width:160px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#"><span class="mark"></span>cohere</a>
+    <nav class="menu">
+      <p class="m-label">Deployment</p>
+      <a href="#" class="active"><span class="ico">◈</span>Overview</a>
+      <a href="#"><span class="ico">▤</span>Templates<span class="cnt">3</span></a>
+      <a href="#"><span class="ico">▦</span>Agents</a>
+      <a href="#"><span class="ico">▣</span>Playground</a>
+      <p class="m-label">Data</p>
+      <a href="#"><span class="ico">◍</span>Connectors</a>
+      <a href="#"><span class="ico">◎</span>Embeddings</a>
+      <p class="m-label">Governance</p>
+      <a href="#"><span class="ico">▥</span>Usage &amp; spend</a>
+      <a href="#"><span class="ico">⚙</span>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="ava">DO</div>
+      <div><div class="nm">Daniel Okoye</div><div class="rl">Platform owner</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Console / <b>Overview</b></span>
+      <div class="search"><input type="search" placeholder="Search templates, agents…" aria-label="Search"></div>
+      <button class="icon-btn bell" aria-label="Notifications">◔<span class="dot">2</span></button>
+      <div class="ava">DO</div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <p class="mono-label">Notra · enterprise workspace</p>
+          <h1>Deployment overview</h1>
+        </div>
+        <div style="display:flex;gap:var(--sp-sm)">
+          <button class="btn--outline-pill">Export audit log</button>
+          <button class="btn">Request a template</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <p class="lbl">Calls this week</p>
+          <div class="val">4.2M</div>
+          <div class="row"><span class="delta up">▲ 6.8%</span>
+            <div class="spark"><i style="height:40%"></i><i style="height:50%"></i><i class="hot" style="height:58%"></i><i style="height:48%"></i><i style="height:70%"></i><i class="y" style="height:90%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Cited answers</p>
+          <div class="val">98.6%</div>
+          <div class="row"><span class="delta up">▲ 0.9%</span>
+            <div class="spark"><i style="height:70%"></i><i style="height:72%"></i><i class="hot" style="height:75%"></i><i style="height:76%"></i><i style="height:80%"></i><i class="y" style="height:84%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Active agents</p>
+          <div class="val">11</div>
+          <div class="row"><span class="delta up">▲ 10.0%</span>
+            <div class="spark"><i style="height:35%"></i><i style="height:45%"></i><i class="hot" style="height:55%"></i><i style="height:60%"></i><i style="height:72%"></i><i class="y" style="height:88%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">P95 latency</p>
+          <div class="val">1.4s</div>
+          <div class="row"><span class="delta down">▼ 8.1%</span>
+            <div class="spark"><i style="height:85%"></i><i style="height:78%"></i><i class="hot" style="height:70%"></i><i style="height:60%"></i><i style="height:50%"></i><i class="y" style="height:42%"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3>Inference volume by month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:36%"></div></div>
+            <div class="bcol"><div class="bar" style="height:48%"></div></div>
+            <div class="bcol"><div class="bar" style="height:42%"></div></div>
+            <div class="bcol"><div class="bar" style="height:56%"></div></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div></div>
+            <div class="bcol"><div class="bar" style="height:62%"></div></div>
+            <div class="bcol"><div class="bar" style="height:54%"></div></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:86%"></div></div>
+            <div class="bcol"><div class="bar" style="height:64%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:96%"></div></div>
+            <div class="bcol"><div class="bar" style="height:72%"></div></div>
+          </div>
+          <div class="blabels"><span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span></div>
+        </div>
+        <div class="card">
+          <h3>Usage by template</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="168" height="168" viewBox="0 0 168 168">
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#e5e7eb" stroke-width="15"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#003c33" stroke-width="15" stroke-dasharray="142 265" stroke-dashoffset="0"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#1863dc" stroke-width="15" stroke-dasharray="76 331" stroke-dashoffset="-147"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#ff7759" stroke-width="15" stroke-dasharray="57 350" stroke-dashoffset="-228"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#93939f" stroke-width="15" stroke-dasharray="32 375" stroke-dashoffset="-290"/>
+              </svg>
+              <div class="center"><span class="v">4.2M</span><span class="t">calls</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#003c33"></i>Contract Review<span class="pct">42%</span></div>
+              <div class="leg"><i style="background:#1863dc"></i>Multilingual Search<span class="pct">23%</span></div>
+              <div class="leg"><i style="background:#ff7759"></i>Support Trier<span class="pct">17%</span></div>
+              <div class="leg"><i style="background:#93939f"></i>Rerank Stack<span class="pct">10%</span></div>
+              <div class="leg"><i style="background:#e5e7eb"></i>Other<span class="pct">8%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head"><h3>Recent deployments</h3><button class="btn--outline-pill">View all</button></div>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Deployment</th><th>Model</th><th>Owner</th><th>Status</th><th>Calls</th><th>Updated</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Contract Review Agent</div><div class="cell-sub">prod · saas-vpc</div></td>
+                <td>Command A</td><td>D. Okoye</td>
+                <td><span class="badge coral">Running</span></td>
+                <td class="num">1.76M</td><td class="num">live</td>
+                <td><div class="row-actions"><button>Open</button><button>Metrics</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Multilingual Search Kit</div><div class="cell-sub">prod · eu-west</div></td>
+                <td>Embed v4</td><td>M. Ferreira</td>
+                <td><span class="badge success">Healthy</span></td>
+                <td class="num">0.97M</td><td class="num">live</td>
+                <td><div class="row-actions"><button>Open</button><button>Metrics</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Support Trier</div><div class="cell-sub">prod · us-east</div></td>
+                <td>Command R</td><td>workspace</td>
+                <td><span class="badge warning">Drifting</span></td>
+                <td class="num">0.71M</td><td class="num">live</td>
+                <td><div class="row-actions"><button>Review</button><button>Retrain</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Precision Rerank Stack</div><div class="cell-sub">staging</div></td>
+                <td>Rerank 4</td><td>A. Lindqvist</td>
+                <td><span class="badge success">Healthy</span></td>
+                <td class="num">0.42M</td><td class="num">live</td>
+                <td><div class="row-actions"><button>Open</button><button>Promote</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Finance Ops Assistant</div><div class="cell-sub">prod · north</div></td>
+                <td>North</td><td>P. Achebe</td>
+                <td><span class="badge success">Healthy</span></td>
+                <td class="num">0.19M</td><td class="num">live</td>
+                <td><div class="row-actions"><button>Open</button><button>Metrics</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Research Briefing Agent</div><div class="cell-sub">staging · tools beta</div></td>
+                <td>Command A</td><td>M. Ferreira</td>
+                <td><span class="badge danger">Failed</span></td>
+                <td class="num">0.11M</td><td class="num">08:47 today</td>
+                <td><div class="row-actions"><button>Inspect</button><button>Restart</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Vault re-embed job</div><div class="cell-sub">214 contracts · v4</div></td>
+                <td>Embed v4</td><td>batch-runner</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">3,412</td><td class="num">06:20 today</td>
+                <td><div class="row-actions"><button>Open</button><button>Verify</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span class="info">showing 1–7 of 118 deployments</span>
+            <div class="pg"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recent activity</h3>
+          <div class="feed-item"><div class="fdot ok">✓</div><div><p><b>Contract Review</b> batch finished — 17 findings, all citations verified.</p><p class="time">09:32 today</p></div></div>
+          <div class="feed-item"><div class="fdot bad">✕</div><div><p><b>Research Briefing Agent</b> failed on tool timeout in staging.</p><p class="time">08:49 today</p></div></div>
+          <div class="feed-item"><div class="fdot warn">!</div><div><p><b>Support Trier</b> intent accuracy drifted 2.4% below threshold.</p><p class="time">07:15 today</p></div></div>
+          <div class="feed-item"><div class="fdot">DO</div><div><p><b>Daniel Okoye</b> approved the <b>Rerank Stack</b> promotion to prod.</p><p class="time">Yesterday</p></div></div>
+          <div class="quick">
+            <p class="mono-label" style="margin-bottom:6px">Quick settings</p>
+            <label>Require citations <input type="checkbox" class="toggle" checked></label>
+            <label>Drift alerts <input type="checkbox" class="toggle" checked></label>
+            <label>Auto-retry failed agents <input type="checkbox" class="toggle"></label>
+            <button class="btn">Save preferences</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composio — Toolkit Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0007cd; --primary-active:#0005a3; --primary-glow:#1a26ff;
+  --ink:#ffffff; --body:#a8a8a8; --body-strong:#ffffff; --muted:#888888; --muted-soft:#666666;
+  --hairline:#222222; --hairline-soft:#1a1a1a; --hairline-strong:#333333;
+  --canvas:#0f0f0f; --canvas-deep:#000000; --surface-card:#181818; --surface-card-elevated:#222222; --surface-strong:#2a2a2a;
+  --on-primary:#ffffff; --accent-cyan:#00d4ff; --accent-violet:#7b3aed;
+  --semantic-error:#ff4d4d; --semantic-success:#33d17a;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-base:16px; --s-md:20px; --s-lg:24px; --s-xl:32px; --s-xxl:48px; --s-section:96px;
+  --font-sans:'Inter',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--canvas);color:var(--body-strong);font-size:16px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--s-lg)}
+.code{font-family:var(--font-mono);font-size:13px}
+/* ── Top nav ── */
+.topnav{height:64px;display:flex;align-items:center;border-bottom:1px solid var(--hairline-soft);position:sticky;top:0;z-index:50;background:rgba(15,15,15,.92);backdrop-filter:blur(8px)}
+.topnav .wrap{display:flex;align-items:center;gap:var(--s-xl);width:100%}
+.wordmark{display:flex;align-items:center;gap:9px;font-weight:600;font-size:17px;color:var(--ink)}
+.wordmark .glyph{width:26px;height:26px;border-radius:var(--r-md);background:var(--primary);position:relative;box-shadow:0 0 18px rgba(26,38,255,.7)}
+.wordmark .glyph::after{content:"";position:absolute;inset:7px;border-radius:3px;background:var(--ink)}
+.nav-menu{display:flex;gap:var(--s-lg);list-style:none}
+.nav-menu a{font-size:14px;font-weight:500;color:var(--body)}
+.nav-menu a.active{color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--s-sm)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:500;border:none;cursor:pointer;border-radius:var(--r-md);height:40px;padding:10px 18px;font-family:var(--font-sans)}
+.btn-primary{background:var(--primary);color:var(--on-primary);box-shadow:0 0 24px rgba(26,38,255,.35)}
+.btn-primary:active{background:var(--primary-active)}
+.btn-secondary{background:var(--surface-card-elevated);color:var(--body-strong)}
+.btn-outline{background:transparent;color:var(--body-strong);border:1px solid var(--hairline-strong)}
+.btn-tertiary{background:transparent;color:var(--body)}
+.search-input{display:flex;align-items:center;gap:8px;background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);height:40px;padding:10px 16px;width:220px;font-size:14px;color:var(--muted)}
+.search-input input{border:none;background:transparent;outline:none;font:inherit;width:100%;color:var(--ink)}
+.icon-dot{position:relative;width:40px;height:40px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;background:transparent;cursor:pointer}
+.icon-dot svg{width:19px;height:19px;stroke:var(--body);fill:none;stroke-width:1.6}
+.icon-dot .dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:var(--r-pill);background:var(--primary-glow)}
+/* ── Hero with spotlight glow ── */
+.hero{position:relative;padding:var(--s-section) 0 var(--s-xl);overflow:hidden;text-align:center}
+.hero::before{content:"";position:absolute;left:50%;top:-140px;transform:translateX(-50%);width:900px;height:560px;background:radial-gradient(ellipse at center,rgba(26,38,255,.28) 0%,rgba(26,38,255,.10) 38%,transparent 68%);pointer-events:none}
+.hero .wrap{position:relative}
+.badge-pill{display:inline-flex;align-items:center;gap:8px;background:var(--surface-card-elevated);color:var(--body-strong);font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;border-radius:var(--r-pill);padding:4px 10px}
+.hero h1{font-size:56px;font-weight:500;letter-spacing:-1.68px;line-height:1.05;color:var(--ink);margin:var(--s-lg) 0 var(--s-base)}
+.hero p.sub{color:var(--body);max-width:56ch;margin:0 auto var(--s-xl)}
+.hero-actions{display:flex;gap:var(--s-sm);justify-content:center;margin-bottom:var(--s-xxl)}
+/* terminal mockup 2×2 */
+.term-grid{background:var(--canvas-deep);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-xl);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-base);text-align:left;position:relative}
+.term-pane{background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-lg);padding:var(--s-md)}
+.term-pane h5{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.term-pane pre{font-family:var(--font-mono);font-size:13px;line-height:1.5;color:var(--body);white-space:pre-wrap}
+.tk{color:var(--accent-cyan)} .ts{color:#8fd3a8} .tc{color:var(--muted-soft)} .tb{color:#9fb0ff}
+/* ── Chips ── */
+.chips{padding:var(--s-xl) 0 0;display:flex;gap:var(--s-sm);flex-wrap:wrap}
+.chip{border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r-md);height:36px;padding:8px 14px;font-size:13px;font-weight:500;color:var(--body);cursor:pointer;font-family:var(--font-sans)}
+.chip.on{background:var(--surface-card-elevated);color:var(--ink);border-color:var(--hairline-strong)}
+/* ── Toolkit grid ── */
+.section{padding:var(--s-xxl) 0 0}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-lg)}
+.section-head h2{font-size:32px;font-weight:500;letter-spacing:-.96px;color:var(--ink)}
+.section-head a{font-size:14px;font-weight:500;color:var(--body);border-bottom:1px solid var(--hairline-strong)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-base)}
+.toolkit-card{background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-lg);padding:var(--s-md);display:flex;flex-direction:column;gap:10px;transition:border-color .15s}
+.toolkit-card:hover{border-color:var(--hairline-strong)}
+.tk-top{display:flex;align-items:center;justify-content:space-between}
+.toolkit-icon{width:40px;height:40px;border-radius:var(--r-md);background:var(--surface-card-elevated);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:var(--ink)}
+.tag{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border-radius:var(--r-pill);padding:3px 8px;background:var(--surface-card-elevated);color:var(--body)}
+.tag.hot{color:var(--accent-cyan)}
+.toolkit-card h3{font-size:16px;font-weight:600;color:var(--ink)}
+.toolkit-card p{font-size:13px;color:var(--body)}
+.meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-top:2px}
+.meta b{color:var(--body)}
+/* ── Featured detail ── */
+.featured{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--s-base);align-items:stretch}
+.feat-panel{position:relative;background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-xl);padding:var(--s-xxl);overflow:hidden}
+.feat-panel::before{content:"";position:absolute;left:30%;bottom:-180px;width:480px;height:380px;background:radial-gradient(ellipse at center,rgba(26,38,255,.22),transparent 70%);pointer-events:none}
+.feat-panel .badge-pill{margin-bottom:var(--s-base)}
+.feat-panel h3{font-size:32px;font-weight:500;letter-spacing:-.96px;color:var(--ink);position:relative}
+.feat-panel .desc{color:var(--body);margin:var(--s-sm) 0 var(--s-lg);max-width:52ch;position:relative}
+.code-block{background:var(--canvas-deep);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-md);position:relative}
+.code-block pre{font-family:var(--font-mono);font-size:13px;line-height:1.5;color:var(--body)}
+.feat-stats{display:flex;gap:var(--s-xl);margin-top:var(--s-lg);position:relative}
+.feat-stats div b{display:block;font-family:var(--font-mono);font-size:18px;color:var(--ink)}
+.feat-stats div span{font-size:12px;color:var(--muted)}
+/* install card */
+.install{background:var(--surface-card);border:1px solid var(--hairline-soft);border-radius:var(--r-xl);padding:var(--s-xl);display:flex;flex-direction:column;gap:var(--s-base)}
+.install h3{font-size:18px;font-weight:600;color:var(--ink)}
+.field label{display:block;font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.text-input{width:100%;height:44px;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:12px 16px;font:inherit;font-size:14px;color:var(--ink);background:var(--surface-card);outline:none}
+.text-input:focus{border-color:var(--primary-glow)}
+.qty{display:flex;align-items:center;border:1px solid var(--hairline-strong);border-radius:var(--r-md);height:44px}
+.qty button{width:44px;height:100%;border:none;background:transparent;font-size:16px;color:var(--body);cursor:pointer}
+.qty span{flex:1;text-align:center;font-family:var(--font-mono);font-size:14px;color:var(--ink)}
+.opt-row{display:flex;gap:var(--s-sm)}
+.opt{flex:1;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:9px;font-size:13px;font-weight:500;color:var(--body);text-align:center;cursor:pointer}
+.opt.on{border-color:var(--primary-glow);color:var(--ink);background:rgba(26,38,255,.08)}
+.review{border-top:1px solid var(--hairline-soft);padding-top:var(--s-base)}
+.review p{font-size:14px;color:var(--body)}
+.review .who{font-size:12px;color:var(--muted);margin-top:6px}
+/* ── Cart / checkout summary ── */
+.checkout-band{margin-top:var(--s-xxl);background:var(--surface-card);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);padding:var(--s-xxl) 0}
+.checkout-grid{display:grid;grid-template-columns:1fr 400px;gap:var(--s-base);align-items:start}
+.cart-items{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-lg) var(--s-xl)}
+.cart-row{display:flex;align-items:center;gap:var(--s-base);padding:var(--s-base) 0;border-bottom:1px solid var(--hairline-soft)}
+.cart-row:last-child{border-bottom:none}
+.cart-row .toolkit-icon{width:36px;height:36px;font-size:13px}
+.cart-row .info{flex:1}
+.cart-row .info b{display:block;font-size:15px;color:var(--ink)}
+.cart-row .info span{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+.cart-row .amt{font-family:var(--font-mono);font-size:14px;color:var(--ink)}
+.cart-row .rm{font-size:12px;color:var(--body);background:none;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:5px 10px;cursor:pointer;font-family:var(--font-sans)}
+.summary-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-xl)}
+.summary-card h3{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:var(--s-base)}
+.line{display:flex;justify-content:space-between;font-size:14px;color:var(--body);padding:6px 0}
+.line .mono{font-family:var(--font-mono);color:var(--ink)}
+.line.total{border-top:1px solid var(--hairline);margin-top:var(--s-sm);padding-top:var(--s-base);font-size:16px;color:var(--ink);font-weight:600}
+.summary-card .btn{width:100%;margin-top:var(--s-base)}
+.fineprint{font-size:12px;color:var(--muted);margin-top:var(--s-sm);text-align:center}
+/* ── CTA band + footer ── */
+.cta-band{position:relative;padding:var(--s-section) 0;text-align:center;overflow:hidden}
+.cta-band::before{content:"";position:absolute;left:50%;bottom:-220px;transform:translateX(-50%);width:760px;height:440px;background:radial-gradient(ellipse at center,rgba(26,38,255,.25),transparent 70%);pointer-events:none}
+.cta-band h2{font-size:44px;font-weight:500;letter-spacing:-1.32px;color:var(--ink);position:relative;margin-bottom:var(--s-lg)}
+.cta-band .btn{position:relative}
+footer{border-top:1px solid var(--hairline-soft);padding:64px 0 0}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--s-xl);padding-bottom:var(--s-xxl)}
+.foot-brand p{font-size:14px;color:var(--body);max-width:34ch;margin:var(--s-base) 0}
+.news{display:flex;gap:var(--s-sm)}
+.news input{flex:1;height:40px;border:1px solid var(--hairline-strong);border-radius:var(--r-md);padding:10px 14px;font:inherit;font-size:14px;outline:none;background:var(--surface-card);color:var(--ink)}
+.news input:focus{border-color:var(--primary-glow)}
+.foot-grid h5{font-size:11px;font-weight:600;letter-spacing:.88px;text-transform:uppercase;color:var(--muted);margin-bottom:var(--s-base)}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot-grid ul a{font-size:14px;color:var(--body)}
+.legal{border-top:1px solid var(--hairline-soft);padding:var(--s-base) 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-base)}
+.legal span,.legal a{font-size:13px;color:var(--muted)}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:var(--r-md);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center}
+.socials svg{width:16px;height:16px;fill:var(--body)}
+@media (max-width:960px){
+  .grid{grid-template-columns:1fr 1fr}
+  .featured,.checkout-grid{grid-template-columns:1fr}
+  .nav-menu{display:none}
+  .hero h1{font-size:36px}
+  .term-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Top nav -->
+<header class="topnav">
+  <div class="wrap">
+    <a class="wordmark" href="#"><span class="glyph"></span>composio</a>
+    <ul class="nav-menu">
+      <li><a href="#" class="active">Marketplace</a></li>
+      <li><a href="#">Toolkits</a></li>
+      <li><a href="#">Docs</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Changelog</a></li>
+    </ul>
+    <div class="nav-right">
+      <label class="search-input">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="text" placeholder="Search 250+ toolkits">
+      </label>
+      <button class="icon-dot" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <a class="btn btn-tertiary" href="#">Sign in</a>
+      <a class="btn btn-primary" href="#">Get started</a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero with spotlight glow + terminal mockup -->
+<section class="hero">
+  <div class="wrap">
+    <span class="badge-pill">● Marketplace · 250+ managed toolkits</span>
+    <h1>Give your agents<br>every tool they need.</h1>
+    <p class="sub">Browse authenticated integrations for GitHub, Slack, Stripe, Notion and 250 more. One SDK call each — OAuth, triggers and actions included.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#browse">Browse toolkits</a>
+      <a class="btn btn-outline" href="#">Read the docs</a>
+    </div>
+    <div class="term-grid">
+      <div class="term-pane">
+        <h5>Install — terminal</h5>
+        <pre><span class="tc">$</span> pip install composio-core
+<span class="tc">$</span> composio add github slack stripe
+<span class="tk">✓</span> 3 toolkits linked to <span class="tb">agent-prod</span></pre>
+      </div>
+      <div class="term-pane">
+        <h5>Agent action — python</h5>
+        <pre><span class="tk">from</span> composio_openai <span class="tk">import</span> Action
+tools = [<span class="ts">"GITHUB_CREATE_ISSUE"</span>,
+         <span class="ts">"SLACK_SEND_MESSAGE"</span>]
+result = agent.execute(
+    action=<span class="ts">"GITHUB_STAR_REPO"</span>,
+    params={<span class="ts">"repo"</span>: <span class="ts">"acme/api"</span>})</pre>
+      </div>
+      <div class="term-pane">
+        <h5>Trigger event</h5>
+        <pre><span class="tb">github.pr.opened</span> → acme/api <span class="tc">#482</span>
+author: <span class="ts">@mira</span> · +412 −38
+<span class="tk">→</span> dispatched to agent <span class="tb">reviewer-v2</span></pre>
+      </div>
+      <div class="term-pane">
+        <h5>Run output</h5>
+        <pre><span class="tk">✓</span> issue created <span class="tc">#1043</span> <span class="ts">"Flaky auth test"</span>
+<span class="tk">✓</span> slack alert → <span class="ts">#eng-alerts</span>
+latency <span class="tb">412ms</span> · cost <span class="tb">$0.0031</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filter chips -->
+<div class="wrap chips" id="browse">
+  <button class="chip on">All</button>
+  <button class="chip">Dev tools</button>
+  <button class="chip">Communication</button>
+  <button class="chip">Payments</button>
+  <button class="chip">Productivity</button>
+  <button class="chip">CRM</button>
+  <button class="chip">Data &amp; AI</button>
+  <button class="chip">New this week</button>
+</div>
+
+<!-- Toolkit grid -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Popular toolkits</h2>
+      <a href="#">View all 250+ →</a>
+    </div>
+    <div class="grid">
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">⌥</span><span class="tag hot">Trending</span></div>
+        <h3>GitHub</h3>
+        <p>Issues, PRs, reviews, releases and webhooks with managed OAuth apps.</p>
+        <div class="meta"><b>42 actions</b> · ★ 12.4k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">#</span><span class="tag">Popular</span></div>
+        <h3>Slack</h3>
+        <p>Send messages, threads, reminders and read channel history as a bot.</p>
+        <div class="meta"><b>28 actions</b> · ★ 9.1k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">S</span><span class="tag">Popular</span></div>
+        <h3>Stripe</h3>
+        <p>Charge, refund, create customers and reconcile payments in one call.</p>
+        <div class="meta"><b>36 actions</b> · ★ 7.8k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">N</span><span class="tag">New</span></div>
+        <h3>Notion</h3>
+        <p>Create and update pages, query databases, sync docs to your agent.</p>
+        <div class="meta"><b>22 actions</b> · ★ 6.2k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">L</span><span class="tag hot">Trending</span></div>
+        <h3>Linear</h3>
+        <p>Triage issues, cycle planning and project updates on autopilot.</p>
+        <div class="meta"><b>19 actions</b> · ★ 5.5k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">✉</span><span class="tag">Popular</span></div>
+        <h3>Gmail</h3>
+        <p>Draft, label and send email; turn threads into structured tasks.</p>
+        <div class="meta"><b>24 actions</b> · ★ 8.3k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">▤</span><span class="tag">New</span></div>
+        <h3>Postgres</h3>
+        <p>Parameterized reads and writes with row-level scoping per agent.</p>
+        <div class="meta"><b>15 actions</b> · ★ 4.0k</div>
+      </article>
+      <article class="toolkit-card">
+        <div class="tk-top"><span class="toolkit-icon">◈</span><span class="tag">New</span></div>
+        <h3>Jira</h3>
+        <p>Create tickets, sprint reports and status syncs for enterprise teams.</p>
+        <div class="meta"><b>31 actions</b> · ★ 3.7k</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Featured toolkit detail + install panel -->
+<section class="section">
+  <div class="wrap">
+    <div class="featured">
+      <div class="feat-panel">
+        <span class="badge-pill">Toolkit of the month</span>
+        <h3>GitHub</h3>
+        <p class="desc">The most complete GitHub integration for agents: managed OAuth apps, fine-grained token scoping, PR review triggers, and 42 typed actions your agent can call directly.</p>
+        <div class="code-block">
+<pre><span class="tc">// one call to authorize a whole org</span>
+composio.toolkits.link(<span class="ts">"github"</span>, {
+  scope: <span class="ts">"repo, issues:write"</span>,
+  account: <span class="ts">"acme"</span>
+})</pre>
+        </div>
+        <div class="feat-stats">
+          <div><b>12,418</b><span>orgs connected</span></div>
+          <div><b>99.98%</b><span>webhook uptime</span></div>
+          <div><b>42</b><span>typed actions</span></div>
+        </div>
+      </div>
+      <aside class="install">
+        <h3>Install toolkit</h3>
+        <div class="field">
+          <label>WORKSPACE</label>
+          <input class="text-input" type="text" value="agent-prod">
+        </div>
+        <div class="field">
+          <label>SEATS</label>
+          <div class="qty">
+            <button aria-label="Decrease">−</button>
+            <span>5 developers</span>
+            <button aria-label="Increase">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>PLAN</label>
+          <div class="opt-row">
+            <div class="opt on">Free</div>
+            <div class="opt">Pro</div>
+            <div class="opt">Enterprise</div>
+          </div>
+        </div>
+        <button class="btn btn-primary">Link to workspace</button>
+        <div class="review">
+          <p>“Replaced ~600 lines of OAuth glue with one toolkit link. Our review agent shipped the same afternoon.”</p>
+          <div class="who">— Priya S., platform engineer at Nimbus Labs</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Checkout summary -->
+<section class="checkout-band">
+  <div class="wrap checkout-grid">
+    <div class="cart-items">
+      <div class="section-head" style="margin-bottom:var(--s-xs)"><h2 style="font-size:24px;color:var(--ink)">Workspace cart</h2><a href="#">Edit</a></div>
+      <div class="cart-row">
+        <span class="toolkit-icon">⌥</span>
+        <div class="info"><b>GitHub — Pro</b><span>5 seats · billed monthly</span></div>
+        <span class="amt">$50.00</span>
+        <button class="rm">Remove</button>
+      </div>
+      <div class="cart-row">
+        <span class="toolkit-icon">S</span>
+        <div class="info"><b>Stripe — Pro</b><span>5 seats · billed monthly</span></div>
+        <span class="amt">$50.00</span>
+        <button class="rm">Remove</button>
+      </div>
+      <div class="cart-row">
+        <span class="toolkit-icon">N</span>
+        <div class="info"><b>Notion — Free</b><span>community plan</span></div>
+        <span class="amt">$0.00</span>
+        <button class="rm">Remove</button>
+      </div>
+    </div>
+    <aside class="summary-card">
+      <h3>Checkout</h3>
+      <div class="line"><span>Subtotal</span><span class="mono">$100.00</span></div>
+      <div class="line"><span>Platform fee</span><span class="mono">$0.00</span></div>
+      <div class="line"><span>Tax (est. 8.875%)</span><span class="mono">$8.88</span></div>
+      <div class="line"><span>Seats</span><span>5 · agent-prod</span></div>
+      <div class="line total"><span>Total / month</span><span class="mono">$108.88</span></div>
+      <button class="btn btn-primary">Confirm subscription</button>
+      <p class="fineprint">Usage beyond 10M actions billed at $0.002 each.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- CTA band -->
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Ship your first agent<br>action in five minutes.</h2>
+    <a class="btn btn-primary" href="#">Create free workspace</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="wordmark" href="#"><span class="glyph"></span>composio</a>
+        <p>Monthly changelog and new toolkit drops. No marketing noise, just the diff.</p>
+        <form class="news" onsubmit="return false">
+          <input type="email" placeholder="dev@company.com">
+          <button class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="#">Marketplace</a></li><li><a href="#">Triggers</a></li><li><a href="#">Auth</a></li><li><a href="#">Pricing</a></li></ul></div>
+      <div><h5>Developers</h5><ul><li><a href="#">Docs</a></li><li><a href="#">API reference</a></li><li><a href="#">SDKs</a></li><li><a href="#">Status</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Security</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">DPA</a></li><li><a href="#">SOC 2</a></li></ul></div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Composio Inc. · SOC 2 Type II · All systems operational</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.2l7.3-8.3L1 2h6.4l4.4 5.9L18.9 2zm-1.1 18h1.7L7.3 3.8H5.5L17.8 20z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg></a>
+        <a href="#" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0015.6 3l-.4.8a18 18 0 00-6.4 0L8.4 3a19.8 19.8 0 00-4.7 1.5A20.4 20.4 0 00.4 18.1a20 20 0 006 3l.8-1.3a13 13 0 01-2-1l.5-.4a14.2 14.2 0 0012.6 0l.5.4a13 13 0 01-2 1l.8 1.3a20 20 0 006-3 20.3 20.3 0 00-3.3-13.7zM8.3 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4zm7.4 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

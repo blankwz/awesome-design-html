@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dell — Build Your Own Computer. Online.</title>
+<style>
+:root{
+  --primary:#e91d2a; --on-primary:#ffffff; --canvas:#ffffff; --ink:#000000; --frame-ink:#000000;
+  --yellow-sticker:#fcc20f; --purple-stripe:#6a26a4; --link:#0000ee;
+  --tint-olive:#8e8a25; --tint-sage:#b3bd95; --tint-salmon:#d77a7a; --tint-peach:#e6915d;
+  --tint-lime:#c0d4a7; --tint-sky:#9ab6c8; --tint-steel:#a5b8c0; --tint-periwinkle:#8c9ae0;
+  --s-xxs:2px; --s-xs:4px; --s-s:6px; --s-sm:8px; --s-m:10px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-xxl:24px;
+  --f-display:'Arial Black',Arial,Helvetica,system-ui,sans-serif;
+  --f-ui:Helvetica,Arial,system-ui,sans-serif;
+  --f-body:'Times New Roman',Times,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffffff;font-family:var(--f-body);color:var(--ink);font-size:14px;line-height:1.4}
+a{color:var(--link);text-decoration:underline}
+img,svg{display:block}
+/* ── Page frame: the literal black border ── */
+.page-frame{border:8px solid var(--frame-ink);max-width:960px;margin:16px auto;background:var(--canvas)}
+/* ── Top banner ── */
+.top-banner{background:var(--frame-ink);color:var(--canvas);padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.banner-title{font-family:var(--f-ui);font-weight:700;font-size:16px;letter-spacing:.5px;text-transform:uppercase}
+.banner-sub{font-family:var(--f-body);font-size:12px;color:#cccccc}
+.phone-callout{margin-left:auto;font-family:var(--f-ui);font-weight:700;font-size:16px;color:var(--primary);background:var(--frame-ink);padding:4px 8px}
+.buy-sticker{background:var(--yellow-sticker);color:var(--ink);border:1px solid var(--frame-ink);font-family:var(--f-ui);font-weight:700;font-size:12px;text-transform:uppercase;padding:4px 8px;text-decoration:none;box-shadow:2px 2px 0 #000}
+.buy-sticker .a{color:var(--purple-stripe);font-size:11px}
+/* ── Nav bar ── */
+.nav-row{display:flex;border-bottom:2px solid var(--frame-ink);background:var(--canvas)}
+.nav-row a{flex:1;text-align:center;font-family:var(--f-ui);font-weight:700;font-size:12px;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:8px 4px;border-right:1px solid var(--frame-ink)}
+.nav-row a:last-child{border-right:none}
+.nav-row a.here{background:var(--tint-steel)}
+/* ── Layout: left rail + main ── */
+.cols{display:flex;gap:16px;padding:16px}
+.rail{width:200px;flex:none;display:flex;flex-direction:column;gap:12px}
+.main{flex:1;min-width:0}
+/* ── Icon-link grid on rail ── */
+.icon-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;border:1px solid var(--frame-ink);padding:8px}
+.icon-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;text-decoration:none;color:var(--ink)}
+.icon-item .box{width:34px;height:34px;border:1px solid var(--frame-ink);display:flex;align-items:center;justify-content:center;font-family:var(--f-ui);font-weight:700;font-size:13px}
+.icon-item span{font-family:var(--f-ui);font-weight:700;font-size:10px;text-transform:uppercase;text-align:center}
+/* ── Red CTA panel (one per page) ── */
+.cta-block-red{background:var(--primary);color:var(--on-primary);border:1px solid var(--frame-ink);padding:16px;font-size:14px}
+.cta-block-red b{font-family:var(--f-ui);font-size:14px;display:block;margin-bottom:6px;text-transform:uppercase}
+.cta-block-red a{color:var(--yellow-sticker)}
+/* ── Cert seal ── */
+.cert-seal{width:64px;height:64px;border-radius:9999px;background:var(--primary);color:var(--canvas);border:2px solid var(--frame-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:var(--f-ui);font-weight:700;font-size:8px;letter-spacing:.5px;margin:0 auto;box-shadow:2px 2px 0 #000}
+.cert-seal b{font-size:10px}
+/* ── Search box ── */
+.search-box{border:1px solid var(--frame-ink);padding:8px}
+.search-box h4{font-family:var(--f-ui);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.search-box input{width:100%;border:1px solid var(--frame-ink);font-family:var(--f-body);font-size:14px;padding:4px 6px;margin-bottom:6px}
+.btn{display:inline-block;font-family:var(--f-ui);font-weight:700;font-size:12px;text-transform:uppercase;border:1px solid var(--frame-ink);padding:6px 16px;cursor:pointer;text-decoration:none;text-align:center}
+.btn-black{background:var(--frame-ink);color:var(--on-primary)}
+.btn-white{background:var(--canvas);color:var(--ink)}
+/* ── Section eyebrow ── */
+.eyebrow{background:var(--tint-olive);padding:16px;font-family:var(--f-display);font-size:28px;font-weight:900;line-height:1;text-transform:uppercase;border:1px solid var(--frame-ink);margin-bottom:12px}
+/* ── Filter chips (era: plain bordered toggles) ── */
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--frame-ink);background:var(--canvas);font-family:var(--f-ui);font-weight:700;font-size:11px;text-transform:uppercase;padding:4px 10px;cursor:pointer}
+.chip.on{background:var(--yellow-sticker)}
+/* ── Product grid of ribbon cards ── */
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.ribbon{border:1px solid var(--frame-ink);background:var(--canvas)}
+.ribbon-title{background:var(--canvas);border-bottom:1px solid var(--frame-ink);padding:6px 12px;font-family:var(--f-ui);font-weight:700;font-size:14px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.ribbon-title .price{font-family:var(--f-body);font-weight:400;font-size:13px}
+.ribbon-body{padding:12px 16px;display:flex;gap:12px;align-items:center;position:relative}
+.ribbon-body .txt{flex:1;min-width:0}
+.ribbon-body .txt p{font-size:14px}
+.ribbon-body .txt p b{font-family:var(--f-ui);font-size:12px}
+.ribbon-body .buy-line{margin-top:8px;display:flex;gap:8px;align-items:center}
+.new-burst{position:absolute;top:-10px;right:-8px;background:var(--yellow-sticker);border:1px solid var(--frame-ink);font-family:var(--f-ui);font-weight:700;font-size:12px;padding:4px 8px;transform:rotate(12deg);box-shadow:2px 2px 0 #000;z-index:2}
+/* beveled product photo art */
+.photo-notch{width:110px;flex:none;border:1px solid var(--frame-ink);background:#dfe4e8;box-shadow:3px 3px 0 #000;display:flex;align-items:center;justify-content:center;padding:8px}
+/* ── Featured configure panel ── */
+.featured{border:1px solid var(--frame-ink);margin-bottom:16px}
+.featured .ft-title{background:var(--tint-peach);padding:16px;font-family:var(--f-display);font-size:24px;font-weight:900;text-transform:uppercase;line-height:1.05;border-bottom:1px solid var(--frame-ink)}
+.featured-grid{display:grid;grid-template-columns:1fr 1fr 240px;gap:0}
+.ft-photo{border-right:1px solid var(--frame-ink);padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
+.ft-photo .hero-shot{width:170px}
+.gal-thumbs{display:flex;gap:8px}
+.thumb{width:52px;height:40px;border:1px solid var(--frame-ink);background:#dfe4e8;display:flex;align-items:center;justify-content:center;font-family:var(--f-ui);font-weight:700;font-size:10px;cursor:pointer}
+.thumb.on{background:var(--yellow-sticker)}
+.ft-opts{border-right:1px solid var(--frame-ink);padding:16px}
+.ft-opts h4{font-family:var(--f-ui);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.opt-list{list-style:none;margin-bottom:12px}
+.opt-list li{border:1px solid var(--frame-ink);margin-bottom:4px}
+.opt-list label{display:flex;align-items:center;gap:8px;padding:6px 8px;font-family:var(--f-body);font-size:13px;cursor:pointer}
+.opt-list li.on{background:var(--tint-lime)}
+.qty-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.qty-row input{width:56px;border:1px solid var(--frame-ink);font-family:var(--f-body);font-size:14px;padding:4px 6px;text-align:center}
+.ft-buy{padding:16px;background:var(--canvas)}
+.ft-buy .big-price{font-family:var(--f-display);font-size:28px;font-weight:900;line-height:1;margin-bottom:4px}
+.ft-buy .was{font-size:12px;color:#444;margin-bottom:10px}
+.ft-buy .btn{display:block;width:100%;margin-bottom:8px}
+.ft-buy .note{font-size:11px;line-height:1.35}
+/* ── Order summary ── */
+.summary{border:1px solid var(--frame-ink);margin-bottom:16px}
+.summary .sum-title{background:var(--frame-ink);color:var(--canvas);padding:6px 12px;font-family:var(--f-ui);font-weight:700;font-size:14px;text-transform:uppercase}
+table.cart{width:100%;border-collapse:collapse}
+table.cart th{font-family:var(--f-ui);font-size:11px;font-weight:700;text-transform:uppercase;text-align:left;padding:6px 12px;border-bottom:1px solid var(--frame-ink);background:var(--tint-steel)}
+table.cart td{font-size:13px;padding:8px 12px;border-bottom:1px solid var(--frame-ink)}
+table.cart td.num,table.cart th.num{text-align:right}
+table.cart tr.total td{font-family:var(--f-ui);font-weight:700;font-size:14px;background:var(--tint-lime)}
+/* ── Footer ── */
+.footer-band{border-top:1px solid var(--frame-ink);padding:16px;text-align:center}
+.icon-nav{display:flex;justify-content:center;align-items:flex-start;gap:0;margin-bottom:16px}
+.icon-nav .item{width:170px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px}
+.icon-nav .item .box{width:40px;height:40px;border:1px solid var(--frame-ink);background:var(--canvas);display:flex;align-items:center;justify-content:center;font-family:var(--f-ui);font-weight:700;font-size:15px;box-shadow:2px 2px 0 #000}
+.icon-nav .item .box.y{background:var(--yellow-sticker)}
+.icon-nav .item span{font-family:var(--f-ui);font-weight:700;font-size:11px;text-transform:uppercase}
+.green-rule{height:2px;background:#1d7a3a;margin:0 24px 16px}
+.footer-band .legal{font-size:11px;line-height:1.35;color:#222}
+@media (max-width:960px){
+  .page-frame{margin:8px;border-width:4px}
+  .cols{flex-direction:column}
+  .rail{width:100%;flex-direction:row;flex-wrap:wrap}
+  .rail>*{flex:1;min-width:180px}
+  .featured-grid{grid-template-columns:1fr 1fr}
+  .ft-opts{border-right:none;border-top:1px solid var(--frame-ink)}
+  .prod-grid{grid-template-columns:1fr}
+  .icon-nav .item{width:25%}
+}
+</style>
+</head>
+<body>
+
+<div class="page-frame">
+
+  <!-- Top banner -->
+  <header class="top-banner">
+    <div>
+      <div class="banner-title">Build your own computer. Online.</div>
+      <div class="banner-sub">Dell Computer Corporation — Direct from the manufacturer, priced in real time.</div>
+    </div>
+    <div class="phone-callout">1-800-213-DELL</div>
+    <a class="buy-sticker" href="#order">BUY <span class="a">a</span> DELL</a>
+  </header>
+
+  <!-- Nav row -->
+  <nav class="nav-row">
+    <a href="#" class="here">Store</a>
+    <a href="#">Notebooks</a>
+    <a href="#">Desktops</a>
+    <a href="#">Servers</a>
+    <a href="#">Dellware</a>
+    <a href="#">Support</a>
+    <a href="#order">Order Status</a>
+  </nav>
+
+  <div class="cols">
+    <!-- Left rail -->
+    <aside class="rail">
+      <div class="icon-grid">
+        <a class="icon-item" href="#"><span class="box">🔍</span><span>Find</span></a>
+        <a class="icon-item" href="#"><span class="box">H</span><span>Home</span></a>
+        <a class="icon-item" href="#order"><span class="box" style="background:var(--yellow-sticker)">$</span><span>Online Store</span></a>
+        <a class="icon-item" href="#"><span class="box">🔧</span><span>Service</span></a>
+        <a class="icon-item" href="#"><span class="box">★</span><span>Why Dell?</span></a>
+        <a class="icon-item" href="#"><span class="box">G</span><span>Government</span></a>
+        <a class="icon-item" href="#"><span class="box">W</span><span>Worldwide</span></a>
+        <a class="icon-item" href="#"><span class="box">i</span><span>Company</span></a>
+      </div>
+
+      <div class="cta-block-red">
+        <b>At Dell.com, we'll help you find the right system.</b>
+        Configure it, price it, and order it — all online, all at direct prices. Or call <b>1-800-213-DELL</b> and a systems advisor will build it with you.
+        <p style="margin-top:8px"><a href="#configure">Start configuring »</a></p>
+      </div>
+
+      <div class="search-box">
+        <h4>Search this store</h4>
+        <input type="text" placeholder="e.g. Latitude">
+        <a class="btn btn-black" href="#">GO</a>
+      </div>
+
+      <div class="cert-seal">
+        <b>PC MAGAZINE</b>
+        <span>READERS'</span>
+        <span>CHOICE</span>
+        <span>1996</span>
+      </div>
+    </aside>
+
+    <!-- Main column -->
+    <main class="main">
+
+      <!-- Eyebrow + chips -->
+      <div class="eyebrow">Dimension desktops</div>
+      <div class="chip-row">
+        <button class="chip on">All systems</button>
+        <button class="chip">Under $1,500</button>
+        <button class="chip">Multimedia</button>
+        <button class="chip">For business</button>
+        <button class="chip">In stock</button>
+      </div>
+
+      <!-- Ribbon card grid -->
+      <div class="prod-grid">
+        <article class="ribbon">
+          <div class="ribbon-title">Dimension XPS P166s <span class="price">$2,499</span></div>
+          <div class="ribbon-body" style="background:var(--tint-steel)">
+            <span class="new-burst">NEW!</span>
+            <div class="txt">
+              <p><b>OUR FASTEST DESKTOP.</b> 166MHz Pentium, 32MB RAM, 2.1GB hard drive, 8X CD-ROM, 28.8 modem.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#configure">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="8" y="4" width="74" height="50" fill="#2c3a44" stroke="#000"/>
+                <rect x="13" y="9" width="64" height="40" fill="#9fd8c8"/>
+                <rect x="26" y="56" width="38" height="6" fill="#3a4a55" stroke="#000"/>
+                <rect x="12" y="62" width="66" height="4" fill="#2c3a44" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">Dimension P133v <span class="price">$1,899</span></div>
+          <div class="ribbon-body" style="background:var(--tint-peach)">
+            <div class="txt">
+              <p><b>MULTIMEDIA VALUE.</b> 133MHz Pentium, 16MB RAM, 1.6GB hard drive, 6X CD-ROM, sound card and speakers.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#configure">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="8" y="4" width="74" height="50" fill="#2c3a44" stroke="#000"/>
+                <rect x="13" y="9" width="64" height="40" fill="#c8e0f8"/>
+                <rect x="26" y="56" width="38" height="6" fill="#3a4a55" stroke="#000"/>
+                <rect x="12" y="62" width="66" height="4" fill="#2c3a44" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">OptiPlex GX Pro <span class="price">$2,899</span></div>
+          <div class="ribbon-body" style="background:var(--tint-salmon)">
+            <div class="txt">
+              <p><b>BUSINESS WORKHORSE.</b> 200MHz Pentium Pro, 32MB RAM, 2.5GB SCSI drive, network-ready with 3Com card.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="20" y="4" width="50" height="58" fill="#3a4a55" stroke="#000"/>
+                <rect x="24" y="9" width="42" height="8" fill="#c0cdd6" stroke="#000"/>
+                <rect x="24" y="20" width="42" height="8" fill="#c0cdd6" stroke="#000"/>
+                <rect x="24" y="31" width="42" height="8" fill="#9fb0bc" stroke="#000"/>
+                <circle cx="58" cy="52" r="4" fill="#7ec87e" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">OptiPlex Gs <span class="price">$1,549</span></div>
+          <div class="ribbon-body" style="background:var(--tint-peach)">
+            <div class="txt">
+              <p><b>NETWORK-READY VALUE.</b> 133MHz Pentium, 16MB RAM, 1.6GB drive, integrated Ethernet and managed-PC support.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="20" y="4" width="50" height="58" fill="#3a4a55" stroke="#000"/>
+                <rect x="24" y="9" width="42" height="14" fill="#c0cdd6" stroke="#000"/>
+                <rect x="24" y="26" width="42" height="14" fill="#9fb0bc" stroke="#000"/>
+                <circle cx="58" cy="52" r="4" fill="#7ec87e" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">Latitude XPi P133 <span class="price">$2,799</span></div>
+          <div class="ribbon-body" style="background:var(--tint-sage)">
+            <div class="txt">
+              <p><b>NOTEBOOK, FULL POWER.</b> 133MHz Pentium, 24MB RAM, 1.3GB drive, 11.3" active-matrix color display.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="14" y="10" width="62" height="42" rx="2" fill="#3a4a55" stroke="#000"/>
+                <rect x="18" y="14" width="54" height="32" fill="#a8d0e8"/>
+                <path d="M8 54 L82 54 L88 62 L2 62 Z" fill="#4a5a65" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">Inspira 3000 <span class="price">$1,999</span></div>
+          <div class="ribbon-body" style="background:var(--tint-lime)">
+            <span class="new-burst">NEW!</span>
+            <div class="txt">
+              <p><b>LIGHT TRAVELER.</b> 100MHz Pentium, 16MB RAM, 810MB drive, 10.4" color display — 5.7 pounds with battery.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="14" y="10" width="62" height="42" rx="2" fill="#3a4a55" stroke="#000"/>
+                <rect x="18" y="14" width="54" height="32" fill="#d8e8c0"/>
+                <path d="M8 54 L82 54 L88 62 L2 62 Z" fill="#4a5a65" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">PowerEdge 4100 <span class="price">$4,299</span></div>
+          <div class="ribbon-body" style="background:var(--tint-periwinkle)">
+            <div class="txt">
+              <p><b>DEPARTMENTAL SERVER.</b> Dual 200MHz Pentium Pro, 64MB RAM, hot-plug RAID backplane, redundant power.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#">Configure</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="24" y="4" width="42" height="62" fill="#3a4a55" stroke="#000"/>
+                <rect x="28" y="8" width="34" height="10" fill="#c0cdd6" stroke="#000"/>
+                <rect x="28" y="21" width="34" height="10" fill="#c0cdd6" stroke="#000"/>
+                <rect x="28" y="34" width="34" height="10" fill="#c0cdd6" stroke="#000"/>
+                <circle cx="58" cy="56" r="4" fill="#7ec87e" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="ribbon">
+          <div class="ribbon-title">Dellware Office Pack <span class="price">$299</span></div>
+          <div class="ribbon-body" style="background:var(--tint-sky)">
+            <div class="txt">
+              <p><b>SOFTWARE BUNDLE.</b> Office suite, virus protection, and 30 days of DellWrap on-site service — preinstalled.</p>
+              <div class="buy-line"><a class="btn btn-black" href="#order">Add to order</a><a href="#">Details »</a></div>
+            </div>
+            <div class="photo-notch">
+              <svg viewBox="0 0 90 70" width="90" height="70">
+                <rect x="20" y="10" width="50" height="50" fill="#f0ead0" stroke="#000"/>
+                <rect x="26" y="18" width="38" height="5" fill="#8c9ae0" stroke="#000"/>
+                <rect x="26" y="27" width="38" height="5" fill="#c0d4a7" stroke="#000"/>
+                <rect x="26" y="36" width="38" height="5" fill="#d77a7a" stroke="#000"/>
+                <rect x="26" y="45" width="24" height="5" fill="#e6c86a" stroke="#000"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Featured configure panel -->
+      <div class="featured" id="configure">
+        <div class="ft-title">Configure &amp; buy:<br>Dimension XPS P166s</div>
+        <div class="featured-grid">
+          <div class="ft-photo">
+            <svg class="hero-shot" viewBox="0 0 170 130" width="170" height="130">
+              <rect x="14" y="8" width="142" height="96" fill="#2c3a44" stroke="#000" stroke-width="2"/>
+              <rect x="24" y="18" width="122" height="76" fill="#9fd8c8" stroke="#000"/>
+              <rect x="28" y="22" width="114" height="10" fill="#b8e2d4"/>
+              <rect x="28" y="36" width="88" height="6" fill="#e8f6f0"/>
+              <rect x="28" y="46" width="100" height="6" fill="#e8f6f0"/>
+              <rect x="28" y="56" width="76" height="6" fill="#e8f6f0"/>
+              <rect x="28" y="70" width="108" height="20" fill="#f0f8f4" stroke="#7aa89a"/>
+              <rect x="60" y="106" width="50" height="10" fill="#3a4a55" stroke="#000"/>
+              <rect x="20" y="116" width="130" height="8" fill="#2c3a44" stroke="#000"/>
+            </svg>
+            <div class="gal-thumbs">
+              <div class="thumb on">Front</div>
+              <div class="thumb">Side</div>
+              <div class="thumb">Rear</div>
+              <div class="thumb">Desk</div>
+            </div>
+            <p style="font-size:11px;text-align:center">Tower shown with 15" <b>Trinitron</b> monitor (sold separately or bundled below).</p>
+          </div>
+
+          <div class="ft-opts">
+            <h4>Processor</h4>
+            <ul class="opt-list">
+              <li class="on"><label><input type="radio" name="cpu" checked> 166MHz Pentium — included</label></li>
+              <li><label><input type="radio" name="cpu"> 200MHz Pentium — add $300</label></li>
+            </ul>
+            <h4>Memory</h4>
+            <ul class="opt-list">
+              <li class="on"><label><input type="radio" name="ram" checked> 32MB EDO — included</label></li>
+              <li><label><input type="radio" name="ram"> 64MB EDO — add $240</label></li>
+            </ul>
+            <h4>Monitor</h4>
+            <ul class="opt-list">
+              <li class="on"><label><input type="radio" name="mon" checked> 15" Trinitron — add $329</label></li>
+              <li><label><input type="radio" name="mon"> 17" Trinitron — add $649</label></li>
+              <li><label><input type="radio" name="mon"> No monitor</label></li>
+            </ul>
+            <h4>Quantity</h4>
+            <div class="qty-row">
+              <a class="btn btn-white" href="#" style="padding:4px 10px">−</a>
+              <input type="text" value="1">
+              <a class="btn btn-white" href="#" style="padding:4px 10px">+</a>
+            </div>
+          </div>
+
+          <div class="ft-buy">
+            <div class="big-price">$2,828</div>
+            <div class="was">as configured · list $3,199 · you save $371</div>
+            <a class="btn btn-black" href="#order">Add to order</a>
+            <a class="btn btn-white" href="#">Save quote</a>
+            <p class="note">Includes 3-year limited warranty, 1-year on-site service, and 30-day money-back guarantee. Lease from $79/mo.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order summary -->
+      <div class="summary" id="order">
+        <div class="sum-title">Your online order — pending configuration</div>
+        <table class="cart">
+          <thead>
+            <tr><th>Item</th><th>Item no.</th><th class="num">Qty</th><th class="num">Each</th><th class="num">Total</th><th>Remove</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dimension XPS P166s, 200MHz / 64MB / 17" Trinitron</td><td>#XPS-P2C</td><td class="num">1</td><td class="num">$3,368</td><td class="num">$3,368</td><td><a href="#">(remove)</a></td>
+            </tr>
+            <tr>
+              <td>Dellware Office Pack, preinstalled</td><td>#DW-299</td><td class="num">1</td><td class="num">$299</td><td class="num">$299</td><td><a href="#">(remove)</a></td>
+            </tr>
+            <tr>
+              <td>Latitude XPi Carrying Case, leather</td><td>#CC-774</td><td class="num">2</td><td class="num">$59</td><td class="num">$118</td><td><a href="#">(remove)</a></td>
+            </tr>
+            <tr>
+              <td colspan="4">Shipping &amp; handling — ground, 3–5 business days</td><td class="num">$75</td><td></td>
+            </tr>
+            <tr>
+              <td colspan="4">Estimated sales tax (TX residents only)</td><td class="num">$0</td><td></td>
+            </tr>
+            <tr class="total">
+              <td colspan="4">Order total</td><td class="num">$3,860</td><td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="display:flex;gap:8px;padding:12px;align-items:center;flex-wrap:wrap">
+          <a class="btn btn-black" href="#">Proceed to secure checkout</a>
+          <a class="btn btn-white" href="#">Print this quote</a>
+          <span style="font-size:12px;margin-left:auto">Or order by phone: <b style="font-family:var(--f-ui);color:var(--primary)">1-800-213-DELL</b></span>
+        </div>
+      </div>
+
+      <!-- Footer band -->
+      <footer class="footer-band">
+        <div class="icon-nav">
+          <a class="item" href="#"><span class="box">🔍</span><span>Find</span></a>
+          <a class="item" href="#"><span class="box">H</span><span>Home</span></a>
+          <a class="item" href="#order"><span class="box y">$</span><span>Online Store</span></a>
+          <a class="item" href="#"><span class="box">🔧</span><span>Service &amp; Support</span></a>
+        </div>
+        <div class="green-rule"></div>
+        <p class="legal">
+          <a href="#">Copyright</a> 1996 Dell Computer Corporation. All rights reserved. (<a href="#">Terms of Use</a>)<br>
+          This site is best viewed with browser versions 3.0 and higher. Prices and specifications subject to change without notice.<br>
+          Dell, Dimension, OptiPlex, Latitude and PowerEdge are trademarks of Dell Computer Corporation.
+        </p>
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

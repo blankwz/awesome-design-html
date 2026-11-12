@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace Console — Sales Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ffffff; --on-primary:#000000;
+  --accent-blue:#0099ff;
+  --ink:#ffffff; --ink-muted:#999999;
+  --canvas:#090909; --surface-1:#141414; --surface-2:#1c1c1c;
+  --hairline:#262626; --hairline-soft:#1a1a1a;
+  --grad-violet:linear-gradient(135deg,#6a4cf5,#d44df0);
+  --grad-magenta:linear-gradient(135deg,#d44df0,#ff5577);
+  --grad-orange:linear-gradient(135deg,#ff7a3d,#ff5577);
+  --semantic-success:#22c55e;
+  --font:'Inter',system-ui,sans-serif;
+  --r-sm:6px; --r-md:10px; --r-lg:15px; --r-xl:20px; --r-xxl:30px; --r-pill:100px; --r-full:9999px;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:15px; --sp-lg:20px; --sp-xl:30px; --sp-xxl:40px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.4;letter-spacing:-.14px;font-feature-settings:"cv01","cv05","cv09","cv11","ss03","ss07"}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font)}
+.cap{font-size:13px;font-weight:500;letter-spacing:-.13px;color:var(--ink-muted)}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+/* ---------- sidebar ---------- */
+.side{background:var(--canvas);border-right:1px solid var(--hairline-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-brand{display:flex;align-items:center;gap:8px;padding:var(--sp-lg);font-size:18px;font-weight:600;letter-spacing:-.9px}
+.side-brand i{width:13px;height:17px;background:var(--primary);border-radius:3px;display:inline-block;font-style:normal;
+  clip-path:polygon(0 0,100% 0,100% 40%,38% 40%,38% 60%,100% 60%,100% 100%,0 100%)}
+.menu{padding:0 var(--sp-sm);display:flex;flex-direction:column;gap:2px;flex:1;overflow:auto}
+.menu-label{font-size:12px;font-weight:500;letter-spacing:-.12px;color:var(--ink-muted);margin:var(--sp-lg) var(--sp-sm) var(--sp-xxs)}
+.menu a{display:flex;align-items:center;gap:10px;padding:9px var(--sp-sm);border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--ink-muted)}
+.menu a svg{flex:none;opacity:.75}
+.menu a.on{background:var(--surface-2);color:var(--ink)}
+.cnt{margin-left:auto;font-size:12px;background:var(--surface-2);border-radius:var(--r-full);padding:2px 8px}
+.menu a.on .cnt{background:var(--grad-violet);color:#fff}
+.user-card{margin:var(--sp-sm);padding:var(--sp-sm);background:var(--surface-1);border-radius:var(--r-lg);display:flex;gap:10px;align-items:center}
+.ava{width:34px;height:34px;border-radius:var(--r-full);background:var(--grad-magenta);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff;flex:none}
+.user-card b{display:block;font-size:14px;font-weight:500}
+.user-card small{font-size:12px;color:var(--ink-muted)}
+/* ---------- topbar ---------- */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:56px;border-bottom:1px solid var(--hairline-soft);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-xl);position:sticky;top:0;background:var(--canvas);z-index:40}
+.crumb{font-size:14px;color:var(--ink-muted)} .crumb b{color:var(--ink);font-weight:500}
+.top-search{margin-left:auto;height:40px;width:280px;background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--r-md);padding:0 var(--sp-md);color:var(--ink);font-family:var(--font);font-size:14px}
+.icon-circle{width:40px;height:40px;border-radius:var(--r-full);background:var(--surface-1);border:none;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.icon-circle .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:var(--r-full);background:var(--accent-blue)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:500;border-radius:var(--r-pill);cursor:pointer;border:none;padding:10px 15px}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-secondary{background:var(--surface-1);color:var(--ink)}
+.btn-sm{padding:7px 13px;font-size:13px}
+/* ---------- content ---------- */
+.content{padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-xl)}
+.head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-lg);flex-wrap:wrap}
+.head-row h1{font-size:32px;font-weight:500;letter-spacing:-1px;line-height:1.13}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.kpi{background:var(--surface-1);border-radius:var(--r-lg);padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-xxs)}
+.kpi .cap{font-size:13px}
+.kpi .val{font-size:32px;font-weight:500;letter-spacing:-1px;line-height:1.1}
+.kpi .delta{font-size:13px}
+.up{color:var(--semantic-success)} .down{color:#ff5577}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px;margin-top:var(--sp-xs)}
+.spark i{flex:1;background:var(--surface-2);border-radius:2px}
+.spark i.hi{background:var(--grad-violet)}
+/* charts */
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--sp-md)}
+.panel{background:var(--surface-1);border-radius:var(--r-xl);padding:var(--sp-lg)}
+.panel h3{font-size:18px;font-weight:500;letter-spacing:-.4px;margin-bottom:var(--sp-xxs)}
+.panel .sub{font-size:13px;color:var(--ink-muted);margin-bottom:var(--sp-md)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-xs);height:170px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;background:var(--grad-violet);border-radius:var(--r-xs);display:block;opacity:.85}
+.bar-col.hi i{opacity:1;box-shadow:0 0 0 1px rgba(212,77,240,.4)}
+.bar-col.mute i{background:var(--surface-2)}
+.bar-col small{font-size:12px;color:var(--ink-muted)}
+.donut-wrap{display:flex;gap:var(--sp-lg);align-items:center}
+.legend{list-style:none;display:flex;flex-direction:column;gap:var(--sp-xs);font-size:14px;color:var(--ink-muted)}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{width:10px;height:10px;border-radius:var(--r-full);flex:none}
+.legend b{margin-left:auto;color:var(--ink);font-weight:500}
+/* table + activity */
+.cols{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--sp-md);align-items:start}
+table{width:100%;border-collapse:collapse}
+th{font-size:13px;font-weight:500;color:var(--ink-muted);text-align:left;padding:var(--sp-sm);border-bottom:1px solid var(--hairline-soft)}
+td{padding:var(--sp-sm);border-bottom:1px solid var(--hairline-soft);vertical-align:middle;font-size:14px;color:var(--ink-muted)}
+td b{color:var(--ink);font-weight:500}
+input[type=checkbox]{width:16px;height:16px;accent-color:#0099ff}
+.pill-badge{display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:var(--r-pill);font-size:12px;font-weight:500;background:var(--surface-2);color:var(--ink-muted)}
+.b-success{background:rgba(34,197,94,.14);color:#4ade80}
+.b-warning{background:rgba(255,122,61,.14);color:#ffa476}
+.b-danger{background:rgba(255,85,119,.14);color:#ff8ba0}
+.b-neutral{background:var(--surface-2)}
+.row-act{display:flex;gap:4px}
+.row-act button{background:var(--surface-2);border:none;color:var(--ink);height:30px;padding:0 12px;font-size:12px;font-weight:500;border-radius:var(--r-pill);cursor:pointer}
+.t-foot{display:flex;align-items:center;justify-content:space-between;padding-top:var(--sp-md);font-size:13px;color:var(--ink-muted)}
+.pager{display:flex;gap:4px}
+.pager button{min-width:32px;height:32px;border-radius:var(--r-pill);border:none;background:var(--surface-2);color:var(--ink);cursor:pointer;font-size:13px}
+.pager button.on{background:var(--primary);color:var(--on-primary)}
+/* activity */
+.feed{display:flex;flex-direction:column;gap:var(--sp-md)}
+.feed-item{display:flex;gap:10px}
+.feed-item .ava{width:30px;height:30px;font-size:11px}
+.feed-item p{font-size:14px;color:var(--ink-muted)}
+.feed-item p b{color:var(--ink);font-weight:500}
+.feed-item time{font-size:12px;color:var(--ink-muted);opacity:.7}
+.quick{border-top:1px solid var(--hairline-soft);margin-top:var(--sp-md);padding-top:var(--sp-md);display:flex;flex-direction:column;gap:var(--sp-xs)}
+.quick label{font-size:13px;font-weight:500;color:var(--ink-muted)}
+.quick input,.quick select{height:42px;background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--r-md);padding:0 var(--sp-sm);color:var(--ink);font-family:var(--font);font-size:14px}
+.toggle{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--ink-muted)}
+.switch{width:42px;height:24px;border-radius:var(--r-full);background:var(--surface-2);border:none;position:relative;cursor:pointer}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:var(--r-full);background:var(--ink-muted)}
+.switch.on{background:var(--grad-violet)}
+.switch.on::after{left:auto;right:3px;background:#fff}
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;height:auto}
+  .kpis,.charts,.cols{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="side">
+    <div class="side-brand"><i></i>Console</div>
+    <nav class="menu">
+      <p class="menu-label">Overview</p>
+      <!-- primary navigation -->
+      <a href="#" class="on"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="6" height="6" rx="2"/><rect x="9" y="1" width="6" height="6" rx="2"/><rect x="1" y="9" width="6" height="6" rx="2"/><rect x="9" y="9" width="6" height="6" rx="2"/></svg>Dashboard</a>
+      <p class="menu-label">Marketplace</p>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 3h2l2 8h7l2-6H5"/><circle cx="7" cy="13.5" r="1"/></svg>Sales<span class="cnt">42</span></a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="12" height="12" rx="3"/><path d="M6 10l4-4M6 6h4v4"/></svg>Templates</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.5"/><path d="M3 14c1-3 3.2-4 5-4s4 1 5 4"/></svg>Creators</a>
+      <p class="menu-label">Insights</p>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 14V8M6 14V3M10 14V6M14 14V9"/></svg>Analytics</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 2l6 3v4c0 3-2.5 4.7-6 5.5C4.5 13.7 2 12 2 9V5z"/></svg>Reviews</a>
+      <p class="menu-label">System</p>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M13 3l-1.5 1.5M4.5 11.5L3 13"/></svg>Settings</a>
+    </nav>
+    <div class="user-card">
+      <span class="ava">TS</span>
+      <div><b>Theo Sandvik</b><small>Marketplace Lead</small></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Marketplace / <b>Sales</b></span>
+      <input class="top-search" type="search" placeholder="Search orders, templates, creators…">
+      <button class="icon-circle" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a4.5 4.5 0 0 1 4.5 4.5c0 3 .8 4.5 1.5 5.5H3c.7-1 1.5-2.5 1.5-5.5A4.5 4.5 0 0 1 9 2zM7.5 14.5a1.5 1.5 0 0 0 3 0"/></svg><span class="dot"></span></button>
+      <span class="ava">TS</span>
+    </header>
+
+    <div class="content">
+      <div class="head-row">
+        <div>
+          <h1>Sales</h1>
+          <p class="cap">Marketplace transactions · updated 3 minutes ago</p>
+        </div>
+        <div style="display:flex;gap:var(--sp-xs)">
+          <button class="btn btn-secondary btn-sm">Export</button>
+          <button class="btn btn-primary btn-sm">New payout run</button>
+        </div>
+      </div>
+      <section class="kpis">
+        <div class="kpi">
+          <p class="cap">Marketplace revenue · MTD</p>
+          <p class="val">$184.2K</p>
+          <p class="delta"><span class="up">↑ 11.8%</span> vs last month</p>
+          <div class="spark"><i style="height:38%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:60%"></i><i class="hi" style="height:82%"></i><i style="height:56%"></i><i style="height:64%"></i><i style="height:72%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="cap">Templates sold</p>
+          <p class="val">2,318</p>
+          <p class="delta"><span class="up">↑ 7.4%</span> vs last month</p>
+          <div class="spark"><i style="height:48%"></i><i style="height:42%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:66%"></i><i class="hi" style="height:78%"></i><i style="height:58%"></i><i style="height:70%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="cap">Avg sale value</p>
+          <p class="val">$79.40</p>
+          <p class="delta"><span class="up">↑ 2.6%</span> vs last month</p>
+          <div class="spark"><i style="height:50%"></i><i style="height:54%"></i><i style="height:48%"></i><i style="height:58%"></i><i style="height:54%"></i><i class="hi" style="height:66%"></i><i style="height:60%"></i><i style="height:64%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="cap">Refund rate</p>
+          <p class="val">1.2%</p>
+          <p class="delta"><span class="down">↓ 0.3pt</span> vs last month</p>
+          <div class="spark"><i style="height:72%"></i><i style="height:64%"></i><i style="height:68%"></i><i style="height:56%"></i><i style="height:60%"></i><i style="height:48%"></i><i style="height:42%"></i><i class="hi" style="height:34%"></i></div>
+        </div>
+      </section>
+
+      <section class="charts">
+        <div class="panel">
+          <h3>Revenue by month</h3>
+          <p class="sub">Fiscal year 2026 · $ thousands</p>
+          <div class="bars">
+            <div class="bar-col"><i style="height:46%"></i><small>J</small></div>
+            <div class="bar-col"><i style="height:40%"></i><small>F</small></div>
+            <div class="bar-col"><i style="height:56%"></i><small>M</small></div>
+            <div class="bar-col"><i style="height:48%"></i><small>A</small></div>
+            <div class="bar-col"><i style="height:62%"></i><small>M</small></div>
+            <div class="bar-col"><i style="height:54%"></i><small>J</small></div>
+            <div class="bar-col mute"><i style="height:36%"></i><small>J</small></div>
+            <div class="bar-col mute"><i style="height:32%"></i><small>A</small></div>
+            <div class="bar-col mute"><i style="height:44%"></i><small>S</small></div>
+            <div class="bar-col"><i style="height:68%"></i><small>O</small></div>
+            <div class="bar-col hi"><i style="height:92%"></i><small>N</small></div>
+            <div class="bar-col"><i style="height:74%"></i><small>D</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Sales by category</h3>
+          <p class="sub">Share of revenue · last 30 days</p>
+          <div class="donut-wrap">
+            <svg width="168" height="168" viewBox="0 0 168 168">
+              <circle cx="84" cy="84" r="65" fill="none" stroke="#1c1c1c" stroke-width="22"/>
+              <circle cx="84" cy="84" r="65" fill="none" stroke="#6a4cf5" stroke-width="22" stroke-dasharray="183.8 408.2" transform="rotate(-90 84 84)"/>
+              <circle cx="84" cy="84" r="65" fill="none" stroke="#d44df0" stroke-width="22" stroke-dasharray="110.3 481.7" stroke-dashoffset="-183.8" transform="rotate(-90 84 84)"/>
+              <circle cx="84" cy="84" r="65" fill="none" stroke="#ff7a3d" stroke-width="22" stroke-dasharray="73.5 518.5" stroke-dashoffset="-294.1" transform="rotate(-90 84 84)"/>
+              <circle cx="84" cy="84" r="65" fill="none" stroke="#0099ff" stroke-width="22" stroke-dasharray="57.3 534.7" stroke-dashoffset="-367.6" transform="rotate(-90 84 84)"/>
+              <text x="84" y="81" text-anchor="middle" fill="#fff" font-size="22" font-weight="600" font-family="Inter">$184K</text>
+              <text x="84" y="100" text-anchor="middle" fill="#999999" font-size="11" font-family="Inter">REVENUE MTD</text>
+            </svg>
+            <ul class="legend">
+              <li><i style="background:#6a4cf5"></i>SaaS<b>45%</b></li>
+              <li><i style="background:#d44df0"></i>Portfolio<b>27%</b></li>
+              <li><i style="background:#ff7a3d"></i>E-commerce<b>18%</b></li>
+              <li><i style="background:#0099ff"></i>Agency<b>14%</b></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="cols">
+        <div class="panel">
+          <h3>Recent transactions</h3>
+          <p class="sub">42 payouts pending · next run Friday</p>
+          <table>
+            <thead><tr>
+              <th style="width:34px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Order</th><th>Template</th><th>Creator</th><th>Status</th><th>Amount</th><th>Date</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77104</b></td><td>Aurora — AI starter</td><td>Nova Labs</td>
+                <td><span class="pill-badge b-success">Paid out</span></td><td><b>$69.00</b></td><td>Oct 26</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77102</b></td><td>Split — Agency site</td><td>North &amp; Form</td>
+                <td><span class="pill-badge b-success">Paid out</span></td><td><b>$59.00</b></td><td>Oct 26</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77098</b></td><td>Ember — Launch page</td><td>Sunrise Studio</td>
+                <td><span class="pill-badge b-warning">Processing</span></td><td><b>$39.00</b></td><td>Oct 25</td>
+                <td><div class="row-act"><button>View</button><button>Retry</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77095</b></td><td>Merchant — Storefront</td><td>Goods Co.</td>
+                <td><span class="pill-badge b-danger">Chargeback</span></td><td><b>−$39.00</b></td><td>Oct 25</td>
+                <td><div class="row-act"><button>Inspect</button><button>Respond</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77091</b></td><td>Pulse — App landing</td><td>Field Work</td>
+                <td><span class="pill-badge b-neutral">Refunded</span></td><td><b>−$29.00</b></td><td>Oct 24</td>
+                <td><div class="row-act"><button>View</button><button>Note</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77088</b></td><td>Aurora — AI starter</td><td>Nova Labs</td>
+                <td><span class="pill-badge b-success">Paid out</span></td><td><b>$149.00</b></td><td>Oct 24</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77084</b></td><td>Monolith — Portfolio</td><td>Studio Kern</td>
+                <td><span class="pill-badge b-warning">Processing</span></td><td><b>$0.00</b></td><td>Oct 23</td>
+                <td><div class="row-act"><button>View</button><button>Promote</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77080</b></td><td>Orbit — SaaS landing</td><td>Nova Labs</td>
+                <td><span class="pill-badge b-success">Paid out</span></td><td><b>$49.00</b></td><td>Oct 22</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77076</b></td><td>Signal — Changelog</td><td>Ship Daily</td>
+                <td><span class="pill-badge b-neutral">Refunded</span></td><td><b>−$19.00</b></td><td>Oct 22</td>
+                <td><div class="row-act"><button>View</button><button>Note</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><b>#MP-77071</b></td><td>Pulse — App landing</td><td>Field Work</td>
+                <td><span class="pill-badge b-success">Paid out</span></td><td><b>$88.00</b></td><td>Oct 21</td>
+                <td><div class="row-act"><button>View</button><button>Receipt</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot">
+            <span>Showing 1–9 of 2,318</span>
+            <div class="pager">
+              <button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>331</button><button>›</button>
+            </div>
+          </div>
+          <p style="font-size:12px;font-weight:500;letter-spacing:-.12px;color:var(--ink-muted);margin-top:var(--sp-md)">Status: <span class="pill-badge b-success">Paid out</span> <span class="pill-badge b-warning">Processing</span> <span class="pill-badge b-danger">Chargeback</span> <span class="pill-badge b-neutral">Refunded</span></p>
+        </div>
+
+        <div class="panel">
+          <h3>Recent activity</h3>
+          <p class="sub">Marketplace team · today</p>
+          <div class="feed">
+            <div class="feed-item"><span class="ava" style="background:var(--grad-orange)">IM</span><div><p><b>Iris Meyer</b> approved the payout run for 312 creators — $41.2K.</p><time>15 min ago</time></div></div>
+            <div class="feed-item"><span class="ava">TS</span><div><p><b>Theo Sandvik</b> featured <b>Ember — Launch page</b> on the home shelf.</p><time>1 hr ago</time></div></div>
+            <div class="feed-item"><span class="ava" style="background:#1f3a2a">DK</span><div><p><b>Dana Kim</b> opened a chargeback case on <b>Merchant — Storefront</b>.</p><time>2 hrs ago</time></div></div>
+            <div class="feed-item"><span class="ava" style="background:#3a1f2a">RG</span><div><p><b>Rui Gomes</b> published v4.1 review — 9 templates re-crawled, 0 issues.</p><time>4 hrs ago</time></div></div>
+            <div class="feed-item"><span class="ava" style="background:#262626">SYS</span><div><p><b>System</b> nightly revenue sync completed — 0 discrepancies.</p><time>6 hrs ago</time></div></div>
+            <div class="feed-item"><span class="ava" style="background:#1f2a1f">LN</span><div><p><b>Lena Novak</b> responded to the chargeback case on <b>Merchant — Storefront</b>.</p><time>yesterday</time></div></div>
+          </div>
+          <div class="quick">
+            <label>Payout settings</label>
+            <input type="text" placeholder="Creator ID or bank reference">
+            <select><option>Weekly payout — Friday</option><option>Daily payout</option><option>Monthly payout</option><option>Manual only</option></select>
+          <input type="text" placeholder="Minimum payout threshold (USD)">
+            <div class="toggle"><span>Auto-approve under $100</span><span class="switch on"></span></div>
+            <div class="toggle"><span>Hold payouts on chargeback</span><span class="switch on"></span></div>
+            <div class="toggle"><span>Weekly revenue digest to creators</span><span class="switch"></span></div>
+            <button class="btn btn-primary btn-sm" style="align-self:flex-start">Save settings</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

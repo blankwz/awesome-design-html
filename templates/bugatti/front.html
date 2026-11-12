@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUGATTI — La Boutique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400&family=EB+Garamond:ital@0;1&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#ffffff; --body:#cccccc; --body-strong:#e6e6e6; --muted:#999999; --muted-soft:#666666;
+  --hairline:#262626; --hairline-strong:#3a3a3a;
+  --canvas:#000000; --surface-soft:#0d0d0d; --surface-card:#141414; --surface-elevated:#1f1f1f;
+  --on-dark:#ffffff; --link:#c3d9f3; --warning:#d4a017; --success:#5fa657;
+  --font-display:"Saira Condensed",-apple-system,"Segoe UI",sans-serif;
+  --font-text:"EB Garamond",Garamond,"Times New Roman",serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",monospace;
+  --sp-xxs:4px; --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:40px; --sp-xxl:64px; --sp-section:120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+button{cursor:pointer;font-family:var(--font-mono)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--sp-xl)}
+
+/* ---------- typography helpers ---------- */
+.display-xl{font-family:var(--font-display);font-size:64px;font-weight:400;line-height:1.1;letter-spacing:4px;color:var(--on-dark);text-transform:uppercase}
+.display-lg{font-family:var(--font-display);font-size:48px;font-weight:400;line-height:1.15;letter-spacing:3px;color:var(--on-dark);text-transform:uppercase}
+.display-md{font-family:var(--font-display);font-size:32px;font-weight:400;line-height:1.2;letter-spacing:2px;color:var(--on-dark);text-transform:uppercase}
+.display-sm{font-family:var(--font-display);font-size:24px;font-weight:400;line-height:1.3;letter-spacing:1.5px;color:var(--on-dark);text-transform:uppercase}
+.caption{font-family:var(--font-mono);font-size:11px;font-weight:400;line-height:1.4;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.wordmark{font-family:var(--font-display);font-size:14px;font-weight:400;letter-spacing:6px;color:var(--on-dark);text-transform:uppercase;text-decoration:none}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:44px;padding:14px 32px;background:transparent;border:1px solid var(--on-dark);border-radius:9999px;color:var(--on-dark);font-family:var(--font-mono);font-size:14px;font-weight:400;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none}
+.btn:active{background:var(--on-dark);color:var(--canvas)}
+.btn--solid{background:var(--on-dark);color:var(--canvas)}
+.btn--ghost{border-color:var(--hairline-strong);color:var(--muted)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9999px;border:1px solid var(--on-dark);background:transparent;color:var(--on-dark);flex:none}
+
+/* ---------- top nav ---------- */
+.topnav{position:relative;z-index:5;height:56px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--hairline)}
+.topnav .left,.topnav .right{display:flex;align-items:center;gap:var(--sp-lg)}
+.navlink{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;color:var(--on-dark);text-transform:uppercase;text-decoration:none}
+.navlink.active{border-bottom:1px solid var(--on-dark);padding-bottom:2px}
+.bag{position:relative}
+.bag .dot{position:absolute;top:-4px;right:-6px;width:8px;height:8px;border-radius:50%;background:var(--on-dark)}
+.center-wordmark{position:absolute;left:50%;transform:translateX(-50%)}
+
+/* ---------- hero photo band ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--hairline)}
+.hero-art{position:absolute;inset:0;background:
+  radial-gradient(120% 90% at 70% 30%, #2b2b2b 0%, #0a0a0a 55%, #000 100%)}
+.hero-art::before{content:"";position:absolute;left:-10%;right:-10%;bottom:18%;height:120px;
+  background:linear-gradient(180deg,transparent 0%,rgba(255,255,255,.05) 45%,transparent 100%);
+  transform:rotate(-4deg)}
+.hero-art::after{content:"";position:absolute;left:8%;right:8%;bottom:22%;height:34px;
+  background:linear-gradient(90deg,transparent, rgba(255,255,255,.14) 20%, rgba(255,255,255,.22) 50%, rgba(255,255,255,.14) 80%, transparent);
+  border-radius:9999px;filter:blur(6px);transform:skewX(-18deg)}
+.hero-inner{position:relative;padding:96px var(--sp-xl) 120px;text-align:center}
+.hero-inner h1{margin-bottom:var(--sp-md)}
+.hero-inner .caption{margin-bottom:var(--sp-xl)}
+.hero-specs{display:flex;justify-content:center;gap:var(--sp-xxl);margin-top:var(--sp-xxl);padding-top:var(--sp-lg);border-top:1px solid var(--hairline);max-width:820px;margin-left:auto;margin-right:auto}
+.spec-cell{padding:var(--sp-lg) 0}
+.spec-cell .value{font-family:var(--font-display);font-size:20px;letter-spacing:1px;color:var(--on-dark);text-transform:uppercase;margin-bottom:var(--sp-xxs)}
+.spec-cell .label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+
+/* ---------- section scaffold ---------- */
+section.band{padding:var(--sp-section) 0 var(--sp-section)}
+.band-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--sp-xl);gap:var(--sp-lg)}
+.band-head .lead{font-size:16px;color:var(--body);max-width:480px}
+
+/* ---------- category strip ---------- */
+.cat-strip{display:flex;gap:var(--sp-sm);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);padding:var(--sp-md) 0;overflow-x:auto}
+.cat{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;background:transparent;border:1px solid var(--hairline);border-radius:9999px;padding:10px 22px;white-space:nowrap}
+.cat.active{color:var(--canvas);background:var(--on-dark);border-color:var(--on-dark)}
+
+/* ---------- product grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xl)}
+.product{background:transparent}
+.product .ph{position:relative;aspect-ratio:1/1;border:1px solid var(--hairline);background:var(--surface-soft);overflow:hidden;margin-bottom:var(--sp-md)}
+.product .ph .art{position:absolute;inset:0}
+.art-1{background:radial-gradient(80% 70% at 30% 25%, #3a3a3a 0%, #141414 60%, #0a0a0a 100%)}
+.art-2{background:linear-gradient(160deg,#2e2e2e 0%,#101010 55%,#000 100%)}
+.art-3{background:radial-gradient(90% 80% at 70% 60%, #333 0%, #121212 65%, #000 100%)}
+.art-4{background:conic-gradient(from 210deg at 50% 40%, #0c0c0c, #2c2c2c, #0c0c0c, #262626, #0c0c0c)}
+.art-5{background:linear-gradient(200deg,#383838 0%,#181818 50%,#000 100%)}
+.art-6{background:radial-gradient(70% 60% at 50% 70%, #404040 0%, #161616 60%, #000 100%)}
+.art-7{background:linear-gradient(120deg,#101010 0%,#313131 45%,#0a0a0a 100%)}
+.art-8{background:conic-gradient(from 40deg at 60% 45%, #000, #2a2a2a 30%, #000 60%, #222 85%, #000)}
+.product .ph::after{content:"";position:absolute;left:15%;right:15%;top:62%;height:10px;background:rgba(255,255,255,.10);border-radius:9999px;filter:blur(4px)}
+.tag-new{position:absolute;top:var(--sp-md);left:var(--sp-md);font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--on-dark);text-transform:uppercase;border:1px solid var(--on-dark);border-radius:9999px;padding:6px 14px}
+.tag-sale{position:absolute;top:var(--sp-md);left:var(--sp-md);font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--canvas);text-transform:uppercase;background:var(--on-dark);border-radius:9999px;padding:6px 14px}
+.product .name{font-family:var(--font-display);font-size:24px;font-weight:400;letter-spacing:1.5px;color:var(--on-dark);text-transform:uppercase;line-height:1.3;margin-bottom:var(--sp-xxs)}
+.product .meta{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-sm);margin-bottom:var(--sp-xxs)}
+.product .price{font-family:var(--font-mono);font-size:14px;letter-spacing:1px;color:var(--on-dark)}
+.price s{color:var(--muted-soft);margin-right:10px;font-size:12px}
+.stars{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted)}
+.stars b{color:var(--on-dark);font-weight:400}
+
+/* ---------- featured detail row ---------- */
+.detail{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-xl);background:var(--surface-card);padding:var(--sp-lg)}
+.gallery{display:grid;grid-template-columns:96px 1fr;gap:var(--sp-md)}
+.thumbs{display:flex;flex-direction:column;gap:var(--sp-md)}
+.thumb{aspect-ratio:1/1;border:1px solid var(--hairline-strong);background:var(--surface-soft)}
+.thumb.active{border-color:var(--on-dark)}
+.stage{position:relative;aspect-ratio:4/3;background:
+  radial-gradient(100% 90% at 60% 30%, #303030 0%, #101010 60%, #050505 100%);border:1px solid var(--hairline)}
+.stage::before{content:"";position:absolute;left:12%;right:12%;top:58%;height:16px;background:rgba(255,255,255,.12);border-radius:9999px;filter:blur(8px)}
+.stage::after{content:"1 : 18";position:absolute;right:var(--sp-md);bottom:var(--sp-md);font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted)}
+.detail-info{padding:var(--sp-md) 0 var(--sp-md) var(--sp-md)}
+.detail-info h2{margin-bottom:var(--sp-xxs)}
+.detail-info .desc{margin:var(--sp-lg) 0;color:var(--body)}
+.opt-label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:var(--sp-lg) 0 var(--sp-sm)}
+.opt-row{display:flex;gap:var(--sp-sm)}
+.opt{font-family:var(--font-mono);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--hairline-strong);color:var(--body);border-radius:9999px;padding:10px 20px}
+.opt.active{border-color:var(--on-dark);color:var(--on-dark)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--hairline-strong);border-radius:9999px;height:44px}
+.qty button{width:44px;height:100%;background:transparent;border:0;color:var(--on-dark);font-size:16px}
+.qty span{width:48px;text-align:center;font-family:var(--font-mono);font-size:14px;color:var(--on-dark)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-xl)}
+.buy-row .big-price{font-family:var(--font-mono);font-size:20px;letter-spacing:2px;color:var(--on-dark)}
+.reviews{margin-top:var(--sp-xl);padding-top:var(--sp-lg);border-top:1px solid var(--hairline)}
+.review{display:flex;gap:var(--sp-md);padding:var(--sp-md) 0;border-bottom:1px solid var(--hairline)}
+.review:last-child{border-bottom:0}
+.review .who{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:var(--sp-xxs)}
+.review p{font-size:14px;color:var(--body)}
+
+/* ---------- cart panel ---------- */
+.cart{background:var(--surface-soft);border:1px solid var(--hairline);padding:var(--sp-lg)}
+.cart h3{margin-bottom:var(--sp-lg)}
+.cart-item{display:flex;gap:var(--sp-md);padding:var(--sp-md) 0;border-bottom:1px solid var(--hairline);align-items:center}
+.cart-item .ci-art{width:72px;height:72px;flex:none;border:1px solid var(--hairline);background:var(--surface-elevated)}
+.cart-item .n{font-family:var(--font-display);font-size:16px;letter-spacing:1.5px;color:var(--on-dark);text-transform:uppercase}
+.cart-item .m{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.cart-item .p{margin-left:auto;font-family:var(--font-mono);font-size:14px;color:var(--on-dark);white-space:nowrap}
+.sum-row{display:flex;justify-content:space-between;padding:var(--sp-xxs) 0;font-size:14px;color:var(--body)}
+.sum-row.total{border-top:1px solid var(--hairline);margin-top:var(--sp-md);padding-top:var(--sp-md);color:var(--on-dark)}
+.sum-row .v{font-family:var(--font-mono);font-size:14px;color:var(--on-dark)}
+.cart .btn{width:100%;margin-top:var(--sp-lg)}
+.cart-note{margin-top:var(--sp-md);font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center}
+
+/* ---------- two-up layout ---------- */
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* ---------- cta band ---------- */
+.cta-band{position:relative;overflow:hidden;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.cta-art{position:absolute;inset:0;background:radial-gradient(120% 100% at 30% 40%, #262626 0%, #0a0a0a 60%, #000 100%)}
+.cta-inner{position:relative;text-align:center;padding:80px var(--sp-xl)}
+.cta-inner h2{margin-bottom:var(--sp-xl)}
+
+/* ---------- footer ---------- */
+footer{background:var(--canvas);color:var(--muted);padding:64px 0}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xl);padding-bottom:var(--sp-xxl);border-bottom:1px solid var(--hairline)}
+.foot-grid h4{font-family:var(--font-mono);font-size:11px;font-weight:400;letter-spacing:2px;color:var(--on-dark);text-transform:uppercase;margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;color:var(--muted);text-decoration:none;font-size:14px;padding:6px 0}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:var(--sp-lg);gap:var(--sp-lg)}
+.newsletter{display:flex;align-items:center;gap:var(--sp-md)}
+.newsletter input{background:transparent;border:0;border-bottom:1px solid var(--hairline-strong);height:44px;padding:12px 0;color:var(--on-dark);font-family:var(--font-text);font-size:16px;width:280px}
+.newsletter input::placeholder{color:var(--muted)}
+.newsletter input:focus{outline:none;border-bottom:1px solid var(--on-dark)}
+.legal{font-size:14px;color:var(--muted-soft)}
+
+@media (max-width:960px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .detail,.duo{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+  .display-xl{font-size:40px;letter-spacing:2px}
+  .hero-inner{padding:64px var(--sp-md) 80px}
+  .center-wordmark{position:static;transform:none}
+  .topnav .left .navlink:not(.first){display:none}
+  section.band{padding:64px 0}
+}
+</style>
+</head>
+<body>
+
+<header class="topnav wrap">
+  <nav class="left">
+    <a class="navlink first" href="#">Menu</a>
+    <a class="navlink" href="#collection">Collection</a>
+    <a class="navlink" href="#models">Models</a>
+  </nav>
+  <a class="wordmark center-wordmark" href="#">Bugatti</a>
+  <nav class="right">
+    <a class="navlink active" href="#">Store</a>
+    <button class="icon-btn bag" aria-label="Cart">▤<span class="dot"></span></button>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-art"></div>
+  <div class="hero-inner">
+    <h1 class="display-xl">The Boutique Collection</h1>
+    <p class="caption">Objects of engineering — curated by Molsheim</p>
+    <a class="btn" href="#collection">Explore the collection</a>
+    <div class="hero-specs">
+      <div class="spec-cell"><div class="value">1 600 PS</div><div class="label">Output</div></div>
+      <div class="spec-cell"><div class="value">440 km/h</div><div class="label">Top speed</div></div>
+      <div class="spec-cell"><div class="value">16</div><div class="label">Cylinders</div></div>
+      <div class="spec-cell"><div class="value">500</div><div class="label">Units built</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="band wrap" id="collection">
+  <div class="cat-strip" style="margin-bottom:var(--sp-xl)">
+    <button class="cat active">All objects</button>
+    <button class="cat">Scale models</button>
+    <button class="cat">Lifestyle</button>
+    <button class="cat">Accessories</button>
+    <button class="cat">Originals</button>
+    <button class="cat">Heritage</button>
+  </div>
+  <div class="band-head">
+    <div>
+      <h2 class="display-lg">Selected Objects</h2>
+    </div>
+    <p class="lead">Each piece is produced in limited series and accompanied by a certificate of authenticity from the Atelier in Molsheim.</p>
+  </div>
+  <div class="grid">
+    <article class="product">
+      <div class="ph"><div class="art art-1"></div><span class="tag-new">New</span></div>
+      <h3 class="name">Chiron Sculpture</h3>
+      <div class="meta"><span class="price">€ 1 450</span><span class="stars"><b>★★★★★</b> 5.0</span></div>
+      <p class="caption">Scale 1:43 · Hand-finished</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-2"></div></div>
+      <h3 class="name">Molsheim Key Ring</h3>
+      <div class="meta"><span class="price">€ 190</span><span class="stars"><b>★★★★☆</b> 4.8</span></div>
+      <p class="caption">Brushed steel · EB motif</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-3"></div><span class="tag-sale">Last units</span></div>
+      <h3 class="name">Tourbillon Poster Set</h3>
+      <div class="meta"><span class="price"><s>€ 120</s>€ 95</span><span class="stars"><b>★★★★★</b> 4.9</span></div>
+      <p class="caption">Three plates · Numbered</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-4"></div></div>
+      <h3 class="name">Macao Leather Folio</h3>
+      <div class="meta"><span class="price">€ 640</span><span class="stars"><b>★★★★★</b> 4.7</span></div>
+      <p class="caption">Full-grain · Azure interior</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-5"></div><span class="tag-new">New</span></div>
+      <h3 class="name">Bolide Desk Model</h3>
+      <div class="meta"><span class="price">€ 2 300</span><span class="stars"><b>★★★★★</b> 5.0</span></div>
+      <p class="caption">Scale 1:18 · Machined alloy</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-6"></div></div>
+      <h3 class="name">Macaron Cufflinks</h3>
+      <div class="meta"><span class="price">€ 320</span><span class="stars"><b>★★★★☆</b> 4.6</span></div>
+      <p class="caption">Silver · Enamel inlay</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-7"></div></div>
+      <h3 class="name">Divo Silhouette Print</h3>
+      <div class="meta"><span class="price">€ 260</span><span class="stars"><b>★★★★☆</b> 4.8</span></div>
+      <p class="caption">Giclée · 70 × 50 cm</p>
+    </article>
+    <article class="product">
+      <div class="ph"><div class="art art-8"></div><span class="tag-sale">Archive</span></div>
+      <h3 class="name">EB Le Mans Watch Roll</h3>
+      <div class="meta"><span class="price">€ 480</span><span class="stars"><b>★★★★★</b> 4.9</span></div>
+      <p class="caption">Two watches · Italian hide</p>
+    </article>
+  </div>
+</section>
+
+<section class="band wrap" id="models" style="padding-top:0">
+  <div class="duo">
+    <div class="detail">
+      <div class="gallery">
+        <div class="thumbs">
+          <div class="thumb active art-5"></div>
+          <div class="thumb art-2"></div>
+          <div class="thumb art-6"></div>
+        </div>
+        <div class="stage"></div>
+      </div>
+      <div class="detail-info">
+        <h2 class="display-md">Tourbillon 1:18</h2>
+        <p class="caption">Ref. TB-118-0042 · Series of 500</p>
+        <p class="desc">Machined from a single alloy billet and assembled over eleven hours at the Atelier. The iconic two-tone split reappears in Rohner blue over midnight carbon, with a serialized plate beneath the rear clamshell.</p>
+        <p class="opt-label">Scale</p>
+        <div class="opt-row">
+          <button class="opt">1 : 43</button>
+          <button class="opt active">1 : 18</button>
+          <button class="opt">1 : 8</button>
+        </div>
+        <p class="opt-label">Finish</p>
+        <div class="opt-row">
+          <button class="opt active">Rohner Blue</button>
+          <button class="opt">Argent Bay</button>
+          <button class="opt">Nocturne</button>
+        </div>
+        <div class="buy-row">
+          <div class="qty">
+            <button aria-label="Decrease">−</button><span>1</span><button aria-label="Increase">+</button>
+          </div>
+          <span class="big-price">€ 2 300</span>
+          <a class="btn btn--solid" href="#cart">Add to cart</a>
+        </div>
+        <div class="reviews">
+          <p class="caption" style="margin-bottom:var(--sp-sm)">Owners' notes</p>
+          <div class="review">
+            <span class="stars"><b>★★★★★</b></span>
+            <div><p>"The two-tone split is flawless. It anchors the entire cabinet."</p><p class="who">H. Laurent — Geneva</p></div>
+          </div>
+          <div class="review">
+            <span class="stars"><b>★★★★★</b></span>
+            <div><p>"Weight, finish, packaging — every detail reads Bugatti."</p><p class="who">M. Tanaka — Tokyo</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="cart" id="cart">
+      <h3 class="display-sm">Your Selection</h3>
+      <div class="cart-item">
+        <div class="ci-art art-5"></div>
+        <div><div class="n">Bolide Desk Model</div><div class="m">1:18 · Nocturne</div></div>
+        <span class="p">€ 2 300</span>
+      </div>
+      <div class="cart-item">
+        <div class="ci-art art-3"></div>
+        <div><div class="n">Poster Set</div><div class="m">Numbered · Set of 3</div></div>
+        <span class="p">€ 95</span>
+      </div>
+      <div class="cart-item">
+        <div class="ci-art art-1"></div>
+        <div><div class="n">Key Ring</div><div class="m">Brushed steel</div></div>
+        <span class="p">€ 190</span>
+      </div>
+      <div style="margin-top:var(--sp-lg)">
+        <div class="sum-row"><span>Subtotal</span><span class="v">€ 2 585</span></div>
+        <div class="sum-row"><span>Insured delivery</span><span class="v">€ 40</span></div>
+        <div class="sum-row"><span>VAT (19%)</span><span class="v">€ 497</span></div>
+        <div class="sum-row total"><span>Total</span><span class="v">€ 3 122</span></div>
+      </div>
+      <a class="btn btn--solid" href="#">Proceed to checkout</a>
+      <p class="cart-note">White-glove delivery · 3–5 working days</p>
+    </aside>
+  </div>
+</section>
+
+<div class="cta-band">
+  <div class="cta-art"></div>
+  <div class="cta-inner">
+    <h2 class="display-md">If comparable, it is no longer Bugatti</h2>
+    <a class="btn" href="#collection">Discover the maison</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Bugatti</h4><a href="#">Heritage</a><a href="#">Newsroom</a><a href="#">Careers</a><a href="#">Sustainability</a></div>
+      <div><h4>Models</h4><a href="#">Tourbillon</a><a href="#">Mistral</a><a href="#">Bolide</a><a href="#">Chiron</a></div>
+      <div><h4>Boutique</h4><a href="#">Scale models</a><a href="#">Lifestyle</a><a href="#">Shipping</a><a href="#">Returns</a></div>
+      <div><h4>Connect</h4><a href="#">Contact</a><a href="#">Dealer search</a><a href="#">Apps</a><a href="#">Newsletter</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Bugatti Automobiles S.A.S. All rights reserved.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Email address" aria-label="Email address">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+    <p class="wordmark" style="display:block;text-align:center;margin-top:var(--sp-xxl)">Bugatti</p>
+  </div>
+</footer>
+
+</body>
+</html>

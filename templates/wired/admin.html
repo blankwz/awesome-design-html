@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIRED Desk — Editorial Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Lora:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#000000; --on-primary:#ffffff;
+  --ink:#000000; --ink-soft:#1a1a1a; --body:#757575;
+  --hairline:#e0e0e0; --canvas:#ffffff; --canvas-soft:#f5f5f5;
+  --link:#057dbc;
+  --success:#1f7a3a; --success-bg:#e7f3ea;
+  --warning:#9a6a00; --warning-bg:#fdf3dd;
+  --danger:#b3261e; --danger-bg:#fbe9e7;
+  --font-display:'Playfair Display','Times New Roman',Georgia,serif;
+  --font-serif:'Lora',Georgia,'Times New Roman',serif;
+  --font-sans:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --r-none:0px; --r-full:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-2xl:24px; --s-3xl:32px; --s-4xl:48px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas-soft);color:var(--ink);font-family:var(--font-sans);font-size:17px;line-height:1.2}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font-sans)}
+
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--canvas);border-right:1px solid var(--hairline);padding:var(--s-lg) var(--s-md);display:flex;flex-direction:column;gap:var(--s-xl);position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;padding:var(--s-sm) var(--s-sm)}
+.logo .wordmark{font-weight:700;font-size:24px;letter-spacing:4px}
+.logo small{font-size:12px;font-weight:700;letter-spacing:.4px;color:var(--body);text-transform:uppercase}
+.side-group{font-size:14px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--body);padding:var(--s-md) var(--s-sm) var(--s-xs)}
+.nav{list-style:none;display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px var(--s-sm);color:var(--ink);border-left:4px solid transparent}
+.nav a:hover{background:var(--canvas-soft)}
+.nav a.on{background:var(--canvas-soft);border-left-color:var(--primary)}
+.nav .count{margin-left:auto;font-size:12px;font-weight:700;color:var(--body)}
+.user-card{margin-top:auto;border:1px solid var(--ink);padding:var(--s-md);display:flex;align-items:center;gap:10px}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--ink);color:var(--on-primary);font-size:12px;font-weight:700;display:grid;place-items:center;flex:none}
+.user-card b{display:block;font-size:14px;font-weight:700}
+.user-card span{font-size:12px;color:var(--body)}
+.user-card .out{margin-left:auto;background:none;border:0;cursor:pointer;color:var(--body);font-size:15px}
+
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--canvas);border-bottom:1px solid var(--ink);padding:var(--s-md) var(--s-xl);display:flex;align-items:center;gap:var(--s-lg);position:sticky;top:0;z-index:40}
+.crumbs{font-size:14px;font-weight:700;letter-spacing:.4px;color:var(--body);text-transform:uppercase}
+.crumbs b{color:var(--ink)}
+.top-spacer{flex:1}
+.top-search{display:flex;align-items:center;border:1px solid var(--ink)}
+.top-search input{border:0;outline:0;font-size:14px;padding:9px 12px;width:220px;background:transparent}
+.top-search button{border:0;border-left:1px solid var(--ink);background:var(--canvas);padding:9px 12px;cursor:pointer}
+.icon-btn{position:relative;width:38px;height:38px;border-radius:var(--r-full);border:1px solid var(--ink);background:var(--canvas);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.icon-btn .dot{position:absolute;top:4px;right:4px;width:9px;height:9px;border-radius:50%;background:var(--primary)}
+.avatar-sm{width:34px;height:34px;border-radius:var(--r-full);background:var(--ink);color:var(--on-primary);font-size:12px;font-weight:700;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;font-size:14px;font-weight:700;letter-spacing:.3px;padding:10px 18px;border:1px solid var(--primary);cursor:pointer}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--ink-soft)}
+
+.content{padding:var(--s-2xl);display:flex;flex-direction:column;gap:var(--s-2xl)}
+.pagehead h1{font-family:var(--font-display);font-size:32px;font-weight:400;letter-spacing:-0.3px}
+.pagehead p{font-family:var(--font-serif);font-size:16px;color:var(--body);margin-top:6px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.kpi{background:var(--canvas);border:1px solid var(--hairline);padding:var(--s-lg)}
+.kpi .k-label{font-size:14px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--body)}
+.kpi .k-value{font-family:var(--font-display);font-size:34px;margin:8px 0 4px}
+.delta{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border:1px solid}
+.delta.up{background:var(--success-bg);color:var(--success);border-color:var(--success)}
+.delta.down{background:var(--danger-bg);color:var(--danger);border-color:var(--danger)}
+.kpi-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:var(--s-md)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:6px;background:var(--hairline)}
+.spark i.hot{background:var(--ink)}
+.k-note{font-family:var(--font-serif);font-size:12px;color:var(--body)}
+
+.card{background:var(--canvas);border:1px solid var(--hairline);padding:var(--s-lg)}
+.card h3{font-family:var(--font-sans);font-size:20px;font-weight:700;letter-spacing:-0.28px}
+.card .sub{font-family:var(--font-serif);font-size:16px;color:var(--body);margin-top:4px}
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-lg)}
+.chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-md)}
+.legend-tag{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--body)}
+.bars{display:flex;align-items:flex-end;gap:var(--s-sm);height:170px;padding-top:var(--s-md)}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:32px;background:var(--hairline)}
+.bar-col.hot i{background:var(--ink)}
+.bar-col span{font-size:12px;color:var(--body)}
+.donut-wrap{display:flex;align-items:center;gap:var(--s-lg)}
+.donut{width:140px;height:140px;flex:none}
+.donut circle{fill:none;stroke-width:17;transform:rotate(-90deg);transform-origin:50% 50%}
+.legend{list-style:none;display:flex;flex-direction:column;gap:var(--s-sm);font-size:14px;flex:1}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{width:11px;height:11px;border:1px solid var(--hairline);flex:none}
+.legend b{margin-left:auto;font-weight:700}
+
+.grid-main{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--s-lg);align-items:start}
+.table-card{padding:0;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--canvas-soft);text-align:left;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink);padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--ink)}
+tbody td{padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--hairline);vertical-align:middle;font-family:var(--font-serif);font-size:15px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--canvas-soft)}
+td .slug{display:block;font-family:var(--font-sans);font-size:14px;font-weight:700;letter-spacing:-0.144px}
+td .author{font-family:var(--font-serif);font-size:13px;color:var(--body)}
+td .mono{font-family:var(--font-sans);font-size:13px;color:var(--body)}
+.check{width:16px;height:16px;accent-color:var(--primary)}
+.status{display:inline-block;font-family:var(--font-sans);font-size:12px;font-weight:700;padding:3px 10px;border:1px solid}
+.st-success{background:var(--success-bg);color:var(--success);border-color:var(--success)}
+.st-warning{background:var(--warning-bg);color:var(--warning);border-color:var(--warning)}
+.st-danger{background:var(--danger-bg);color:var(--danger);border-color:var(--danger)}
+.st-neutral{background:var(--canvas);color:var(--body);border-color:var(--hairline)}
+.actions{display:flex;gap:6px;justify-content:flex-end}
+.icon-sm{width:30px;height:30px;border-radius:var(--r-none);border:1px solid var(--ink);background:var(--canvas);cursor:pointer;color:var(--ink);display:grid;place-items:center;font-size:13px}
+.icon-sm:hover{background:var(--canvas-soft)}
+.t-foot{display:flex;align-items:center;justify-content:space-between;padding:var(--s-md) var(--s-lg);font-size:14px;color:var(--body);border-top:1px solid var(--hairline)}
+.pager{display:flex;gap:5px}
+.pager button{width:30px;height:30px;border:1px solid var(--ink);background:var(--canvas);cursor:pointer;font-size:13px;font-weight:700;color:var(--ink)}
+.pager button.on{background:var(--ink);color:var(--on-primary)}
+
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed li{display:flex;gap:var(--s-md);padding:var(--s-md) 0;border-bottom:1px solid var(--hairline)}
+.feed li:last-child{border-bottom:0}
+.feed .f-dot{width:34px;height:34px;border-radius:var(--r-full);flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;font-family:var(--font-sans)}
+.f-dark{background:var(--ink);color:var(--on-primary)}
+.f-green{background:var(--success-bg);color:var(--success)}
+.f-red{background:var(--danger-bg);color:var(--danger)}
+.f-soft{background:var(--canvas-soft);border:1px solid var(--hairline);color:var(--ink)}
+.feed p{font-family:var(--font-serif);font-size:15px;line-height:1.5;color:var(--ink-soft)}
+.feed p b{font-family:var(--font-sans);font-weight:700}
+.feed time{font-family:var(--font-sans);font-size:12px;color:var(--body)}
+.card-btn{display:inline-block;margin-top:var(--s-md);font-size:14px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:2px}
+.card-btn:hover{color:var(--link);border-color:var(--link)}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .charts,.grid-main{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .top-search{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <div class="logo"><span class="wordmark">WIRED</span><small>Desk</small></div>
+    <div>
+      <div class="side-group">Overview</div>
+      <ul class="nav">
+        <li><a class="on" href="#">Dashboard</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Stories</div>
+      <ul class="nav">
+        <li><a href="#">Pipeline <span class="count">31</span></a></li>
+        <li><a href="#">Review queue <span class="count">9</span></a></li>
+        <li><a href="#">Legal &amp; standards</a></li>
+        <li><a href="#">Archive</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Audience</div>
+      <ul class="nav">
+        <li><a href="#">Subscribers</a></li>
+        <li><a href="#">Newsletters</a></li>
+        <li><a href="#">Comments</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Insight</div>
+      <ul class="nav">
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Traffic sources</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Admin</div>
+      <ul class="nav">
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Staff roles</a></li>
+      </ul>
+    </div>
+    <div class="user-card">
+      <span class="avatar">GD</span>
+      <div><b>Gideon Zavala</b><span>Executive Editor</span></div>
+      <button class="out" aria-label="Sign out">↦</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">Desk / <b>Dashboard</b></div>
+      <div class="top-spacer"></div>
+      <div class="top-search">
+        <input type="text" placeholder="Search stories, authors">
+        <button aria-label="Search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="avatar-sm">GD</span>
+      <button class="btn btn-primary">New story</button>
+    </header>
+
+    <main class="content">
+      <div class="pagehead">
+        <h1>Editorial desk</h1>
+        <p>Week 43, 2026 · Grid Issue production week · updated 4 minutes ago</p>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k-label">Sessions (7 d)</div>
+          <div class="k-value">14.2M</div>
+          <span class="delta up">▲ 6.8%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:34%"></i><i style="height:44%"></i><i style="height:38%"></i><i style="height:56%"></i><i style="height:50%"></i><i style="height:68%"></i><i class="hot" style="height:88%"></i></div><span class="k-note">vs prior week</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">New subscribers</div>
+          <div class="k-value">9,412</div>
+          <span class="delta up">▲ 12.1%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:30%"></i><i style="height:36%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:64%"></i><i class="hot" style="height:82%"></i></div><span class="k-note">$2.50 intro driving</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Avg read time</div>
+          <div class="k-value">4:38</div>
+          <span class="delta up">▲ 0:21</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:52%"></i><i style="height:56%"></i><i style="height:54%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:72%"></i><i class="hot" style="height:80%"></i></div><span class="k-note">all articles</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Stories in pipeline</div>
+          <div class="k-value">31</div>
+          <span class="delta down">▼ 4 due this wk</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:70%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:46%"></i><i class="hot" style="height:38%"></i></div><span class="k-note">9 awaiting review</span></div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Sessions by month</h3><div class="sub">web + app · 2026</div></div>
+            <span class="legend-tag">millions</span>
+          </div>
+          <div class="bars">
+            <div class="bar-col"><i style="height:46%"></i><span>Jan</span></div>
+            <div class="bar-col"><i style="height:52%"></i><span>Feb</span></div>
+            <div class="bar-col"><i style="height:44%"></i><span>Mar</span></div>
+            <div class="bar-col"><i style="height:58%"></i><span>Apr</span></div>
+            <div class="bar-col"><i style="height:56%"></i><span>May</span></div>
+            <div class="bar-col"><i style="height:66%"></i><span>Jun</span></div>
+            <div class="bar-col"><i style="height:62%"></i><span>Jul</span></div>
+            <div class="bar-col"><i style="height:74%"></i><span>Aug</span></div>
+            <div class="bar-col"><i style="height:70%"></i><span>Sep</span></div>
+            <div class="bar-col"><i style="height:84%"></i><span>Oct</span></div>
+            <div class="bar-col hot"><i style="height:100%"></i><span>Nov</span></div>
+            <div class="bar-col"><i style="height:78%"></i><span>Dec</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Traffic by section</h3><div class="sub">share of sessions, October</div></div>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="46" stroke="#000000" stroke-dasharray="127.2 289.0"/>
+              <circle cx="60" cy="60" r="46" stroke="#757575" stroke-dasharray="69.4 289.0" stroke-dashoffset="-127.2"/>
+              <circle cx="60" cy="60" r="46" stroke="#bdbdbd" stroke-dasharray="52.0 289.0" stroke-dashoffset="-196.6"/>
+              <circle cx="60" cy="60" r="46" stroke="#057dbc" stroke-dasharray="40.4 289.0" stroke-dashoffset="-248.6"/>
+            </svg>
+            <ul class="legend">
+              <li><i style="background:#000000"></i>AI <b>44%</b></li>
+              <li><i style="background:#757575"></i>Security <b>24%</b></li>
+              <li><i style="background:#bdbdbd"></i>Gadgets <b>18%</b></li>
+              <li><i style="background:#057dbc"></i>Other sections <b>14%</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-main">
+        <div class="card table-card">
+          <div class="chart-head" style="padding:16px 16px 0">
+            <div><h3>Story pipeline</h3><div class="sub">Latest 7 · all stages</div></div>
+            <span class="legend-tag">Desk</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th style="width:36px"><input class="check" type="checkbox" aria-label="Select all"></th><th>Story</th><th>Section</th><th>Status</th><th>Words</th><th>Due</th><th style="text-align:right">Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">The Data-Center Boom Is Rewiring the American Grid</span><span class="author">Matthew Campbell</span></td>
+                <td class="mono">AI</td>
+                <td><span class="status st-warning">Copy edit</span></td>
+                <td class="mono">8,412</td>
+                <td class="mono">Oct 27</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">The Untold Story of the Salt Typhoon Blowback</span><span class="author">Andy Greenberg</span></td>
+                <td class="mono">Security</td>
+                <td><span class="status st-danger">Legal hold</span></td>
+                <td class="mono">6,930</td>
+                <td class="mono">Oct 28</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">The Deep-Sea Robots Mapping Carbon Sinks</span><span class="author">Sara Kean</span></td>
+                <td class="mono">Science</td>
+                <td><span class="status st-success">Scheduled</span></td>
+                <td class="mono">4,208</td>
+                <td class="mono">Oct 29</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">Everything Apple Announced, and What It Didn't</span><span class="author">Lauren Goode</span></td>
+                <td class="mono">Gadgets</td>
+                <td><span class="status st-success">Published</span></td>
+                <td class="mono">2,641</td>
+                <td class="mono">Oct 26</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">The Quiet Collapse of the Second-Hand Phone Empire</span><span class="author">Dana Whitfield</span></td>
+                <td class="mono">Business</td>
+                <td><span class="status st-warning">Fact check</span></td>
+                <td class="mono">5,117</td>
+                <td class="mono">Oct 30</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">How Fan Translators Outpaced the Studios</span><span class="author">Eun-ji Park</span></td>
+                <td class="mono">Culture</td>
+                <td><span class="status st-neutral">Draft</span></td>
+                <td class="mono">3,890</td>
+                <td class="mono">Nov 02</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td><span class="slug">Stop Calling It a Tech Bubble. It's a Utilities Bubble.</span><span class="author">Nitin Verma</span></td>
+                <td class="mono">Opinion</td>
+                <td><span class="status st-success">Scheduled</span></td>
+                <td class="mono">1,940</td>
+                <td class="mono">Oct 28</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="Edit">✎</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot">
+            <span>Showing 1–7 of 31 stories in pipeline</span>
+            <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Desk feed</h3><div class="sub">Editors' activity</div></div>
+          </div>
+          <ul class="feed">
+            <li>
+              <span class="f-dot f-red">!</span>
+              <div><p><b>Legal hold</b> placed on the Salt Typhoon feature pending counsel review of two named sources.</p><time>18 min ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">✓</span>
+              <div><p><b>Gideon Zavala</b> approved the Grid Issue cover line and dek.</p><time>1 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-soft">✎</span>
+              <div><p><b>Kate Reyes</b> filed 8,412 words on machine unlearning — moved to copy edit.</p><time>3 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-green">↗</span>
+              <div><p><b>Newsletter</b> "Power &amp; Pixels" sent to 1.4M readers, 42% open rate.</p><time>6 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">★</span>
+              <div><p><b>Grid cover story</b> passed 1.2M reads — promoted to Most Read No. 1.</p><time>Yesterday</time></div>
+            </li>
+          </ul>
+          <a class="card-btn" href="#">Open full desk log →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

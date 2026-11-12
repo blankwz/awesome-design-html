@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clay — Workspace Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0a0a0a; --primary-active:#1f1f1f;
+  --ink:#0a0a0a; --body:#3a3a3a; --muted:#6a6a6a; --muted-soft:#9a9a9a;
+  --hairline:#e5e5e5; --hairline-soft:#f0f0f0;
+  --canvas:#fffaf0; --surface-soft:#faf5e8; --surface-card:#f5f0e0; --surface-strong:#ebe6d6;
+  --surface-dark:#0a1a1a; --surface-dark-elevated:#1a2a2a;
+  --brand-pink:#ff4d8b; --brand-teal:#1a3a3a; --brand-lavender:#b8a4ed; --brand-peach:#ffb084;
+  --brand-ochre:#e8b94a; --brand-mint:#a4d4c5; --brand-coral:#ff6b5a;
+  --success:#22c55e; --warning:#f59e0b; --error:#ef4444;
+  --font-sans:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:9999px;
+  --sp-xs:8px; --sp-sm:12px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--surface-soft);color:var(--body);font-family:var(--font-sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-sans)}
+h1,h2,h3{color:var(--ink);letter-spacing:-0.02em}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* sidebar */
+.side{background:var(--canvas);border-right:1px solid var(--surface-strong);padding:var(--sp-md);display:flex;flex-direction:column;gap:2px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:18px;color:var(--ink);padding:var(--sp-sm) var(--sp-md) var(--sp-lg)}
+.logo .blob{width:24px;height:24px;border-radius:40% 60% 55% 45%/50% 45% 55% 50%;background:var(--brand-pink)}
+.m-label{font-size:12px;font-weight:500;color:var(--muted-soft);padding:var(--sp-md) var(--sp-md) var(--sp-xs);text-transform:uppercase;letter-spacing:1px}
+.menu a{display:flex;align-items:center;gap:var(--sp-sm);padding:9px var(--sp-md);border-radius:var(--r-md);color:var(--muted);font-weight:500}
+.menu a .ico{width:18px;text-align:center;font-style:normal}
+.menu a:hover{background:var(--surface-soft);color:var(--ink)}
+.menu a.active{background:var(--surface-card);color:var(--ink);font-weight:600}
+.menu a .cnt{margin-left:auto;background:var(--primary);color:#fff;border-radius:var(--r-pill);font-size:11px;font-weight:600;padding:1px 8px}
+.user-card{margin-top:auto;display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm);background:var(--surface-card);border-radius:var(--r-lg)}
+.ava{width:36px;height:36px;border-radius:var(--r-pill);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.user-card .nm{font-weight:600;color:var(--ink)}
+.user-card .rl{font-size:12px;color:var(--muted)}
+
+/* topbar */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--canvas);border-bottom:1px solid var(--surface-strong);display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-lg)}
+.crumb{font-size:14px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:600}
+.search{margin-left:auto;position:relative}
+.search input{height:40px;width:280px;border:1px solid var(--surface-strong);border-radius:var(--r-md);padding:0 14px 0 36px;font-size:14px;background:var(--surface-soft);font-family:var(--font-sans)}
+.search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted-soft)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-pill);background:var(--canvas);border:1px solid var(--surface-strong);color:var(--ink)}
+.bell{position:relative}
+.bell .dot{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--brand-pink);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* content */
+.content{padding:var(--sp-lg);display:flex;flex-direction:column;gap:var(--sp-lg)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-md);flex-wrap:wrap}
+.page-head h1{font-size:26px;font-weight:500}
+.page-head p{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;background:var(--primary);color:#fff;border:1px solid var(--primary);border-radius:var(--r-md);font-size:14px;font-weight:600}
+.btn--secondary{background:var(--canvas);color:var(--ink);border-color:var(--surface-strong)}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md)}
+.kpi{background:var(--canvas);border:1px solid var(--surface-strong);border-radius:var(--r-lg);padding:var(--sp-md)}
+.kpi .lbl{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:4px}
+.kpi .val{font-size:26px;font-weight:600;color:var(--ink);letter-spacing:-0.02em}
+.kpi .row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--sp-sm)}
+.delta{font-size:13px;font-weight:600}
+.up{color:var(--success)} .down{color:var(--error)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:6px;border-radius:3px;background:var(--surface-strong)}
+.spark i.hot{background:var(--brand-lavender)}
+.spark i.y{background:var(--brand-pink)}
+
+/* charts */
+.charts{display:grid;grid-template-columns:7fr 5fr;gap:var(--sp-md)}
+.card{background:var(--canvas);border:1px solid var(--surface-strong);border-radius:var(--r-lg);padding:var(--sp-lg)}
+.card h3{font-size:16px;font-weight:600;margin-bottom:var(--sp-md)}
+.bars{display:flex;align-items:flex-end;gap:var(--sp-sm);height:190px;border-bottom:1px solid var(--hairline)}
+.bcol{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:60%;background:var(--surface-strong);border-radius:8px 8px 0 0}
+.bcol.hot .bar{background:var(--brand-pink)}
+.blabels{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.blabels span{flex:1;text-align:center;font-size:11px;color:var(--muted)}
+.donut-wrap{display:flex;gap:var(--sp-lg);align-items:center}
+.donut{position:relative;width:168px;height:168px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .center .v{font-size:22px;font-weight:600;color:var(--ink)}
+.donut .center .t{font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:10px;flex:1}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px}
+.leg i{width:10px;height:10px;border-radius:3px;flex:none}
+.leg .pct{margin-left:auto;font-weight:600;color:var(--ink)}
+
+/* table + panel */
+.panel{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-md);align-items:start}
+.table-card{background:var(--canvas);border:1px solid var(--surface-strong);border-radius:var(--r-lg);overflow:hidden}
+.tc-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--surface-strong)}
+.tc-head h3{font-size:16px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--surface-strong);background:var(--surface-soft)}
+td{padding:var(--sp-sm) var(--sp-lg);border-bottom:1px solid var(--hairline-soft);vertical-align:middle}
+.cell-name{font-weight:600;color:var(--ink)}
+.cell-sub{font-size:12px;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:500;white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:500;border-radius:var(--r-pill);padding:3px 10px}
+.badge.success{background:#e6f6ec;color:#15803d}
+.badge.warning{background:#fdf0dc;color:#b45309}
+.badge.danger{background:#fde8e8;color:#b91c1c}
+.badge.neutral{background:var(--surface-card);color:var(--muted)}
+.badge.pink{background:var(--brand-pink);color:#fff}
+input[type=checkbox]{appearance:none;width:16px;height:16px;border:1px solid var(--surface-strong);border-radius:4px;background:var(--canvas);vertical-align:middle}
+input[type=checkbox]:checked{background:var(--primary);border-color:var(--primary)}
+.row-actions{display:flex;gap:6px;justify-content:flex-end}
+.row-actions button{border:1px solid var(--surface-strong);background:var(--canvas);border-radius:var(--r-md);font-size:12px;font-weight:500;color:var(--muted);padding:5px 10px}
+.row-actions button:hover{color:var(--ink);border-color:var(--muted)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg)}
+.pager .info{font-size:13px;color:var(--muted)}
+.pg{display:flex;gap:6px}
+.pg button{min-width:32px;height:32px;border:1px solid var(--surface-strong);background:var(--canvas);border-radius:var(--r-md);font-size:13px;color:var(--muted)}
+.pg button.cur{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* activity */
+.feed-item{display:flex;gap:var(--sp-sm);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline-soft)}
+.feed-item:last-child{border-bottom:0}
+.feed-item p{font-size:13px}
+.feed-item p b{color:var(--ink);font-weight:600}
+.feed-item .time{font-size:12px;color:var(--muted-soft);margin-top:2px}
+.quick{margin-top:var(--sp-md);padding-top:var(--sp-md);border-top:1px solid var(--hairline)}
+.quick label{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 0}
+.toggle{appearance:none;width:36px;height:20px;border-radius:var(--r-pill);background:var(--surface-strong);position:relative}
+.toggle:checked{background:var(--brand-pink)}
+.quick .btn{width:100%;margin-top:var(--sp-sm)}
+
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.panel{grid-template-columns:1fr}
+  .search input{width:160px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#"><span class="blob"></span>clay</a>
+    <nav class="menu">
+      <p class="m-label">Workspace</p>
+      <a href="#" class="active"><span class="ico">◈</span>Overview</a>
+      <a href="#"><span class="ico">▤</span>Tables<span class="cnt">6</span></a>
+      <a href="#"><span class="ico">▦</span>Playbooks</a>
+      <a href="#"><span class="ico">▣</span>Claygent runs</a>
+      <p class="m-label">Data</p>
+      <a href="#"><span class="ico">◍</span>Sources</a>
+      <a href="#"><span class="ico">◎</span>Integrations</a>
+      <p class="m-label">Insight</p>
+      <a href="#"><span class="ico">▥</span>Credits &amp; usage</a>
+      <a href="#"><span class="ico">⚙</span>Settings</a>
+    </nav>
+    <div class="user-card">
+      <div class="ava" style="background:var(--brand-lavender);color:var(--ink)">LO</div>
+      <div><div class="nm">Lena Ortiz</div><div class="rl">Ops lead</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="crumb">Workspace / <b>Overview</b></span>
+      <div class="search"><input type="search" placeholder="Search tables, runs…" aria-label="Search"></div>
+      <button class="icon-btn bell" aria-label="Notifications">◔<span class="dot">7</span></button>
+      <div class="ava" style="background:var(--brand-lavender);color:var(--ink)">LO</div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Good morning, Lena</h1>
+          <p>Ferrostat GTM · Claygent swept 2,431 accounts overnight.</p>
+        </div>
+        <div style="display:flex;gap:var(--sp-sm)">
+          <button class="btn--secondary btn">Export report</button>
+          <button class="btn">New table</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <p class="lbl">Accounts enriched</p>
+          <div class="val">12,408</div>
+          <div class="row"><span class="delta up">▲ 14.2%</span>
+            <div class="spark"><i style="height:30%"></i><i style="height:45%"></i><i class="hot" style="height:60%"></i><i style="height:50%"></i><i style="height:70%"></i><i class="y" style="height:95%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Hot accounts routed</p>
+          <div class="val">412</div>
+          <div class="row"><span class="delta up">▲ 22.8%</span>
+            <div class="spark"><i style="height:25%"></i><i style="height:35%"></i><i class="hot" style="height:55%"></i><i style="height:50%"></i><i style="height:75%"></i><i class="y" style="height:100%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Credits used</p>
+          <div class="val">38.4k</div>
+          <div class="row"><span class="delta down">▼ 6.3%</span>
+            <div class="spark"><i style="height:90%"></i><i style="height:80%"></i><i class="hot" style="height:70%"></i><i style="height:60%"></i><i style="height:50%"></i><i class="y" style="height:40%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <p class="lbl">Waterfall match rate</p>
+          <div class="val">91.7%</div>
+          <div class="row"><span class="delta up">▲ 1.9%</span>
+            <div class="spark"><i style="height:60%"></i><i style="height:65%"></i><i class="hot" style="height:70%"></i><i style="height:68%"></i><i style="height:80%"></i><i class="y" style="height:85%"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <h3>Runs by month</h3>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:35%"></div></div>
+            <div class="bcol"><div class="bar" style="height:48%"></div></div>
+            <div class="bcol"><div class="bar" style="height:42%"></div></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div></div>
+            <div class="bcol"><div class="bar" style="height:64%"></div></div>
+            <div class="bcol"><div class="bar" style="height:56%"></div></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:86%"></div></div>
+            <div class="bcol"><div class="bar" style="height:60%"></div></div>
+            <div class="bcol hot"><div class="bar" style="height:96%"></div></div>
+            <div class="bcol"><div class="bar" style="height:72%"></div></div>
+          </div>
+          <div class="blabels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+        </div>
+        <div class="card">
+          <h3>Enrichment by source</h3>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="168" height="168" viewBox="0 0 168 168">
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#ebe6d6" stroke-width="15"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#ff4d8b" stroke-width="15" stroke-dasharray="132 275" stroke-dashoffset="0"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#1a3a3a" stroke-width="15" stroke-dasharray="88 319" stroke-dashoffset="-137"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#b8a4ed" stroke-width="15" stroke-dasharray="62 345" stroke-dashoffset="-230"/>
+                <circle cx="84" cy="84" r="64" fill="none" stroke="#ffb084" stroke-width="15" stroke-dasharray="47 360" stroke-dashoffset="-297"/>
+              </svg>
+              <div class="center"><span class="v">12.4k</span><span class="t">rows</span></div>
+            </div>
+            <div class="legend">
+              <div class="leg"><i style="background:#ff4d8b"></i>Provider A<span class="pct">34%</span></div>
+              <div class="leg"><i style="background:#1a3a3a"></i>Claygent scrape<span class="pct">23%</span></div>
+              <div class="leg"><i style="background:#b8a4ed"></i>Provider B<span class="pct">16%</span></div>
+              <div class="leg"><i style="background:#ffb084"></i>Provider C<span class="pct">12%</span></div>
+              <div class="leg"><i style="background:#ebe6d6"></i>Manual<span class="pct">15%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-card">
+          <div class="tc-head"><h3>Recent runs</h3><button class="btn--secondary btn" style="height:36px;padding:0 16px;font-size:13px">View all</button></div>
+          <table>
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" aria-label="Select all"></th>
+              <th>Run</th><th>Playbook</th><th>Owner</th><th>Status</th><th>Rows</th><th>Finished</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Nightly sweep #1,204</div><div class="cell-sub">TAM master table</div></td>
+                <td>Nightly Account Sweep</td><td>Claygent</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">2,431</td><td class="num">06:12 today</td>
+                <td><div class="row-actions"><button>Open</button><button>Rerun</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Q4 outbound batch</div><div class="cell-sub">Series-B SaaS list</div></td>
+                <td>Sequencer Starter</td><td>D. Chow</td>
+                <td><span class="badge pink">Running</span></td>
+                <td class="num">868</td><td class="num">in progress</td>
+                <td><div class="row-actions"><button>Open</button><button>Pause</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Waterfall backfill</div><div class="cell-sub">EMEA enterprise</div></td>
+                <td>Waterfall Pro</td><td>L. Ortiz</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">5,214</td><td class="num">Yesterday 22:40</td>
+                <td><div class="row-actions"><button>Open</button><button>Export</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Job-change alerts</div><div class="cell-sub">Champion watchlist</div></td>
+                <td>Job-change Trigger</td><td>Workspace</td>
+                <td><span class="badge warning">Partial</span></td>
+                <td class="num">142</td><td class="num">Yesterday 18:05</td>
+                <td><div class="row-actions"><button>Review</button><button>Rerun</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">HubSpot stage sync</div><div class="cell-sub">Pipeline mirror</div></td>
+                <td>HubSpot Bridge</td><td>Workspace</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">3,902</td><td class="num">Yesterday 12:00</td>
+                <td><div class="row-actions"><button>Open</button><button>Logs</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Meeting-prep drafts</div><div class="cell-sub">Today's calls (14)</div></td>
+                <td>Meeting-prep Agent</td><td>Claygent</td>
+                <td><span class="badge danger">Failed</span></td>
+                <td class="num">14</td><td class="num">07:30 today</td>
+                <td><div class="row-actions"><button>Inspect</button><button>Retry</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="cell-name">Tech-stack scan</div><div class="cell-sub">PostgreSQL segment</div></td>
+                <td>Nightly Account Sweep</td><td>Claygent</td>
+                <td><span class="badge success">Completed</span></td>
+                <td class="num">870</td><td class="num">Mon 06:11</td>
+                <td><div class="row-actions"><button>Open</button><button>Export</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span class="info">Showing 1–7 of 1,204 runs</span>
+            <div class="pg"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recent activity</h3>
+          <div class="feed-item"><div class="ava" style="background:var(--brand-teal);width:28px;height:28px;font-size:11px">CG</div><div><p><b>Claygent</b> routed 412 hot accounts to the sequencer.</p><p class="time">25 minutes ago</p></div></div>
+          <div class="feed-item"><div class="ava" style="background:var(--brand-coral);width:28px;height:28px;font-size:11px">DC</div><div><p><b>Dana Chow</b> launched the Q4 outbound batch (868 rows).</p><p class="time">2 hours ago</p></div></div>
+          <div class="feed-item"><div class="ava" style="background:var(--brand-ochre);width:28px;height:28px;font-size:11px">WS</div><div><p>Waterfall provider C rate-limited — <b>auto-fallback engaged</b>.</p><p class="time">5 hours ago</p></div></div>
+          <div class="feed-item"><div class="ava" style="background:var(--brand-lavender);color:var(--ink);width:28px;height:28px;font-size:11px">LO</div><div><p><b>Lena Ortiz</b> installed <b>Job-change Trigger</b> from the marketplace.</p><p class="time">Yesterday</p></div></div>
+          <div class="quick">
+            <p style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">Quick settings</p>
+            <label>Auto-route hot accounts <input type="checkbox" class="toggle" checked></label>
+            <label>Credit-spend alerts <input type="checkbox" class="toggle" checked></label>
+            <label>Pause runs on weekends <input type="checkbox" class="toggle"></label>
+            <button class="btn">Save preferences</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airtable — Design Showcase</title>
+<style>
+  :root {
+    --primary: #181d26;
+    --primary-active: #0d1218;
+    --ink: #181d26;
+    --body: #333840;
+    --muted: #41454d;
+    --hairline: #dddddd;
+    --border-strong: #9297a0;
+    --canvas: #ffffff;
+    --surface-soft: #f8fafc;
+    --surface-strong: #e0e2e6;
+    --surface-dark: #181d26;
+    --surface-dark-elevated: #1d1f25;
+    --sig-coral: #aa2d00;
+    --sig-forest: #0a2e0e;
+    --sig-cream: #f5e9d4;
+    --sig-peach: #fcab79;
+    --sig-mint: #a8d8c4;
+    --sig-yellow: #f4d35e;
+    --sig-mustard: #d9a441;
+    --on-primary: #ffffff;
+    --on-dark: #ffffff;
+    --link: #1b61c9;
+    --link-active: #1a3866;
+    --info: #254fad;
+    --info-border: #458fff;
+    --success: #006400;
+    --success-border: #39bf45;
+    --pricing-ink: #1d1f25;
+    --r-xs: 2px; --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-pill: 9999px; --r-full: 9999px;
+    --sp-sm: 12px; --sp-md: 16px; --sp-lg: 24px; --sp-xl: 32px; --sp-xxl: 48px; --sp-section: 96px;
+    --font: 'Haas Groot Disp', Haas, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-price: 'Inter Display', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--canvas); color: var(--ink); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+  @media (max-width: 900px) { .wrap { padding: 0 24px; } }
+
+  .sg-banner {
+    background: var(--surface-dark); color: var(--on-dark);
+    padding: 14px 48px; display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; position: sticky; top: 0; z-index: 50;
+  }
+  .sg-folder { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #8b909a; border: 1px solid #343943; border-radius: 9999px; padding: 4px 12px; white-space: nowrap; }
+  .sg-brand { font-size: 20px; font-weight: 500; }
+  .sg-desc { font-size: 14px; color: #c7cad0; text-align: right; max-width: 560px; }
+  @media (max-width: 900px) { .sg-banner .sg-desc { display: none; } }
+
+  .sg-section-label { font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: var(--muted); margin-bottom: 24px; }
+  #components { padding: 96px 0 48px; border-bottom: 1px solid var(--hairline); }
+  #components h1 { font-size: 40px; font-weight: 400; line-height: 1.2; margin-bottom: 12px; }
+  #components .lede { font-size: 14px; color: var(--body); margin-bottom: 48px; max-width: 620px; }
+  .blk { margin-bottom: 96px; }
+
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+  .swatch { border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; }
+  .swatch .chip { height: 72px; }
+  .swatch .meta { padding: 10px 12px; }
+  .swatch .name { font-size: 13px; font-weight: 500; }
+  .swatch .hex { font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+
+  .type-specimen { border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; }
+  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 14px 24px; border-bottom: 1px solid var(--hairline); }
+  .type-row:last-child { border-bottom: none; }
+  .type-row .tag { flex: 0 0 210px; font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+  .t-display-xl { font-size: 48px; font-weight: 500; line-height: 1.1; }
+  .t-display-lg { font-size: 40px; font-weight: 400; line-height: 1.2; }
+  .t-display-md { font-size: 32px; font-weight: 400; line-height: 1.2; }
+  .t-title-lg { font-size: 24px; font-weight: 400; line-height: 1.35; letter-spacing: 0.12px; }
+  .t-title-md { font-size: 20px; font-weight: 400; line-height: 1.5; }
+  .t-title-sm { font-size: 18px; font-weight: 500; line-height: 1.4; }
+  .t-label-md { font-size: 16px; font-weight: 500; line-height: 1.4; }
+  .t-body-md { font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--body); }
+  .t-caption { font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: var(--muted); }
+  .t-legal { font-size: 13px; font-weight: 600; }
+  .t-price-display { font-family: var(--font-price); font-size: 44.8px; font-weight: 475; line-height: 1.1; }
+  .t-price-title { font-family: var(--font-price); font-size: 20px; font-weight: 475; line-height: 1.3; }
+
+  .btn-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .btn { font-family: var(--font); font-size: 16px; font-weight: 500; cursor: pointer; border: none; transition: background .15s, border-color .15s; }
+  .btn-primary { background: var(--primary); color: var(--on-primary); border-radius: 12px; padding: 16px 24px; box-shadow: 0 0 0 1px rgba(27,97,201,.06), 0 2px 10px rgba(27,97,201,.12); }
+  .btn-primary:hover, .btn-primary:active { background: var(--primary-active); }
+  .btn-secondary { background: var(--canvas); color: var(--ink); border: 1px solid var(--hairline); border-radius: 12px; padding: 15px 23px; }
+  .btn-secondary:hover { border-color: var(--border-strong); }
+  .btn-secondary-on-dark { background: var(--canvas); color: var(--ink); border: 1px solid var(--canvas); border-radius: 12px; padding: 15px 23px; }
+  .btn-pricing-pill { background: var(--canvas); color: var(--pricing-ink); border: 1px solid var(--hairline); border-radius: 9999px; padding: 11px 24px; }
+  .btn-pricing-pill:hover { border-color: var(--border-strong); }
+  .btn-legal { background: var(--link); color: var(--on-primary); font-size: 13px; font-weight: 600; border-radius: 2px; padding: 10px 12px; }
+  .btn-icon { width: 40px; height: 40px; border-radius: 9999px; background: var(--canvas); border: 1px solid var(--hairline); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; }
+  .btn-tertiary { background: transparent; color: var(--body); font-weight: 500; padding: 16px 8px; }
+  .btn-tertiary:hover { color: var(--ink); }
+  .text-link { color: var(--link); }
+  .text-link:hover { color: var(--link-active); }
+
+  .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 900px; }
+  .field label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+  .text-input { width: 100%; height: 44px; background: var(--canvas); border: 1px solid var(--hairline); border-radius: 6px; padding: 12px 16px; font-size: 14px; font-family: var(--font); color: var(--ink); outline: none; transition: border-color .15s; }
+  .text-input::placeholder { color: var(--border-strong); }
+  .text-input:focus { border-color: var(--info-border); box-shadow: 0 0 0 1px var(--info-border); }
+  .text-input.disabled { background: var(--surface-soft); color: var(--border-strong); cursor: not-allowed; }
+  .select-wrap { position: relative; }
+  .select { appearance: none; width: 100%; height: 44px; border: 1px solid var(--hairline); border-radius: 6px; background: var(--canvas); padding: 0 36px 0 16px; font-size: 14px; font-family: var(--font); color: var(--ink); cursor: pointer; }
+  .select-wrap::after { content: ""; position: absolute; right: 14px; top: 50%; width: 7px; height: 7px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .switch { position: relative; width: 44px; height: 24px; background: var(--surface-strong); border-radius: 9999px; cursor: pointer; transition: background .2s; flex: none; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 9999px; background: var(--canvas); transition: left .2s; box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+  .switch.on { background: var(--link); }
+  .switch.on::after { left: 22px; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+  .check .box { width: 18px; height: 18px; border: 1px solid var(--border-strong); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--on-primary); flex: none; }
+  .check.on .box { background: var(--primary); border-color: var(--primary); }
+
+  /* cards */
+  .sig-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .sig-grid { grid-template-columns: 1fr; } }
+  .sig-coral { background: var(--sig-coral); color: var(--on-primary); border-radius: 12px; padding: 48px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+  .sig-coral h3 { font-size: 32px; font-weight: 400; line-height: 1.2; max-width: 460px; }
+  .sig-coral p { font-size: 14px; line-height: 1.5; max-width: 460px; opacity: .88; }
+  .sig-forest { background: var(--sig-forest); color: var(--on-primary); border-radius: 12px; padding: 48px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; }
+  .sig-forest h3 { font-size: 24px; font-weight: 400; line-height: 1.35; }
+  .sig-forest p { font-size: 14px; opacity: .85; line-height: 1.5; }
+  .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+  .demo-card { border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 140px; }
+  .demo-card .ui { background: var(--canvas); border-radius: 2px; padding: 10px 12px; font-size: 12px; color: var(--body); flex: 1; }
+  .demo-card .ui .bar { height: 8px; border-radius: 2px; background: var(--surface-strong); margin: 6px 0; }
+  .demo-card .ui .bar.short { width: 55%; }
+  .demo-card .ui .bar.acc { background: var(--sig-coral); width: 70%; }
+  .demo-card h4 { font-size: 16px; font-weight: 500; }
+  .cream-callout { background: var(--sig-cream); color: var(--ink); border-radius: 10px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .cream-callout h4 { font-size: 24px; font-weight: 400; line-height: 1.35; max-width: 520px; }
+  .stat-chip { background: var(--canvas); border-radius: 10px; padding: 14px 18px; min-width: 110px; }
+  .stat-chip b { display: block; font-family: var(--font-price); font-size: 22px; font-weight: 475; }
+  .stat-chip span { font-size: 12px; color: var(--muted); }
+
+  /* badges */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; border: 1px solid var(--hairline); border-radius: 9999px; padding: 6px 14px; cursor: pointer; color: var(--body); transition: border-color .15s; }
+  .pill:hover { border-color: var(--border-strong); }
+  .pill.on { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+  .tag-info, .tag-success, .tag-coral { display: inline-flex; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 2px; }
+  .tag-info { background: #e8f0fc; color: var(--info); border: 1px solid #cfe0f7; }
+  .tag-success { background: #e8f5e8; color: var(--success); border: 1px solid var(--success-border); }
+  .tag-coral { background: var(--sig-coral); color: var(--on-primary); }
+  .tag-count { background: var(--surface-soft); color: var(--muted); border-radius: 9999px; padding: 2px 8px; font-size: 11px; font-weight: 500; }
+
+  /* nav */
+  .navbar-demo { border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; }
+  .topnav { background: var(--canvas); height: 64px; display: flex; align-items: center; gap: 32px; padding: 0 32px; }
+  .logo { font-size: 19px; font-weight: 500; letter-spacing: -0.2px; }
+  .logo .dot { color: var(--sig-coral); }
+  .nav-links { display: flex; gap: 24px; font-size: 14px; color: var(--body); }
+  .nav-links span { cursor: pointer; padding: 6px 0; }
+  .nav-links span:hover { color: var(--ink); }
+  .nav-links .on { color: var(--ink); border-bottom: 2px solid var(--ink); }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: 14px; }
+  .nav-right .login { color: var(--body); cursor: pointer; }
+  .nav-right .login:hover { color: var(--ink); }
+  .hero-demo { background: var(--canvas); padding: 96px 48px; text-align: center; border-top: 1px solid var(--hairline); }
+  .hero-demo h2 { font-size: 40px; font-weight: 400; line-height: 1.2; margin-bottom: 16px; }
+  .hero-demo p { font-size: 14px; color: var(--body); margin-bottom: 32px; }
+  .hero-demo .btn-row { justify-content: center; }
+
+  /* table */
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl-wrap { border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; max-width: 1000px; }
+  .tbl th { text-align: left; font-size: 12px; font-weight: 500; color: var(--muted); padding: 12px 24px; background: var(--surface-soft); border-bottom: 1px solid var(--hairline); }
+  .tbl td { padding: 12px 24px; border-bottom: 1px solid var(--hairline); font-size: 14px; color: var(--body); }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl td:first-child { color: var(--ink); font-weight: 500; }
+  .yes { color: var(--success); font-weight: 700; }
+  .no2 { color: var(--border-strong); }
+
+  /* product */
+  #product { padding-top: 96px; }
+  .p-hero { text-align: center; padding: 96px 24px; }
+  .p-hero h1 { font-size: 40px; font-weight: 400; line-height: 1.2; max-width: 760px; margin: 0 auto 16px; }
+  .p-hero p { font-size: 14px; color: var(--body); margin-bottom: 32px; }
+  .p-hero .btn-row { justify-content: center; }
+  .logo-strip { display: flex; align-items: center; justify-content: center; gap: 56px; padding: 32px 24px; color: var(--muted); font-size: 17px; font-weight: 500; flex-wrap: wrap; }
+  .logo-strip span { opacity: .65; letter-spacing: 0.5px; }
+  .p-feat { padding: 0 0 96px; }
+  .p-feat h2 { font-size: 32px; font-weight: 400; margin-bottom: 8px; }
+  .p-feat .sub { font-size: 14px; color: var(--body); margin-bottom: 32px; }
+  .f-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .f-grid { grid-template-columns: 1fr; } }
+  .f-card { background: var(--surface-soft); border-radius: 12px; padding: 32px; }
+  .f-card .ico { font-size: 24px; margin-bottom: 16px; }
+  .f-card h3 { font-size: 20px; font-weight: 400; line-height: 1.5; margin-bottom: 8px; }
+  .f-card p { font-size: 14px; color: var(--body); line-height: 1.5; margin-bottom: 16px; }
+  .f-card .more { font-size: 14px; color: var(--link); }
+  .dark-band { background: var(--surface-dark); color: var(--on-dark); border-radius: 12px; padding: 48px; margin: 96px 0; display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .dark-band h2 { font-size: 32px; font-weight: 400; line-height: 1.2; max-width: 560px; }
+  .dark-band p { font-size: 14px; color: #c7cad0; margin-top: 12px; max-width: 560px; }
+  .pricing { padding: 0 0 96px; }
+  .pricing h2 { font-family: var(--font-price); font-size: 28px; font-weight: 475; margin-bottom: 8px; }
+  .pricing .sub { font-size: 14px; color: var(--body); margin-bottom: 32px; }
+  .tier-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  @media (max-width: 1100px) { .tier-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .tier-grid { grid-template-columns: 1fr; } }
+  .tier { border: 1px solid var(--hairline); border-radius: 10px; padding: 32px; display: flex; flex-direction: column; }
+  .tier.featured { background: var(--surface-soft); border-color: var(--surface-soft); }
+  .tier h3 { font-family: var(--font-price); font-size: 20px; font-weight: 475; margin-bottom: 12px; }
+  .tier .price { font-family: var(--font-price); font-size: 44.8px; font-weight: 475; line-height: 1.1; }
+  .tier .per { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .tier ul { list-style: none; margin-bottom: 24px; flex: 1; }
+  .tier li { font-size: 13px; color: var(--body); padding: 6px 0; display: flex; gap: 8px; }
+  .tier li::before { content: "\2713"; color: var(--success); font-weight: 700; }
+  .tier .btn-pricing-pill { width: 100%; }
+  .quote-band { padding: 96px 24px; text-align: center; }
+  .quote-band blockquote { font-size: 32px; font-weight: 400; line-height: 1.2; max-width: 760px; margin: 0 auto 16px; }
+  .quote-band cite { font-style: normal; font-size: 14px; color: var(--muted); }
+  .cta-light { background: var(--surface-strong); border-radius: 12px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 96px; }
+  .cta-light h2 { font-size: 32px; font-weight: 400; }
+  .footer { padding: 64px 0; border-top: 1px solid var(--hairline); }
+  .f-cols { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 48px; }
+  @media (max-width: 900px) { .f-cols { grid-template-columns: repeat(3, 1fr); } }
+  .f-cols h4 { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+  .f-cols a { display: block; font-size: 14px; color: var(--body); padding: 5px 0; }
+  .f-cols a:hover { color: var(--ink); }
+  .legal { font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span class="sg-folder">airtable</span>
+    <span class="sg-brand">Airtable</span>
+  </div>
+  <div class="sg-desc">Sober editorial workflow software — brand voltage comes from full-bleed signature cards in coral, forest, cream and dark navy.</div>
+</header>
+
+<main>
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components">
+    <div class="wrap">
+      <h1>Components</h1>
+      <p class="lede">Quiet editorial surfaces on a white canvas. The near-black CTA and the signature surface cards carry all the brand voltage — nothing else fights for attention.</p>
+
+      <!-- 01 colors -->
+      <div class="blk">
+        <div class="sg-section-label">01 — Color tokens</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="chip" style="background:#181d26"></div><div class="meta"><div class="name">Primary / ink</div><div class="hex">#181d26</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#0d1218"></div><div class="meta"><div class="name">Primary active</div><div class="hex">#0d1218</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#aa2d00"></div><div class="meta"><div class="name">Signature coral</div><div class="hex">#aa2d00</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#0a2e0e"></div><div class="meta"><div class="name">Signature forest</div><div class="hex">#0a2e0e</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#f5e9d4"></div><div class="meta"><div class="name">Signature cream</div><div class="hex">#f5e9d4</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#fcab79"></div><div class="meta"><div class="name">Signature peach</div><div class="hex">#fcab79</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#a8d8c4"></div><div class="meta"><div class="name">Signature mint</div><div class="hex">#a8d8c4</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#f4d35e"></div><div class="meta"><div class="name">Signature yellow</div><div class="hex">#f4d35e</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#d9a441"></div><div class="meta"><div class="name">Signature mustard</div><div class="hex">#d9a441</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#1b61c9"></div><div class="meta"><div class="name">Link blue (not CTA)</div><div class="hex">#1b61c9</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#f8fafc"></div><div class="meta"><div class="name">Surface soft</div><div class="hex">#f8fafc</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#e0e2e6"></div><div class="meta"><div class="name">Surface strong</div><div class="hex">#e0e2e6</div></div></div>
+        </div>
+      </div>
+
+      <!-- 02 typography -->
+      <div class="blk">
+        <div class="sg-section-label">02 — Typography specimen · Haas Groot (Inter Display on pricing)</div>
+        <div class="type-specimen">
+          <div class="type-row"><span class="tag">display-xl · 48/500</span><span class="t-display-xl">Build connected apps</span></div>
+          <div class="type-row"><span class="tag">display-lg · 40/400</span><span class="t-display-lg">Production apps in prototype speed</span></div>
+          <div class="type-row"><span class="tag">display-md · 32/400</span><span class="t-display-md">One shared source of truth</span></div>
+          <div class="type-row"><span class="tag">title-lg · 24/400</span><span class="t-title-lg">Scale operational processes</span></div>
+          <div class="type-row"><span class="tag">title-sm · 18/500</span><span class="t-title-sm">Automate every workflow</span></div>
+          <div class="type-row"><span class="tag">body-md · 14/400</span><span class="t-body-md">Airtable connects your data, workflows and teams so everyone ships faster — from campaign briefs to product roadmaps.</span></div>
+          <div class="type-row"><span class="tag">caption · 14/500</span><span class="t-caption">FEATURED STORY</span></div>
+          <div class="type-row"><span class="tag">legal · 13/600</span><span class="t-legal">Accept all cookies</span></div>
+          <div class="type-row"><span class="tag">pricing-display · 44.8/475</span><span class="t-price-display">$20 per seat / month</span></div>
+          <div class="type-row"><span class="tag">pricing-card-title · 20/475</span><span class="t-price-title">Team plan</span></div>
+        </div>
+      </div>
+
+      <!-- 03 buttons -->
+      <div class="blk">
+        <div class="sg-section-label">03 — Buttons</div>
+        <div class="btn-row" style="margin-bottom:16px;">
+          <button class="btn btn-primary">Sign up for free</button>
+          <button class="btn btn-secondary">Book demo</button>
+          <button class="btn btn-tertiary">Log in</button>
+          <button class="btn btn-pricing-pill">Start with Team</button>
+          <button class="btn btn-legal">Accept cookies</button>
+          <button class="btn-icon" aria-label="carousel control">&#8592;</button>
+          <button class="btn-icon" aria-label="carousel control">&#8594;</button>
+          <a class="text-link" href="#">Read the docs</a>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" style="background:var(--primary-active);">Pressed state</button>
+          <button class="btn btn-secondary-on-dark">Secondary on dark</button>
+        </div>
+      </div>
+
+      <!-- 04 inputs -->
+      <div class="blk">
+        <div class="sg-section-label">04 — Inputs</div>
+        <div class="input-grid">
+          <div class="field">
+            <label for="w">Work email</label>
+            <input id="w" class="text-input" type="email" placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label>Base name (focused)</label>
+            <input class="text-input" type="text" value="Q4 Launch Tracker" style="border-color:var(--info-border); box-shadow:0 0 0 1px var(--info-border);">
+          </div>
+          <div class="field">
+            <label>Workspace</label>
+            <div class="select-wrap">
+              <select class="select"><option>Marketing · 24 seats</option><option>Product · 61 seats</option><option>Ops · 12 seats</option></select>
+            </div>
+          </div>
+          <div class="field">
+            <label>API key (disabled)</label>
+            <input class="text-input disabled" type="text" value="patRB9x2****" disabled>
+          </div>
+        </div>
+        <div style="display:flex; gap:32px; align-items:center; margin-top:24px; flex-wrap:wrap;">
+          <span class="switch on" role="switch" aria-checked="true"></span>
+          <span style="font-size:14px;">Two-factor authentication</span>
+          <span class="switch" role="switch" aria-checked="false"></span>
+          <span style="font-size:14px;">Weekly digest email</span>
+          <span class="check on"><span class="box">&#10003;</span> Keep me signed in</span>
+          <span class="check"><span class="box"></span> Share usage data</span>
+        </div>
+      </div>
+
+      <!-- 05 cards -->
+      <div class="blk">
+        <div class="sg-section-label">05 — Cards · signature surfaces + demo grid</div>
+        <div class="sig-grid">
+          <div class="sig-coral">
+            <h3>Production apps in prototype speed</h3>
+            <p>Go from a whiteboard sketch to a deployed app connected to live data — without waiting on an engineering sprint.</p>
+            <div><button class="btn btn-secondary-on-dark">Explore the platform</button></div>
+          </div>
+          <div class="sig-forest">
+            <h3>Your data, finally in one place</h3>
+            <p>Sync Salesforce, Jira, Google Calendar and 300+ sources into a single shared record.</p>
+          </div>
+        </div>
+        <div class="mini-grid">
+          <div class="demo-card" style="background:var(--sig-peach);">
+            <h4>Campaign tracker</h4>
+            <div class="ui"><div class="bar acc"></div><div class="bar"></div><div class="bar short"></div></div>
+          </div>
+          <div class="demo-card" style="background:var(--sig-mint);">
+            <h4>Roadmap timeline</h4>
+            <div class="ui"><div class="bar" style="width:70%;"></div><div class="bar acc"></div><div class="bar short"></div></div>
+          </div>
+          <div class="demo-card" style="background:var(--sig-yellow);">
+            <h4>Content calendar</h4>
+            <div class="ui"><div class="bar short"></div><div class="bar"></div><div class="bar acc"></div></div>
+          </div>
+          <div class="demo-card" style="background:var(--sig-mustard);">
+            <h4>Approvals flow</h4>
+            <div class="ui"><div class="bar acc"></div><div class="bar short"></div><div class="bar"></div></div>
+          </div>
+        </div>
+        <div class="cream-callout" style="margin-top:24px;">
+          <h4>The path to 10&times; for every person in your organization</h4>
+          <div style="display:flex; gap:16px;">
+            <div class="stat-chip"><b>10&times;</b><span>faster launches</span></div>
+            <div class="stat-chip"><b>45k</b><span>connected teams</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 badges -->
+      <div class="blk">
+        <div class="sg-section-label">06 — Badges · tags · pills</div>
+        <div class="pill-row">
+          <span class="pill on">All bases</span>
+          <span class="pill">Marketing</span>
+          <span class="pill">Product</span>
+          <span class="pill">Operations</span>
+          <span class="pill">HR</span>
+        </div>
+        <div class="pill-row" style="margin-top:16px;">
+          <span class="tag-info">Info</span>
+          <span class="tag-success">Synced</span>
+          <span class="tag-coral">New</span>
+          <span style="font-size:14px;">Product <span class="tag-count">42</span></span>
+          <span style="font-size:14px;">Operations <span class="tag-count">17</span></span>
+        </div>
+      </div>
+
+      <!-- 07 navigation -->
+      <div class="blk">
+        <div class="sg-section-label">07 — Navigation · top nav</div>
+        <div class="navbar-demo">
+          <nav class="topnav">
+            <a href="#" class="logo">Airtable<span class="dot">.</span></a>
+            <div class="nav-links">
+              <span>Platform</span><span class="on">Solutions</span><span>Resources</span><span>Enterprise</span><span>Pricing</span>
+            </div>
+            <div class="nav-right">
+              <span class="login">Log in</span>
+              <button class="btn btn-secondary" style="padding:8px 16px; height:auto; font-size:14px;">Book demo</button>
+              <button class="btn btn-primary" style="padding:8px 16px; height:auto; font-size:14px;">Sign up for free</button>
+            </div>
+          </nav>
+          <div class="hero-demo">
+            <h2>Connect your team's work</h2>
+            <p>One platform for apps, workflows and records everyone can build on.</p>
+            <div class="btn-row">
+              <button class="btn btn-primary">Get started</button>
+              <button class="btn btn-secondary">See it in action</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 table -->
+      <div class="blk">
+        <div class="sg-section-label">08 — Table · integration sync status</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Integration</th><th>Direction</th><th>Records</th><th>Last sync</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Salesforce</td><td>Two-way</td><td>12,408</td><td>2 min ago</td><td class="yes">&#10003; Healthy</td></tr>
+              <tr><td>Jira Software</td><td>Two-way</td><td>3,102</td><td>8 min ago</td><td class="yes">&#10003; Healthy</td></tr>
+              <tr><td>Google Drive</td><td>Airtable →</td><td>864</td><td>32 min ago</td><td class="yes">&#10003; Healthy</td></tr>
+              <tr><td>Legacy SAP export</td><td>One-way</td><td>—</td><td>—</td><td class="no2">Paused</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINISHED PRODUCT ================= -->
+  <section id="product">
+    <div class="p-hero">
+      <h1>Production apps in prototype speed</h1>
+      <p>Airtable connects your data, workflows and teams on one shared platform — no code required.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary">Sign up for free</button>
+        <button class="btn btn-secondary">Book demo</button>
+      </div>
+    </div>
+
+    <div class="logo-strip">
+      <span>HBO</span><span>Netflix</span><span>Amazon</span><span>TIME</span><span>Cond&eacute; Nast</span><span>Shopify</span>
+    </div>
+
+    <div class="wrap p-feat">
+      <h2>Everything your team runs on</h2>
+      <div class="sub">Three surfaces, one shared source of truth.</div>
+      <div class="f-grid">
+        <div class="f-card">
+          <div class="ico">&#9638;</div>
+          <h3>Build apps without engineers</h3>
+          <p>Drag-and-drop interfaces, permissions and views your whole team can maintain — production-grade from day one.</p>
+          <a href="#" class="more">Explore the builder &rarr;</a>
+        </div>
+        <div class="f-card">
+          <div class="ico">&#8635;</div>
+          <h3>Automate the busywork</h3>
+          <p>Trigger approvals, hand-offs and notifications across systems the moment a record changes — no scripts to babysit.</p>
+          <a href="#" class="more">See automations &rarr;</a>
+        </div>
+        <div class="f-card">
+          <div class="ico">&#9670;</div>
+          <h3>Unify every data source</h3>
+          <p>Two-way sync with Salesforce, Jira and 300+ tools so nobody argues about whose spreadsheet is current.</p>
+          <a href="#" class="more">Browse integrations &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="dark-band">
+        <div>
+          <h2>The path to 10&times; every person in your organization</h2>
+          <p>Enterprise governance, granular permissions and audit trails — without slowing the people doing the work.</p>
+        </div>
+        <button class="btn btn-secondary-on-dark">Talk to sales</button>
+      </div>
+    </div>
+
+    <div class="wrap pricing">
+      <h2>Pricing that scales with the work</h2>
+      <div class="sub">Per seat, per month, billed annually. Change plans any time.</div>
+      <div class="tier-grid">
+        <div class="tier">
+          <h3>Free</h3>
+          <div class="price">$0</div>
+          <div class="per">for up to 5 editors</div>
+          <ul><li>Unlimited bases</li><li>1,000 records per base</li><li>Interface Designer</li></ul>
+          <button class="btn btn-pricing-pill">Get started</button>
+        </div>
+        <div class="tier featured">
+          <h3>Team</h3>
+          <div class="price">$20</div>
+          <div class="per">per seat / month</div>
+          <ul><li>50,000 records per base</li><li>Automations &amp; sync</li><li>Extensions</li><li>3 months revision history</li></ul>
+          <button class="btn btn-pricing-pill" style="background:var(--primary); color:var(--on-primary); border-color:var(--primary);">Upgrade to Team</button>
+        </div>
+        <div class="tier">
+          <h3>Business</h3>
+          <div class="price">$45</div>
+          <div class="per">per seat / month</div>
+          <ul><li>125,000 records per base</li><li>SAML SSO</li><li>Admin panel</li><li>1 year revision history</li></ul>
+          <button class="btn btn-pricing-pill">Upgrade to Business</button>
+        </div>
+        <div class="tier">
+          <h3>Enterprise Scale</h3>
+          <div class="price">Custom</div>
+          <div class="per">annual agreement</div>
+          <ul><li>500,000+ records</li><li>Enterprise hub &amp; audit logs</li><li>Dedicated success team</li></ul>
+          <button class="btn btn-pricing-pill">Contact sales</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-band">
+      <blockquote>&ldquo;We replaced six disconnected tools with one Airtable base — and shipped our launch two months early.&rdquo;</blockquote>
+      <cite>Dana Ferreira &middot; VP Operations, Northbeam Media</cite>
+    </div>
+
+    <div class="wrap">
+      <div class="cta-light">
+        <h2>Start building with Airtable</h2>
+        <div style="display:flex; gap:16px;">
+          <button class="btn btn-primary">Sign up for free</button>
+          <button class="btn btn-secondary">Book demo</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="f-cols">
+          <div><h4>Platform</h4><a href="#">Overview</a><a href="#">App builder</a><a href="#">Automations</a><a href="#">Integrations</a><a href="#">Interface Designer</a></div>
+          <div><h4>Solutions</h4><a href="#">Marketing</a><a href="#">Product</a><a href="#">Operations</a><a href="#">HR</a><a href="#">Finance</a></div>
+          <div><h4>Resources</h4><a href="#">Templates</a><a href="#">Guides</a><a href="#">Webinars</a><a href="#">Community</a><a href="#">Developer hub</a></div>
+          <div><h4>Learn</h4><a href="#">Blog</a><a href="#">Articles</a><a href="#">Customer stories</a><a href="#">Universe conference</a></div>
+          <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Newsroom</a><a href="#">Investors</a></div>
+          <div><h4>Pricing</h4><a href="#">Plans</a><a href="#">Enterprise</a><a href="#">Education</a><a href="#">Nonprofit</a></div>
+        </div>
+        <div class="legal">
+          <span>&copy; 2026 Airtable &middot; Privacy &middot; Terms &middot; Cookie settings</span>
+          <span>English (US) &middot; System status</span>
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>
+
+</html>

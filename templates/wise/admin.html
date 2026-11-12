@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wise Business — Admin Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#9fe870; --on-primary:#0e0f0c; --primary-active:#cdffad; --primary-neutral:#c5edab; --primary-pale:#e2f6d5;
+  --ink:#0e0f0c; --ink-deep:#163300; --body:#454745; --mute:#868685;
+  --canvas:#ffffff; --canvas-soft:#e8ebe6;
+  --positive:#2ead4b; --positive-deep:#054d28; --positive-bg:#e2f6d5;
+  --warning:#ffd11a; --warning-deep:#b86700; --warning-content:#4a3b1c; --warning-bg:#fff6d9;
+  --negative:#d03238; --negative-deep:#a72027; --negative-bg:#320707; --negative-soft:#fbeaea;
+  --accent-orange:#ffc091; --accent-cyan:#38c8ff;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:24px; --s-2xl:32px; --s-3xl:48px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas-soft);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font)}
+
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--canvas);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:var(--s-xl) var(--s-md);display:flex;flex-direction:column;gap:var(--s-xl);position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:900;letter-spacing:-0.4px;padding:0 var(--s-md)}
+.flag-mark{width:28px;height:28px;border-radius:var(--r-sm);overflow:hidden;display:grid;flex:none}
+.flag-mark i{display:block;width:100%;height:50%;background:var(--primary)}
+.flag-mark i:last-child{background:var(--ink-deep)}
+.side-group{font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.3px;padding:var(--s-md) var(--s-md) var(--s-xs)}
+.nav{list-style:none;display:flex;flex-direction:column;gap:4px}
+.nav a{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;padding:12px var(--s-md);border-radius:var(--r-sm);color:var(--ink);border-left:4px solid transparent}
+.nav a:hover{background:var(--canvas-soft)}
+.nav a.on{background:var(--canvas-soft);border-left-color:var(--primary)}
+.nav .count{margin-left:auto;font-size:12px;font-weight:600;background:var(--primary-pale);color:var(--positive-deep);padding:2px 10px;border-radius:var(--r-pill)}
+.user-card{margin-top:auto;background:var(--ink);border-radius:var(--r-lg);padding:var(--s-md);display:flex;align-items:center;gap:10px}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--primary);color:var(--on-primary);font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
+.user-card b{display:block;font-size:14px;font-weight:600;color:var(--canvas)}
+.user-card span{font-size:12px;color:#9aa09a}
+.user-card .out{margin-left:auto;background:none;border:0;cursor:pointer;color:#9aa09a;font-size:15px}
+
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--canvas);padding:var(--s-md) var(--s-2xl);display:flex;align-items:center;gap:var(--s-lg);position:sticky;top:0;z-index:40;box-shadow:0 2px 8px rgba(14,15,12,.04)}
+.crumbs{font-size:14px;color:var(--mute)}
+.crumbs b{color:var(--ink);font-weight:600}
+.top-spacer{flex:1}
+.top-search{display:flex;align-items:center;gap:8px;border:1px solid var(--ink);border-radius:var(--r-md);padding:9px 12px;width:260px}
+.top-search input{border:0;outline:0;font-size:14px;width:100%;color:var(--ink);background:transparent}
+.top-search input::placeholder{color:var(--mute)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-full);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{background:var(--canvas-soft)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;min-width:17px;height:17px;border-radius:var(--r-pill);background:var(--negative);color:#fff;font-size:10px;font-weight:600;display:grid;place-items:center;padding:0 4px}
+.avatar-sm{width:36px;height:36px;border-radius:var(--r-full);background:var(--ink);color:var(--primary);font-size:12px;font-weight:600;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600;line-height:20px;padding:11px 18px;border-radius:var(--r-xl);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-tertiary{background:var(--canvas);color:var(--ink);border-color:var(--ink)}
+
+.content{padding:var(--s-2xl);display:flex;flex-direction:column;gap:var(--s-2xl)}
+.pagehead h1{font-size:40px;font-weight:900;line-height:1.0}
+.pagehead p{font-size:16px;color:var(--body);margin-top:6px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.kpi{background:var(--canvas);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:0 2px 10px rgba(14,15,12,.04)}
+.kpi .k-label{font-size:14px;font-weight:600;color:var(--body)}
+.kpi .k-value{font-size:32px;font-weight:900;letter-spacing:-.5px;margin:8px 0 6px}
+.delta{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;padding:4px 12px;border-radius:var(--r-pill)}
+.delta.up{background:var(--positive-bg);color:var(--positive-deep)}
+.delta.down{background:var(--negative-soft);color:var(--negative-deep)}
+.kpi-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:var(--s-md)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+.spark i{width:6px;border-radius:3px;background:var(--canvas-soft)}
+.spark i.hot{background:var(--primary)}
+.k-note{font-size:12px;color:var(--mute)}
+
+.card{background:var(--canvas);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:0 2px 10px rgba(14,15,12,.04)}
+.card h3{font-size:24px;font-weight:600;letter-spacing:-0.48px}
+.card .sub{font-size:14px;color:var(--mute);margin-top:2px}
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-lg)}
+.chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-lg)}
+.legend-tag{font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.3px}
+.bars{display:flex;align-items:flex-end;gap:var(--s-md);height:180px;padding-top:var(--s-md)}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:34px;background:var(--canvas-soft);border-radius:var(--r-sm) var(--r-sm) 4px 4px}
+.bar-col.hot i{background:var(--primary)}
+.bar-col span{font-size:12px;color:var(--mute)}
+.donut-wrap{display:flex;align-items:center;gap:var(--s-xl)}
+.donut{width:150px;height:150px;flex:none}
+.donut circle{fill:none;stroke-width:18;transform:rotate(-90deg);transform-origin:50% 50%}
+.legend{list-style:none;display:flex;flex-direction:column;gap:var(--s-md);font-size:14px;flex:1}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;border-radius:4px;flex:none}
+.legend b{margin-left:auto;font-weight:600}
+
+.grid-main{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--s-lg);align-items:start}
+.table-card{padding:0;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--canvas-soft);text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--ink);padding:var(--s-md) var(--s-lg)}
+thead th:first-child{border-radius:0}
+tbody td{padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--canvas-soft);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--primary-pale)}
+td .name b{display:block;font-weight:600}
+td .name span{font-size:12px;color:var(--mute)}
+td .mono{font-size:14px;color:var(--body)}
+.check{width:16px;height:16px;accent-color:var(--positive)}
+.badge{display:inline-block;font-size:14px;font-weight:600;padding:4px 12px;border-radius:var(--r-pill)}
+.st-success{background:var(--positive-bg);color:var(--positive-deep)}
+.st-warning{background:var(--warning-bg);color:var(--warning-deep)}
+.st-danger{background:var(--negative-soft);color:var(--negative-deep)}
+.st-neutral{background:var(--canvas-soft);color:var(--body)}
+.amount{font-weight:600;white-space:nowrap}
+.actions{display:flex;gap:6px;justify-content:flex-end}
+.icon-sm{width:32px;height:32px;border-radius:var(--r-full);border:0;background:var(--canvas-soft);cursor:pointer;color:var(--ink);display:grid;place-items:center}
+.icon-sm:hover{background:var(--primary-neutral)}
+.t-foot{display:flex;align-items:center;justify-content:space-between;padding:var(--s-md) var(--s-lg);font-size:14px;color:var(--mute)}
+.pager{display:flex;gap:6px}
+.pager button{width:32px;height:32px;border-radius:var(--r-full);border:0;background:var(--canvas-soft);cursor:pointer;font-size:14px;font-weight:600;color:var(--ink)}
+.pager button.on{background:var(--ink);color:var(--canvas)}
+
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed li{display:flex;gap:var(--s-md);padding:var(--s-md) 0;border-bottom:1px solid var(--canvas-soft)}
+.feed li:last-child{border-bottom:0}
+.feed .f-dot{width:36px;height:36px;border-radius:var(--r-full);flex:none;display:grid;place-items:center;font-size:12px;font-weight:600}
+.f-green{background:var(--positive-bg);color:var(--positive-deep)}
+.f-dark{background:var(--ink);color:var(--primary)}
+.f-red{background:var(--negative-soft);color:var(--negative-deep)}
+.f-cyan{background:#e0f6ff;color:#0a6e96}
+.feed p{font-size:14px;color:var(--body)}
+.feed p b{color:var(--ink);font-weight:600}
+.feed time{font-size:12px;color:var(--mute)}
+.card-btn{display:inline-block;margin-top:var(--s-md);font-size:14px;font-weight:600;background:var(--primary-pale);color:var(--ink-deep);padding:8px 16px;border-radius:var(--r-pill)}
+.card-btn:hover{background:var(--primary-neutral)}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .charts,.grid-main{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .top-search{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#">
+      <span class="flag-mark"><i></i><i></i></span>
+      wise
+    </a>
+    <div>
+      <div class="side-group">Overview</div>
+      <ul class="nav">
+        <li><a class="on" href="#">Home</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Money</div>
+      <ul class="nav">
+        <li><a href="#">Transfers <span class="count">6</span></a></li>
+        <li><a href="#">Balances</a></li>
+        <li><a href="#">Batch payouts</a></li>
+        <li><a href="#">Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Team</div>
+      <ul class="nav">
+        <li><a href="#">People &amp; roles</a></li>
+        <li><a href="#">Approvals</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Insight</div>
+      <ul class="nav">
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Rate alerts</a></li>
+        <li><a href="#">Statements</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Admin</div>
+      <ul class="nav">
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Integrations</a></li>
+      </ul>
+    </div>
+    <div class="user-card">
+      <span class="avatar">NL</span>
+      <div><b>Nadia Lindqvist</b><span>Finance Lead · Studio Rill</span></div>
+      <button class="out" aria-label="Sign out">↦</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">Business / <b>Home</b></div>
+      <div class="top-spacer"></div>
+      <div class="top-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#868685" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" placeholder="Search transfers, balances">
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot">3</span>
+      </button>
+      <span class="avatar-sm">NL</span>
+      <button class="btn btn-primary">Send money</button>
+    </header>
+
+    <main class="content">
+      <div class="pagehead">
+        <h1>Good morning, Nadia</h1>
+        <p>Studio Rill Ltd · GBP balance account · updated 1 minute ago</p>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k-label">Outbound this month</div>
+          <div class="k-value">£184,200</div>
+          <span class="delta up">▲ 9.4%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:32%"></i><i style="height:40%"></i><i style="height:38%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:66%"></i><i class="hot" style="height:88%"></i></div><span class="k-note">vs October</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Total saved vs bank</div>
+          <div class="k-value">£6,914</div>
+          <span class="delta up">▲ £412</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:40%"></i><i style="height:48%"></i><i style="height:44%"></i><i style="height:58%"></i><i style="height:62%"></i><i style="height:70%"></i><i class="hot" style="height:84%"></i></div><span class="k-note">fees avoided, YTD</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Pending approvals</div>
+          <div class="k-value">3</div>
+          <span class="delta down">▼ 2 blocked</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:66%"></i><i style="height:58%"></i><i style="height:62%"></i><i style="height:50%"></i><i style="height:44%"></i><i style="height:38%"></i><i class="hot" style="height:30%"></i></div><span class="k-note">SLA 24 h</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Avg transfer fee</div>
+          <div class="k-value">0.27%</div>
+          <span class="delta up">▲ 0.02 pt</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:56%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:62%"></i><i class="hot" style="height:64%"></i></div><span class="k-note">bank average 3.9%</span></div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Outbound volume by month</h3><div class="sub">all corridors · 2026</div></div>
+            <span class="legend-tag">£ thousands</span>
+          </div>
+          <div class="bars">
+            <div class="bar-col"><i style="height:44%"></i><span>Jan</span></div>
+            <div class="bar-col"><i style="height:52%"></i><span>Feb</span></div>
+            <div class="bar-col"><i style="height:48%"></i><span>Mar</span></div>
+            <div class="bar-col"><i style="height:60%"></i><span>Apr</span></div>
+            <div class="bar-col"><i style="height:56%"></i><span>May</span></div>
+            <div class="bar-col"><i style="height:68%"></i><span>Jun</span></div>
+            <div class="bar-col"><i style="height:64%"></i><span>Jul</span></div>
+            <div class="bar-col"><i style="height:76%"></i><span>Aug</span></div>
+            <div class="bar-col"><i style="height:70%"></i><span>Sep</span></div>
+            <div class="bar-col"><i style="height:82%"></i><span>Oct</span></div>
+            <div class="bar-col hot"><i style="height:100%"></i><span>Nov</span></div>
+            <div class="bar-col"><i style="height:74%"></i><span>Dec</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Payout mix</h3><div class="sub">by destination currency, YTD</div></div>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="46" stroke="#9fe870" stroke-dasharray="138.7 289.0"/>
+              <circle cx="60" cy="60" r="46" stroke="#38c8ff" stroke-dasharray="78.0 289.0" stroke-dashoffset="-138.7"/>
+              <circle cx="60" cy="60" r="46" stroke="#163300" stroke-dasharray="43.3 289.0" stroke-dashoffset="-216.7"/>
+              <circle cx="60" cy="60" r="46" stroke="#e8ebe6" stroke-dasharray="29.0 289.0" stroke-dashoffset="-260.0"/>
+            </svg>
+            <ul class="legend">
+              <li><i style="background:#9fe870"></i>EUR <b>48%</b></li>
+              <li><i style="background:#38c8ff"></i>PLN <b>27%</b></li>
+              <li><i style="background:#163300"></i>INR <b>15%</b></li>
+              <li><i style="background:#e8ebe6"></i>Other <b>10%</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-main">
+        <div class="card table-card">
+          <div class="chart-head" style="padding:20px 20px 0">
+            <div><h3>Recent transfers</h3><div class="sub">Latest 7 · outbound</div></div>
+            <span class="legend-tag">Transfers</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th style="width:36px"><input class="check" type="checkbox" aria-label="Select all"></th><th>Recipient</th><th>Corridor</th><th>Status</th><th>Amount</th><th>Date</th><th style="text-align:right">Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Atelier Boréal</b><span>Batch · 4 invoices</span></td>
+                <td class="mono">GBP → EUR</td>
+                <td><span class="badge st-success">Completed</span></td>
+                <td class="amount">£12,400.00</td>
+                <td class="mono">26 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Piotr Nowak</b><span>Contractor · design</span></td>
+                <td class="mono">GBP → PLN</td>
+                <td><span class="badge st-success">Completed</span></td>
+                <td class="amount">£3,150.00</td>
+                <td class="mono">26 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Kavya Infotech Pvt</b><span>Vendor · engineering</span></td>
+                <td class="mono">GBP → INR</td>
+                <td><span class="badge st-warning">Awaiting approval</span></td>
+                <td class="amount">£8,730.00</td>
+                <td class="mono">25 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Marina Duarte</b><span>Contractor · motion</span></td>
+                <td class="mono">GBP → BRL</td>
+                <td><span class="badge st-success">Completed</span></td>
+                <td class="amount">£1,980.00</td>
+                <td class="mono">25 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Hokkaido Print Co</b><span>Supplier · paper stock</span></td>
+                <td class="mono">GBP → JPY</td>
+                <td><span class="badge st-danger">Recipient issue</span></td>
+                <td class="amount">£5,420.00</td>
+                <td class="mono">24 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Zelig &amp; Sons</b><span>Batch · 2 invoices</span></td>
+                <td class="mono">GBP → USD</td>
+                <td><span class="badge st-success">Completed</span></td>
+                <td class="amount">£7,640.00</td>
+                <td class="mono">24 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Ana Rodrigues</b><span>Contractor · copy</span></td>
+                <td class="mono">GBP → EUR</td>
+                <td><span class="badge st-neutral">Scheduled</span></td>
+                <td class="amount">£1,240.00</td>
+                <td class="mono">28 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot">
+            <span>Showing 1–7 of 214 transfers this month</span>
+            <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Recent activity</h3><div class="sub">Account feed</div></div>
+          </div>
+          <ul class="feed">
+            <li>
+              <span class="f-dot f-red">!</span>
+              <div><p><b>Recipient issue</b> — Hokkaido Print Co rejected details; transfer paused, no fee charged.</p><time>22 min ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-cyan">¥</span>
+              <div><p><b>Rate alert</b> — GBP/JPY crossed 193.00, your target for the Q4 stock payment.</p><time>1 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-green">✓</span>
+              <div><p><b>Nadia Lindqvist</b> approved the Kavya Infotech batch of £8,730 — awaiting second approver.</p><time>2 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">＋</span>
+              <div><p><b>EUR balance</b> topped up £10,000 at 1.1736 — balance now €28,412.</p><time>4 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-green">↗</span>
+              <div><p><b>Friday payouts</b> completed — 11 contractors paid in 4 currencies, £23,060 total.</p><time>Yesterday</time></div>
+            </li>
+          </ul>
+          <a class="card-btn" href="#">See all account activity →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

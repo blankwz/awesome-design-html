@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binance Admin — Exchange Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#fcd535; --primary-active:#f0b90b; --primary-disabled:#3a3a1f;
+  --ink:#181a20; --body:#eaecef; --body-on-light:#181a20;
+  --muted:#707a8a; --muted-strong:#929aa5;
+  --hl-light:#eaecef; --hl-dark:#2b3139; --border-strong:#cdd1d6;
+  --canvas-light:#ffffff; --canvas-dark:#0b0e11;
+  --card-dark:#1e2329; --elev-dark:#2b3139;
+  --soft-light:#fafafa; --strong-light:#f5f5f5;
+  --on-primary:#181a20; --on-dark:#ffffff;
+  --up:#0ecb81; --down:#f6465d; --turq:#2dbdb6; --info:#3b82f6;
+  --r-xs:2px; --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:12px; --r-pill:9999px;
+  --nova:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --plex:'IBM Plex Mono','Inter',monospace;
+  /* semantic badges (derived) */
+  --ok-bg:rgba(14,203,129,.12); --ok-tx:#0ecb81;
+  --warn-bg:rgba(252,213,53,.12); --warn-tx:#fcd535;
+  --danger-bg:rgba(246,70,93,.12); --danger-tx:#f6465d;
+  --neutral-bg:rgba(112,122,138,.15); --neutral-tx:#929aa5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--nova);background:var(--canvas-dark);color:var(--body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--nova);cursor:pointer;border:none;background:none}
+input{font-family:var(--nova)}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ===== SIDEBAR ===== */
+.side{background:var(--card-dark);padding:20px 14px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh}
+.side .brand{display:flex;align-items:center;gap:8px;padding:4px 10px 20px}
+.side .brand svg{width:24px;height:24px}
+.side .brand b{font-size:16px;font-weight:700;letter-spacing:-.2px;color:var(--primary)}
+.side .brand .tag{font-size:10px;font-weight:600;color:var(--muted-strong);border:1px solid var(--hl-dark);border-radius:var(--r-sm);padding:1px 6px;margin-left:2px}
+.mlabel{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:16px 10px 6px}
+.mitem{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:var(--r-md);font-size:14px;font-weight:500;color:var(--muted-strong)}
+.mitem svg{width:18px;height:18px;flex:none}
+.mitem:hover{background:var(--elev-dark);color:var(--body)}
+.mitem.active{background:var(--primary);color:var(--on-primary);font-weight:600}
+.mitem.active svg{stroke:var(--on-primary)}
+.mitem .count{margin-left:auto;font-size:12px;color:var(--muted)}
+.mitem.active .count{color:var(--ink)}
+.usercard{margin-top:auto;border:1px solid var(--hl-dark);border-radius:var(--r-lg);padding:12px;display:flex;gap:10px;align-items:center}
+.usercard .av{width:34px;height:34px;border-radius:9999px;background:var(--primary);color:var(--on-primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.usercard b{font-size:14px;display:block;color:var(--on-dark)}
+.usercard span{font-size:12px;color:var(--muted)}
+
+/* ===== TOPBAR ===== */
+.main{min-width:0}
+.topbar{height:64px;display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;background:var(--canvas-dark);border-bottom:1px solid var(--hl-dark);z-index:40}
+.crumbs{font-size:14px;color:var(--muted)}
+.crumbs b{color:var(--on-dark);font-weight:600}
+.globalsearch{margin-left:auto;display:flex;align-items:center;gap:10px;background:var(--card-dark);border:1px solid var(--hl-dark);border-radius:var(--r-lg);height:40px;padding:0 12px 0 16px;width:380px}
+.globalsearch svg{width:16px;height:16px;color:var(--muted);flex:none}
+.globalsearch input{border:none;outline:none;flex:1;font-size:14px;background:transparent;color:var(--body)}
+.globalsearch input::placeholder{color:var(--muted)}
+.tb-ic{width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:var(--muted-strong);position:relative}
+.tb-ic:hover{background:var(--card-dark);color:var(--body)}
+.tb-ic .dot{position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:9999px;background:var(--down);border:2px solid var(--canvas-dark)}
+.tb-avatar{width:34px;height:34px;border-radius:9999px;background:var(--primary);color:var(--on-primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.btn-primary{display:inline-block;background:var(--primary);color:var(--on-primary);font-size:14px;font-weight:600;border-radius:var(--r-md);padding:10px 24px}
+.btn-primary:hover{background:var(--primary-active)}
+
+.page{padding:28px 24px 56px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.page-left{min-width:0}
+h1{font-size:32px;font-weight:700;letter-spacing:-.3px;color:var(--on-dark)}
+.pagesub{font-size:14px;color:var(--muted);margin-top:6px}
+.secthead{display:flex;align-items:center;justify-content:space-between;margin:32px 0 16px;gap:16px;flex-wrap:wrap}
+h2{font-size:20px;font-weight:600;color:var(--on-dark)}
+.tabs{display:flex;gap:8px}
+.tab{font-size:14px;font-weight:500;color:var(--muted);border-radius:var(--r-md);padding:8px 16px}
+.tab:hover{color:var(--body)}
+.tab.on{background:var(--card-dark);color:var(--primary);font-weight:600}
+
+/* ===== KPI ===== */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--card-dark);border-radius:var(--r-xl);padding:24px}
+.kpi .lab{font-size:13px;color:var(--muted)}
+.kpi .val{font-size:28px;font-weight:700;font-family:var(--plex);letter-spacing:-.3px;color:var(--on-dark);margin-top:6px}
+.kpi .delta{font-size:14px;font-weight:500;display:inline-flex;gap:4px;margin-top:6px;font-family:var(--plex)}
+.up{color:var(--up)}
+.down{color:var(--down)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:14px}
+.spark i{flex:1;background:var(--elev-dark);border-radius:2px 2px 0 0}
+.spark i.hot{background:var(--primary)}
+
+/* ===== CHARTS ===== */
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.card{background:var(--card-dark);border-radius:var(--r-xl);padding:24px}
+.card h3{font-size:16px;font-weight:600;color:var(--on-dark)}
+.card .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px;margin-top:24px}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:34px;background:var(--elev-dark);border-radius:var(--r-xs) var(--r-xs) 0 0;position:relative}
+.bar.hot{background:var(--primary)}
+.bar .tip{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--muted);font-family:var(--plex)}
+.bcol span{font-size:12px;color:var(--muted)}
+.donut-wrap{display:flex;gap:24px;align-items:center;margin-top:20px}
+.donut{position:relative;width:170px;height:170px;flex:none}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut .ctr b{font-size:22px;font-weight:700;font-family:var(--plex);color:var(--on-dark)}
+.donut .ctr span{font-size:12px;color:var(--muted)}
+.legend{display:grid;gap:10px;font-size:14px}
+.legend .li{display:flex;align-items:center;gap:10px}
+.legend .sw{width:12px;height:12px;border-radius:var(--r-xs);flex:none}
+.legend b{margin-left:auto;font-weight:600;font-family:var(--plex)}
+
+/* ===== TABLE ===== */
+.tablecard{background:var(--card-dark);border-radius:var(--r-xl);overflow:hidden;margin-top:16px}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);text-align:left;padding:14px 16px;border-bottom:1px solid var(--hl-dark);background:var(--canvas-dark)}
+tbody td{padding:13px 16px;border-bottom:1px solid var(--hl-dark);font-size:14px;vertical-align:middle}
+tbody tr:hover{background:var(--elev-dark)}
+tbody tr:last-child td{border-bottom:none}
+.userc{display:flex;align-items:center;gap:12px}
+.userc .av{width:32px;height:32px;border-radius:9999px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+.userc b{font-weight:600;color:var(--on-dark);display:block}
+.userc span{font-size:12px;color:var(--muted)}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--primary)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:var(--r-sm);padding:4px 10px}
+.badge::before{content:"";width:6px;height:6px;border-radius:9999px;background:currentColor}
+.b-ok{background:var(--ok-bg);color:var(--ok-tx)}
+.b-warn{background:var(--warn-bg);color:var(--warn-tx)}
+.b-danger{background:var(--danger-bg);color:var(--danger-tx)}
+.b-neutral{background:var(--neutral-bg);color:var(--neutral-tx)}
+.amt{font-family:var(--plex);font-weight:500;color:var(--on-dark)}
+.num{font-family:var(--plex);font-weight:500}
+.actions{display:flex;gap:4px;justify-content:flex-end}
+.act{width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;color:var(--muted-strong);font-size:14px}
+.act:hover{background:var(--canvas-dark);color:var(--primary)}
+.tfoot{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;font-size:14px;color:var(--muted)}
+.pager{display:flex;gap:6px}
+.pg{width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--body)}
+.pg:hover{background:var(--elev-dark)}
+.pg.on{background:var(--primary);color:var(--on-primary);font-weight:600}
+
+/* ===== ACTIVITY PANEL ===== */
+.panel{background:var(--card-dark);border-radius:var(--r-xl);padding:24px;position:sticky;top:88px}
+.panel h3{font-size:16px;font-weight:600;color:var(--on-dark);margin-bottom:8px}
+.ev{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hl-dark)}
+.ev:last-child{border-bottom:none}
+.ev .dot{width:10px;height:10px;border-radius:9999px;flex:none;margin-top:5px}
+.ev p{font-size:14px;color:var(--muted-strong);line-height:1.45}
+.ev p b{color:var(--on-dark);font-weight:600}
+.ev time{font-size:12px;color:var(--muted)}
+.d-y{background:var(--primary)}
+.d-g{background:var(--up)}
+.d-r{background:var(--down)}
+.d-b{background:var(--info)}
+.d-gray{background:var(--muted)}
+.quickstats{margin-top:18px;padding-top:14px;border-top:1px solid var(--hl-dark)}
+.qs{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--muted-strong)}
+.qs b{font-weight:600;color:var(--on-dark);font-family:var(--plex)}
+
+@media (max-width:1128px){.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .page{grid-template-columns:1fr}
+  .panel{position:static}
+  .globalsearch{width:180px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 32 32"><g fill="#fcd535"><rect x="13.8" y="2" width="4.4" height="4.4" transform="rotate(45 16 4.2)"/><rect x="6.9" y="8.9" width="4.4" height="4.4" transform="rotate(45 9.1 11.1)"/><rect x="20.7" y="8.9" width="4.4" height="4.4" transform="rotate(45 22.9 11.1)"/><rect x="13.8" y="15.8" width="4.4" height="4.4" transform="rotate(45 16 18)"/><rect x="6.9" y="22.7" width="4.4" height="4.4" transform="rotate(45 9.1 24.9)"/><rect x="20.7" y="22.7" width="4.4" height="4.4" transform="rotate(45 22.9 24.9)"/><rect x="13.8" y="25.6" width="4.4" height="4.4" transform="rotate(45 16 27.8)"/></g></svg>
+      <b>BINANCE</b><span class="tag">ADMIN</span>
+    </div>
+    <span class="mlabel">Overview</span>
+    <a class="mitem active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Dashboard</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18v-9M9 18V5M14 18v-6M19 18V8"/><path d="M2 20h20"/></svg>Markets<span class="count">2,412</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16l-1.5 12h-13z"/><path d="M8 7a4 4 0 0 1 8 0"/></svg>Orders<span class="count">87</span></a>
+    <span class="mlabel">Users</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>Customers<span class="count">316M</span></a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 4v5c0 4.4-3 8.4-7 9-4-.6-7-4.6-7-9V7z"/></svg>KYC &amp; Risk</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>Support queue<span class="count">1.2k</span></a>
+    <span class="mlabel">Business</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20V9M12 20V4M18 20v-8"/><path d="M3 20h18"/></svg>Revenue</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Treasury</a>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg>Listing requests</a>
+    <span class="mlabel">System</span>
+    <a class="mitem" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.07-.4.1-.8.1-1.2z"/></svg>Settings</a>
+    <div class="usercard">
+      <span class="av">LC</span>
+      <div><b>Lena Chen</b><span>Exchange ops lead</span></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">Exchange &nbsp;/&nbsp; <b>Dashboard</b></div>
+      <div class="globalsearch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        <input type="text" placeholder="Search orders, users, pairs">
+      </div>
+      <button class="tb-ic" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 9a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="tb-avatar">LC</span>
+      <button class="btn-primary">Announce</button>
+    </header>
+
+    <div class="page">
+      <div class="page-left">
+        <h1>Exchange operations</h1>
+        <p class="pagesub">Live platform health · all systems nominal · updated 30 seconds ago</p>
+
+        <div class="secthead">
+          <h2>Volume</h2>
+          <div class="tabs">
+            <button class="tab">24H</button>
+            <button class="tab on">30D</button>
+            <button class="tab">90D</button>
+          </div>
+        </div>
+        <div class="kpis">
+          <div class="kpi">
+            <p class="lab">24h spot volume</p>
+            <p class="val">$21.4B</p>
+            <p class="delta up">▲ 6.8%</p>
+            <div class="spark"><i style="height:44%"></i><i style="height:52%"></i><i style="height:46%"></i><i style="height:60%"></i><i style="height:55%"></i><i style="height:72%"></i><i class="hot" style="height:90%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Futures open interest</p>
+            <p class="val">$8.9B</p>
+            <p class="delta up">▲ 3.1%</p>
+            <div class="spark"><i style="height:50%"></i><i style="height:56%"></i><i style="height:52%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:70%"></i><i class="hot" style="height:82%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">New signups (30d)</p>
+            <p class="val">2.84M</p>
+            <p class="delta down">▼ 1.9%</p>
+            <div class="spark"><i style="height:70%"></i><i style="height:64%"></i><i style="height:68%"></i><i style="height:58%"></i><i style="height:62%"></i><i style="height:54%"></i><i class="hot" style="height:50%"></i></div>
+          </div>
+          <div class="kpi">
+            <p class="lab">Fee revenue (30d)</p>
+            <p class="val">$412M</p>
+            <p class="delta up">▲ 8.4%</p>
+            <div class="spark"><i style="height:42%"></i><i style="height:50%"></i><i style="height:58%"></i><i style="height:54%"></i><i style="height:66%"></i><i style="height:72%"></i><i class="hot" style="height:86%"></i></div>
+          </div>
+        </div>
+
+        <div class="secthead"><h2>Volume &amp; listing mix</h2></div>
+        <div class="charts">
+          <div class="card">
+            <h3>Spot volume per month</h3>
+            <p class="sub">Trailing 12 months · all pairs</p>
+            <div class="bars">
+              <div class="bcol"><div class="bar" style="height:46%"><span class="tip">$18B</span></div><span>Nov</span></div>
+              <div class="bcol"><div class="bar" style="height:58%"><span class="tip">$23B</span></div><span>Dec</span></div>
+              <div class="bcol"><div class="bar" style="height:40%"><span class="tip">$16B</span></div><span>Jan</span></div>
+              <div class="bcol"><div class="bar" style="height:44%"><span class="tip">$17B</span></div><span>Feb</span></div>
+              <div class="bcol"><div class="bar" style="height:52%"><span class="tip">$20B</span></div><span>Mar</span></div>
+              <div class="bcol"><div class="bar hot" style="height:88%"><span class="tip">$35B</span></div><span>Apr</span></div>
+              <div class="bcol"><div class="bar" style="height:56%"><span class="tip">$22B</span></div><span>May</span></div>
+              <div class="bcol"><div class="bar" style="height:64%"><span class="tip">$25B</span></div><span>Jun</span></div>
+              <div class="bcol"><div class="bar" style="height:48%"><span class="tip">$19B</span></div><span>Jul</span></div>
+              <div class="bcol"><div class="bar" style="height:42%"><span class="tip">$17B</span></div><span>Aug</span></div>
+              <div class="bcol"><div class="bar" style="height:50%"><span class="tip">$20B</span></div><span>Sep</span></div>
+              <div class="bcol"><div class="bar" style="height:47%"><span class="tip">$18B</span></div><span>Oct</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Volume by product</h3>
+            <p class="sub">Last 30 days</p>
+            <div class="donut-wrap">
+              <div class="donut">
+                <svg viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#2b3139" stroke-width="7"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#fcd535" stroke-width="7" stroke-dasharray="44 56" stroke-dashoffset="0"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#0ecb81" stroke-width="7" stroke-dasharray="30 70" stroke-dashoffset="-44"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#2dbdb6" stroke-width="7" stroke-dasharray="16 84" stroke-dashoffset="-74"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#707a8a" stroke-width="7" stroke-dasharray="10 90" stroke-dashoffset="-90"/>
+                </svg>
+                <div class="ctr"><b>$21.4B</b><span>24h</span></div>
+              </div>
+              <div class="legend">
+                <div class="li"><span class="sw" style="background:#fcd535"></span>Spot<b>44%</b></div>
+                <div class="li"><span class="sw" style="background:#0ecb81"></span>Futures<b>30%</b></div>
+                <div class="li"><span class="sw" style="background:#2dbdb6"></span>Margin<b>16%</b></div>
+                <div class="li"><span class="sw" style="background:#707a8a"></span>Options<b>10%</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="secthead">
+          <h2>Open orders — flagged queue</h2>
+          <div class="tabs">
+            <button class="tab on">All</button>
+            <button class="tab">Large fills</button>
+            <button class="tab">Risk holds</button>
+          </div>
+        </div>
+        <div class="tablecard">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:44px"><input type="checkbox" aria-label="Select all"></th>
+                <th>User</th>
+                <th>Pair</th>
+                <th>Status</th>
+                <th>Value</th>
+                <th>Placed</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#f7931a">PM</span><div><b>Priya M.</b><span>VIP 4 · Singapore</span></div></div></td>
+                <td class="num">BTC/USDT</td>
+                <td><span class="badge b-ok">Filled</span></td>
+                <td class="amt">$1,240,000</td>
+                <td>Oct 25, 08:14 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#627eea">MW</span><div><b>Marcus W.</b><span>VIP 2 · United Kingdom</span></div></div></td>
+                <td class="num">ETH/USDT</td>
+                <td><span class="badge b-ok">Filled</span></td>
+                <td class="amt">$486,300</td>
+                <td>Oct 25, 07:52 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#9945ff">ES</span><div><b>Elena S.</b><span>VIP 3 · Japan</span></div></div></td>
+                <td class="num">SOL/USDT</td>
+                <td><span class="badge b-warn">Partial fill</span></td>
+                <td class="amt">$212,880</td>
+                <td>Oct 25, 07:31 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#26a17b">TR</span><div><b>Tomás R.</b><span>Regular · Mexico</span></div></div></td>
+                <td class="num">BNB/USDT</td>
+                <td><span class="badge b-ok">Filled</span></td>
+                <td class="amt">$18,724</td>
+                <td>Oct 25, 06:58 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#f6465d">AC</span><div><b>Alice C.</b><span>VIP 1 · United States</span></div></div></td>
+                <td class="num">BTC/USDC</td>
+                <td><span class="badge b-danger">Risk hold</span></td>
+                <td class="amt">$902,000</td>
+                <td>Oct 25, 06:20 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#f0b90b">NB</span><div><b>Noah B.</b><span>Regular · Germany</span></div></div></td>
+                <td class="num">DOGE/USDT</td>
+                <td><span class="badge b-ok">Filled</span></td>
+                <td class="amt">$9,410</td>
+                <td>Oct 25, 05:47 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#2dbdb6">SM</span><div><b>Sofia M.</b><span>VIP 5 · Italy</span></div></div></td>
+                <td class="num">ETH/BTC</td>
+                <td><span class="badge b-warn">Partial fill</span></td>
+                <td class="amt">$1,864,500</td>
+                <td>Oct 25, 05:03 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><div class="userc"><span class="av" style="background:#3b82f6">DO</span><div><b>Daniel O.</b><span>VIP 2 · Ghana</span></div></div></td>
+                <td class="num">XRP/USDT</td>
+                <td><span class="badge b-neutral">Cancelled</span></td>
+                <td class="amt">$0</td>
+                <td>Oct 25, 04:38 UTC</td>
+                <td><div class="actions"><button class="act">👁</button><button class="act">✎</button><button class="act">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tfoot">
+            <span>Showing 1–8 of 87 flagged orders</span>
+            <div class="pager">
+              <button class="pg">‹</button>
+              <button class="pg on">1</button>
+              <button class="pg">2</button>
+              <button class="pg">3</button>
+              <button class="pg">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3>Recent activity</h3>
+        <div class="feed">
+          <div class="ev"><span class="dot d-g"></span><div><p><b>Large fill matched</b> — 16.8 BTC on BTC/USDT at $79,051, VIP desk</p><time>4 min ago</time></div></div>
+          <div class="ev"><span class="dot d-r"></span><div><p><b>Risk hold triggered</b> — Alice C. order flagged by velocity rules, pending review</p><time>26 min ago</time></div></div>
+          <div class="ev"><span class="dot d-y"></span><div><p><b>New listing live</b> — ADA/USDC spot market opened with launch promotions</p><time>1 hr ago</time></div></div>
+          <div class="ev"><span class="dot d-b"></span><div><p><b>KYC backlog cleared</b> — Tier-2 verifications now under 2-minute median</p><time>3 hrs ago</time></div></div>
+          <div class="ev"><span class="dot d-gray"></span><div><p><b>Maintenance window</b> — Matching engine upgrade scheduled Nov 2, 02:00 UTC</p><time>Yesterday</time></div></div>
+        </div>
+        <div class="quickstats">
+          <div class="qs"><span>Uptime (30d)</span><b>99.995%</b></div>
+          <div class="qs"><span>Order latency p99</span><b>4.2 ms</b></div>
+          <div class="qs"><span>SAFU fund</span><b>$429.4M</b></div>
+          <div class="qs"><span>Open risk holds</span><b>3</b></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</body>
+</html>

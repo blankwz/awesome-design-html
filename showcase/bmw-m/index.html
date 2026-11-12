@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMW M — Design Showcase</title>
+<style>
+  :root {
+    --primary: #ffffff;
+    --ink: #ffffff;
+    --body: #bbbbbb;
+    --body-strong: #e6e6e6;
+    --muted: #7e7e7e;
+    --hairline: #3c3c3c;
+    --hairline-strong: #262626;
+    --canvas: #000000;
+    --surface-card: #1a1a1a;
+    --surface-elevated: #262626;
+    --surface-soft: #0d0d0d;
+    --on-primary: #000000;
+    --on-dark: #ffffff;
+    --m-blue-light: #0066b1;
+    --m-blue-dark: #1c69d4;
+    --m-red: #e22718;
+    --bmw-blue: #1c69d4;
+    --electric-blue: #0653b6;
+    --carbon-gray: #2b2b2b;
+    --warning: #f4b400;
+    --success: #0fa336;
+    --r-none: 0px; --r-xs: 2px; --r-sm: 4px; --r-md: 6px; --r-full: 9999px;
+    --sp-xs: 8px; --sp-sm: 12px; --sp-md: 16px; --sp-lg: 24px; --sp-xl: 40px; --sp-xxl: 64px; --sp-section: 96px;
+    --font: 'BMWTypeNextLatin', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--canvas); color: var(--body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--sp-lg); }
+
+  /* M tricolor stripe — brand identity only */
+  .m-stripe { height: 4px; background: linear-gradient(90deg, var(--m-blue-light) 0 33.3%, var(--m-blue-dark) 33.3% 66.6%, var(--m-red) 66.6% 100%); }
+
+  /* banner */
+  .sg-banner {
+    background: var(--canvas); color: var(--on-dark);
+    padding: 12px 32px; display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--hairline-strong);
+  }
+  .sg-folder { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted); border: 1px solid var(--hairline); padding: 4px 12px; white-space: nowrap; }
+  .sg-brand { font-size: 19px; font-weight: 700; color: var(--on-dark); letter-spacing: 1.5px; text-transform: uppercase; }
+  .sg-brand .m { font-style: italic; color: var(--m-red); }
+  .sg-desc { font-size: 14px; font-weight: 300; color: var(--muted); text-align: right; max-width: 620px; }
+  @media (max-width: 900px) { .sg-banner .sg-desc { display: none; } }
+
+  .sg-section-label { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: var(--sp-lg); }
+  #components { padding: var(--sp-section) 0 var(--sp-xl); border-bottom: 1px solid var(--hairline-strong); }
+  #components h1 { font-size: 56px; font-weight: 700; line-height: 1.05; text-transform: uppercase; color: var(--on-dark); margin-bottom: var(--sp-sm); }
+  #components .lede { font-size: 16px; font-weight: 300; color: var(--body); margin-bottom: var(--sp-xxl); max-width: 640px; }
+  .blk { margin-bottom: var(--sp-section); }
+
+  /* 01 colors */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--sp-md); }
+  .swatch { border: 1px solid var(--hairline-strong); overflow: hidden; }
+  .swatch .chip { height: 72px; }
+  .swatch .meta { padding: 10px 12px; background: var(--surface-soft); }
+  .swatch .name { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--on-dark); }
+  .swatch .hex { font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+
+  /* 02 type */
+  .type-specimen { border: 1px solid var(--hairline); overflow: hidden; background: var(--surface-soft); }
+  .type-row { display: flex; align-items: baseline; gap: var(--sp-lg); padding: 14px var(--sp-lg); border-bottom: 1px solid var(--hairline-strong); }
+  .type-row:last-child { border-bottom: none; }
+  .type-row .tag { flex: 0 0 220px; font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+  .t-display-xl { font-size: 80px; font-weight: 700; line-height: 1.0; text-transform: uppercase; color: var(--on-dark); }
+  .t-display-lg { font-size: 56px; font-weight: 700; line-height: 1.05; text-transform: uppercase; color: var(--on-dark); }
+  .t-display-md { font-size: 40px; font-weight: 700; line-height: 1.1; text-transform: uppercase; color: var(--on-dark); }
+  .t-display-sm { font-size: 32px; font-weight: 700; line-height: 1.15; text-transform: uppercase; color: var(--on-dark); }
+  .t-title-lg { font-size: 24px; font-weight: 700; color: var(--on-dark); }
+  .t-title-md { font-size: 20px; font-weight: 400; color: var(--body-strong); }
+  .t-label { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--on-dark); }
+  .t-body-md { font-size: 16px; font-weight: 300; }
+  .t-body-sm { font-size: 14px; font-weight: 300; color: var(--body); }
+  .t-caption { font-size: 12px; font-weight: 400; letter-spacing: 0.5px; color: var(--muted); }
+
+  /* 03 buttons */
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--sp-md); align-items: center; }
+  .btn { font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1; cursor: pointer; border: none; transition: background .15s, color .15s, border-color .15s; }
+  .btn-primary { background: var(--canvas); color: var(--on-dark); border: 1px solid var(--on-dark); padding: 16px 32px; height: 48px; }
+  .btn-primary:hover { background: var(--on-dark); color: var(--on-primary); }
+  .btn-outline { background: transparent; color: var(--on-dark); border: 1px solid var(--on-dark); padding: 16px 32px; height: 48px; }
+  .btn-outline:hover { background: rgba(255,255,255,0.12); }
+  .btn-icon { width: 48px; height: 48px; border-radius: var(--r-full); background: var(--surface-card); color: var(--on-dark); border: none; display: inline-flex; align-items: center; justify-content: center; font-size: 17px; }
+  .btn-icon:hover { background: var(--surface-elevated); }
+  .text-link { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--on-dark); }
+  .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* 04 inputs */
+  .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-lg); max-width: 900px; }
+  .field label { display: block; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .text-input { width: 100%; height: 48px; background: var(--surface-card); border: 1px solid var(--hairline); padding: 12px 16px; font-size: 16px; font-weight: 300; font-family: var(--font); color: var(--on-dark); outline: none; transition: border-color .15s; }
+  .text-input::placeholder { color: var(--muted); }
+  .text-input:focus { border-color: var(--on-dark); }
+  .text-input.disabled { background: var(--surface-soft); color: var(--muted); cursor: not-allowed; }
+  .select-wrap { position: relative; }
+  .select { appearance: none; width: 100%; height: 48px; background: var(--surface-card); border: 1px solid var(--hairline); padding: 0 36px 0 16px; font-size: 16px; font-weight: 300; font-family: var(--font); color: var(--on-dark); cursor: pointer; }
+  .select-wrap::after { content: ""; position: absolute; right: 14px; top: 50%; width: 7px; height: 7px; border-right: 1.5px solid var(--on-dark); border-bottom: 1.5px solid var(--on-dark); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .switch { position: relative; width: 48px; height: 26px; background: var(--surface-card); border: 1px solid var(--hairline); cursor: pointer; transition: background .2s; flex: none; border-radius: var(--r-sm); }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: var(--muted); transition: left .2s, background .2s; }
+  .switch.on { background: var(--surface-elevated); border-color: var(--on-dark); }
+  .switch.on::after { left: 25px; background: var(--on-dark); }
+  .check { display: flex; align-items: center; gap: var(--sp-sm); font-size: 14px; font-weight: 300; cursor: pointer; }
+  .check .box { width: 18px; height: 18px; border: 1px solid var(--hairline); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--canvas); flex: none; }
+  .check.on .box { background: var(--on-dark); border-color: var(--on-dark); }
+
+  /* 05 cards */
+  .photo-band { position: relative; height: 340px; background: linear-gradient(105deg, #000 0%, #101418 40%, #1a2732 70%, #0c1014 100%); overflow: hidden; }
+  .photo-band::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: linear-gradient(0deg, rgba(0,0,0,.85), transparent); }
+  .photo-band::after { content: ""; position: absolute; right: -40px; bottom: 20px; width: 460px; height: 130px; background: linear-gradient(95deg, #14181c 0%, #2a3138 30%, #4a5560 48%, #e22718 49%, #8c130a 52%, #14181c 53%, #23282e 100%); transform: skewX(-24deg); border-radius: 8px 60px 60px 8px; box-shadow: 0 30px 60px rgba(0,0,0,.8); }
+  .photo-band .pb-copy { position: absolute; left: var(--sp-xl); bottom: var(--sp-xl); z-index: 2; }
+  .photo-band h3 { font-size: 40px; font-weight: 700; line-height: 1.1; text-transform: uppercase; color: var(--on-dark); }
+  .photo-band p { font-size: 16px; font-weight: 300; color: var(--body); margin-top: 8px; }
+  .spec-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--hairline-strong); }
+  .spec-cell { background: var(--surface-soft); padding: var(--sp-lg); }
+  .spec-cell b { display: block; font-size: 32px; font-weight: 700; line-height: 1.15; color: var(--on-dark); }
+  .spec-cell span { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .model-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-lg); }
+  @media (max-width: 900px) { .model-grid { grid-template-columns: 1fr; } .spec-row { grid-template-columns: repeat(2, 1fr); } }
+  .model-card { background: var(--canvas); }
+  .model-card .shot { height: 180px; margin-bottom: var(--sp-lg); position: relative; overflow: hidden; }
+  .model-card .shot.s1 { background: linear-gradient(110deg, #05070a, #16202b 45%, #2c3e4e 62%, #0a0e12 63%); }
+  .model-card .shot.s2 { background: linear-gradient(110deg, #0a0a0a, #1c1c1e 40%, #3a3a3e 60%, #0a0a0a 61%); }
+  .model-card .shot.s3 { background: linear-gradient(110deg, #070a08, #14251a 45%, #2e4a36 62%, #090d0a 63%); }
+  .model-card .shot::after { content: ""; position: absolute; right: -30px; bottom: 14px; width: 78%; height: 26%; background: linear-gradient(95deg, transparent 0%, #20262c 12%, #3c464f 30%, #5d6a75 48%, transparent 49%, #171b20 50%, #262c33 100%); transform: skewX(-26deg); border-radius: 6px 40px 40px 6px; }
+  .model-card h3 { font-size: 24px; font-weight: 700; text-transform: uppercase; color: var(--on-dark); margin-bottom: 4px; }
+  .model-card .specs { font-size: 14px; font-weight: 300; color: var(--body); margin-bottom: var(--sp-md); }
+
+  /* 06 badges */
+  .pill-row { display: flex; flex-wrap: wrap; gap: var(--sp-md); align-items: center; }
+  .tab { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--body); padding: 12px 0; cursor: pointer; border-bottom: 2px solid transparent; }
+  .tab:hover { color: var(--on-dark); }
+  .tab.on { color: var(--on-dark); border-bottom-color: var(--on-dark); }
+  .cat-tag { display: inline-flex; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--on-dark); border: 1px solid var(--hairline); padding: 8px 16px; }
+  .cat-tag.solid { background: var(--on-dark); color: var(--canvas); border-color: var(--on-dark); }
+  .m-badge { display: inline-flex; align-items: center; gap: 8px; font-style: italic; font-weight: 700; font-size: 15px; color: var(--on-dark); }
+  .m-badge .tri { width: 22px; height: 6px; background: linear-gradient(90deg, var(--m-blue-light) 0 33.3%, var(--m-blue-dark) 33.3% 66.6%, var(--m-red) 66.6% 100%); }
+
+  /* 07 nav */
+  .navbar-demo { border: 1px solid var(--hairline-strong); overflow: hidden; }
+  .topnav { background: var(--canvas); height: 64px; display: flex; align-items: center; gap: var(--sp-xl); padding: 0 var(--sp-xl); border-bottom: 1px solid var(--hairline-strong); }
+  .m-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-style: italic; font-size: 18px; color: var(--on-dark); letter-spacing: 1px; }
+  .m-logo .tri { width: 26px; height: 7px; background: linear-gradient(90deg, var(--m-blue-light) 0 33.3%, var(--m-blue-dark) 33.3% 66.6%, var(--m-red) 66.6% 100%); }
+  .nv-links { display: flex; gap: var(--sp-lg); font-size: 14px; font-weight: 400; letter-spacing: 0.5px; color: var(--body); }
+  .nv-links span { cursor: pointer; padding: 6px 0; }
+  .nv-links span:hover { color: var(--on-dark); }
+  .nv-links .on { color: var(--on-dark); border-bottom: 2px solid var(--on-dark); }
+  .nv-right { margin-left: auto; display: flex; gap: var(--sp-md); align-items: center; color: var(--body); }
+  .hero-demo { position: relative; height: 300px; background: linear-gradient(100deg, #000 10%, #10161c 45%, #25313c 70%, #0a0d10 100%); overflow: hidden; }
+  .hero-demo::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(0deg, rgba(0,0,0,.9), transparent); }
+  .hero-demo .hd-copy { position: absolute; left: var(--sp-xl); bottom: var(--sp-xxl); z-index: 2; }
+  .hero-demo h2 { font-size: 56px; font-weight: 700; line-height: 1.05; text-transform: uppercase; color: var(--on-dark); }
+  .hero-demo p { font-size: 16px; font-weight: 300; color: var(--body-strong); margin: 8px 0 var(--sp-lg); }
+  .hero-demo::after { content: ""; position: absolute; right: -60px; bottom: 10px; width: 520px; height: 140px; background: linear-gradient(95deg, #101418 0%, #232a31 25%, #46525d 45%, #0066b1 46%, #0a3557 49%, #14181c 50%, #20252b 100%); transform: skewX(-26deg); border-radius: 10px 70px 70px 10px; box-shadow: 0 40px 70px rgba(0,0,0,.85); }
+
+  /* 08 table */
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl-wrap { border: 1px solid var(--hairline-strong); overflow-x: auto; }
+  .tbl th { text-align: left; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); padding: 14px 24px; border-bottom: 1px solid var(--hairline); background: var(--surface-soft); }
+  .tbl td { padding: 16px 24px; border-bottom: 1px solid var(--hairline-strong); font-size: 16px; font-weight: 300; color: var(--body); }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl td:first-child { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--on-dark); }
+  .tbl .val { font-weight: 700; color: var(--on-dark); }
+
+  /* product */
+  #product { padding-top: 0; }
+  .hero { position: relative; padding: 0; height: 560px; background: linear-gradient(100deg, #000 8%, #0d1318 38%, #1f2b36 62%, #05080b 95%); overflow: hidden; }
+  .hero::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 60%; background: linear-gradient(0deg, rgba(0,0,0,.92) 20%, transparent); }
+  .hero::after { content: ""; position: absolute; right: -80px; bottom: 40px; width: 640px; height: 180px; background: linear-gradient(95deg, #0c1013 0%, #1f262d 22%, #3f4b56 42%, #e22718 43%, #7c100a 46%, #12161a 47%, #1c2228 100%); transform: skewX(-27deg); border-radius: 12px 90px 90px 12px; box-shadow: 0 50px 90px rgba(0,0,0,.9); }
+  .hero .wrap { position: relative; z-index: 2; padding-top: var(--sp-xxl); }
+  .hero .kicker { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--body-strong); margin-bottom: var(--sp-md); }
+  .hero h1 { font-size: 80px; font-weight: 700; line-height: 1.0; text-transform: uppercase; color: var(--on-dark); max-width: 720px; margin-bottom: var(--sp-md); }
+  .hero p { font-size: 16px; font-weight: 300; color: var(--body); max-width: 520px; margin-bottom: var(--sp-xl); }
+  .hero-photo-caption { position: absolute; right: var(--sp-lg); bottom: var(--sp-lg); z-index: 2; font-size: 12px; letter-spacing: 0.5px; color: var(--muted); }
+  .proof-strip { border-top: 1px solid var(--hairline-strong); border-bottom: 1px solid var(--hairline-strong); }
+  .proof { display: flex; justify-content: space-between; gap: var(--sp-lg); padding: var(--sp-lg) 0; flex-wrap: wrap; }
+  .proof div { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .proof b { color: var(--on-dark); }
+  .section { padding: var(--sp-section) 0; }
+  .section-dark-tile { background: var(--surface-soft); }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-lg); margin-bottom: var(--sp-xl); flex-wrap: wrap; }
+  .sec-head h2 { font-size: 56px; font-weight: 700; line-height: 1.05; text-transform: uppercase; color: var(--on-dark); }
+  .mag-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-lg); }
+  @media (max-width: 900px) { .mag-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 48px; } .sec-head h2 { font-size: 36px; } }
+  .mag-card { background: var(--surface-card); display: flex; flex-direction: column; }
+  .mag-card .ph { height: 200px; margin-bottom: var(--sp-lg); }
+  .mag-card .ph.a { background: linear-gradient(120deg, #101418, #25313c 60%, #0c1014); }
+  .mag-card .ph.b { background: linear-gradient(120deg, #141210, #3a2e22 60%, #100d0a); }
+  .mag-card .ph.c { background: linear-gradient(120deg, #0d1210, #22402e 60%, #0a0e0c); }
+  .mag-card .inner { padding: 0 var(--sp-lg) var(--sp-lg); }
+  .mag-card .cat { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: var(--sp-sm); }
+  .mag-card h3 { font-size: 24px; font-weight: 700; line-height: 1.3; color: var(--on-dark); margin-bottom: var(--sp-sm); }
+  .mag-card p { font-size: 16px; font-weight: 300; color: var(--body); }
+  .quote-band { padding: var(--sp-section) 0; border-top: 1px solid var(--hairline-strong); }
+  .quote-band blockquote { font-size: 32px; font-weight: 700; line-height: 1.15; text-transform: uppercase; color: var(--on-dark); max-width: 860px; margin-bottom: var(--sp-lg); }
+  .quote-band cite { font-style: normal; font-size: 14px; font-weight: 300; letter-spacing: 0.5px; color: var(--muted); }
+  .cta-band { position: relative; padding: 80px 0; background: linear-gradient(100deg, #000 10%, #10171d 45%, #26313b 72%, #07090c 100%); overflow: hidden; }
+  .cta-band::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 60%; background: linear-gradient(0deg, rgba(0,0,0,.88), transparent); }
+  .cta-band::after { content: ""; position: absolute; right: -70px; bottom: 24px; width: 560px; height: 150px; background: linear-gradient(95deg, #0d1114 0%, #20262d 25%, #414d58 45%, #0066b1 46%, #082c49 49%, #101418 50%, #1b2126 100%); transform: skewX(-27deg); border-radius: 10px 80px 80px 10px; box-shadow: 0 40px 80px rgba(0,0,0,.85); }
+  .cta-band .wrap { position: relative; z-index: 2; text-align: center; }
+  .cta-band h2 { font-size: 40px; font-weight: 700; line-height: 1.1; text-transform: uppercase; color: var(--on-dark); margin-bottom: var(--sp-xl); }
+  footer.sg-footer { background: var(--canvas); color: var(--body); padding: 64px 0 var(--sp-xl); border-top: 1px solid var(--hairline-strong); }
+  .f-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-md); margin-bottom: var(--sp-xxl); }
+  @media (max-width: 900px) { .f-cols { grid-template-columns: repeat(2, 1fr); } }
+  .f-cols h4 { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--on-dark); margin-bottom: var(--sp-md); }
+  .f-cols a { display: block; font-size: 14px; font-weight: 300; color: var(--body); padding: 6px 0; }
+  .f-cols a:hover { color: var(--on-dark); }
+  .legal { font-size: 12px; font-weight: 400; letter-spacing: 0.5px; color: var(--muted); border-top: 1px solid var(--hairline-strong); padding-top: var(--sp-lg); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+
+<div class="m-stripe"></div>
+
+<header class="sg-banner">
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span class="sg-folder">bmw-m</span>
+    <span class="sg-brand">BMW <span class="m">M</span></span>
+  </div>
+  <div class="sg-desc">Motorsport engineering on a near-black canvas — white UPPERCASE headlines, the M tricolor as brand signature, photography as the only voltage.</div>
+</header>
+
+<main>
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components">
+    <div class="wrap">
+      <h1>Components</h1>
+      <p class="lede">Heavy display against light body, rectangular buttons with machined 1.5px-tracked labels, and the M tricolor reserved strictly for brand-identity moments.</p>
+
+      <!-- 01 colors -->
+      <div class="blk">
+        <div class="sg-section-label">01 — Color tokens</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><div class="name">Canvas</div><div class="hex">#000000</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#0d0d0d"></div><div class="meta"><div class="name">Surface soft</div><div class="hex">#0d0d0d</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#1a1a1a"></div><div class="meta"><div class="name">Surface card</div><div class="hex">#1a1a1a</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#262626"></div><div class="meta"><div class="name">Surface elevated</div><div class="hex">#262626</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#2b2b2b"></div><div class="meta"><div class="name">Carbon gray</div><div class="hex">#2b2b2b</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#3c3c3c"></div><div class="meta"><div class="name">Hairline</div><div class="hex">#3c3c3c</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="meta"><div class="name">Primary / ink</div><div class="hex">#ffffff</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#bbbbbb"></div><div class="meta"><div class="name">Body</div><div class="hex">#bbbbbb</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#7e7e7e"></div><div class="meta"><div class="name">Muted</div><div class="hex">#7e7e7e</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#0066b1"></div><div class="meta"><div class="name">M blue light</div><div class="hex">#0066b1</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#1c69d4"></div><div class="meta"><div class="name">M blue dark</div><div class="hex">#1c69d4</div></div></div>
+          <div class="swatch"><div class="chip" style="background:#e22718"></div><div class="meta"><div class="name">M red</div><div class="hex">#e22718</div></div></div>
+        </div>
+      </div>
+
+      <!-- 02 typography -->
+      <div class="blk">
+        <div class="sg-section-label">02 — Typography specimen · BMW Type Next Latin (700 display / 300 body)</div>
+        <div class="type-specimen">
+          <div class="type-row"><span class="tag">display-xl · 80/700</span><span class="t-display-xl">THE ULTIMATE</span></div>
+          <div class="type-row"><span class="tag">display-lg · 56/700</span><span class="t-display-lg">MORE BMW M.</span></div>
+          <div class="type-row"><span class="tag">display-md · 40/700</span><span class="t-display-md">M5 Touring</span></div>
+          <div class="type-row"><span class="tag">display-sm · 32/700</span><span class="t-display-sm">Born on the track.</span></div>
+          <div class="type-row"><span class="tag">title-lg · 24/700</span><span class="t-title-lg">The most powerful M drivetrain ever built</span></div>
+          <div class="type-row"><span class="tag">title-md · 20/400</span><span class="t-title-md">M Hybrid V8 technology, road-legal.</span></div>
+          <div class="type-row"><span class="tag">label-uppercase · 14/700 · 1.5px</span><span class="t-label">EXPLORE THIS MODEL</span></div>
+          <div class="type-row"><span class="tag">body-md · 16/300</span><span class="t-body-md">The M TwinPower Turbo inline-6 delivers relentless thrust from 2,500 rpm to redline.</span></div>
+          <div class="type-row"><span class="tag">body-sm · 14/300</span><span class="t-body-sm">Fuel consumption combined: 10.2 l/100 km. CO2 emissions combined: 233 g/km.</span></div>
+          <div class="type-row"><span class="tag">caption · 12/400</span><span class="t-caption">PHOTO: BMW AG, N&Uuml;RBURGRING GP CIRCUIT, 2026</span></div>
+        </div>
+      </div>
+
+      <!-- 03 buttons -->
+      <div class="blk">
+        <div class="sg-section-label">03 — Buttons</div>
+        <div class="btn-row" style="margin-bottom:16px;">
+          <button class="btn btn-primary">Book a test drive</button>
+          <button class="btn btn-outline">Configure</button>
+          <a class="text-link" href="#">VIEW ALL MODELS &rarr;</a>
+          <button class="btn-icon" aria-label="previous">&#8592;</button>
+          <button class="btn-icon" aria-label="next">&#8594;</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-outline" style="background:rgba(255,255,255,.12);">Outline over photo</button>
+          <button class="btn btn-primary" style="background:var(--on-dark); color:var(--on-primary);">Inverted (hover)</button>
+        </div>
+      </div>
+
+      <!-- 04 inputs -->
+      <div class="blk">
+        <div class="sg-section-label">04 — Inputs</div>
+        <div class="input-grid">
+          <div class="field">
+            <label for="z">ZIP code — find a dealer</label>
+            <input id="z" class="text-input" type="text" placeholder="e.g. 80788 M&uuml;nchen">
+          </div>
+          <div class="field">
+            <label>Email (focused)</label>
+            <input class="text-input" type="email" value="m.garage@motorsport.de" style="border-color:var(--on-dark);">
+          </div>
+          <div class="field">
+            <label>Model year</label>
+            <div class="select-wrap">
+              <select class="select"><option>2026</option><option>2025</option><option>2024</option></select>
+            </div>
+          </div>
+          <div class="field">
+            <label>VIN (disabled)</label>
+            <input class="text-input disabled" value="WBS33AZ0000000000" disabled>
+          </div>
+        </div>
+        <div style="display:flex; gap:32px; align-items:center; margin-top:24px; flex-wrap:wrap;">
+          <span class="switch on" role="switch" aria-checked="true"></span>
+          <span style="font-size:14px; font-weight:300; color:var(--body);">M Drive Professional</span>
+          <span class="switch" role="switch" aria-checked="false"></span>
+          <span style="font-size:14px; font-weight:300; color:var(--body);">Track telemetry</span>
+          <span class="check on"><span class="box">&#10003;</span> Send me M Magazine</span>
+          <span class="check"><span class="box"></span> Notify on model updates</span>
+        </div>
+      </div>
+
+      <!-- 05 cards -->
+      <div class="blk">
+        <div class="sg-section-label">05 — Cards · photo band, spec cells, model cards</div>
+        <div class="photo-band">
+          <div class="pb-copy">
+            <h3>MOTORSPORT IS OUR HOME</h3>
+            <p>Six hours of endurance. One podium. Zero compromises.</p>
+          </div>
+        </div>
+        <div class="spec-row" style="margin-top:2px;">
+          <div class="spec-cell"><b>727</b><span>hp</span></div>
+          <div class="spec-cell"><b>3.9</b><span>0&ndash;100 km/h · s</span></div>
+          <div class="spec-cell"><b>305</b><span>km/h top speed</span></div>
+          <div class="spec-cell"><b>4.4</b><span>M TwinPower V8 · l</span></div>
+        </div>
+        <div class="model-grid" style="margin-top:24px;">
+          <div class="model-card">
+            <div class="shot s1"></div>
+            <h3>M3 Competition</h3>
+            <div class="specs">510 hp &middot; 3.5 s &middot; RWD / M xDrive</div>
+            <a class="text-link" href="#">EXPLORE THIS MODEL &rarr;</a>
+          </div>
+          <div class="model-card">
+            <div class="shot s2"></div>
+            <h3>M5 Touring</h3>
+            <div class="specs">727 hp &middot; 3.9 s &middot; M xDrive</div>
+            <a class="text-link" href="#">EXPLORE THIS MODEL &rarr;</a>
+          </div>
+          <div class="model-card">
+            <div class="shot s3"></div>
+            <h3>XM Label</h3>
+            <div class="specs">748 hp &middot; 3.8 s &middot; M Hybrid V8</div>
+            <a class="text-link" href="#">EXPLORE THIS MODEL &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 badges -->
+      <div class="blk">
+        <div class="sg-section-label">06 — Badges · tags · tabs</div>
+        <div class="pill-row" style="margin-bottom:16px;">
+          <span class="tab on">ALL</span>
+          <span class="tab">MODELS</span>
+          <span class="tab">MOTORSPORT</span>
+          <span class="tab">LIFESTYLE</span>
+          <span class="tab">MAGAZINE</span>
+        </div>
+        <div class="pill-row">
+          <span class="m-badge"><span class="tri"></span>M Competition</span>
+          <span class="cat-tag">M xDrive</span>
+          <span class="cat-tag solid">NEW</span>
+          <span class="cat-tag" style="border-color:var(--m-red); color:var(--m-red);">MHybridV8</span>
+        </div>
+      </div>
+
+      <!-- 07 navigation -->
+      <div class="blk">
+        <div class="sg-section-label">07 — Navigation + hero photo band</div>
+        <div class="navbar-demo">
+          <nav class="topnav">
+            <a href="#" class="m-logo"><span class="tri"></span>BMW M</a>
+            <div class="nv-links">
+              <span class="on">Models</span><span>Topics</span><span>Magazine</span><span>Configurator</span><span>Fastlane</span>
+            </div>
+            <div class="nv-right"><span>EN</span><span>&#9906;</span><span>&#9787;</span></div>
+          </nav>
+          <div class="hero-demo">
+            <div class="hd-copy">
+              <h2>THE NEW M5.</h2>
+              <p>Power of M. Intelligence of hybrid.</p>
+              <button class="btn btn-outline">DISCOVER MORE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 table -->
+      <div class="blk">
+        <div class="sg-section-label">08 — Table · technical specifications</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Model</th><th>Engine</th><th>Output</th><th>0&ndash;100 km/h</th><th>Top speed</th></tr></thead>
+            <tbody>
+              <tr><td>M3 Competition</td><td>3.0 l inline-6 M TwinPower Turbo</td><td class="val">510 hp</td><td class="val">3.5 s</td><td class="val">290 km/h</td></tr>
+              <tr><td>M5 Touring</td><td>4.4 l V8 M Hybrid</td><td class="val">727 hp</td><td class="val">3.9 s</td><td class="val">305 km/h</td></tr>
+              <tr><td>XM Label Red</td><td>4.4 l V8 M Hybrid</td><td class="val">748 hp</td><td class="val">3.8 s</td><td class="val">290 km/h</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINISHED PRODUCT ================= -->
+  <section id="product">
+    <div class="hero">
+      <div class="wrap">
+        <div class="kicker">BMW M GMBH &middot; SINCE 1972</div>
+        <h1>MORE POWER.<br>MORE PRECISION.</h1>
+        <p>Every M car is developed on the N&uuml;rburgring Nordschleife and proven in motorsport before it earns its badge.</p>
+        <div class="btn-row">
+          <button class="btn btn-outline">EXPLORE THE LINEUP</button>
+          <button class="btn btn-primary" style="background:transparent;">BOOK A TEST DRIVE</button>
+        </div>
+      </div>
+      <div class="hero-photo-caption">M5 TOURING &middot; N&Uuml;RBURGRING GP &middot; PHOTO: BMW AG</div>
+    </div>
+
+    <div class="proof-strip">
+      <div class="wrap proof">
+        <div><b>20</b> &nbsp;M MODELS</div>
+        <div><b>748</b> &nbsp;HP MAX OUTPUT</div>
+        <div><b>25</b> &nbsp;DTM &amp; GT TITLES</div>
+        <div><b>1:57</b> &nbsp;RING REFERENCE LAP</div>
+      </div>
+    </div>
+
+    <div class="section section-dark-tile">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>THE NEW M MODELS</h2>
+          <a class="text-link" href="#">VIEW MORE &rarr;</a>
+        </div>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="shot s1"></div>
+            <h3>M3 CS</h3>
+            <div class="specs">550 hp &middot; 3.4 s &middot; Carbon bucket seats</div>
+            <a class="text-link" href="#">EXPLORE THIS MODEL &rarr;</a>
+          </div>
+          <div class="model-card">
+            <div class="shot s2"></div>
+            <h3>M4 GT3</h3>
+            <div class="specs">590 hp &middot; P58 3.0 l inline-6 &middot; Race only</div>
+            <a class="text-link" href="#">EXPLORE THIS MODEL &rarr;</a>
+          </div>
+          <div class="model-card">
+            <div class="shot s3"></div>
+            <h3>M2</h3>
+            <div class="specs">460 hp &middot; 4.1 s &middot; The purest M</div>
+            <a class="text-link" href="#">EXPLORE THIS MODEL &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>MORE FROM BMW M MAGAZINE</h2>
+          <a class="text-link" href="#">READ MORE &rarr;</a>
+        </div>
+        <div class="mag-grid">
+          <div class="mag-card">
+            <div class="ph a"></div>
+            <div class="inner">
+              <div class="cat">MOTORSPORT</div>
+              <h3>Anatomy of a pit stop: 1.9 seconds at Le Mans</h3>
+              <p>Inside the choreography that keeps the M Hybrid V8 in front.</p>
+            </div>
+          </div>
+          <div class="mag-card">
+            <div class="ph b"></div>
+            <div class="inner">
+              <div class="cat">ENGINEERING</div>
+              <h3>Carbon core: the skeleton of the new M5</h3>
+              <p>How mixed-material construction saves 40 kg where it matters.</p>
+            </div>
+          </div>
+          <div class="mag-card">
+            <div class="ph c"></div>
+            <div class="inner">
+              <div class="cat">LIFESTYLE</div>
+              <h3>Transfagarasan at dawn with the M2</h3>
+              <p>94 miles of Romania's highest road, driven before breakfast.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-band">
+      <div class="wrap">
+        <blockquote>&ldquo;WE DON'T BUILD CARS FOR THE ROAD AND TAKE THEM RACING. WE RACE, AND THE ROAD BENEFITS.&rdquo;</blockquote>
+        <cite>&mdash; FRANCISCUS VAN MEEL, CEO BMW M GMBH</cite>
+      </div>
+    </div>
+
+    <div class="cta-band">
+      <div class="wrap">
+        <h2>DRIVE AN M.</h2>
+        <button class="btn btn-outline">FIND YOUR DEALER</button>
+      </div>
+    </div>
+
+    <footer class="sg-footer">
+      <div class="wrap">
+        <div class="f-cols">
+          <div><h4>BMW M Models</h4><a href="#">M3</a><a href="#">M4</a><a href="#">M5</a><a href="#">XM</a><a href="#">M2</a></div>
+          <div><h4>BMW M Lifestyle</h4><a href="#">M Collection</a><a href="#">M Fanshop</a><a href="#">Gift ideas</a><a href="#">Simulator gear</a></div>
+          <div><h4>Owners</h4><a href="#">M Driving Experience</a><a href="#">Service &amp; parts</a><a href="#">M Concierge</a><a href="#">Track days</a></div>
+          <div><h4>Company</h4><a href="#">BMW M GmbH</a><a href="#">Motorsport</a><a href="#">Careers</a><a href="#">Contact</a></div>
+        </div>
+        <div class="m-stripe" style="margin-bottom:24px;"></div>
+        <div class="legal">
+          <span>&copy; 2026 BMW AG. Fuel consumption and CO2 figures depend on the selected wheel and tyre size.</span>
+          <span>English &middot; Deutschland / English</span>
+        </div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>
+
+</html>

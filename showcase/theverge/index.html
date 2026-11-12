@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Verge — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE VERGE — tokens from design-md/theverge/DESIGN.md
+   Manuka → Anton (display line-height loosened to ~0.95 as
+   DESIGN.md instructs for substitutes). PolySans → Space Grotesk,
+   PolySans Mono → Space Mono, FK Roman → Georgia.
+   ============================================================ */
+:root{
+  --mint:#3cffd0;
+  --ultraviolet:#5200ff;
+  --mint-border:#309875;
+  --link-blue:#3860be;
+  --focus-cyan:#1eaedb;
+  --purple-rule:#3d00bf;
+  --canvas:#131313;
+  --slate:#2d2d2d;
+  --frame:#313131;
+  --white:#ffffff;
+  --black:#000000;
+  --text-2:#949494;
+  --text-3:#e9e9e9;
+  --dim:#8c8c8c;
+  --yellow:#ffd200;
+  --pink:#ff5a90;
+  --orange:#ff7a1a;
+
+  --display:"Anton",Impact,"Helvetica Neue",sans-serif;
+  --sans:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"Space Mono","Courier New",Courier,monospace;
+
+  --r-2:2px; --r-3:3px; --r-4:4px; --r-20:20px; --r-24:24px; --r-30:30px; --r-40:40px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:var(--sans);font-size:16px;line-height:1.6;
+  background:var(--canvas);color:var(--white);
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:1300px;margin:0 auto;padding:0 48px;}
+a{transition:color .15s ease;}
+a:hover{color:var(--link-blue);}
+
+/* ---------- Spec banner ---------- */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:10px 24px;
+  background:#0a0a0a;border-bottom:1px solid var(--mint-border);
+}
+.sg-banner .sg-id{display:flex;align-items:baseline;gap:14px;}
+.sg-banner .sg-folder{
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mint);border:1px solid var(--mint-border);border-radius:20px;padding:3px 10px;
+}
+.sg-banner .sg-name{font-family:var(--display);font-size:18px;letter-spacing:.06em;color:var(--white);}
+.sg-banner .sg-desc{font-size:12.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media (max-width:980px){.sg-banner .sg-desc{display:none;}}
+
+/* ---------- Section label ---------- */
+.sg-label{
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-2);display:flex;align-items:center;gap:12px;margin-bottom:24px;
+}
+.sg-label::after{content:"";flex:1;height:1px;background:var(--frame);}
+.sg-section{padding:72px 0;}
+.sg-section-title{font-family:var(--display);font-size:60px;line-height:.95;letter-spacing:.02em;margin-bottom:8px;}
+.sg-section-sub{font-size:16px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:48px;}
+
+/* ============================================================
+   1. COLOR TOKENS
+   ============================================================ */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+.swatch{border:1px solid var(--frame);border-radius:20px;overflow:hidden;background:var(--canvas);}
+.swatch .chip{height:72px;}
+.swatch .meta{padding:10px 12px;}
+.swatch .hex{font-family:var(--mono);font-size:11px;color:var(--text-2);}
+.swatch .role{font-size:11px;color:var(--white);margin-top:2px;}
+@media (max-width:980px){.swatch-grid{grid-template-columns:repeat(3,1fr);}}
+
+/* ============================================================
+   2. TYPOGRAPHY
+   ============================================================ */
+.type-spec{border:1px solid var(--frame);border-radius:20px;overflow:hidden;}
+.type-row{display:grid;grid-template-columns:240px 1fr;gap:24px;padding:20px 28px;border-bottom:1px solid var(--frame);align-items:baseline;}
+.type-row:nth-child(even){background:#181818;}
+.type-row:last-child{border-bottom:none;}
+.type-token{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);line-height:1.6;}
+.type-token b{display:block;color:var(--mint);font-weight:700;}
+.t-display{font-family:var(--display);font-size:90px;line-height:.95;letter-spacing:.02em;}
+.t-display-sm{font-family:var(--display);font-size:60px;line-height:.95;}
+.t-head-lg{font-size:34px;font-weight:700;line-height:1.0;}
+.t-head-md{font-size:24px;font-weight:700;line-height:1.0;}
+.t-whisper{font-size:19px;font-weight:300;letter-spacing:.1em;text-transform:uppercase;line-height:1.2;}
+.t-caps-xl{font-size:18px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;line-height:1.1;}
+.t-body{font-size:16px;font-weight:500;line-height:1.6;}
+.t-body-compact{font-size:13px;font-weight:400;line-height:1.6;color:var(--text-2);}
+.t-kicker{font-size:12px;letter-spacing:.15em;text-transform:uppercase;}
+.t-mono-btn{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.125em;text-transform:uppercase;line-height:2.0;}
+.t-timestamp{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+.t-serif{font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.2;}
+.t-serif-body{font-family:Georgia,serif;font-size:16px;line-height:1.3;}
+
+/* ============================================================
+   3. BUTTONS — pill radii 24/30/40, color-as-state
+   ============================================================ */
+.btn-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:16px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--sans);font-size:16px;font-weight:700;line-height:1;
+  padding:10px 24px;border-radius:24px;border:none;cursor:pointer;
+  transition:background .18s ease,box-shadow .18s ease,color .18s ease;
+  text-decoration:none;
+}
+.btn-mono{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.125em;text-transform:uppercase;}
+.btn-mint{background:var(--mint);color:var(--black);}
+.btn-mint:hover{background:rgba(255,255,255,.2);color:var(--black);box-shadow:0 0 0 1px #c2c2c2;}
+.btn-mint:active{background:rgba(140,140,140,.87);opacity:.5;}
+.btn-slate{background:var(--slate);color:var(--text-3);font-weight:400;}
+.btn-slate:hover{background:rgba(255,255,255,.2);color:var(--black);box-shadow:0 0 0 1px #c2c2c2;}
+.btn-outline-mint{background:transparent;color:var(--mint);border:1px solid var(--mint);border-radius:40px;padding:10px 20px;}
+.btn-outline-mint:hover{background:var(--mint);color:var(--black);}
+.btn-outline-uv{background:transparent;color:var(--white);border:1px solid var(--ultraviolet);border-radius:30px;padding:10px 20px;}
+.btn-outline-uv:hover{background:var(--ultraviolet);color:var(--white);}
+.btn:disabled{background:var(--slate);color:var(--dim);cursor:not-allowed;}
+.sg-hint{font-size:13px;color:var(--text-2);}
+
+/* ============================================================
+   4. INPUTS — 2px radius, newspaper-form feel
+   ============================================================ */
+.input-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:820px;}
+.field label{display:block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px;}
+.input{
+  width:100%;font-family:var(--sans);font-size:15px;color:var(--white);
+  background:var(--canvas);padding:10px 12px;
+  border:1px solid var(--text-2);border-radius:2px;outline:none;
+  transition:border-color .15s ease;
+}
+.input::placeholder{color:var(--text-2);}
+.input:focus{border-color:var(--mint);}
+.input.is-focus{border-color:var(--mint);box-shadow:inset 0 0 0 1px var(--ultraviolet);}
+.input.err{border-color:var(--ultraviolet);}
+.input:disabled{color:var(--dim);cursor:not-allowed;border-color:var(--frame);}
+.select{appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%23949494' stroke-width='1.5' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.switch-row{display:flex;align-items:center;gap:12px;}
+.switch{position:relative;width:44px;height:24px;border-radius:2px;background:var(--slate);cursor:pointer;transition:background .15s;flex:none;}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:2px;background:var(--white);transition:left .15s;}
+.switch.on{background:var(--mint);}
+.switch.on::after{left:23px;background:var(--black);}
+.switch-label{font-size:13px;color:var(--text-2);}
+
+/* ============================================================
+   5. CARDS — color-as-elevation, no shadows
+   ============================================================ */
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+.tile{border-radius:20px;padding:32px;}
+.tile-dark{background:var(--canvas);border:1px solid var(--white);}
+.tile-dark h3{font-size:24px;font-weight:700;line-height:1.0;}
+.tile-dark p{margin-top:10px;font-size:14px;color:var(--text-2);}
+.tile-dark a{color:var(--white);font-weight:700;}
+.tile-mint{background:var(--mint);color:var(--black);}
+.tile-mint .kicker{color:#0b6b52;}
+.tile-mint h3{font-size:24px;font-weight:700;line-height:1.0;}
+.tile-mint p{margin-top:10px;font-size:14px;}
+.tile-uv{background:rgba(82,0,255,.9);color:var(--white);border-radius:24px;padding:32px;}
+.tile-uv .kicker{color:#c9b3ff;}
+.tile-uv h3{font-size:32px;font-weight:400;line-height:1.1;letter-spacing:.01em;}
+.tile-uv p{margin-top:10px;font-size:14px;color:#d8ccf1;}
+.tile-yellow{background:var(--yellow);color:var(--black);border-radius:20px;padding:32px;}
+.tile-yellow h3{font-size:24px;font-weight:700;}
+.tile-yellow p{margin-top:10px;font-size:14px;}
+.kicker{font-size:12px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;}
+a .tile h3, a.tile h3{transition:color .15s ease;}
+a.tile:hover h3{color:var(--link-blue);}
+a.tile-mint:hover h3, a.tile-yellow:hover h3{color:#1d4ed8;}
+
+/* ============================================================
+   6. BADGES — 20px text pills, mono uppercase
+   ============================================================ */
+.badge-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.pill-tag{display:inline-flex;align-items:center;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.145em;text-transform:uppercase;
+  padding:4px 10px;border-radius:20px;background:var(--mint);color:var(--black);}
+.pill-tag.uv{background:var(--ultraviolet);color:var(--white);}
+.pill-tag.white{background:var(--white);color:var(--black);border:1px solid var(--frame);}
+.pill-tag.yellow{background:var(--yellow);color:var(--black);}
+.pill-tag.ghost{background:transparent;color:var(--white);border:1px solid var(--text-2);}
+
+/* ============================================================
+   7. NAVIGATION
+   ============================================================ */
+.nav-demo{border:1px solid var(--frame);border-radius:20px;overflow:hidden;margin-bottom:24px;}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 28px;background:#0a0a0a;}
+.nav-light-ctx{background:var(--slate);}
+.nav .wordmark{font-family:var(--display);font-size:28px;line-height:.95;letter-spacing:.02em;color:var(--white);}
+.nav .links{display:flex;gap:22px;}
+.nav .links a{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.125em;text-transform:uppercase;color:var(--white);}
+.nav .links a.active{box-shadow:0 -1px 0 0 inset var(--mint);}
+.nav .links a:hover{text-decoration:none;}
+@media (max-width:980px){.nav .links{display:none;}}
+
+/* ============================================================
+   8. STORIES LIST / TABLE
+   ============================================================ */
+.list-demo{border:1px solid var(--frame);border-radius:20px;overflow:hidden;max-width:820px;}
+.list-head{display:grid;grid-template-columns:1fr 100px 90px;gap:16px;padding:12px 24px;
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);
+  background:#0a0a0a;border-bottom:1px solid var(--frame);}
+.list-row{display:grid;grid-template-columns:1fr 100px 90px;gap:16px;align-items:center;padding:14px 24px;border-bottom:1px solid var(--frame);}
+.list-row:last-child{border-bottom:none;}
+.list-row:hover{background:#181818;}
+.list-row:hover .headline{color:var(--link-blue);}
+.list-row .headline{font-size:16px;font-weight:700;line-height:1.0;}
+.list-row .sec{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);}
+.list-row .views{font-family:var(--mono);font-size:11px;color:var(--text-2);text-align:right;}
+
+/* ============================================================
+   PRODUCT — landing page
+   ============================================================ */
+.product{margin-top:24px;}
+.masthead{padding:40px 0 8px;text-align:center;}
+.masthead .whisper{font-size:19px;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);}
+.masthead h1{font-family:var(--display);font-size:107px;line-height:.95;letter-spacing:.02em;margin:10px 0 6px;}
+.masthead .deck{font-size:16px;color:var(--text-2);}
+.masthead-rule{height:1px;background:var(--frame);margin:28px 0 0;}
+
+/* hero grid: 3-col editorial + 1-col StoryStream */
+.hero-grid{display:grid;grid-template-columns:2fr 1fr;gap:24px;padding:32px 0 64px;}
+.hero-main{display:grid;gap:24px;}
+.feature-tile{display:block;border-radius:24px;overflow:hidden;position:relative;min-height:380px;
+  background:
+    radial-gradient(80% 90% at 80% 15%, rgba(255,210,0,.85) 0%, rgba(255,210,0,0) 55%),
+    radial-gradient(70% 80% at 15% 85%, rgba(82,0,255,.9) 0%, rgba(82,0,255,0) 60%),
+    linear-gradient(160deg,#20042f 0%, #131313 70%);
+  border:1px solid var(--frame);}
+.feature-tile .inner{position:relative;padding:40px;display:flex;flex-direction:column;justify-content:flex-end;min-height:380px;}
+.feature-tile .kicker{color:var(--mint);}
+.feature-tile h2{font-family:var(--display);font-size:60px;line-height:.95;letter-spacing:.02em;}
+.feature-tile .deck{margin-top:12px;font-size:16px;color:#cfcfcf;max-width:520px;}
+.feature-tile:hover h2{color:var(--white);}
+.hero-side{display:grid;gap:16px;}
+.side-tile{display:block;border-radius:20px;padding:24px;background:var(--slate);}
+.side-tile .kicker{font-size:11px;color:var(--text-3);}
+.side-tile h3{font-size:20px;font-weight:700;line-height:1.0;margin-bottom:0;}
+.side-tile:hover h3{color:var(--link-blue);}
+.side-tile.mint{background:var(--mint);}
+.side-tile.mint .kicker{color:#0b6b52;}
+.side-tile.mint h3{color:var(--black);}
+.side-tile.uv{background:rgba(82,0,255,.9);}
+.side-tile.uv h3{color:var(--white);}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr;}.masthead h1{font-size:64px;}}
+
+/* StoryStream timeline */
+.stream{display:grid;grid-template-columns:110px 1px 1fr;gap:0 20px;padding:32px 0 64px;}
+.stream-rail{grid-column:2;background:var(--purple-rule);position:relative;}
+.stream-items{grid-column:3;display:grid;gap:16px;}
+.stream-head{grid-column:1/4;display:flex;align-items:center;gap:16px;margin-bottom:8px;}
+.stream-item{display:grid;grid-template-columns:110px 1fr;gap:16px;position:relative;}
+.stream-item .stamp{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mint);}
+.stream-item:not(:first-child) .stamp{color:var(--text-2);}
+.stream-card{border:1px solid var(--white);border-radius:20px;padding:24px;background:var(--canvas);transition:border-color .15s;}
+.stream-card:hover{border-color:var(--mint);}
+.stream-card h3{font-size:24px;font-weight:700;line-height:1.0;}
+.stream-card h3 a{color:var(--white);}
+.stream-card h3 a:hover{color:var(--link-blue);}
+.stream-card p{margin-top:8px;font-size:13px;color:var(--text-2);}
+.stream-card.slate{background:var(--slate);border-color:var(--slate);}
+.stream-card.slate:hover{border-color:var(--white);}
+.stream-card .tag{margin-bottom:10px;}
+@media (max-width:980px){
+  .stream{grid-template-columns:1px 1fr;}
+  .stream-item{grid-template-columns:1fr;}
+  .stream-item .stamp{margin-bottom:6px;}
+  .stream-rail{grid-column:1;background:var(--purple-rule);}
+  .stream-items{grid-column:2;}
+  .stream-head{grid-column:1/3;}
+}
+
+/* newsletter CTA band */
+.cta-band{background:var(--ultraviolet);border-radius:24px;padding:64px 48px;text-align:center;}
+.cta-band h2{font-family:var(--display);font-size:60px;line-height:.95;letter-spacing:.02em;color:var(--white);}
+.cta-band p{margin:14px auto 28px;max-width:520px;color:#d8ccf1;}
+.cta-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta-form .input{width:320px;border-color:var(--white);}
+.cta-form .input:focus{border-color:var(--mint);}
+
+/* footer */
+.footer{border-top:1px solid var(--frame);padding:48px 0 96px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;margin-bottom:48px;}
+.footer .fbrand .wordmark{font-family:var(--display);font-size:32px;letter-spacing:.02em;}
+.footer .fbrand p{margin-top:10px;font-size:13px;color:var(--text-2);max-width:260px;}
+.footer h5{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);margin-bottom:16px;}
+.footer ul{list-style:none;display:grid;gap:10px;font-size:14px;}
+.footer ul a{color:var(--white);}
+.footer .legal{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--frame);padding-top:24px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);flex-wrap:wrap;}
+@media (max-width:980px){.footer-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">theverge</span>
+    <span class="sg-name">The Verge</span>
+  </div>
+  <span class="sg-desc">Developer console meets club night meets tech tabloid — acid-mint and ultraviolet on an almost-black editorial canvas.</span>
+</header>
+
+<main>
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components" class="container">
+    <div class="sg-section">
+      <div class="sg-label">Components</div>
+
+      <!-- 1. Colors -->
+      <div class="sg-label">01 — Color tokens</div>
+      <div class="swatch-grid" style="margin-bottom:56px;">
+        <div class="swatch"><div class="chip" style="background:#3cffd0"></div><div class="meta"><div class="hex">#3CFFD0</div><div class="role">Jelly Mint</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#5200ff"></div><div class="meta"><div class="hex">#5200FF</div><div class="role">Verge Ultraviolet</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#309875"></div><div class="meta"><div class="hex">#309875</div><div class="role">Console Mint Border</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#3860be"></div><div class="meta"><div class="hex">#3860BE</div><div class="role">Deep Link Blue (hover)</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#1eaedb"></div><div class="meta"><div class="hex">#1EAEDB</div><div class="role">Focus Cyan</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#3d00bf"></div><div class="meta"><div class="hex">#3D00BF</div><div class="role">Purple Rule</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#131313;border:1px solid #313131"></div><div class="meta"><div class="hex">#131313</div><div class="role">Canvas Black</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#2d2d2d"></div><div class="meta"><div class="hex">#2D2D2D</div><div class="role">Surface Slate</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="meta"><div class="hex">#FFFFFF</div><div class="role">Hazard White</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffd200"></div><div class="meta"><div class="hex">#FFD200</div><div class="role">Tile Yellow</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ff5a90"></div><div class="meta"><div class="hex">#FF5A90</div><div class="role">Tile Pink</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ff7a1a"></div><div class="meta"><div class="hex">#FF7A1A</div><div class="role">Tile Orange</div></div></div>
+      </div>
+
+      <!-- 2. Typography -->
+      <div class="sg-label">02 — Typography specimen</div>
+      <div class="type-spec" style="margin-bottom:56px;">
+        <div class="type-row"><div class="type-token"><b>Hero Display · Manuka→Anton</b>107px / 900 / LH 0.95</div><div class="t-display">The Verge</div></div>
+        <div class="type-row"><div class="type-token"><b>Tertiary Display</b>60px / 900</div><div class="t-display-sm">Rave flyers, pasted on a git log</div></div>
+        <div class="type-row"><div class="type-token"><b>Large Headline · PolySans→Space Grotesk</b>34 / 700 / 1.0</div><div class="t-head-lg">Story tiles that don't float quietly</div></div>
+        <div class="type-row"><div class="type-token"><b>Heading Medium</b>24 / 700 / 1.0</div><div class="t-head-md">Feed headlines at 24px bold</div></div>
+        <div class="type-row"><div class="type-token"><b>Thin Whisper Label</b>19 / 300 / +1.9px caps</div><div class="t-whisper">A fashion-magazine whisper under a 107px shout</div></div>
+        <div class="type-row"><div class="type-token"><b>All-Caps Label XL</b>18 / 400 / +1.8px</div><div class="t-caps-xl">Section kickers in caps with wide tracking</div></div>
+        <div class="type-row"><div class="type-token"><b>Body Relaxed</b>16 / 500 / 1.6</div><div class="t-body">Long-form reading body. Plain, generous leading, never mono.</div></div>
+        <div class="type-row"><div class="type-token"><b>Mono Timestamp</b>11 / 600 caps</div><div class="t-timestamp">10:42 AM EST · STORYSTREAM RAIL</div></div>
+        <div class="type-row"><div class="type-token"><b>Serif Pull · FK Roman→Georgia</b>20 / 400</div><div class="t-serif">"Review decks read like print magazines."</div></div>
+      </div>
+
+      <!-- 3. Buttons -->
+      <div class="sg-label">03 — Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-mint">Subscribe</button>
+        <button class="btn btn-slate">Read more</button>
+        <button class="btn btn-outline-mint btn-mono">Join the stream</button>
+        <button class="btn btn-outline-uv btn-mono">Get the newsletter</button>
+      </div>
+      <div class="btn-row" style="margin-bottom:56px;">
+        <button class="btn btn-mint btn-mono">Subscribe</button>
+        <button class="btn btn-mint" disabled>Disabled</button>
+        <span class="sg-hint">Hover a mint pill — it inverts to translucent white with a #C2C2C2 ring.</span>
+      </div>
+
+      <!-- 4. Inputs -->
+      <div class="sg-label">04 — Inputs</div>
+      <div class="input-grid" style="margin-bottom:56px;">
+        <div class="field">
+          <label>Search</label>
+          <input class="input" type="text" placeholder="Search The Verge">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="input is-focus" type="text" value="steam deck 2 rumors">
+        </div>
+        <div class="field">
+          <label>Topic</label>
+          <select class="input select"><option>Tech</option><option>Reviews</option><option>Science</option><option>Transportation</option></select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input" type="text" value="Archive locked" disabled>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <div class="switch-row"><span class="switch on"></span><span class="switch-label">Break the StoryStream with full-bleed accent tiles</span></div>
+        </div>
+      </div>
+
+      <!-- 5. Cards -->
+      <div class="sg-label">05 — Cards · color-as-elevation</div>
+      <div class="card-grid" style="margin-bottom:56px;">
+        <div class="tile tile-dark">
+          <div class="kicker" style="color:var(--mint);">Top story</div>
+          <h3>The 1px white border does the work a shadow would do</h3>
+          <p>Flat depth on Canvas Black — the outline is the elevation, the hover is a color shift to deep link blue.</p>
+          <a href="#" style="color:var(--white);font-weight:700;display:inline-block;margin-top:14px;">Read the feature →</a>
+        </div>
+        <div class="tile tile-uv">
+          <div class="kicker">Promo span</div>
+          <h3>Verge Ultraviolet at 0.9 alpha</h3>
+          <p>Saturated color blocks elevate a story. No drop shadow, no gradient, no fade.</p>
+        </div>
+      </div>
+
+      <!-- 6. Badges -->
+      <div class="sg-label">06 — Badges, tags &amp; pills</div>
+      <div class="badge-row" style="margin-bottom:56px;">
+        <span class="pill-tag">Breaking</span>
+        <span class="pill-tag uv">Live blog</span>
+        <span class="pill-tag white">Review</span>
+        <span class="pill-tag yellow">Verdict: 8.5</span>
+        <span class="pill-tag ghost">Archived</span>
+      </div>
+
+      <!-- 7. Navigation -->
+      <div class="sg-label">07 — Navigation</div>
+      <div class="nav-demo" style="margin-bottom:56px;">
+        <nav class="nav">
+          <span class="wordmark">The Verge</span>
+          <div class="links">
+            <a href="#" class="active">Tech</a><a href="#">Reviews</a><a href="#">Science</a><a href="#">Gaming</a><a href="#">Entertainment</a>
+          </div>
+          <button class="btn btn-mint btn-mono" style="padding:8px 18px;">Subscribe</button>
+        </nav>
+        <nav class="nav nav-light-ctx">
+          <span class="wordmark" style="font-size:22px;">The Verge</span>
+          <div class="links">
+            <a href="#">Tech</a><a href="#">Reviews</a><a href="#">Science</a>
+          </div>
+          <button class="btn btn-slate" style="padding:8px 18px;font-size:14px;">Search</button>
+        </nav>
+      </div>
+
+      <!-- 8. Stories list -->
+      <div class="sg-label">08 — List rows · hottest stories</div>
+      <div class="list-demo" style="margin-bottom:56px;">
+        <div class="list-head"><span>Headline</span><span>Section</span><span style="text-align:right">Views</span></div>
+        <div class="list-row"><div class="headline">The Fold 7 is the first phone I can't fold</div><span class="sec">Reviews</span><span class="views">412K</span></div>
+        <div class="list-row"><div class="headline">Inside the congressional hearing on AI scraping</div><span class="sec">Policy</span><span class="views">388K</span></div>
+        <div class="list-row"><div class="headline">The best synthesizers of 2026, tested</div><span class="sec">Culture</span><span class="views">271K</span></div>
+        <div class="list-row"><div class="headline">Why every EV now ships with a subscription</div><span class="sec">Transportation</span><span class="views">233K</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINISHED PRODUCT ================= -->
+  <section id="product" class="product">
+    <div class="container">
+
+      <!-- Masthead -->
+      <div class="masthead">
+        <div class="whisper">Tuesday, October 27, 2026 · New York City</div>
+        <h1>The Verge</h1>
+        <div class="deck">Tech. Culture. Science. Delivered loud.</div>
+      </div>
+      <div class="masthead-rule"></div>
+
+      <!-- Hero editorial grid -->
+      <div class="hero-grid">
+        <div class="hero-main">
+          <a href="#" class="tile feature-tile">
+            <div class="inner">
+              <div class="kicker">The big story · AI</div>
+              <h2>THE MACHINE THAT ANSWERS BACK</h2>
+              <div class="deck">Inside the year the chatbot stopped being a demo and started being infrastructure — and what it broke on the way.</div>
+            </div>
+          </a>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <a href="#" class="tile tile-mint">
+              <div class="kicker">Reviews</div>
+              <h3>The Fold 7 is the first phone I can't fold</h3>
+              <p>Verdict: 8.5 — brilliant, until you need one hand.</p>
+            </a>
+            <a href="#" class="tile tile-yellow">
+              <div class="kicker" style="color:#8a6d00;">Culture</div>
+              <h3>Every synth on this list costs less than a GPU</h3>
+              <p>Twelve machines, one rave, zero regrets.</p>
+            </a>
+          </div>
+        </div>
+        <div class="hero-side">
+          <a href="#" class="tile side-tile uv">
+            <div class="kicker">Live</div>
+            <h3>Congress debates AI scraping — follow our live blog</h3>
+          </a>
+          <a href="#" class="tile side-tile">
+            <div class="kicker">Gaming</div>
+            <h3>Handheld PCs are eating the console market</h3>
+          </a>
+          <a href="#" class="tile side-tile">
+            <div class="kicker">Transportation</div>
+            <h3>The $25K EV finally has a launch date</h3>
+          </a>
+        </div>
+      </div>
+
+      <!-- StoryStream -->
+      <div class="sg-label">StoryStream</div>
+      <div class="stream">
+        <div class="stream-rail"></div>
+        <div class="stream-items">
+          <div class="stream-item">
+            <span class="stamp">10:42 AM EST</span>
+            <div class="stream-card">
+              <span class="pill-tag tag" style="display:inline-flex;margin-bottom:10px;">Developing</span>
+              <h3><a href="#">The hearing resumes: senators ask what "reasonable royalty" even means</a></h3>
+              <p>By Mia Chen · AI policy team, on the ground in D.C.</p>
+            </div>
+          </div>
+          <div class="stream-item">
+            <span class="stamp">09:15 AM EST</span>
+            <div class="stream-card slate">
+              <h3><a href="#">Apple's smart-home tablet slips to spring 2027</a></h3>
+              <p>Supply-chain sources point to display sourcing delays.</p>
+            </div>
+          </div>
+          <div class="stream-item">
+            <span class="stamp">08:03 AM EST</span>
+            <div class="stream-card">
+              <span class="pill-tag uv tag" style="display:inline-flex;margin-bottom:10px;">Review</span>
+              <h3><a href="#">Nothing's first projector is a statement piece that mostly works</a></h3>
+              <p>Verdict: 7.5 — gorgeous, occasionally dim.</p>
+            </div>
+          </div>
+          <div class="stream-item">
+            <span class="stamp">07:20 AM EST</span>
+            <div class="stream-card slate">
+              <h3><a href="#">SteamOS handhelds outsold Switch 2 in September, Analyst says</a></h3>
+              <p>The handheld wars are officially a three-way race.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter CTA band -->
+      <div class="cta-band" style="margin-bottom:64px;">
+        <h2>JOIN THE STREAM</h2>
+        <p>One email a day. The loudest stories in tech, filtered by humans, not by an algorithm that wants your rage.</p>
+        <div class="cta-form">
+          <input class="input" type="text" placeholder="your@email.com">
+          <button class="btn btn-mint btn-mono">Subscribe</button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-grid">
+          <div class="fbrand">
+            <div class="wordmark">The Verge</div>
+            <p>Tech. Culture. Science. Delivered loud since 2011.</p>
+          </div>
+          <div><h5>Sections</h5><ul><li><a href="#">Tech</a></li><li><a href="#">Reviews</a></li><li><a href="#">Science</a></li><li><a href="#">Gaming</a></li></ul></div>
+          <div><h5>More</h5><ul><li><a href="#">Podcasts</a></li><li><a href="#">Video</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Store</a></li></ul></div>
+          <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Jobs</a></li><li><a href="#">Ethics</a></li><li><a href="#">Contact</a></li></ul></div>
+        </div>
+        <div class="legal">
+          <span>© 2026 VOX MEDIA · ALL RIGHTS RESERVED</span>
+          <span>PRIVACY · TERMS · COOKIES</span>
+        </div>
+      </footer>
+
+    </div>
+  </section>
+</main>
+</body>
+</html>
+
+
+

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uber — Go anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#000000;
+  --on-primary:#ffffff;
+  --ink:#000000;
+  --body-tx:#5e5e5e;
+  --mute:#afafaf;
+  --hairline-mid:#4b4b4b;
+  --canvas:#ffffff;
+  --canvas-soft:#efefef;
+  --canvas-softer:#f3f3f3;
+  --pressed:#e2e2e2;
+  --link:#0000ee;
+  --black-elevated:#282828;
+  --r-none:0px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:999px; --r-pill-tab:36px;
+  --sh-1:rgba(0,0,0,.12) 0px 4px 16px 0px;
+  --sh-2:rgba(0,0,0,.16) 0px 4px 16px 0px;
+  --sh-3:rgba(0,0,0,.16) 0px 2px 8px 0px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'UberMoveText','Inter',system-ui,'Helvetica Neue',Arial,sans-serif;
+  font-weight:400;color:var(--ink);background:var(--canvas);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;line-height:1.25;border-radius:var(--r-pill);padding:12px 24px;transition:background-color .18s,color .18s}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--black-elevated)}
+.btn-secondary{background:var(--canvas);color:var(--ink);box-shadow:var(--sh-3)}
+.btn-secondary:hover{background:var(--canvas-soft);box-shadow:var(--sh-3)}
+.btn-subtle{background:var(--canvas-soft);color:var(--ink)}
+.btn-subtle:hover{background:var(--pressed)}
+.btn-large{font-size:18px;padding:16px 20px;border-radius:var(--r-xl);background:var(--primary);color:var(--on-primary)}
+
+/* ---------- Nav ---------- */
+.nav{background:var(--canvas);position:sticky;top:0;z-index:50}
+.nav-inner{max-width:1200px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;gap:28px}
+.logo{font-size:22px;font-weight:700;letter-spacing:-.4px}
+.nav-links{display:flex;gap:4px;margin:0 auto}
+.nav-link{font-size:16px;font-weight:500;padding:8px 16px;border-radius:var(--r-pill);transition:background-color .18s}
+.nav-link:hover{background:var(--canvas-soft)}
+.nav-link.active{background:var(--canvas-soft)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:var(--r-pill);display:grid;place-items:center;color:var(--ink);position:relative;transition:background-color .18s}
+.icon-btn:hover{background:var(--canvas-soft)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-size:9px;font-weight:500;display:grid;place-items:center;padding:0 3px}
+.nav-ghost{font-size:16px;font-weight:500;padding:12px 20px;border-radius:var(--r-pill)}
+.nav-ghost:hover{background:var(--canvas-soft)}
+
+/* ---------- Hero + request card ---------- */
+.hero{background:var(--canvas)}
+.hero-inner{max-width:1200px;margin:0 auto;padding:64px 32px 48px;display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:center}
+.hero h1{font-family:'UberMove','Inter',sans-serif;font-size:52px;font-weight:700;line-height:1.23;letter-spacing:0;margin-bottom:12px}
+.hero .lede{font-size:18px;font-weight:500;color:var(--body-tx);max-width:420px;margin-bottom:24px}
+.hero-stats{display:flex;gap:32px}
+.hero-stats span{font-size:14px;color:var(--body-tx)}
+.hero-stats b{display:block;font-size:24px;font-weight:700;color:var(--ink)}
+
+.request-card{
+  background:var(--canvas);border-radius:var(--r-xl);box-shadow:var(--sh-2);padding:16px;max-width:490px;
+}
+.tabs{display:flex;gap:8px;padding:8px;background:var(--canvas-soft);border-radius:var(--r-pill-tab)}
+.tab{font-size:16px;font-weight:500;padding:10px 20px;border-radius:var(--r-pill-tab);transition:background-color .18s}
+.tab.active{background:var(--canvas);box-shadow:var(--sh-3)}
+.form-rows{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.input-row{display:flex;align-items:center;gap:12px;background:var(--canvas-soft);border-radius:var(--r-md);padding:0 16px;height:56px}
+.input-row svg{flex:none}
+.input-row input{flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:16px;color:var(--ink);height:100%}
+.input-row input::placeholder{color:var(--mute)}
+.pin{width:10px;height:10px;border-radius:50%;border:3px solid var(--ink)}
+.sq{width:10px;height:10px;background:var(--ink)}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.date-chip{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;background:var(--canvas-soft);border-radius:var(--r-pill);padding:10px 16px}
+.request-cta{width:100%;margin-top:16px}
+
+/* ---------- Category chips ---------- */
+.cat-strip{padding:40px 0 8px;display:flex;gap:12px;overflow-x:auto}
+.cat-chip{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;background:var(--canvas-soft);border-radius:var(--r-pill);padding:8px 16px;white-space:nowrap;transition:background-color .18s}
+.cat-chip:hover{background:var(--pressed)}
+.cat-chip.active{background:var(--ink);color:#fff}
+.cat-count{margin-left:auto;align-self:center;font-size:14px;color:var(--mute);white-space:nowrap;padding-left:16px}
+
+/* ---------- Section heads ---------- */
+.section{padding:48px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:24px}
+.section-head h2{font-family:'UberMove','Inter',sans-serif;font-size:36px;font-weight:700;line-height:1.22}
+.section-head p{font-size:16px;color:var(--body-tx);margin-top:6px}
+.section-link{font-size:16px;font-weight:500;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+
+/* ---------- Grid cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--canvas);border:1px solid var(--pressed);border-radius:var(--r-xl);padding:20px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .18s}
+.card:hover{box-shadow:var(--sh-1)}
+.card-art{position:relative;height:110px;border-radius:var(--r-lg);overflow:hidden}
+.badges{position:absolute;top:10px;left:10px;display:flex;gap:6px}
+.badge{font-size:12px;font-weight:500;border-radius:var(--r-pill);padding:4px 10px;background:var(--canvas);color:var(--ink)}
+.badge-dark{background:var(--ink);color:#fff}
+.card h3{font-family:'UberMove','Inter',sans-serif;font-size:24px;font-weight:700;line-height:1.33}
+.card .desc{font-size:14px;color:var(--body-tx);line-height:1.45}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;border-top:1px solid var(--pressed);padding-top:12px}
+.price{font-size:18px;font-weight:700}
+.price small{font-size:12px;font-weight:400;color:var(--body-tx);display:block}
+.rating{font-size:14px;font-weight:500;color:var(--body-tx)}
+.rating b{color:var(--ink);font-weight:500}
+
+/* art variants — editorial illustration blocks (CSS-only) */
+.art-a{background:linear-gradient(135deg,#f6d9c5 0%,#efb89c 60%,#e39a74 100%)}
+.art-a::after{content:"";position:absolute;left:18%;bottom:18%;width:64%;height:34%;border-radius:16px 40px 8px 8px;background:var(--ink)}
+.art-b{background:linear-gradient(135deg,#d7e6dd 0%,#b4d3c2 100%)}
+.art-b::after{content:"";position:absolute;left:24%;bottom:16%;width:52%;height:30%;border-radius:14px 36px 6px 6px;background:var(--ink)}
+.art-c{background:linear-gradient(135deg,#dcd7ee 0%,#c0b8de 100%)}
+.art-c::after{content:"";position:absolute;left:20%;bottom:20%;width:60%;height:26%;border-radius:12px 30px 6px 6px;background:var(--ink)}
+.art-d{background:linear-gradient(135deg,#f3ead2 0%,#e4d2a1 100%)}
+.art-d::after{content:"";position:absolute;left:30%;bottom:16%;width:40%;height:44%;border-radius:50% 50% 6px 6px;background:var(--ink)}
+.art-e{background:linear-gradient(135deg,#e0e6ee 0%,#bcc8d9 100%)}
+.art-e::after{content:"";position:absolute;left:16%;bottom:14%;width:68%;height:24%;border-radius:8px;background:var(--ink)}
+.art-f{background:linear-gradient(135deg,#f2d8d8 0%,#e3b4b4 100%)}
+.art-f::after{content:"";position:absolute;left:26%;bottom:18%;width:48%;height:36%;border-radius:50% 50% 4px 4px;background:var(--ink)}
+.art-g{background:linear-gradient(135deg,#d9e4da 0%,#b8cec0 100%)}
+.art-g::after{content:"";position:absolute;left:22%;bottom:18%;width:56%;height:22%;border-radius:6px;background:var(--ink)}
+.art-h{background:linear-gradient(135deg,#efe3cf 0%,#dcc39a 100%)}
+.art-h::after{content:"";position:absolute;left:28%;bottom:16%;width:44%;height:40%;border-radius:10px 10px 4px 4px;background:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#">Uber</a>
+    <nav class="nav-links">
+      <a class="nav-link active" href="#">Ride</a>
+      <a class="nav-link" href="#">Eats</a>
+      <a class="nav-link" href="#">Freight</a>
+      <a class="nav-link" href="#">Business</a>
+      <a class="nav-link" href="#">About</a>
+    </nav>
+    <div class="nav-right">
+      <button class="nav-icon" aria-label="Trips">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5Z"/><path d="m3.3 7.8 8.7 5 8.7-5M12 22.1V12.8"/></svg>
+      </button>
+      <button class="nav-icon" aria-label="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot">2</span>
+      </button>
+      <a href="#" class="nav-ghost">Log in</a>
+      <a href="#book" class="btn btn-primary" style="padding:10px 20px">Sign up</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>Go anywhere with Uber</h1>
+      <p class="lede">Request a ride, hop in, and go. Choose from a ride that fits your plan — now or scheduled for later.</p>
+      <div class="hero-stats">
+        <span><b>10k+ cities</b>worldwide coverage</span>
+        <span><b>4.87 ★</b>average driver rating</span>
+        <span><b>~3 min</b>average pickup</span>
+      </div>
+    </div>
+    <div class="request-card" id="book">
+      <div class="tabs">
+        <button class="tab active">Ride</button>
+        <button class="tab">Reserve</button>
+      </div>
+      <div class="form-rows">
+        <label class="input-row"><span class="pin"></span><input type="text" placeholder="Pickup location"></label>
+        <label class="input-row"><span class="sq"></span><input type="text" value="SFO · San Francisco Intl Airport"></label>
+        <label class="input-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <input type="text" value="Today, 6:15 PM">
+        </label>
+      </div>
+      <div class="chip-row">
+        <span class="date-chip">◇ For me</span>
+        <span class="date-chip">＋ Add stop</span>
+      </div>
+      <button class="btn btn-primary request-cta btn-large">See prices</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORY STRIP ============ -->
+<div class="wrap">
+  <div class="cat-strip">
+    <button class="cat-chip active">All options</button>
+    <button class="cat-chip">Reserve</button>
+    <button class="cat-chip">Rentals</button>
+    <button class="cat-chip">Teens</button>
+    <button class="cat-chip">Group rides</button>
+    <button class="cat-chip">Moto</button>
+    <button class="cat-chip">Green</button>
+    <span class="cat-count">9 ride types in your area</span>
+  </div>
+</div>
+<main class="wrap">
+
+  <!-- ============ RIDE GRID ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>Choose a ride</h2>
+        <p>Fares shown from downtown San Francisco to SFO, today at 6:15 PM.</p>
+      </div>
+      <a class="section-link" href="#">Ride options &amp; pricing</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-art art-a"><div class="badges"><span class="badge badge-dark">Fastest</span></div></div>
+        <h3>UberX</h3>
+        <p class="desc">Affordable rides, all to yourself. Seats 4.</p>
+        <div class="card-meta"><span class="price">$34.50<small>3 min away</small></span><span class="rating"><b>4.89</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-b"></div>
+        <h3>Comfort</h3>
+        <p class="desc">Newer cars with extra legroom. Seats 4.</p>
+        <div class="card-meta"><span class="price">$42.80<small>5 min away</small></span><span class="rating"><b>4.92</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-c"><div class="badges"><span class="badge">Zero emissions</span></div></div>
+        <h3>Green</h3>
+        <p class="desc">Rides in electric vehicles. Seats 4.</p>
+        <div class="card-meta"><span class="price">$36.20<small>7 min away</small></span><span class="rating"><b>4.88</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-d"><div class="badges"><span class="badge badge-dark">Premium</span></div></div>
+        <h3>Black</h3>
+        <p class="desc">Professional drivers in luxury cars. Seats 4.</p>
+        <div class="card-meta"><span class="price">$68.90<small>6 min away</small></span><span class="rating"><b>4.95</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-e"></div>
+        <h3>XL</h3>
+        <p class="desc">Room for groups and luggage. Seats 6.</p>
+        <div class="card-meta"><span class="price">$51.40<small>8 min away</small></span><span class="rating"><b>4.85</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-f"><div class="badges"><span class="badge">Plan ahead</span></div></div>
+        <h3>Reserve</h3>
+        <p class="desc">Book 90 days ahead, on your schedule.</p>
+        <div class="card-meta"><span class="price">$45.00<small>guaranteed</small></span><span class="rating"><b>4.94</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-g"></div>
+        <h3>Share</h3>
+        <p class="desc">Share the ride, split the fare. Seats 2.</p>
+        <div class="card-meta"><span class="price">$22.75<small>per person</small></span><span class="rating"><b>4.81</b> ★</span></div>
+      </article>
+      <article class="card">
+        <div class="card-art art-h"></div>
+        <h3>Pet</h3>
+        <p class="desc">Bring your pet along at no extra fee.</p>
+        <div class="card-meta"><span class="price">$38.10<small>6 min away</small></span><span class="rating"><b>4.87</b> ★</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED RIDE DETAIL ============ -->
+  <section class="section" style="background:var(--ink);color:#fff;border-radius:var(--r-xl);padding:40px">
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center">
+      <div>
+        <div style="position:relative;height:300px;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(180deg,#2b2b2b 0%,#151515 100%)">
+          <span style="position:absolute;left:12%;bottom:24%;width:76%;height:26%;border-radius:20px 48px 10px 10px;background:linear-gradient(180deg,#e9e9e9,#c9c9c9)"></span>
+          <span style="position:absolute;left:20%;bottom:48%;width:44%;height:16%;border-radius:26px 40px 0 0;background:#3a3a3a"></span>
+          <span style="position:absolute;left:22%;bottom:14%;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle,#1a1a1a 38%,#3d3d3d 42%,#111 70%)"></span>
+          <span style="position:absolute;right:22%;bottom:14%;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle,#1a1a1a 38%,#3d3d3d 42%,#111 70%)"></span>
+          <span style="position:absolute;top:16px;left:16px;font-size:14px;font-weight:500;background:rgba(255,255,255,.14);border-radius:var(--r-pill);padding:6px 14px">Comfort · EV</span>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button style="flex:1;height:60px;border-radius:var(--r-lg);border:2px solid #fff;background:linear-gradient(180deg,#e9e9e9,#c9c9c9)"></button>
+          <button style="flex:1;height:60px;border-radius:var(--r-lg);border:1px solid var(--hairline-mid);background:linear-gradient(180deg,#3a3a3a,#242424)"></button>
+          <button style="flex:1;height:60px;border-radius:var(--r-lg);border:1px solid var(--hairline-mid);background:linear-gradient(135deg,#b4d3c2,#7ea892)"></button>
+          <button style="flex:1;height:60px;border-radius:var(--r-lg);border:1px dashed var(--hairline-mid);color:var(--mute);font-size:14px">+2</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <h2 style="font-family:'UberMove','Inter',sans-serif;font-size:32px;font-weight:700;line-height:1.25">Comfort Electric — this week's featured ride</h2>
+          <p style="color:var(--mute);margin-top:8px">Premium electric vehicles with dual-zone climate and extra legroom, at the Comfort price.</p>
+        </div>
+        <div style="display:flex;gap:24px">
+          <span style="font-size:14px;color:var(--mute)"><b style="display:block;font-size:24px;font-weight:700;color:#fff">4.93 ★</b>28k ratings</span>
+          <span style="font-size:14px;color:var(--mute)"><b style="display:block;font-size:24px;font-weight:700;color:#fff">$42.80</b>downtown → SFO</span>
+          <span style="font-size:14px;color:var(--mute)"><b style="display:block;font-size:24px;font-weight:700;color:#fff">38 mi</b>avg. EV range</span>
+        </div>
+        <div>
+          <p style="font-size:16px;font-weight:500;margin-bottom:8px">Ride preferences</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-secondary" style="padding:10px 16px;font-size:14px">Quiet mode</button>
+            <button class="btn btn-subtle" style="padding:10px 16px;font-size:14px">Temperature 72°</button>
+            <button class="btn btn-subtle" style="padding:10px 16px;font-size:14px">Help with bags</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;background:#fff;border-radius:var(--r-md);color:var(--ink)">
+            <button style="padding:10px 14px;font-size:16px;font-weight:500">−</button>
+            <span style="padding:0 8px;font-weight:500">1</span>
+            <button style="padding:10px 14px;font-size:16px;font-weight:500">+</button>
+          </div>
+          <span style="font-size:14px;color:var(--mute)">riders (fare split enabled at 2+)</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-secondary btn-large" style="border-radius:var(--r-xl)">Choose Comfort Electric</button>
+          <button class="btn" style="background:rgba(255,255,255,.12);color:#fff">View vehicle details</button>
+        </div>
+        <p style="border-top:1px solid var(--hairline-mid);padding-top:16px;color:var(--mute);font-size:14px">"Cleanest car I've ever been picked up in — and it was silent the whole way to SFO." — Jordan M., 2 weeks ago</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRIP SUMMARY (CART) ============ -->
+  <section class="section" style="padding-bottom:64px">
+    <div class="section-head"><div><h2>Your trip</h2><p>Review before you request.</p></div></div>
+    <div style="max-width:480px;margin-left:auto;background:var(--canvas);border-radius:var(--r-xl);box-shadow:var(--sh-2);padding:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 8px 16px">
+        <strong style="font-size:20px;font-weight:700">Trip summary</strong>
+        <span style="font-size:14px;color:var(--body-tx)">Comfort Electric</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;border-bottom:1px solid var(--pressed);padding-bottom:16px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:48px;height:48px;border-radius:var(--r-lg);background:linear-gradient(135deg,#b4d3c2,#7ea892);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:500">Downtown SF → SFO Airport</strong><br><span style="font-size:12px;color:var(--mute)">Today, 6:15 PM · 18.2 mi · ~34 min</span></div>
+          <strong style="font-size:14px;font-weight:500">$42.80</strong>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:48px;height:48px;border-radius:var(--r-lg);background:var(--canvas-soft);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:500">Airport pickup fee</strong><br><span style="font-size:12px;color:var(--mute)">SFO ground transport</span></div>
+          <strong style="font-size:14px;font-weight:500">$5.00</strong>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:48px;height:48px;border-radius:var(--r-lg);background:var(--canvas-soft);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:14px;font-weight:500">Upfront tip (20%)</strong><br><span style="font-size:12px;color:var(--mute)">100% goes to your driver</span></div>
+          <strong style="font-size:14px;font-weight:500">$8.56</strong>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:16px 0;border-bottom:1px solid var(--pressed);font-size:14px;color:var(--body-tx)">
+        <div style="display:flex;justify-content:space-between"><span>Ride credit (Uber One)</span><span style="color:var(--ink);font-weight:500">−$6.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Wait time (first 5 min free)</span><span style="color:var(--ink);font-weight:500">$0.00</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0 20px">
+        <span style="font-size:16px;font-weight:500">Total</span>
+        <span style="font-family:'UberMove','Inter',sans-serif;font-size:24px;font-weight:700">$50.36</span>
+      </div>
+      <button class="btn btn-primary" style="width:100%;font-size:18px;padding:16px">Request Comfort Electric</button>
+      <p style="font-size:12px;color:var(--mute);text-align:center;margin-top:12px">Cancel free within 5 minutes · charged after drop-off</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER (BLACK BAND) ============ -->
+<footer style="background:var(--primary);color:#fff">
+  <div class="wrap" style="padding:64px 32px 32px">
+    <p style="font-family:'UberMove','Inter',sans-serif;font-size:36px;font-weight:700;margin-bottom:40px">Uber</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:32px">
+      <div><p style="font-size:16px;font-weight:500;margin-bottom:16px">Company</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--mute)"><a href="#" style="color:#fff">About us</a><a href="#" style="color:#fff">Newsroom</a><a href="#" style="color:#fff">Careers</a><a href="#" style="color:#fff">Investors</a></div></div>
+      <div><p style="font-size:16px;font-weight:500;margin-bottom:16px">Products</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--mute)"><a href="#" style="color:#fff">Ride</a><a href="#" style="color:#fff">Eats</a><a href="#" style="color:#fff">Freight</a><a href="#" style="color:#fff">Uber One</a></div></div>
+      <div><p style="font-size:16px;font-weight:500;margin-bottom:16px">Ride</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--mute)"><a href="#" style="color:#fff">Reserve</a><a href="#" style="color:#fff">Airports</a><a href="#" style="color:#fff">Cities</a><a href="#" style="color:#fff">Gift cards</a></div></div>
+      <div><p style="font-size:16px;font-weight:500;margin-bottom:16px">Support</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--mute)"><a href="#" style="color:#fff">Help center</a><a href="#" style="color:#fff">Safety</a><a href="#" style="color:#fff">Accessibility</a><a href="#" style="color:#fff">Contact</a></div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin:40px 0 32px;flex-wrap:wrap">
+      <a href="#" class="app-pill">Download the Rider app</a>
+      <a href="#" class="app-pill" style="background:rgba(255,255,255,.14)">Download the Driver app</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--hairline-mid);padding-top:24px;font-size:12px;color:var(--mute)">
+      <span>© 2026 Uber Technologies, Inc. · Privacy · Terms · <a href="#" style="color:#fff;text-decoration:underline">Legal</a></span>
+      <div style="display:flex;gap:16px">
+        <a href="#" aria-label="X" style="color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.3 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.5l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.4 3.9H5.5L17.8 20Z"/></svg></a>
+        <a href="#" aria-label="Instagram" style="color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="LinkedIn" style="color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.2 1.4-2.2 2.9V21h-4V9Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.app-pill{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;font-size:16px;font-weight:500;border-radius:var(--r-pill);padding:12px 24px;border:1px solid var(--hairline-mid)}
+</style>
+
+</body>
+</html>

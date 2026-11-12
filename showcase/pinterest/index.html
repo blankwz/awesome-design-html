@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinterest — Design System Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --primary:#e60023;
+  --on-primary:#ffffff;
+  --primary-pressed:#cc001f;
+  --ink:#000000;
+  --ink-soft:#211922;
+  --body:#33332e;
+  --charcoal:#262622;
+  --mute:#62625b;
+  --ash:#91918c;
+  --stone:#c8c8c1;
+  --hairline:#dadad3;
+  --hairline-soft:#e5e5e0;
+  --on-secondary:#000000;
+  --secondary-bg:#e5e5e0;
+  --secondary-pressed:#c8c8c1;
+  --canvas:#ffffff;
+  --surface-soft:#fbfbf9;
+  --surface-card:#f6f6f3;
+  --surface-elevated:#ffffff;
+  --on-dark:#ffffff;
+  --on-dark-mute:rgba(255,255,255,0.7);
+  --surface-dark:#262622;
+  --focus-outer:#435ee5;
+  --focus-inner:#ffffff;
+  --accent-blue:#617bff;
+  --accent-purple:#7e238b;
+  --accent-purple-deep:#6845ab;
+  --success-deep:#103c25;
+  --success-pale:#c7f0da;
+  --error:#9e0a0a;
+  --error-deep:#cc001f;
+  /* type */
+  --font-display:'Manrope','Pin Sans',-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --font-body:'Inter','Pin Sans',-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  /* radius */
+  --r-sm:8px; --r-md:16px; --r-lg:32px; --r-full:9999px;
+  /* spacing */
+  --sp-xxs:4px; --sp-xs:6px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px;
+  --sp-xl:24px; --sp-xxl:32px; --sp-section:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--surface-soft);
+  color:var(--body);
+  font-size:16px;
+  line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a{text-decoration:none;color:inherit;}
+
+/* ============ banner ============ */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  background:var(--canvas);
+  border-bottom:1px solid var(--hairline);
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+}
+.sg-banner-left{display:flex;align-items:center;gap:14px;}
+.sg-folder{
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  font-size:11px;color:var(--mute);
+  background:var(--surface-card);
+  padding:4px 10px;border-radius:var(--r-full);
+}
+.sg-brand{
+  font-family:var(--font-display);
+  font-weight:800;font-size:20px;color:var(--primary);
+  letter-spacing:-0.4px;
+}
+.sg-desc{
+  font-size:13px;color:var(--mute);max-width:520px;text-align:right;
+}
+@media(max-width:900px){.sg-desc{display:none;}}
+
+main{max-width:1280px;margin:0 auto;padding:0 24px;}
+
+/* ============ section scaffolding ============ */
+.sg-section{padding:var(--sp-section) 0 0;}
+.sg-label{
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  font-size:11px;font-weight:600;color:var(--primary);
+  text-transform:uppercase;letter-spacing:1.2px;
+  margin-bottom:6px;
+}
+.sg-h2{
+  font-family:var(--font-display);
+  font-size:28px;font-weight:700;line-height:1.2;letter-spacing:-1.2px;
+  color:var(--ink);margin-bottom:32px;
+}
+.sg-block{margin-bottom:48px;}
+.sg-grid{display:grid;gap:16px;}
+
+/* ============ 1. color tokens ============ */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px;}
+.swatch{border-radius:var(--r-md);overflow:hidden;border:1px solid var(--hairline-soft);background:var(--canvas);}
+.swatch-chip{height:72px;}
+.swatch-meta{padding:10px 12px;}
+.swatch-name{font-size:12px;font-weight:700;color:var(--ink);}
+.swatch-hex{font-size:12px;color:var(--mute);font-family:ui-monospace,monospace;}
+
+/* ============ 2. typography ============ */
+.type-spec{background:var(--canvas);border-radius:var(--r-md);padding:32px;display:flex;flex-direction:column;gap:20px;}
+.type-row{display:flex;align-items:baseline;gap:24px;border-bottom:1px solid var(--hairline-soft);padding-bottom:16px;}
+.type-row:last-child{border-bottom:none;padding-bottom:0;}
+.type-token{
+  flex:0 0 210px;font-family:ui-monospace,monospace;font-size:11px;color:var(--mute);
+}
+.t-display-xl{font-family:var(--font-display);font-size:70px;font-weight:600;line-height:1.1;letter-spacing:-1.2px;color:var(--ink);}
+.t-display-lg{font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.15;letter-spacing:-0.8px;color:var(--ink);}
+.t-heading-xl{font-family:var(--font-display);font-size:28px;font-weight:700;line-height:1.2;letter-spacing:-1.2px;color:var(--ink);}
+.t-heading-lg{font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.25;color:var(--ink);}
+.t-body-md{font-size:16px;font-weight:400;line-height:1.4;color:var(--body);}
+.t-body-sm{font-size:14px;font-weight:400;line-height:1.4;color:var(--body);}
+.t-caption-md{font-size:12px;font-weight:500;line-height:1.5;color:var(--mute);}
+
+/* ============ 3. buttons ============ */
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;line-height:1;
+  border-radius:var(--r-md);
+  padding:0 14px;height:40px;
+  transition:background .15s ease,transform .1s ease;
+}
+.btn-sm{font-size:12px;height:32px;padding:0 12px;}
+.btn-primary{background:var(--primary);color:var(--on-primary);}
+.btn-primary:hover{background:var(--primary-pressed);}
+.btn-primary.pressed{background:var(--primary-pressed);}
+.btn-secondary{background:var(--secondary-bg);color:var(--on-secondary);}
+.btn-secondary:hover{background:var(--secondary-pressed);}
+.btn-secondary.pressed{background:var(--secondary-pressed);}
+.btn-tertiary{background:transparent;color:var(--ink);}
+.btn-tertiary:hover{background:var(--surface-card);}
+.btn-disabled{background:var(--surface-card);color:var(--ash);cursor:not-allowed;}
+.btn-pill{background:var(--canvas);color:var(--ink);border-radius:var(--r-full);height:36px;padding:0 16px;}
+.btn-icon{
+  width:40px;height:40px;padding:0;border-radius:var(--r-full);
+  background:var(--surface-card);color:var(--ink);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+
+/* ============ 4. inputs ============ */
+.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
+.field label{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.text-input{
+  width:100%;height:44px;background:var(--canvas);
+  border:1px solid var(--ash);border-radius:var(--r-md);
+  padding:0 15px;font-size:16px;color:var(--ink);font-family:inherit;
+}
+.text-input::placeholder{color:var(--ash);}
+.text-input:focus{
+  outline:2px solid var(--focus-outer);outline-offset:2px;
+  border:2px solid var(--ink);
+}
+.select-input{
+  width:100%;height:44px;background:var(--canvas);
+  border:1px solid var(--ash);border-radius:var(--r-md);
+  padding:0 15px;font-size:16px;color:var(--ink);font-family:inherit;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2333332e' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;
+}
+.search-bar{
+  width:100%;height:48px;background:var(--surface-card);
+  border:1px solid transparent;border-radius:var(--r-full);
+  padding:0 18px 0 44px;font-size:16px;color:var(--ink);font-family:inherit;
+}
+.search-wrap{position:relative;}
+.search-wrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--mute);}
+.search-bar::placeholder{color:var(--mute);}
+.switch{position:relative;display:inline-block;width:48px;height:28px;}
+.switch input{opacity:0;width:0;height:0;}
+.switch .track{
+  position:absolute;inset:0;background:var(--hairline);border-radius:var(--r-full);
+  transition:background .2s;cursor:pointer;
+}
+.switch .track::after{
+  content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;
+  background:var(--canvas);border-radius:var(--r-full);
+  transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+.switch input:checked + .track{background:var(--primary);}
+.switch input:checked + .track::after{transform:translateX(20px);}
+.checkbox{
+  width:20px;height:20px;border-radius:6px;border:2px solid var(--ash);
+  appearance:none;cursor:pointer;position:relative;vertical-align:middle;
+}
+.checkbox:checked{background:var(--primary);border-color:var(--primary);}
+.checkbox:checked::after{
+  content:"";position:absolute;left:5px;top:2px;width:5px;height:10px;
+  border:solid var(--canvas);border-width:0 2px 2px 0;transform:rotate(45deg);
+}
+.input-disabled{
+  width:100%;height:44px;background:var(--surface-card);
+  border:1px solid var(--hairline);border-radius:var(--r-md);
+  padding:0 15px;font-size:16px;color:var(--ash);
+}
+
+/* ============ 5. cards ============ */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;}
+.feature-card{background:var(--canvas);border-radius:var(--r-md);padding:32px;}
+.feature-card-soft{background:var(--surface-card);border-radius:var(--r-md);padding:32px;}
+.stat-num{font-family:var(--font-display);font-size:44px;font-weight:700;letter-spacing:-0.8px;color:var(--ink);line-height:1.15;}
+.stat-label{font-size:16px;font-weight:600;color:var(--body);margin-top:8px;}
+
+/* pin art (pure CSS) */
+.pin-art{position:relative;overflow:hidden;}
+.pin-art .tex{position:absolute;inset:0;}
+.pin-sq{aspect-ratio:1/1;border-radius:var(--r-md);}
+.pin-tall{aspect-ratio:2/3;border-radius:var(--r-md);}
+.tex-food{background:linear-gradient(160deg,#f7c948 0%,#e8712f 45%,#a63a1e 100%);}
+.tex-food::after{content:"";position:absolute;width:46%;aspect-ratio:1;border-radius:50%;background:rgba(255,244,214,.85);top:24%;left:27%;box-shadow:inset 0 -10px 24px rgba(166,58,30,.35);}
+.tex-fashion{background:linear-gradient(200deg,#e9d9c6 0%,#c69c7b 55%,#7c5641 100%);}
+.tex-fashion::after{content:"";position:absolute;width:34%;height:62%;border-radius:48% 48% 40% 40%;background:#efe4d5;top:20%;left:33%;}
+.tex-interior{background:linear-gradient(180deg,#dfe6df 0%,#b9c6b4 60%,#7d8f77 100%);}
+.tex-interior::after{content:"";position:absolute;bottom:0;left:12%;right:12%;height:44%;background:#5c6e56;border-radius:14px 14px 0 0;}
+.tex-travel{background:linear-gradient(180deg,#a8d8ea 0%,#dceef5 55%,#e8dcc0 56%,#c9b489 100%);}
+.tex-travel::after{content:"";position:absolute;bottom:30%;left:18%;width:64%;height:26%;background:#8a6f4d;clip-path:polygon(50% 0,100% 100%,0 100%);}
+.overlay-pill{
+  position:absolute;left:10px;bottom:10px;
+  background:var(--canvas);color:var(--ink);
+  font-size:12px;font-weight:700;line-height:1;
+  padding:6px 12px;border-radius:var(--r-full);
+}
+.pin-avatar{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:8px;}
+.pin-avatar .av{
+  width:32px;height:32px;border-radius:var(--r-full);background:var(--ink);
+  color:var(--on-dark);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.pin-avatar .nm{font-size:14px;font-weight:700;color:var(--ink);text-shadow:0 1px 4px rgba(255,255,255,.6);}
+
+/* ============ 6. badges / chips ============ */
+.chip-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:14px;font-weight:700;line-height:1;
+  background:var(--surface-card);color:var(--ink);
+  border-radius:var(--r-full);padding:8px 16px;
+}
+.chip-active{background:var(--ink);color:var(--on-dark);}
+.pill-badge{font-size:12px;font-weight:700;padding:6px 12px;border-radius:var(--r-full);display:inline-flex;align-items:center;line-height:1;}
+.pill-success{background:var(--success-pale);color:var(--success-deep);}
+.pill-error{background:#fdeaea;color:var(--error);}
+.pill-purple{background:#f3e6f5;color:var(--accent-purple);}
+.pill-blue{background:#e6ebfc;color:var(--accent-blue);}
+
+/* ============ 7. navigation ============ */
+.nav-demo{
+  background:var(--canvas);height:64px;border-radius:var(--r-md);
+  display:flex;align-items:center;gap:20px;padding:0 20px;
+}
+.nav-logo{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--primary);letter-spacing:-0.4px;}
+.nav-search{
+  flex:1;max-width:480px;margin:0 auto;height:48px;background:var(--surface-card);
+  border-radius:var(--r-full);display:flex;align-items:center;gap:10px;padding:0 18px;
+  color:var(--mute);font-size:16px;
+}
+.nav-links{display:flex;align-items:center;gap:18px;font-size:16px;font-weight:600;color:var(--ink);}
+.nav-links a:hover{color:var(--mute);}
+@media(max-width:900px){.nav-links span:nth-child(3){display:none;}.nav-search{display:none;}}
+
+/* ============ 8. table ============ */
+.sg-table{width:100%;border-collapse:collapse;background:var(--canvas);border-radius:var(--r-md);overflow:hidden;}
+.sg-table th{
+  text-align:left;font-size:14px;font-weight:700;color:var(--ink);
+  padding:14px 20px;border-bottom:1px solid var(--hairline);background:var(--canvas);
+}
+.sg-table td{
+  padding:14px 20px;font-size:14px;color:var(--body);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.sg-table tr:last-child td{border-bottom:none;}
+.trend-up{color:var(--success-deep);font-weight:700;font-size:14px;}
+
+/* ================================================================
+   PRODUCT SECTION
+================================================================ */
+.product{background:var(--canvas);border-radius:var(--r-lg);margin:var(--sp-section) 0 64px;overflow:hidden;border:1px solid var(--hairline-soft);}
+.p-nav{
+  height:72px;display:flex;align-items:center;gap:24px;
+  padding:0 40px;background:var(--canvas);
+}
+.p-nav .links{display:flex;gap:20px;font-size:16px;font-weight:600;color:var(--ink);}
+.p-hero{
+  background:var(--surface-soft);
+  padding:72px 40px 64px;text-align:center;
+}
+.p-hero h1{
+  font-family:var(--font-display);
+  font-size:70px;font-weight:600;line-height:1.1;letter-spacing:-1.2px;
+  color:var(--ink);max-width:900px;margin:0 auto;
+}
+.p-hero h1 em{font-style:normal;color:var(--primary);}
+.p-hero p{font-size:16px;color:var(--body);max-width:520px;margin:20px auto 28px;}
+.p-masonry{
+  column-count:4;column-gap:8px;padding:8px;
+  max-width:1280px;margin:0 auto;
+}
+@media(max-width:1024px){.p-masonry{column-count:3;}}
+@media(max-width:768px){.p-masonry{column-count:2;}}
+.p-masonry .pin-art{margin-bottom:8px;break-inside:avoid;}
+.p-strip{background:var(--canvas);padding:56px 40px;text-align:center;}
+.p-strip .logos{display:flex;justify-content:center;flex-wrap:wrap;gap:40px;align-items:center;color:var(--mute);font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.3px;}
+.p-features{padding:64px 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1280px;margin:0 auto;}
+@media(max-width:900px){.p-features{grid-template-columns:1fr;}}
+.p-feature{background:var(--surface-card);border-radius:var(--r-md);padding:32px;}
+.p-feature h3{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-1.2px;line-height:1.2;color:var(--ink);margin-bottom:10px;}
+.p-feature p{font-size:16px;color:var(--body);}
+.p-feature .ico{width:48px;height:48px;border-radius:var(--r-full);background:var(--ink);color:var(--on-dark);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.p-cta{
+  background:var(--surface-dark);color:var(--on-dark);
+  padding:48px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  flex-wrap:wrap;
+}
+.p-cta h2{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-1.2px;line-height:1.2;}
+.p-quote{padding:64px 40px;max-width:820px;margin:0 auto;text-align:center;}
+.p-quote blockquote{font-family:var(--font-display);font-size:28px;font-weight:600;line-height:1.25;letter-spacing:-0.4px;color:var(--ink);}
+.p-quote cite{display:block;margin-top:20px;font-size:14px;font-weight:700;color:var(--mute);font-style:normal;}
+.p-footer{
+  border-top:1px solid var(--hairline);
+  padding:32px 40px;background:var(--canvas);
+}
+.p-footer .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1280px;margin:0 auto;}
+@media(max-width:768px){.p-footer .cols{grid-template-columns:repeat(2,1fr);}}
+.p-footer h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:12px;}
+.p-footer ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.p-footer a{font-size:14px;color:var(--mute);}
+.p-footer a:hover{text-decoration:underline;}
+.p-footer .bottom{max-width:1280px;margin:32px auto 0;padding-top:16px;border-top:1px solid var(--hairline-soft);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mute);}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-banner-left">
+    <span class="sg-folder">pinterest</span>
+    <span class="sg-brand">Pinterest</span>
+  </div>
+  <span class="sg-desc">A photography-first discovery system organized around the Pinterest Red CTA, the masonry pin grid, and a soft warm-cream chrome.</span>
+</header>
+
+<main>
+  <!-- ==================== COMPONENTS ==================== -->
+  <section id="components" class="sg-section">
+    <div class="sg-label">Components</div>
+    <h2 class="sg-h2">Design system essentials</h2>
+
+    <!-- 1. Colors -->
+    <div class="sg-block">
+      <div class="sg-label">01 — Color tokens</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-chip" style="background:#e60023"></div><div class="swatch-meta"><div class="swatch-name">primary</div><div class="swatch-hex">#e60023</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#cc001f"></div><div class="swatch-meta"><div class="swatch-name">primary-pressed</div><div class="swatch-hex">#cc001f</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#000000"></div><div class="swatch-meta"><div class="swatch-name">ink</div><div class="swatch-hex">#000000</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#33332e"></div><div class="swatch-meta"><div class="swatch-name">body</div><div class="swatch-hex">#33332e</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#62625b"></div><div class="swatch-meta"><div class="swatch-name">mute</div><div class="swatch-hex">#62625b</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#91918c"></div><div class="swatch-meta"><div class="swatch-name">ash</div><div class="swatch-hex">#91918c</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#dadad3"></div><div class="swatch-meta"><div class="swatch-name">hairline</div><div class="swatch-hex">#dadad3</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#e5e5e0"></div><div class="swatch-meta"><div class="swatch-name">secondary-bg</div><div class="swatch-hex">#e5e5e0</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#f6f6f3"></div><div class="swatch-meta"><div class="swatch-name">surface-card</div><div class="swatch-hex">#f6f6f3</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#fbfbf9;border-bottom:1px solid #e5e5e0"></div><div class="swatch-meta"><div class="swatch-name">surface-soft</div><div class="swatch-hex">#fbfbf9</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#ffffff;border-bottom:1px solid #e5e5e0"></div><div class="swatch-meta"><div class="swatch-name">canvas</div><div class="swatch-hex">#ffffff</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#262622"></div><div class="swatch-meta"><div class="swatch-name">surface-dark</div><div class="swatch-hex">#262622</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#435ee5"></div><div class="swatch-meta"><div class="swatch-name">focus-outer</div><div class="swatch-hex">#435ee5</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#7e238b"></div><div class="swatch-meta"><div class="swatch-name">accent-purple</div><div class="swatch-hex">#7e238b</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#c7f0da"></div><div class="swatch-meta"><div class="swatch-name">success-pale</div><div class="swatch-hex">#c7f0da</div></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#9e0a0a"></div><div class="swatch-meta"><div class="swatch-name">error</div><div class="swatch-hex">#9e0a0a</div></div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="sg-block">
+      <div class="sg-label">02 — Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="type-token">display-xl · 70/600/-1.2</span><span class="t-display-xl">Create the life you love</span></div>
+        <div class="type-row"><span class="type-token">display-lg · 44/700/-0.8</span><span class="t-display-lg">Where your content thrives</span></div>
+        <div class="type-row"><span class="type-token">heading-xl · 28/700/-1.2</span><span class="t-heading-xl">Bring your favorite ideas to life</span></div>
+        <div class="type-row"><span class="type-token">heading-lg · 22/600</span><span class="t-heading-lg">Welcome to Pinterest</span></div>
+        <div class="type-row"><span class="type-token">body-md · 16/400</span><span class="t-body-md">Discover recipes, home ideas, style inspiration and other ideas to try — a visual discovery engine for every part of your life.</span></div>
+        <div class="type-row"><span class="type-token">body-sm · 14/400</span><span class="t-body-sm">Saved to “Mid-century living rooms” · 2h ago</span></div>
+        <div class="type-row"><span class="type-token">caption-md · 12/500</span><span class="t-caption-md">© 2026 Pinterest, Inc. · About · Blog · Businesses · Terms · Privacy</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="sg-block">
+      <div class="sg-label">03 — Buttons</div>
+      <div class="btn-row" style="margin-bottom:16px;">
+        <button class="btn btn-primary">Sign up</button>
+        <button class="btn btn-primary pressed">Pressed</button>
+        <button class="btn btn-secondary">Log in</button>
+        <button class="btn btn-tertiary">Learn more →</button>
+        <button class="btn btn-disabled">Disabled</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-sm btn-primary">Save</button>
+        <button class="btn btn-sm btn-secondary">Share</button>
+        <button class="btn btn-pill">Watch</button>
+        <button class="btn-icon" aria-label="More options">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+        </button>
+        <button class="btn-icon" aria-label="Send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="sg-block">
+      <div class="sg-label">04 — Inputs</div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Email</label>
+          <input class="text-input" type="text" placeholder="Add an email address">
+        </div>
+        <div class="field">
+          <label>Search bar</label>
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input class="search-bar" type="text" placeholder="Search for ideas, fashion...">
+          </div>
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <select class="select-input"><option>United States</option><option>United Kingdom</option><option>Germany</option><option>Japan</option></select>
+        </div>
+        <div class="field">
+          <label>Preferences</label>
+          <div style="display:flex;align-items:center;gap:16px;height:44px;">
+            <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+            <input type="checkbox" class="checkbox" checked>
+            <input type="checkbox" class="checkbox">
+          </div>
+        </div>
+        <div class="field">
+          <label>Disabled field</label>
+          <input class="input-disabled" type="text" value="username" disabled>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="sg-block">
+      <div class="sg-label">05 — Cards</div>
+      <div class="card-grid">
+        <div class="pin-art pin-tall tex-food">
+          <span class="overlay-pill">Cherry red</span>
+        </div>
+        <div class="feature-card">
+          <div class="stat-num">518M+</div>
+          <div class="stat-label">people come to Pinterest every month to discover new ideas</div>
+          <button class="btn btn-primary" style="margin-top:20px;">Join Pinterest for free</button>
+        </div>
+        <div class="pin-art pin-sq tex-interior" style="align-self:start;">
+          <div class="pin-avatar"><span class="av">M</span><span class="nm">Mara K.</span></div>
+        </div>
+        <div class="feature-card-soft">
+          <div class="stat-num">85%</div>
+          <div class="stat-label">of Pinners say Pinterest is where they go to plan purchases</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="sg-block">
+      <div class="sg-label">06 — Badges &amp; filter chips</div>
+      <div class="chip-row" style="margin-bottom:16px;">
+        <button class="chip">Beauty makeup</button>
+        <button class="chip chip-active">Lipstick</button>
+        <button class="chip">Editorial makeup</button>
+        <button class="chip">Glossy look</button>
+      </div>
+      <div class="chip-row">
+        <span class="pill-badge pill-success">● Recipe saved</span>
+        <span class="pill-badge pill-purple">Pinterest Predicts</span>
+        <span class="pill-badge pill-blue">Performance+</span>
+        <span class="pill-badge pill-error">Board full</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="sg-block">
+      <div class="sg-label">07 — Navigation</div>
+      <div class="nav-demo">
+        <span class="nav-logo">Pinterest</span>
+        <a class="nav-links" href="#" style="text-decoration:none;"><span>Explore</span></a>
+        <div class="nav-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          Search for ideas, fashion...
+        </div>
+        <div class="nav-links" style="margin-left:auto;">
+          <span>About</span><span>Businesses</span><span>Log in</span>
+          <button class="btn btn-primary" style="height:40px;">Sign up</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="sg-block">
+      <div class="sg-label">08 — Table</div>
+      <table class="sg-table">
+        <thead><tr><th>Board</th><th>Pins</th><th>Monthly viewers</th><th>Trend</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mid-century living rooms</strong></td><td>428 pins</td><td>1.2M</td><td class="trend-up">▲ 18%</td></tr>
+          <tr><td><strong>Weeknight dinners</strong></td><td>962 pins</td><td>980K</td><td class="trend-up">▲ 7%</td></tr>
+          <tr><td><strong>Capsule wardrobe</strong></td><td>214 pins</td><td>645K</td><td class="trend-up">▲ 12%</td></tr>
+          <tr><td><strong>Small garden ideas</strong></td><td>156 pins</td><td>390K</td><td class="trend-up">▲ 3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== PRODUCT ==================== -->
+  <section id="product" class="product">
+    <nav class="p-nav">
+      <span class="nav-logo">Pinterest</span>
+      <div class="links"><a href="#">Explore</a><a href="#">Watch</a><a href="#">Shop</a></div>
+      <div class="nav-search" style="margin:0 auto;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        Search for ideas, fashion...
+      </div>
+      <div class="links"><a href="#">About</a><a href="#">Log in</a></div>
+      <button class="btn btn-primary">Sign up</button>
+    </nav>
+
+    <div class="p-hero">
+      <h1>Get your next<br><em>weeknight dinner</em><br>from Pinterest</h1>
+      <p>Search for an idea. Save what you love. Make it yours. Food, style, home and travel — the ideas are already here.</p>
+      <button class="btn btn-primary" style="height:48px;padding:0 20px;font-size:16px;">Join Pinterest for free</button>
+    </div>
+
+    <div class="p-masonry">
+      <div class="pin-art pin-sq tex-food"></div>
+      <div class="pin-art pin-tall tex-fashion"></div>
+      <div class="pin-art pin-sq tex-travel"></div>
+      <div class="pin-art pin-tall tex-interior"></div>
+      <div class="pin-art pin-sq tex-fashion"><span class="overlay-pill">Preppy look</span></div>
+      <div class="pin-art pin-tall tex-food"><span class="overlay-pill">30-minute meals</span></div>
+      <div class="pin-art pin-sq tex-interior"><span class="overlay-pill">Earthy space inspo</span></div>
+      <div class="pin-art pin-tall tex-travel"></div>
+    </div>
+
+    <div class="p-strip">
+      <p class="t-caption-md" style="margin-bottom:20px;">TRUSTED BY MAKERS AND BRANDS</p>
+      <div class="logos">
+        <span>Etsy</span><span>Wayfair</span><span>Levi's</span><span>IKEA</span><span>Sephora</span><span>Allbirds</span>
+      </div>
+    </div>
+
+    <div class="p-features">
+      <div class="p-feature">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <h3>See it, save it</h3>
+        <p>One tap keeps any idea on a board of your own — recipes, outfits, rooms — organized the way you think.</p>
+      </div>
+      <div class="p-feature">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>Boards that build themselves</h3>
+        <p>Save a few Pins and Pinterest surfaces more of what you love — no algorithms to configure, no feeds to tune.</p>
+      </div>
+      <div class="p-feature">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8-6.1-3.4-6.1 3.4 1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg></div>
+        <h3>Shop what you spot</h3>
+        <p>Find the exact product in a photo and buy it without leaving the app. Millions of shoppable Pins, every day.</p>
+      </div>
+    </div>
+
+    <div class="p-cta">
+      <h2>Ready to make something?</h2>
+      <button class="btn btn-primary" style="height:48px;padding:0 22px;font-size:16px;">Get started</button>
+    </div>
+
+    <div class="p-quote">
+      <blockquote>“Pinterest is where my business found its customers. Three months in, boards were driving more traffic than search.”</blockquote>
+      <cite>Dani Okafor — founder, Kiln &amp; Co. ceramics</cite>
+    </div>
+
+    <footer class="p-footer">
+      <div class="cols">
+        <div><h4>Get the app</h4><ul><li><a href="#">iOS</a></li><li><a href="#">Android</a></li><li><a href="#">Windows</a></li></ul></div>
+        <div><h4>Quick Links</h4><ul><li><a href="#">Explore</a></li><li><a href="#">Shop</a></li><li><a href="#">Collections</a></li><li><a href="#">Shopping</a></li></ul></div>
+        <div><h4>Pinterest for</h4><ul><li><a href="#">Creators</a></li><li><a href="#">Businesses</a></li><li><a href="#">Advertisers</a></li></ul></div>
+        <div><h4>About</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Help Center</a></li></ul></div>
+      </div>
+      <div class="bottom">
+        <span class="nav-logo" style="font-size:16px;">Pinterest</span>
+        <span>© 2026 Pinterest, Inc.</span>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wise — design showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors */
+  --primary:#9fe870;
+  --on-primary:#0e0f0c;
+  --primary-active:#cdffad;
+  --primary-neutral:#c5edab;
+  --primary-pale:#e2f6d5;
+  --ink:#0e0f0c;
+  --ink-deep:#163300;
+  --body:#454745;
+  --mute:#868685;
+  --canvas:#ffffff;
+  --canvas-soft:#e8ebe6;
+  --positive:#2ead4b;
+  --positive-deep:#054d28;
+  --warning:#ffd11a;
+  --warning-deep:#b86700;
+  --warning-content:#4a3b1c;
+  --negative:#d03238;
+  --negative-deep:#a72027;
+  --negative-darkest:#a7000d;
+  --negative-bg:#320707;
+  --accent-orange:#ffc091;
+  --accent-cyan:#38c8ff;
+  /* radii */
+  --r-none:0px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:9999px; --r-full:9999px;
+  /* spacing */
+  --sp-xxs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:24px; --sp-2xl:32px; --sp-3xl:48px;
+  /* type */
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* ───────── banner ───────── */
+.sg-banner{position:sticky;top:0;z-index:50;background:var(--ink);color:var(--primary);
+  display:flex;justify-content:space-between;align-items:center;gap:var(--sp-2xl);padding:var(--sp-md) var(--sp-xl)}
+.sg-id{display:flex;align-items:center;gap:var(--sp-md)}
+.sg-folder{font-size:12px;font-weight:600;color:rgba(232,235,230,.7)}
+.sg-brand{font-size:20px;font-weight:900;letter-spacing:-.5px}
+.sg-flag{width:28px;height:28px;border-radius:var(--r-full);background:var(--primary);display:flex;align-items:center;justify-content:center;flex:none}
+.sg-flag svg{width:16px;height:16px;display:block}
+.sg-desc{font-size:14px;color:rgba(232,235,230,.75);max-width:600px;text-align:right;line-height:1.45}
+
+/* ───────── shared ───────── */
+.sg-label{font-size:14px;font-weight:600;letter-spacing:-.2px;
+  display:flex;align-items:center;gap:var(--sp-md)}
+.sg-label::after{content:"";flex:1;height:1px;background:var(--mute)}
+.section-head{font-size:40px;font-weight:900;line-height:34px;letter-spacing:-.5px;max-width:720px}
+#components{padding:var(--sp-3xl) var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-3xl);max-width:1240px;margin:0 auto}
+.comp-block{display:flex;flex-direction:column;gap:var(--sp-lg)}
+
+/* 1. colors */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:var(--sp-md)}
+.swatch{border-radius:var(--r-lg);overflow:hidden;background:var(--canvas);box-shadow:0 1px 2px rgba(14,15,12,.06)}
+.swatch .chip{height:60px}
+.swatch .meta{padding:var(--sp-sm) var(--sp-md)}
+.swatch .name{font-size:14px;font-weight:600;line-height:20px}
+.swatch .hex{font-size:12px;color:var(--mute)}
+
+/* 2. typography */
+.specimen{background:var(--canvas-soft);border-radius:var(--r-xl);padding:var(--sp-2xl);display:flex;flex-direction:column;gap:var(--sp-2xl)}
+.spec-row .tag{font-size:12px;font-weight:600;color:var(--mute);margin-bottom:var(--sp-xs)}
+.t-mega{font-size:96px;font-weight:900;line-height:.92;letter-spacing:-2px}
+.t-xl{font-size:64px;font-weight:900;line-height:1;letter-spacing:-1.5px}
+.t-md{font-size:40px;font-weight:900;line-height:1.1}
+.t-sm-inter{font-size:32px;font-weight:600;line-height:38.4px;letter-spacing:-.96px}
+.t-xs-inter{font-size:24px;font-weight:600;line-height:31.2px;letter-spacing:-.48px}
+.t-body{font-size:16px;font-weight:400;line-height:24px;color:var(--body);max-width:620px}
+.t-body strong{color:var(--ink);font-weight:600}
+.t-caption{font-size:12px;color:var(--mute)}
+
+/* 3. buttons */
+.btn-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-sm);cursor:pointer;
+  font-family:var(--font);font-size:16px;font-weight:600;line-height:24px;
+  padding:var(--sp-md) var(--sp-xl);border-radius:var(--r-xl);border:1px solid transparent;
+  transition:background .15s ease,transform .15s ease}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-secondary{background:var(--canvas-soft);color:var(--ink)}
+.btn-secondary:hover{background:#dde2da}
+.btn-tertiary{background:var(--canvas);color:var(--ink);border-color:var(--ink)}
+.btn-tertiary:hover{background:var(--canvas-soft)}
+.btn-primary.hover-look{background:var(--primary-active);box-shadow:0 6px 16px rgba(159,232,112,.5)}
+.btn-sm{font-size:14px;line-height:20px;padding:var(--sp-sm) var(--sp-lg)}
+.btn-icon{width:44px;height:44px;padding:0;border-radius:var(--r-full);background:var(--canvas);border:1px solid var(--ink);display:inline-flex;align-items:center;justify-content:center}
+.btn-icon:hover{background:var(--canvas-soft)}
+
+/* 4. inputs */
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:var(--sp-lg);max-width:760px}
+.field{display:flex;flex-direction:column;gap:var(--sp-xs)}
+.field label{font-size:14px;font-weight:600;line-height:20px}
+.input{font-family:var(--font);font-size:16px;font-weight:400;line-height:24px;color:var(--ink);
+  background:var(--canvas);border:1px solid var(--ink);border-radius:var(--r-md);padding:var(--sp-md) var(--sp-lg);
+  width:100%;outline:none;transition:box-shadow .15s ease,border-color .15s ease}
+.input::placeholder{color:var(--mute)}
+.input:focus,.input.focus-look{border-color:var(--ink);box-shadow:0 0 0 4px var(--primary-neutral)}
+.input:disabled,.input.disabled{background:var(--canvas-soft);border-color:var(--mute);color:var(--mute);cursor:not-allowed}
+.select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%230e0f0c' stroke-width='1.6' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.switch-row{display:flex;align-items:center;gap:var(--sp-lg);margin-top:var(--sp-lg);flex-wrap:wrap}
+.switch{position:relative;width:46px;height:26px;background:var(--mute);border-radius:var(--r-pill);cursor:pointer;transition:background .15s ease;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;background:var(--canvas);border-radius:var(--r-full);transition:transform .15s ease}
+.switch.on{background:var(--primary)}
+.switch.on::after{transform:translateX(20px)}
+.check{display:flex;align-items:center;gap:var(--sp-sm);font-size:14px;line-height:20px;color:var(--body)}
+.check .box{width:20px;height:20px;border:1px solid var(--ink);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;background:var(--canvas)}
+.check .box.on{background:var(--primary);border-color:var(--primary)}
+
+/* 5. cards */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-lg)}
+.card{border-radius:var(--r-xl);padding:var(--sp-xl)}
+.card-white{background:var(--canvas);box-shadow:0 1px 3px rgba(14,15,12,.08)}
+.card h3{font-size:24px;font-weight:600;line-height:31.2px;letter-spacing:-.48px;margin-bottom:var(--sp-xs)}
+.card p{font-size:16px;line-height:24px;color:var(--body)}
+.card-sage{background:var(--canvas-soft)}
+.card-green{background:var(--primary-pale)}
+.card-dark{background:var(--ink);color:var(--primary)}
+.card-dark h3{color:var(--primary)}
+.card-dark p{color:rgba(232,235,230,.8)}
+.stat-card{display:flex;flex-direction:column;gap:var(--sp-xs)}
+.stat-card .num{font-size:56px;font-weight:900;letter-spacing:-1.5px;line-height:1}
+.stat-card .lbl{font-size:14px;font-weight:600;color:var(--body)}
+
+/* 6. badges */
+.badge-row{display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:center}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;line-height:20px;
+  border-radius:var(--r-pill);padding:var(--sp-xs) var(--sp-md)}
+.badge-positive{background:var(--primary-pale);color:var(--positive-deep)}
+.badge-negative{background:var(--negative-bg);color:#fff}
+.badge-warning{background:var(--warning);color:var(--warning-content)}
+.badge-neutral{background:var(--canvas-soft);color:var(--ink)}
+.toast{background:var(--canvas);border-radius:var(--r-xl);padding:var(--sp-md) var(--sp-lg);
+  font-size:14px;line-height:20px;display:inline-flex;align-items:center;gap:var(--sp-md);box-shadow:0 8px 24px rgba(14,15,12,.14)}
+.toast .dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--positive)}
+
+/* 7. navigation */
+.nav-demo{background:var(--canvas);border-radius:var(--r-xl);box-shadow:0 1px 3px rgba(14,15,12,.1);overflow:hidden}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2xl);padding:var(--sp-md) var(--sp-xl)}
+.nav-links{display:flex;align-items:center;gap:var(--sp-xl)}
+.nav-links a{font-size:14px;font-weight:600;line-height:20px;color:var(--ink);padding:var(--sp-xs) 0;border-bottom:3px solid transparent}
+.nav-links a:hover{border-bottom-color:var(--primary)}
+.nav-links a.active{border-bottom-color:var(--ink)}
+.nav-actions{display:flex;align-items:center;gap:var(--sp-md)}
+
+/* 8. table */
+.table-wrap{background:var(--canvas);border-radius:var(--r-xl);overflow:hidden;box-shadow:0 1px 3px rgba(14,15,12,.08)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--canvas-soft);text-align:left;font-size:12px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)}
+tbody td{font-size:14px;line-height:20px;color:var(--ink);padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--canvas-soft)}
+tbody tr:last-child td{border-bottom:none}
+.td-strong{font-weight:600}
+.td-mute{color:var(--body)}
+
+/* ═════════ PRODUCT ═════════ */
+.p-hero{background:var(--canvas-soft);padding:var(--sp-3xl) var(--sp-xl);border-radius:0 0 var(--r-xl) var(--r-xl)}
+.p-hero .inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;gap:var(--sp-3xl);align-items:center}
+.p-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;line-height:20px;
+  background:var(--primary-pale);color:var(--positive-deep);border-radius:var(--r-pill);padding:var(--sp-xs) var(--sp-md);margin-bottom:var(--sp-lg)}
+.p-hero h1{font-size:80px;font-weight:900;line-height:.94;letter-spacing:-2.5px}
+.p-hero h1 .accent{position:relative;display:inline-block}
+.p-hero h1 .accent::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.02em;height:.28em;background:var(--primary);border-radius:var(--r-pill);z-index:-1}
+.p-hero .sub{margin-top:var(--sp-lg);font-size:20px;font-weight:400;line-height:30px;color:var(--body);max-width:480px}
+.p-hero .cta-row{margin-top:var(--sp-xl);display:flex;gap:var(--sp-md);flex-wrap:wrap}
+.converter{background:var(--canvas);border:1px solid var(--ink);border-radius:var(--r-xl);padding:var(--sp-xl);box-shadow:8px 8px 0 var(--primary)}
+.converter .cv-title{font-size:16px;font-weight:600;margin-bottom:var(--sp-lg);display:flex;justify-content:space-between;align-items:center}
+.converter .cv-title .live{font-size:12px;font-weight:600;color:var(--positive-deep);background:var(--primary-pale);border-radius:var(--r-pill);padding:2px 10px}
+.cv-row{display:flex;gap:var(--sp-md)}
+.cv-amt{flex:1;border:1px solid var(--ink);border-radius:var(--r-md);padding:var(--sp-sm) var(--sp-md)}
+.cv-amt .lbl{font-size:12px;font-weight:600;color:var(--mute)}
+.cv-amt .val{font-size:24px;font-weight:600;letter-spacing:-.48px}
+.cv-cur{width:130px;border:1px solid var(--ink);border-radius:var(--r-md);padding:var(--sp-sm) var(--sp-md);display:flex;align-items:center;gap:var(--sp-sm);cursor:pointer}
+.cv-cur:hover{background:var(--canvas-soft)}
+.cv-cur .flag{width:28px;height:28px;border-radius:var(--r-full);flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+.cv-cur .code{font-size:14px;font-weight:600}
+.cv-swap{display:flex;justify-content:center;margin:var(--sp-sm) 0}
+.cv-swap button{width:40px;height:40px;border-radius:var(--r-full);background:var(--canvas-soft);border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cv-foot{margin-top:var(--sp-lg);font-size:12px;color:var(--mute);line-height:16px}
+.cv-foot strong{color:var(--positive-deep)}
+
+.p-logos{padding:var(--sp-2xl) var(--sp-xl);max-width:1240px;margin:0 auto}
+.p-logos .cap{text-align:center;font-size:14px;font-weight:600;color:var(--mute);margin-bottom:var(--sp-lg)}
+.p-logos .row{display:flex;justify-content:center;gap:var(--sp-2xl);flex-wrap:wrap;align-items:center}
+.p-logos .logo{font-size:18px;font-weight:900;letter-spacing:-.4px;color:var(--mute)}
+
+.p-features{padding:var(--sp-3xl) var(--sp-xl);max-width:1240px;margin:0 auto}
+.p-features h2{font-size:40px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:var(--sp-lg);max-width:680px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg)}
+.feat{border-radius:var(--r-xl);padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-md)}
+.feat .icon{width:48px;height:48px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;flex:none}
+.feat h3{font-size:24px;font-weight:600;line-height:31.2px;letter-spacing:-.48px}
+.feat p{font-size:16px;line-height:24px;color:var(--body)}
+.feat .more{margin-top:auto;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+.p-dark{background:var(--ink);border-radius:var(--r-xl);padding:var(--sp-3xl);max-width:1240px;margin:0 auto var(--sp-3xl);color:var(--primary)}
+.p-dark .inner{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3xl);flex-wrap:wrap}
+.p-dark h2{font-size:47px;font-weight:400;line-height:70.5px;letter-spacing:-.108px;max-width:560px;color:#fff}
+.p-dark h2 b{font-weight:900;color:var(--primary)}
+.p-dark .note{font-size:14px;line-height:20px;color:rgba(232,235,230,.7);margin-top:var(--sp-sm)}
+
+.p-pricing{padding:var(--sp-3xl) var(--sp-xl);max-width:1240px;margin:0 auto}
+.p-pricing .center{margin-bottom:var(--sp-2xl)}
+.p-pricing h2{font-size:40px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:var(--sp-xs)}
+.p-pricing .lede{font-size:20px;line-height:30px;color:var(--body);max-width:560px}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-lg)}
+.tier{border-radius:var(--r-xl);padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-sm)}
+.tier-sage{background:var(--canvas-soft)}
+.tier-white{background:var(--canvas);box-shadow:0 1px 3px rgba(14,15,12,.08)}
+.tier .name{font-size:14px;font-weight:600;color:var(--body)}
+.tier .price{font-size:40px;font-weight:900;letter-spacing:-1px;line-height:1.1}
+.tier .price span{font-size:14px;font-weight:400;color:var(--body);letter-spacing:0}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:var(--sp-sm);margin:var(--sp-sm) 0 var(--sp-lg)}
+.tier li{display:flex;gap:var(--sp-sm);font-size:14px;line-height:20px;color:var(--body)}
+.tier li svg{flex:none;margin-top:3px}
+.tier.featured{background:var(--ink);color:var(--primary)}
+.tier.featured .price{color:#fff}
+.tier.featured .price span{color:rgba(232,235,230,.6)}
+.tier.featured .name{color:var(--primary)}
+.tier.featured li{color:rgba(232,235,230,.8)}
+.tier .tier-btn{margin-top:auto}
+
+.p-quote{padding:var(--sp-3xl) var(--sp-xl);max-width:1240px;margin:0 auto}
+.p-quote .card{background:var(--primary-pale);display:grid;grid-template-columns:1fr auto;gap:var(--sp-2xl);align-items:center}
+.p-quote blockquote{font-size:32px;font-weight:600;line-height:38.4px;letter-spacing:-.96px}
+.p-quote .who{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-lg)}
+.p-quote .avatar{width:52px;height:52px;border-radius:var(--r-full);background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+.p-quote .n{font-size:14px;font-weight:600;line-height:20px}
+.p-quote .r{font-size:14px;line-height:20px;color:var(--body)}
+
+.p-cta{background:var(--canvas-soft);padding:var(--sp-3xl) var(--sp-xl);border-radius:var(--r-xl) var(--r-xl) 0 0}
+.p-cta .inner{max-width:1240px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-lg)}
+.p-cta h2{font-size:64px;font-weight:900;line-height:1;letter-spacing:-2px;max-width:760px}
+.p-cta p{font-size:20px;line-height:30px;color:var(--body);max-width:520px}
+.p-cta .btn-row{justify-content:center}
+
+.p-footer{background:var(--ink);color:var(--canvas-soft);padding:var(--sp-3xl) var(--sp-xl)}
+.p-footer .inner{max-width:1240px;margin:0 auto}
+.f-cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--sp-2xl);padding-bottom:var(--sp-2xl)}
+.f-col .eyebrow{font-size:14px;font-weight:600;margin-bottom:var(--sp-md);color:#fff}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:var(--sp-sm)}
+.f-col a{font-size:14px;line-height:20px;color:rgba(232,235,230,.7)}
+.f-col a:hover{color:var(--primary)}
+.f-about{font-size:14px;line-height:20px;color:rgba(232,235,230,.7);max-width:280px;margin-top:var(--sp-md)}
+.f-bottom{border-top:1px solid rgba(232,235,230,.2);padding-top:var(--sp-lg);display:flex;justify-content:space-between;gap:var(--sp-lg);flex-wrap:wrap;font-size:12px;color:rgba(232,235,230,.5)}
+
+@media (max-width:900px){
+  .sg-banner{flex-direction:column;align-items:flex-start;gap:var(--sp-sm)}
+  .sg-desc{text-align:left}
+  .p-hero h1{font-size:48px;letter-spacing:-1.5px}
+  .p-hero .inner,.p-quote .card{grid-template-columns:1fr}
+  .p-cta h2{font-size:36px;letter-spacing:-1px}
+  .feat-grid,.price-grid,.card-grid,.form-grid{grid-template-columns:1fr}
+  .f-cols{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <div class="sg-flag" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M9.8 1 4 9h3.4L6.2 15 12 7H8.6L9.8 1Z" fill="#0e0f0c"/></svg></div>
+    <span class="sg-folder">wise</span>
+    <span class="sg-brand">Wise-Inspired</span>
+  </div>
+  <p class="sg-desc">A global money-transfer brand — weight-900 display sans, vivid lime-green CTA pills, sage-tinted canvas and 24-pixel-rounded everything. A fintech that reads like a calm magazine.</p>
+</header>
+
+<main>
+
+<!-- ═══════════════ COMPONENTS ═══════════════ -->
+<section id="components">
+
+  <h2 class="section-head">Friendly fintech, heavy type, one green.</h2>
+
+  <!-- 1. Color tokens -->
+  <div class="comp-block" style="margin-top:var(--sp-lg)">
+    <div class="sg-label">01 · Color tokens</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#9fe870"></div><div class="meta"><div class="name">Wise Green</div><div class="hex">#9fe870</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#e2f6d5"></div><div class="meta"><div class="name">Green Pale</div><div class="hex">#e2f6d5</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#0e0f0c"></div><div class="meta"><div class="name">Ink</div><div class="hex">#0e0f0c</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#454745"></div><div class="meta"><div class="name">Body</div><div class="hex">#454745</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#868685"></div><div class="meta"><div class="name">Mute</div><div class="hex">#868685</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#e8ebe6"></div><div class="meta"><div class="name">Sage Canvas</div><div class="hex">#e8ebe6</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#2ead4b"></div><div class="meta"><div class="name">Positive</div><div class="hex">#2ead4b</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#ffd11a"></div><div class="meta"><div class="name">Warning</div><div class="hex">#ffd11a</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#d03238"></div><div class="meta"><div class="name">Negative</div><div class="hex">#d03238</div></div></div>
+    </div>
+  </div>
+
+  <!-- 2. Typography -->
+  <div class="comp-block">
+    <div class="sg-label">02 · Typography specimen — weight 900 for the shout, 600 for everything else</div>
+    <div class="specimen">
+      <div class="spec-row">
+        <div class="tag">display-mega · 126px · 900 (shown at 96)</div>
+        <div class="t-mega">Money without borders</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">display-xl · 64px · 900</div>
+        <div class="t-xl">Hero headline scale</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">display-md · 40px · 900 &nbsp;/&nbsp; display-sm · 32px · 600 Inter</div>
+        <div class="t-md" style="display:block">Section headline in black weight</div>
+        <div class="t-sm-inter" style="margin-top:var(--sp-xs)">Inter sub-display takes over below hero scale</div>
+      </div>
+      <div class="spec-row">
+        <div class="tag">body-md · 16px · 400 &nbsp;/&nbsp; caption · 12px</div>
+        <p class="t-body">Inter carries all body and form roles. <strong>Wise Sans 900 is reserved for the brand moment</strong> — the contrast between chunky display and neutral body is the typographic story.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Buttons -->
+  <div class="comp-block">
+    <div class="sg-label">03 · Buttons — 24px pill-rectangles, lime green conversion</div>
+    <div style="background:var(--canvas-soft);border-radius:var(--r-xl);padding:var(--sp-2xl);display:flex;flex-direction:column;gap:var(--sp-2xl)">
+      <div class="btn-row">
+        <button class="btn btn-primary">Send money</button>
+        <button class="btn btn-secondary">See pricing</button>
+        <button class="btn btn-tertiary">Open a balance</button>
+        <button class="btn btn-primary hover-look">Hover state</button>
+        <button class="btn btn-icon" aria-label="Help">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 6a2 2 0 1 1 2.7 1.9c-.5.2-.7.6-.7 1.1v.5" stroke="#0e0f0c" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="12" r="1" fill="#0e0f0c"/><circle cx="8" cy="8" r="6.5" stroke="#0e0f0c" stroke-width="1.6"/></svg>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-secondary btn-sm">Secondary small</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Inputs -->
+  <div class="comp-block">
+    <div class="sg-label">04 · Inputs — ink border, green focus glow, 12px corners</div>
+    <div style="background:var(--canvas-soft);border-radius:var(--r-xl);padding:var(--sp-2xl)">
+      <div class="form-grid">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input class="input" id="email" type="text" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="emailf">Focused state</label>
+          <input class="input focus-look" id="emailf" type="text" value="you@example.com">
+        </div>
+        <div class="field">
+          <label for="acct">Recipient account</label>
+          <select class="input select" id="acct">
+            <option>EUR · IBAN</option>
+            <option>USD · ACH routing</option>
+            <option>GBP · Sort code</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="refx">Disabled</label>
+          <input class="input disabled" id="refx" type="text" value="Reference locked by sender" disabled>
+        </div>
+      </div>
+      <div class="switch-row">
+        <div class="switch on" role="switch" aria-checked="true"></div>
+        <span class="check">Get rate alerts</span>
+        <div class="check" style="margin-left:var(--sp-2xl)"><span class="box on"><svg width="10" height="8" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#0e0f0c" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span> Save as recipient</div>
+        <div class="check" style="margin-left:var(--sp-lg)"><span class="box"></span> Pay fees from balance</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Cards -->
+  <div class="comp-block">
+    <div class="sg-label">05 · Cards — white, sage, soft-green and dark variants, all 24px</div>
+    <div style="display:flex;flex-direction:column;gap:var(--sp-lg)">
+      <div class="card-grid">
+        <article class="card card-sage">
+          <h3>Hold 50+ currencies</h3>
+          <p>Keep balances in every currency you actually use, and convert when the rate is good.</p>
+        </article>
+        <article class="card card-white stat-card">
+          <div class="lbl">Customers' money held safely</div>
+          <div class="num">£14.2B</div>
+          <p>Surface contrast between white cards and the sage canvas is the brand's only elevation cue.</p>
+        </article>
+      </div>
+      <div class="card-grid">
+        <article class="card card-green">
+          <h3>Get the real rate</h3>
+          <p>The one you see on Google — no weekend markup, no hidden spread baked into the exchange.</p>
+        </article>
+        <article class="card card-dark">
+          <h3>Wise-Inspired card</h3>
+          <p>Spend anywhere at the real exchange rate. Featured promo card carries green text on near-black ink.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Badges -->
+  <div class="comp-block">
+    <div class="sg-label">06 · Status pills — full semantic palette, never green-as-success</div>
+    <div style="display:flex;flex-direction:column;gap:var(--sp-2xl)">
+      <div class="badge-row">
+        <span class="badge badge-positive">Transfer complete</span>
+        <span class="badge badge-warning">Rate alert</span>
+        <span class="badge badge-negative">Verification needed</span>
+        <span class="badge badge-neutral">Draft</span>
+      </div>
+      <span class="toast"><span class="dot"></span>€2,500 sent to Francesca — arriving today.</span>
+    </div>
+  </div>
+
+  <!-- 7. Navigation -->
+  <div class="comp-block">
+    <div class="sg-label">07 · Navigation — white bar, green hover underline</div>
+    <nav class="nav-demo">
+      <div class="nav-inner">
+        <div class="sg-id">
+          <div class="sg-flag" style="background:var(--primary)"><svg viewBox="0 0 16 16"><path d="M9.8 1 4 9h3.4L6.2 15 12 7H8.6L9.8 1Z" fill="#0e0f0c"/></svg></div>
+          <span style="font-weight:900;letter-spacing:-.4px;font-size:18px">wise</span>
+        </div>
+        <div class="nav-links">
+          <a href="#" class="active">Personal</a>
+          <a href="#">Business</a>
+          <a href="#">Rates</a>
+          <a href="#">Help</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-secondary btn-sm">Log in</button>
+          <button class="btn btn-primary btn-sm">Register</button>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- 8. Table -->
+  <div class="comp-block">
+    <div class="sg-label">08 · Activity table — sage header band, soft row dividers</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Transfer</th><th>Amount</th><th>Fee</th><th>Rate</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="td-strong">To Francesca Rossi · EUR</td><td>€2,500.00</td><td class="td-mute">€4.12</td><td class="td-mute">1.0842</td><td><span class="badge badge-positive">Arriving today</span></td></tr>
+          <tr><td class="td-strong">To Kenji Tanaka · JPY</td><td>¥180,000</td><td class="td-mute">¥1,120</td><td class="td-mute">162.41</td><td><span class="badge badge-warning">Rate locked</span></td></tr>
+          <tr><td class="td-strong">To Priya Sharma · INR</td><td>₹85,000</td><td class="td-mute">₹620</td><td class="td-mute">89.33</td><td><span class="badge badge-neutral">Scheduled</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════ FINISHED PRODUCT ═══════════════ -->
+<section id="product">
+
+  <!-- hero -->
+  <div class="p-hero">
+    <div class="inner">
+      <div>
+        <span class="p-eyebrow">★ Trusted by 12.8M customers</span>
+        <h1>Send money <span class="accent">anywhere</span>, at the real rate.</h1>
+        <p class="sub">One account for 50+ currencies. Transfers that land in seconds, priced at the mid-market rate — the one you'd find on Google.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary">Send money</button>
+          <button class="btn btn-tertiary">Open a balance</button>
+        </div>
+      </div>
+      <div class="converter">
+        <div class="cv-title">You send <span class="live">1.2M transfers this week</span></div>
+        <div class="cv-row">
+          <div class="cv-amt"><div class="lbl">Amount</div><div class="val">1,000.00</div></div>
+          <div class="cv-cur"><span class="flag" style="background:#3b6fe0">$</span><span class="code">USD</span></div>
+        </div>
+        <div class="cv-swap"><button aria-label="Swap currencies">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 2v10M4 12 1.5 9.5M10 12V2M10 2l2.5 2.5" stroke="#0e0f0c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button></div>
+        <div class="cv-row">
+          <div class="cv-amt"><div class="lbl">Recipient gets</div><div class="val">921.48</div></div>
+          <div class="cv-cur"><span class="flag" style="background:#009246">€</span><span class="code">EUR</span></div>
+        </div>
+        <div class="cv-foot">Mid-market rate: <strong>1 USD = 0.9215 EUR</strong> · Fee: 0.43% · Arrives in <strong>18 seconds</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- logos -->
+  <div class="p-logos">
+    <div class="cap">As reported by</div>
+    <div class="row">
+      <span class="logo">The Times</span>
+      <span class="logo">Monocle</span>
+      <span class="logo">FT</span>
+      <span class="logo">WIRED</span>
+      <span class="logo">Bloomberg</span>
+    </div>
+  </div>
+
+  <!-- features -->
+  <div class="p-features">
+    <h2>Everything a bank should have been.</h2>
+    <div class="feat-grid">
+      <article class="feat card-sage" style="background:var(--canvas-soft)">
+        <div class="icon" style="background:var(--primary)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2 2.5 5.2v4.6c0 4.3 3 7.4 7.5 8.7 4.5-1.3 7.5-4.4 7.5-8.7V5.2L10 2Z" stroke="#0e0f0c" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+        <h3>Safeguarded, always</h3>
+        <p>Your money is held in established financial institutions — never lent out, never gambled.</p>
+        <span class="more">How we protect money →</span>
+      </article>
+      <article class="feat" style="background:var(--primary-pale)">
+        <div class="icon" style="background:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="#0e0f0c" stroke-width="1.7"/><path d="M2.5 10h15M10 2.5c-2.4 2.2-3.6 4.7-3.6 7.5S7.6 15.3 10 17.5c2.4-2.2 3.6-4.7 3.6-7.5S12.4 4.7 10 2.5Z" stroke="#0e0f0c" stroke-width="1.7"/></svg></div>
+        <h3>50+ currencies, one account</h3>
+        <p>Get local account details in 10 currencies and get paid like a local, wherever you are.</p>
+        <span class="more">Get account details →</span>
+      </article>
+      <article class="feat" style="background:#fff;box-shadow:0 1px 3px rgba(14,15,12,.08)">
+        <div class="icon" style="background:var(--accent-cyan)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2.5 14.5 7 9.5l3.5 3.5 7-8" stroke="#0e0f0c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 5h4.5V9.5" stroke="#0e0f0c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Price alerts that pay off</h3>
+        <p>Pick your target rate and we'll ping you the moment the market hits it.</p>
+        <span class="more">Set an alert →</span>
+      </article>
+    </div>
+  </div>
+
+  <!-- dark promo band -->
+  <div class="p-dark">
+    <div class="inner">
+      <div>
+        <h2>The card that spends like a <b>local</b>, everywhere.</h2>
+        <p class="note">No foreign transaction fees · Automatic currency conversion · Accepted in 170+ countries</p>
+      </div>
+      <button class="btn btn-primary" style="flex:none">Order the card</button>
+    </div>
+  </div>
+
+  <!-- pricing -->
+  <div class="p-pricing">
+    <div class="center">
+      <h2>Transparent pricing, always.</h2>
+      <p class="lede">One small fee, shown before you confirm. No membership gimmicks, no surprise spreads.</p>
+    </div>
+    <div class="price-grid">
+      <div class="tier tier-sage">
+        <div class="name">Send under £1,000</div>
+        <div class="price">0.59% <span>/ transfer</span></div>
+        <ul>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#054d28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Mid-market rate, no markup</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#054d28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Fee shown upfront</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#054d28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Most routes arrive in seconds</li>
+        </ul>
+        <button class="btn btn-secondary tier-btn">Calculate a transfer</button>
+      </div>
+      <div class="tier featured">
+        <div class="name">Send more · Best value</div>
+        <div class="price">0.33% <span>/ transfer</span></div>
+        <ul>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#9fe870" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Sliding fee drops as you send more</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#9fe870" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Rate-lock for 48 hours</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#9fe870" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Priority support</li>
+        </ul>
+        <button class="btn btn-primary tier-btn">Send money</button>
+      </div>
+      <div class="tier tier-white">
+        <div class="name">Business</div>
+        <div class="price">0.57% <span>/ transfer</span></div>
+        <ul>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#054d28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Batch payouts &amp; API access</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#054d28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Team cards &amp; approvals</li>
+          <li><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#054d28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Accounting integrations</li>
+        </ul>
+        <button class="btn btn-tertiary tier-btn">Open a business account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- quote -->
+  <div class="p-quote">
+    <div class="card">
+      <div>
+        <blockquote>&ldquo;I moved my salary to Wise-Inspired in an afternoon. My landlord in Lisbon gets paid in seconds, and I finally know exactly what the transfer costs.&rdquo;</blockquote>
+        <div class="who">
+          <div class="avatar">JW</div>
+          <div><div class="n">Jonah Weiss</div><div class="r">Product designer · Berlin → Lisbon</div></div>
+        </div>
+      </div>
+      <div class="avatar" style="width:88px;height:88px;font-size:24px;background:var(--primary)" aria-hidden="true">9.8★</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="p-cta">
+    <div class="inner">
+      <h2>Join 12.8 million people who stopped overpaying.</h2>
+      <p>Open a free account in minutes. No minimum balance, no monthly fee, no nonsense.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary">Open a free account</button>
+        <button class="btn btn-tertiary">See how it works</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="p-footer">
+    <div class="inner">
+      <div class="f-cols">
+        <div class="f-col">
+          <div class="sg-id">
+            <div class="sg-flag" style="background:var(--primary)"><svg viewBox="0 0 16 16"><path d="M9.8 1 4 9h3.4L6.2 15 12 7H8.6L9.8 1Z" fill="#0e0f0c"/></svg></div>
+            <span style="font-weight:900;letter-spacing:-.4px;font-size:18px;color:#fff">wise</span>
+          </div>
+          <p class="f-about">The international account. Money without borders — send, spend and hold 50+ currencies.</p>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow">Company</div>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Newsroom</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Mission</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow">Support</div>
+          <ul>
+            <li><a href="#">Help center</a></li>
+            <li><a href="#">Track a transfer</a></li>
+            <li><a href="#">Fees &amp; pricing</a></li>
+            <li><a href="#">Contact us</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <div class="eyebrow">Legal</div>
+          <ul>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Licences</a></li>
+            <li><a href="#">Cookie settings</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="f-bottom">
+        <span>© 2026 Wise-Inspired. A design-language showcase, not the real financial service.</span>
+        <span>Regulated in 12 jurisdictions · Safeguarded customer funds</span>
+      </div>
+    </div>
+  </footer>
+
+</section>
+</main>
+
+</body>
+</html>

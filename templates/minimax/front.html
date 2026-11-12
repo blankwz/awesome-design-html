@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniMax Marketplace — Models &amp; Agent Templates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0a0a0a; --on-primary:#ffffff; --primary-soft:#181e25;
+  --coral:#ff5530; --magenta:#ea5ec1; --blue:#1456f0; --blue-mid:#3b82f6; --blue-deep:#1d4ed8;
+  --blue-700:#17437d; --cyan:#3daeff; --blue-200:#bfdbfe; --purple:#a855f7;
+  --canvas:#ffffff; --surface:#f7f8fa; --surface-soft:#f2f3f5; --hairline:#e5e7eb; --hairline-soft:#eaecf0;
+  --ink:#0a0a0a; --ink-strong:#000000; --charcoal:#222222; --slate:#45515e; --steel:#5f5f5f; --stone:#8e8e93; --muted:#a8aab2;
+  --success-bg:#e8ffea; --success-text:#1ba673; --on-dark:#ffffff; --footer-bg:#0a0a0a;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-xxl:20px; --r-xxxl:24px; --r-hero:32px; --r-full:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:12px; --s-md:16px; --s-lg:20px; --s-xl:24px; --s-xxl:32px; --s-xxxl:40px; --s-sec:64px;
+  --font:'DM Sans',Inter,'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--canvas);color:var(--ink);font-size:16px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font)}
+.container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+h1{font-size:56px;font-weight:600;line-height:1.10;letter-spacing:-1.5px}
+h2{font-size:32px;font-weight:600;line-height:1.25;letter-spacing:-0.5px}
+h3{font-size:20px;font-weight:600;line-height:1.4}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600;line-height:1.4;border-radius:var(--r-full);cursor:pointer;border:none;transition:background .15s ease}
+.btn-primary{background:var(--primary);color:var(--on-primary);padding:11px 24px}
+.btn-primary:active{background:var(--charcoal)}
+.btn-secondary{background:transparent;color:var(--ink);padding:11px 24px;border:1px solid var(--ink)}
+.btn-tertiary{background:var(--canvas);color:var(--ink);padding:11px 24px;border:1px solid var(--hairline)}
+/* promo banner */
+.promo-banner{background:var(--primary);color:var(--on-primary);font-size:14px;font-weight:500;padding:var(--s-sm) var(--s-lg);text-align:center}
+.promo-banner a{text-decoration:underline;text-underline-offset:3px;margin-left:6px}
+/* top nav */
+.topnav{position:sticky;top:0;z-index:50;background:var(--canvas);border-bottom:1px solid var(--hairline-soft)}
+.topnav-inner{display:flex;align-items:center;gap:var(--s-xl);height:64px}
+.logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px}
+.logo .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--magenta))}
+.nav-links{display:flex;gap:var(--s-lg);font-size:14px;font-weight:500;color:var(--slate)}
+.nav-links a.on{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:var(--s-md);margin-left:auto}
+.search-pill{display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--steel);font-size:14px;border-radius:var(--r-md);height:36px;padding:0 var(--s-md);width:240px;border:1px solid var(--hairline)}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-full);background:var(--canvas);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+.icon-btn .dot{position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid var(--canvas)}
+/* section head */
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin:var(--s-sec) 0 var(--s-xl)}
+.sec-head p{color:var(--steel);font-size:14px;margin-top:8px;max-width:560px}
+.link{font-size:14px;font-weight:500;color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+/* pill tab filter row */
+.filter-row{display:flex;gap:var(--s-xs);align-items:center;padding:var(--s-lg) 0}
+.pill-tab{font-size:14px;font-weight:500;color:var(--steel);background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-full);padding:8px 16px;cursor:pointer}
+.pill-tab.active{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+/* vibrant gradient cards */
+.matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.gcard{border-radius:var(--r-hero);padding:var(--s-xxl);min-height:280px;display:flex;flex-direction:column;position:relative;overflow:hidden;color:var(--on-dark)}
+.gcard .wordmark{font-size:40px;font-weight:600;letter-spacing:-1px;margin-top:auto}
+.gcard .tagline{font-size:14px;opacity:.8;margin-top:6px}
+.gcard .corner-badge{position:absolute;top:16px;right:16px;font-size:13px;font-weight:600;border-radius:var(--r-full);padding:4px 10px;background:rgba(255,255,255,.22)}
+.gcard .orb{position:absolute;border-radius:50%;filter:blur(2px)}
+.gc-coral{background:radial-gradient(120% 100% at 80% 0%,#ff7a52 0%,var(--coral) 55%,#e03a12 100%)}
+.gc-magenta{background:radial-gradient(120% 100% at 80% 0%,#f88ad8 0%,var(--magenta) 55%,#c93ba0 100%)}
+.gc-blue{background:radial-gradient(120% 100% at 80% 0%,#4d84f8 0%,var(--blue) 55%,#0d3fb0 100%)}
+.gc-purple{background:radial-gradient(120% 100% at 80% 0%,#c17bfa 0%,var(--purple) 55%,#8b34d6 100%)}
+.gc-dark{background:radial-gradient(120% 100% at 80% 0%,#2a2f38 0%,#0a0a0a 70%)}
+/* white cards grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-lg);display:flex;flex-direction:column;box-shadow:rgba(0,0,0,.04) 0 1px 2px 0}
+.card .art{border-radius:var(--r-lg);aspect-ratio:16/10;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:var(--s-md);overflow:hidden}
+.badge{font-size:13px;font-weight:600;line-height:1.5;border-radius:var(--r-full);padding:4px 10px}
+.badge-new{background:var(--coral);color:var(--on-dark)}
+.badge-beta{background:var(--blue-200);color:var(--blue-deep)}
+.badge-success{background:var(--success-bg);color:var(--success-text)}
+.card .art .corner{position:absolute;top:10px;left:10px}
+.card h4{font-size:16px;font-weight:600}
+.card .desc{font-size:14px;color:var(--steel);margin-top:4px;flex:1}
+.card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s-md)}
+.card .price{font-size:14px;font-weight:600}
+.card .price small{display:block;font-size:12px;font-weight:400;color:var(--stone)}
+.stars{color:#ffb020;font-size:12px;letter-spacing:1px}
+.stars span{color:var(--stone);letter-spacing:0;margin-left:4px;font-size:12px}
+.art-1{background:linear-gradient(140deg,#fff1ec,#ffd2c4 60%,#ffb09a)}
+.art-2{background:linear-gradient(140deg,#f5ecff,#e2ccfa 60%,#c8a0f2)}
+.art-3{background:linear-gradient(140deg,#eaf1ff,#c6d9fb 60%,#96baf6)}
+.art-4{background:linear-gradient(140deg,#eafaf3,#c2ecd9 60%,#8fd9bd)}
+.art-5{background:linear-gradient(140deg,#fff7e6,#ffe4ad 60%,#ffcd70)}
+.art-6{background:linear-gradient(140deg,#fdeef6,#f9cbe1 60%,#f2a3c9)}
+.art-7{background:linear-gradient(140deg,#eef7f4,#cde8df 60%,#a3d5c4)}
+.art-8{background:linear-gradient(140deg,#f0f1f6,#d4d8e6 60%,#adb4cf)}
+/* featured PDP-style row */
+.featured{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s-xxxl);align-items:start;margin-top:var(--s-xl)}
+.gallery{display:grid;grid-template-columns:80px 1fr;gap:var(--s-md)}
+.thumbs{display:flex;flex-direction:column;gap:var(--s-sm)}
+.thumb{aspect-ratio:1/1;border-radius:var(--r-md);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--surface)}
+.thumb.active{border:2px solid var(--ink)}
+.main-image{position:relative;border-radius:var(--r-hero);overflow:hidden;min-height:480px;background:radial-gradient(130% 110% at 78% 8%,#ff7a52 0%,var(--coral) 50%,#d33409 100%);display:flex;align-items:center;justify-content:center}
+.main-image .word{color:var(--on-dark);font-size:88px;font-weight:600;letter-spacing:-3px}
+.main-image .pill{position:absolute;left:var(--s-xxl);bottom:var(--s-xxl);background:rgba(0,0,0,.35);color:var(--on-dark);font-size:13px;font-weight:600;border-radius:var(--r-full);padding:6px 14px}
+.buy-rail{position:sticky;top:88px}
+.plan-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:rgba(36,36,36,.08) 0 12px 16px -4px}
+.plan-card h2{font-size:24px}
+.price-line{display:flex;align-items:baseline;gap:10px;margin:var(--s-sm) 0 var(--s-lg)}
+.price-line .now{font-size:28px;font-weight:700}
+.price-line .unit{font-size:14px;color:var(--steel)}
+.opt-label{font-size:14px;font-weight:600;margin:var(--s-lg) 0 var(--s-sm)}
+.opt-label em{font-style:normal;color:var(--steel);font-weight:400;margin-left:6px}
+.sku-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-sm)}
+.sku{border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-md);text-align:center;cursor:pointer}
+.sku.sel{border:2px solid var(--blue-deep)}
+.sku b{display:block;font-size:14px;font-weight:600}
+.sku span{font-size:13px;color:var(--steel)}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin:var(--s-lg) 0}
+.stepper{display:flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-full);height:40px}
+.stepper button{width:40px;height:38px;background:none;border:none;font-size:18px;color:var(--ink);cursor:pointer}
+.stepper span{min-width:32px;text-align:center;font-size:14px;font-weight:600}
+.plan-card .btn-primary{width:100%;margin-top:var(--s-sm)}
+.stock-line{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--success-text);background:var(--success-bg);border-radius:var(--r-full);padding:6px 14px;margin-top:var(--s-md);width:fit-content}
+.reviews{margin-top:var(--s-xl);border-top:1px solid var(--hairline-soft);padding-top:var(--s-lg)}
+.review-quote{font-size:16px;margin-top:var(--s-md);color:var(--charcoal)}
+.review-by{display:flex;align-items:center;gap:10px;margin-top:var(--s-md)}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5b8def,#2b4fb8);flex-shrink:0}
+.review-by b{font-size:14px;display:block}
+.review-by span{font-size:12px;color:var(--stone)}
+/* stats strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);margin-top:var(--s-xl)}
+.stat b{font-size:32px;font-weight:600;letter-spacing:-0.5px}
+.stat span{display:block;font-size:14px;color:var(--steel);margin-top:4px}
+/* footer */
+.footer-region{background:var(--footer-bg);color:var(--on-dark);padding:var(--s-sec) 0;margin-top:var(--s-sec)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--s-xl)}
+.foot-brand p{font-size:14px;color:var(--muted);max-width:280px;margin-top:var(--s-md)}
+.newsletter{display:flex;gap:var(--s-sm);margin-top:var(--s-lg)}
+.text-input{flex:1;background:#161616;border:1px solid #2c2c2c;border-radius:var(--r-md);padding:var(--s-sm) var(--s-md);font-family:var(--font);font-size:14px;height:40px;color:var(--on-dark)}
+.text-input::placeholder{color:var(--muted)}
+.foot-col h5{font-size:14px;font-weight:500;color:var(--on-dark);margin-bottom:var(--s-md)}
+.foot-col a{display:block;font-size:14px;color:var(--muted);padding:4px 0}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #222;margin-top:var(--s-xxxl);padding-top:var(--s-xl);font-size:12px;color:var(--muted)}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:var(--r-full);background:#161616;border:1px solid #2c2c2c;display:flex;align-items:center;justify-content:center;color:var(--on-dark)}
+@media (max-width:960px){
+  h1{font-size:40px}.matrix,.grid{grid-template-columns:repeat(2,1fr)}
+  .featured{grid-template-columns:1fr}.buy-rail{position:static}
+  .nav-links{display:none}.foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="promo-banner">MiniMax M2.7 is now Generally Available — 40% lower token pricing through November. <a href="#">Read the announcement</a></div>
+<header class="topnav">
+  <div class="container topnav-inner">
+    <a class="logo" href="#"><span class="mark"></span>MiniMax <span style="font-weight:400;color:var(--steel)">Marketplace</span></a>
+    <nav class="nav-links">
+      <a class="on" href="#">Models</a><a href="#">Agent templates</a><a href="#">Datasets</a><a href="#">API</a><a href="#">Docs</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search-pill"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#5f5f5f" stroke-width="1.6"/><path d="m11 11 3.5 3.5" stroke="#5f5f5f" stroke-width="1.6" stroke-linecap="round"/></svg> Search models…</div>
+      <button class="icon-btn" aria-label="Notifications"><svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M9 2.5c-2.6 0-4 2-4 4.4 0 3-1.3 4.1-1.8 4.6h11.6c-.5-.5-1.8-1.6-1.8-4.6 0-2.4-1.4-4.4-4-4.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.6 14.5a1.6 1.6 0 0 0 2.8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="dot"></span></button>
+      <button class="btn btn-secondary" style="padding:9px 20px">Log in</button>
+      <button class="btn btn-primary" style="padding:9px 20px">Get API key</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="filter-row">
+    <button class="pill-tab active">All</button>
+    <button class="pill-tab">Text</button>
+    <button class="pill-tab">Video</button>
+    <button class="pill-tab">Audio</button>
+    <button class="pill-tab">Speech</button>
+    <button class="pill-tab">Agent templates</button>
+    <button class="pill-tab">Fine-tuned</button>
+  </div>
+
+  <!-- VIBRANT PRODUCT MATRIX -->
+  <section class="matrix">
+    <article class="gcard gc-coral"><span class="corner-badge badge-new">NEW · GA</span><div class="orb" style="width:120px;height:120px;right:-30px;top:20px;background:rgba(255,255,255,.16)"></div><div class="wordmark">M2.7</div><div class="tagline">Frontier reasoning · 228K context</div></article>
+    <article class="gcard gc-magenta"><div class="orb" style="width:90px;height:90px;left:-20px;bottom:30px;background:rgba(255,255,255,.16)"></div><div class="wordmark">Music 2.6</div><div class="tagline">Studio-grade song generation</div></article>
+    <article class="gcard gc-blue"><span class="corner-badge badge-beta">BETA</span><div class="orb" style="width:120px;height:120px;right:-30px;bottom:-20px;background:rgba(255,255,255,.14)"></div><div class="wordmark">Hailuo 2.3</div><div class="tagline">Cinematic video from text</div></article>
+    <article class="gcard gc-purple"><div class="wordmark">Speech 2.8</div><div class="tagline">40 languages · 200ms latency</div></article>
+  </section>
+
+  <!-- CARD GRID -->
+  <section>
+    <div class="sec-head">
+      <div><h2>Model catalog</h2><p>Production-ready endpoints with usage-based pricing. Every plan includes 5M free tokens per month.</p></div>
+      <a class="link" href="#">Browse all 32 models</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="art art-1"><span class="corner badge badge-new">NEW</span><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><circle cx="36" cy="36" r="22" stroke="#c2401f" stroke-width="4"/><path d="M36 14v44M14 36h44" stroke="#c2401f" stroke-width="4"/></svg></div>
+        <h4>M2.7 — Reasoning</h4><p class="desc">Flagship agent model for tool use, planning and long-horizon coding.</p>
+        <div class="stars">★★★★★ <span>4.9 (1,204)</span></div>
+        <div class="foot"><span class="price">$0.42<small>per 1M input tokens</small></span><span class="badge badge-success">GA</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-2"><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><path d="M36 12v48M22 26l14-14 14 14M22 46l14 14 14-14" stroke="#8a2f9e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4>Music 2.6</h4><p class="desc">Full-song generation with vocals, stems and custom melodies.</p>
+        <div class="stars">★★★★★ <span>4.7 (862)</span></div>
+        <div class="foot"><span class="price">$0.18<small>per generated track</small></span><span class="badge badge-success">GA</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-3"><span class="corner badge badge-beta">BETA</span><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><rect x="14" y="20" width="44" height="32" rx="6" stroke="#1d3f9e" stroke-width="4"/><path d="m30 28 12 8-12 8v-16Z" fill="#1d3f9e"/></svg></div>
+        <h4>Hailuo 2.3 — Video</h4><p class="desc">10-second 1080p clips with camera-direction control.</p>
+        <div class="stars">★★★★☆ <span>4.6 (541)</span></div>
+        <div class="foot"><span class="price">$0.45<small>per 6s clip</small></span><span class="badge badge-beta">BETA</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-4"><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><path d="M20 44c6-18 26-18 32 0" stroke="#1d7a5a" stroke-width="4" stroke-linecap="round"/><path d="M26 52h20" stroke="#1d7a5a" stroke-width="4" stroke-linecap="round"/><circle cx="36" cy="24" r="8" stroke="#1d7a5a" stroke-width="4"/></svg></div>
+        <h4>Speech 2.8 — TTS</h4><p class="desc">Expressive voice cloning with sub-200ms streaming latency.</p>
+        <div class="stars">★★★★★ <span>4.8 (977)</span></div>
+        <div class="foot"><span class="price">$0.05<small>per 1K characters</small></span><span class="badge badge-success">GA</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-5"><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><rect x="16" y="16" width="40" height="40" rx="8" stroke="#a86e12" stroke-width="4"/><path d="M28 36h16M36 28v16" stroke="#a86e12" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <h4>Text 2.5 — Fast</h4><p class="desc">Low-latency chat and extraction at 1/8 the M2.7 price.</p>
+        <div class="stars">★★★★☆ <span>4.5 (2,318)</span></div>
+        <div class="foot"><span class="price">$0.05<small>per 1M input tokens</small></span><span class="badge badge-success">GA</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-6"><span class="corner badge badge-new">NEW</span><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><path d="M18 40c0-14 8-22 18-22s18 8 18 22" stroke="#b03468" stroke-width="4" stroke-linecap="round"/><path d="M14 46h44" stroke="#b03468" stroke-width="4" stroke-linecap="round"/><circle cx="36" cy="54" r="4" fill="#b03468"/></svg></div>
+        <h4>Livecall 1.2</h4><p class="desc">Realtime speech-to-speech agent for support and sales calls.</p>
+        <div class="stars">★★★★☆ <span>4.4 (218)</span></div>
+        <div class="foot"><span class="price">$0.30<small>per connected minute</small></span><span class="badge badge-new">NEW</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-7"><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><path d="M22 20h28v32H22z" stroke="#1e6353" stroke-width="4"/><path d="M30 32h12M30 40h8" stroke="#1e6353" stroke-width="4" stroke-linecap="round"/><path d="m18 62 6-10M54 62l-6-10" stroke="#1e6353" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <h4>Vision 1.8 — OCR</h4><p class="desc">Document parsing, tables and layout-aware extraction.</p>
+        <div class="stars">★★★★★ <span>4.7 (429)</span></div>
+        <div class="foot"><span class="price">$0.12<small>per 100 pages</small></span><span class="badge badge-success">GA</span></div>
+      </article>
+      <article class="card">
+        <div class="art art-8"><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><circle cx="26" cy="26" r="8" stroke="#4a5178" stroke-width="4"/><circle cx="48" cy="46" r="8" stroke="#4a5178" stroke-width="4"/><path d="m32 32 10 8" stroke="#4a5178" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <h4>Agent Template — SDR</h4><p class="desc">Prebuilt outbound-sales agent with CRM sync and call scripts.</p>
+        <div class="stars">★★★★☆ <span>4.3 (166)</span></div>
+        <div class="foot"><span class="price">$49<small>per seat / month</small></span><span class="badge badge-beta">BETA</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FEATURED MODEL -->
+  <section>
+    <div class="sec-head"><div><h2>Featured — M2.7 Reasoning</h2><p>Our strongest agent model. Deploy to production in one click with a token plan.</p></div>
+      <span class="stars" style="font-size:14px">★★★★★ <span>4.9 · 1,204 reviews</span></span></div>
+    <div class="featured">
+      <div class="gallery">
+        <div class="thumbs">
+          <div class="thumb active" style="background:radial-gradient(circle at 60% 30%,#ff7a52,#e03a12)"><span style="color:#fff;font-weight:600;font-size:13px">M2.7</span></div>
+          <div class="thumb" style="background:radial-gradient(circle at 60% 30%,#f88ad8,#c93ba0)"><span style="color:#fff;font-weight:600;font-size:11px">Music</span></div>
+          <div class="thumb" style="background:radial-gradient(circle at 60% 30%,#4d84f8,#0d3fb0)"><span style="color:#fff;font-weight:600;font-size:11px">Video</span></div>
+          <div class="thumb" style="background:radial-gradient(circle at 60% 30%,#c17bfa,#8b34d6)"><span style="color:#fff;font-weight:600;font-size:11px">Speech</span></div>
+        </div>
+        <div class="main-image">
+          <span class="word">M2.7</span>
+          <span class="pill">Frontier reasoning · 228K context window</span>
+        </div>
+      </div>
+
+      <aside class="buy-rail">
+        <div class="plan-card">
+          <h2>Token plan</h2>
+          <div class="price-line"><span class="now">$29</span><span class="unit">/ month · then $0.42 per 1M input tokens</span></div>
+          <div class="opt-label">Context window <em>· affects price per token</em></div>
+          <div class="sku-row">
+            <div class="sku sel"><b>32K</b><span>Standard</span></div>
+            <div class="sku"><b>128K</b><span>+15%</span></div>
+            <div class="sku"><b>228K</b><span>+40%</span></div>
+          </div>
+          <div class="opt-label">Deployment region</div>
+          <div class="sku-row">
+            <div class="sku sel"><b>us-east</b><span>Default</span></div>
+            <div class="sku"><b>eu-west</b><span>GDPR</span></div>
+            <div class="sku"><b>ap-south</b><span>New</span></div>
+          </div>
+          <div class="qty-row">
+            <div class="opt-label" style="margin:0">Team seats</div>
+            <div class="stepper"><button aria-label="decrease">−</button><span>3</span><button aria-label="increase">+</button></div>
+          </div>
+          <button class="btn btn-primary">Add to workspace · $29/mo</button>
+          <button class="btn btn-tertiary" style="width:100%;margin-top:8px">Compare all plans</button>
+          <span class="stock-line">5M free tokens included every month</span>
+          <div class="reviews">
+            <div class="review-quote">“We swapped our agent stack to M2.7 in a weekend. Tool-call reliability went from 89% to 99.2% on our evals.”</div>
+            <div class="review-by"><span class="avatar"></span><span><b>Jonas Feld</b><span>Staff engineer · Vantage Robotics</span></span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <section class="stats">
+    <div class="stat"><b>214,000+</b><span>Enterprise clients &amp; developers</span></div>
+    <div class="stat"><b>40+</b><span>Countries served</span></div>
+    <div class="stat"><b>99.95%</b><span>API uptime, trailing 12 months</span></div>
+    <div class="stat"><b>200ms</b><span>Median first-token latency</span></div>
+  </section>
+</main>
+
+<footer class="footer-region">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#" style="color:#fff"><span class="mark"></span>MiniMax</a>
+        <p>Intelligence with everyone. Get model releases, benchmark updates and pricing changes in your inbox.</p>
+        <form class="newsletter" onsubmit="return false">
+          <input class="text-input" type="email" placeholder="you@company.com">
+          <button class="btn btn-tertiary" type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="foot-col"><h5>Research</h5><a href="#">M2.7</a><a href="#">Hailuo 2.3</a><a href="#">Speech 2.8</a><a href="#">Benchmarks</a><a href="#">Publications</a></div>
+      <div class="foot-col"><h5>Product</h5><a href="#">Marketplace</a><a href="#">Agent templates</a><a href="#">Token plans</a><a href="#">Status</a><a href="#">Changelog</a></div>
+      <div class="foot-col"><h5>Company</h5><a href="#">About</a><a href="#">Careers</a><a href="#">Newsroom</a><a href="#">Contact sales</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 MiniMax AI. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1 1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a6.5 6.5 0 0 0-2 12.7c.3 0 .4-.1.4-.3v-1.2c-1.8.4-2.2-.8-2.2-.8-.3-.8-.7-1-.7-1-.6-.4 0-.4 0-.4.7 0 1 .7 1 .7.6 1 1.6.7 2 .5 0-.4.2-.7.4-.9-1.4-.2-2.9-.7-2.9-3.2 0-.7.2-1.3.7-1.7 0-.2-.3-.8 0-1.7 0 0 .6-.2 1.8.7a6 6 0 0 1 3.2 0c1.2-.9 1.8-.7 1.8-.7.3.9 0 1.5 0 1.7.4.4.7 1 .7 1.7 0 2.5-1.5 3-2.9 3.2.2.2.4.6.4 1.2v1.8c0 .2.1.3.4.3A6.5 6.5 0 0 0 8 1.5Z" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Discord"><svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M13.5 1.6A12 12 0 0 0 10.8.8l-.4.7a9 9 0 0 0-4.8 0L5.2.8a12 12 0 0 0-2.7.8C.7 4.2.2 6.7.4 9.2c1 .8 2.1 1.4 3.2 1.8l.7-1a6 6 0 0 1-1.1-.6l.3-.2a8.5 8.5 0 0 0 9 0l.3.2c-.4.3-.7.5-1.1.6l.7 1c1.1-.4 2.2-1 3.2-1.8.3-2.9-.5-5.4-2.1-7.6ZM5.7 7.7c-.6 0-1.1-.6-1.1-1.3s.5-1.3 1.1-1.3 1.2.6 1.1 1.3c0 .7-.5 1.3-1.1 1.3Zm4.6 0c-.6 0-1.1-.6-1.1-1.3s.5-1.3 1.1-1.3 1.2.6 1.1 1.3c0 .7-.5 1.3-1.1 1.3Z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</body>
+</html>

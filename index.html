@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Hub · 74 风格 · 设计方案 + 前台 + 后台</title>
+<style>
+  :root { --bg:#0d0e12; --panel:#15171e; --line:#262a35; --text:#e8eaf0; --muted:#8a90a0; --accent:#6c7bff; --accent-2:#9d6cff; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; }
+  body { background:var(--bg); color:var(--text); font-family:"Segoe UI",system-ui,-apple-system,sans-serif; display:flex; overflow:hidden; }
+  a { color:inherit; text-decoration:none; }
+  button { font-family:inherit; }
+
+  /* ===== Sidebar ===== */
+  .side { width:236px; flex:none; display:flex; flex-direction:column; border-right:1px solid var(--line); background:var(--panel); }
+  .side .head { padding:14px 14px 10px; }
+  .side .logo { font-size:14px; font-weight:700; letter-spacing:-.2px;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .side .sub { font-size:10px; color:var(--muted); margin-top:3px; }
+  .side .search { margin:6px 12px 8px; display:flex; align-items:center; gap:6px;
+    background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:6px 10px; }
+  .side .search input { flex:1; min-width:0; background:none; border:none; outline:none; color:var(--text); font-size:12px; }
+  .side .search input::placeholder { color:var(--muted); }
+
+  .filters { display:flex; gap:4px; padding:0 12px 8px; flex-wrap:wrap; }
+  .filters button { font-size:10.5px; padding:4px 9px; border-radius:999px; cursor:pointer;
+    background:var(--bg); border:1px solid var(--line); color:var(--muted); }
+  .filters button.on { color:#fff; border-color:var(--accent); background:rgba(108,123,255,.18); }
+  .filters button b { font-weight:600; }
+
+  .list { flex:1; overflow-y:auto; padding:0 8px 12px; }
+  .item { display:flex; align-items:center; gap:9px; padding:7px 9px; border-radius:8px; cursor:pointer;
+    font-size:12.5px; color:var(--text); border:1px solid transparent; }
+  .item:hover { background:rgba(255,255,255,.04); }
+  .item.on { background:rgba(108,123,255,.14); border-color:rgba(108,123,255,.4); }
+  .item .idx { font-size:9.5px; color:var(--muted); font-family:ui-monospace,monospace; width:18px; flex:none; }
+  .item .nm { font-weight:600; }
+  .item .fd { font-size:10px; color:var(--muted); font-family:ui-monospace,monospace; }
+  .item .mark { margin-left:auto; font-size:12px; flex:none; }
+  .hidden { display:none !important; }
+
+  /* ===== Main ===== */
+  .main { flex:1; min-width:0; display:flex; flex-direction:column; }
+  .bar { display:flex; align-items:center; gap:10px; padding:9px 16px; border-bottom:1px solid var(--line); background:rgba(21,23,30,.96); }
+  .bar .title { font-size:13.5px; font-weight:700; margin-right:6px; }
+  .bar .title small { color:var(--muted); font-weight:400; font-family:ui-monospace,monospace; margin-left:6px; font-size:10.5px; }
+  .tabs { display:flex; gap:4px; background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:3px; }
+  .tabs button { font-size:12px; padding:5px 13px; border-radius:7px; border:none; background:none; color:var(--muted); cursor:pointer; }
+  .tabs button.on { background:var(--accent); color:#fff; }
+  .bar .spacer { flex:1; }
+  .bar a.src, .bar button.nav { font-size:11.5px; color:var(--muted); background:var(--bg); border:1px solid var(--line);
+    border-radius:8px; padding:5px 11px; cursor:pointer; }
+  .bar a.src:hover, .bar button.nav:hover { color:var(--text); border-color:#3a4155; }
+  .bar button.pick-toggle { font-size:11.5px; border-radius:8px; padding:5px 12px; cursor:pointer;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff; border:none; font-weight:600; }
+  .bar button.pick-toggle.on { background:var(--bg); color:var(--accent-2); border:1px solid var(--accent-2); }
+  .stage { flex:1; background:#fff; position:relative; }
+  .stage iframe { width:100%; height:100%; border:0; display:block; }
+  .welcome { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--muted); background:var(--bg); }
+  .welcome .big { font-size:20px; font-weight:700; color:var(--text); }
+
+  /* ===== Pick mode ===== */
+  .pickbar { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:20;
+    display:none; align-items:center; gap:8px; padding:8px; border-radius:14px;
+    background:rgba(13,14,18,.92); border:1px solid var(--line); backdrop-filter:blur(10px); box-shadow:0 12px 40px rgba(0,0,0,.5); }
+  .pickbar.show { display:flex; }
+  .pickbar .rate { font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:10px; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--text); }
+  .pickbar .rate:hover { border-color:#3a4155; }
+  .pickbar .rate small { display:block; font-size:9px; font-weight:400; color:var(--muted); margin-top:1px; }
+  .pickbar .rate.like:hover, .pickbar .rate.like.set { border-color:#3fb96b; color:#3fb96b; }
+  .pickbar .rate.maybe:hover, .pickbar .rate.maybe.set { border-color:#e0a63c; color:#e0a63c; }
+  .pickbar .rate.dislike:hover, .pickbar .rate.dislike.set { border-color:#e05c5c; color:#e05c5c; }
+  .pickbar .next { font-size:12.5px; font-weight:700; padding:8px 18px; border-radius:10px; cursor:pointer;
+    border:none; background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff; }
+  .pickbar .cnt { font-size:10px; color:var(--muted); padding:0 6px; font-family:ui-monospace,monospace; }
+  .pick-hint { position:absolute; top:10px; left:50%; transform:translateX(-50%); z-index:20; display:none;
+    font-size:11px; color:var(--muted); background:rgba(13,14,18,.85); border:1px solid var(--line);
+    padding:5px 12px; border-radius:999px; backdrop-filter:blur(8px); }
+  .pick-hint.show { display:block; }
+</style>
+</head>
+<body>
+
+<nav class="side">
+  <div class="head">
+    <div class="logo">✦ Design Hub</div>
+    <div class="sub">74 风格 · 设计方案 + 前台 + 后台</div>
+  </div>
+  <div class="search"><input id="q" type="text" placeholder="搜索风格… (/)" autocomplete="off"></div>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">全部 <b id="cAll"></b></button>
+    <button data-f="like">❤ <b id="cLike">0</b></button>
+    <button data-f="maybe">⏳ <b id="cMaybe">0</b></button>
+    <button data-f="dislike">✗ <b id="cDis">0</b></button>
+    <button data-f="unrated">未评 <b id="cUn"></b></button>
+  </div>
+  <div class="list" id="list"></div>
+</nav>
+
+<section class="main">
+  <div class="bar">
+    <div class="title" id="tName">选择一个风格<small>左侧列表或 ←/→ 键</small></div>
+    <div class="tabs" id="tabs" style="visibility:hidden">
+      <button data-p="design" class="on">设计方案</button>
+      <button data-p="front">前台模板</button>
+      <button data-p="admin">后台管理</button>
+    </div>
+    <div class="spacer"></div>
+    <button class="nav" onclick="jump(-1)">← 上一个</button>
+    <button class="nav" onclick="jump(1)">下一个 →</button>
+    <button class="pick-toggle" id="pickToggle">🎯 挑选模式</button>
+    <a class="src" id="openNew" href="#" target="_blank">新标签打开 ↗</a>
+  </div>
+  <div class="stage" id="stage">
+    <div class="welcome" id="welcome">
+      <div class="big">✦ Design Hub</div>
+      <div>左侧选择任意风格,右侧直接预览其设计方案、前台模板与后台管理</div>
+      <div style="font-size:11px">← / → 切换风格 · 1 / 2 / 3 切换页面 · 🎯 挑选模式逐个打标</div>
+    </div>
+    <div class="pick-hint" id="pickHint"></div>
+    <div class="pickbar" id="pickbar">
+      <button class="rate like" data-r="like">❤ 喜欢<small>L</small></button>
+      <button class="rate maybe" data-r="maybe">⏳ 待选<small>M</small></button>
+      <button class="rate dislike" data-r="dislike">✗ 不喜欢<small>D</small></button>
+      <span class="cnt" id="pickCnt"></span>
+      <button class="next" id="pickNext">下一个 ⏭</button>
+    </div>
+  </div>
+</section>
+
+<script>
+const STYLES = ["airbnb","airtable","apple","binance","bmw-m","bmw","bugatti","cal","claude","clay","clickhouse","cohere","coinbase","composio","cursor","dell-1996","elevenlabs","expo","ferrari","figma","framer","hashicorp","hp","ibm","intercom","kraken","lamborghini","linear.app","lovable","mastercard","meta","minimax","mintlify","miro","mistral.ai","mongodb","nike","nintendo-2001","notion","nvidia","ollama","opencode.ai","pinterest","playstation","posthog","raycast","renault","replicate","resend","revolut","runwayml","sanity","sentry","shopify","slack","spacex","spotify","starbucks","stripe","supabase","superhuman","tesla","theverge","together.ai","uber","vercel","vodafone","voltagent","warp","webflow","wired","wise","x.ai","zapier"];
+const BRANDS = { "bmw":"BMW","bmw-m":"BMW M","x.ai":"xAI","linear.app":"Linear","mistral.ai":"Mistral AI","opencode.ai":"OpenCode","together.ai":"Together AI","dell-1996":"Dell 1996","nintendo-2001":"Nintendo 2001","theverge":"The Verge" };
+const brandOf = s => BRANDS[s] || s.replace(/\b\w/g,c=>c.toUpperCase());
+const PAGE_NAME = { design:"设计方案", front:"前台模板", admin:"后台管理" };
+const PAGE_URL  = { design:s=>`showcase/${s}/index.html`, front:s=>`templates/${s}/front.html`, admin:s=>`templates/${s}/admin.html` };
+const MARK = { like:"❤", maybe:"⏳", dislike:"✗" };
+
+/* ===== picks (persisted) ===== */
+const PICK_KEY = "designhub_picks_v1";
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(PICK_KEY) || "{}"); } catch(e) { picks = {}; }
+const savePicks = () => localStorage.setItem(PICK_KEY, JSON.stringify(picks));
+const markOf = s => picks[s] || null;
+
+/* ===== sidebar ===== */
+const list = document.getElementById('list');
+list.innerHTML = STYLES.map((s,i)=>`
+  <div class="item" data-i="${i}" data-name="${s}">
+    <span class="idx">${String(i+1).padStart(2,'0')}</span>
+    <span><span class="nm">${brandOf(s)}</span><br><span class="fd">${s}</span></span>
+    <span class="mark" data-mark="${s}"></span>
+  </div>`).join('');
+
+let filter = 'all';
+function applyFilter() {
+  let n = 0;
+  list.querySelectorAll('.item').forEach(el => {
+    const m = markOf(el.dataset.name);
+    let hit = true;
+    if (filter === 'like') hit = m === 'like';
+    else if (filter === 'maybe') hit = m === 'maybe';
+    else if (filter === 'dislike') hit = m === 'dislike';
+    else if (filter === 'unrated') hit = !m;
+    el.classList.toggle('hidden', !hit);
+    if (hit) n++;
+  });
+  document.querySelectorAll('#filters button').forEach(b => b.classList.toggle('on', b.dataset.f === filter));
+  return n;
+}
+function refreshCounts() {
+  const c = { like:0, maybe:0, dislike:0 };
+  STYLES.forEach(s => { if (markOf(s)) c[markOf(s)]++; });
+  document.getElementById('cLike').textContent = c.like;
+  document.getElementById('cMaybe').textContent = c.maybe;
+  document.getElementById('cDis').textContent = c.dislike;
+  document.getElementById('cAll').textContent = STYLES.length;
+  document.getElementById('cUn').textContent = STYLES.length - (c.like + c.maybe + c.dislike);
+}
+function refreshMarks() {
+  document.querySelectorAll('[data-mark]').forEach(el => { el.textContent = MARK[markOf(el.dataset.mark)] || ''; });
+  refreshCounts();
+}
+
+/* ===== view ===== */
+let cur = -1, page = 'design', pickMode = false;
+let iframe = null;
+
+function select(i, p, keepPick) {
+  if (p) page = p;
+  cur = (i + STYLES.length) % STYLES.length;
+  const s = STYLES[cur];
+  list.querySelectorAll('.item').forEach(el => el.classList.toggle('on', +el.dataset.i === cur));
+  const on = list.querySelector('.item.on');
+  if (on) on.scrollIntoView({ block:'nearest' });
+  document.getElementById('tName').innerHTML = `${brandOf(s)}<small>${s}</small>`;
+  document.getElementById('tabs').style.visibility = 'visible';
+  document.getElementById('openNew').href = PAGE_URL[page](s);
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.p === page));
+  const stage = document.getElementById('stage');
+  if (!iframe) { document.getElementById('welcome').remove(); iframe = document.createElement('iframe'); iframe.title = 'preview'; stage.insertBefore(iframe, stage.firstChild); }
+  iframe.src = PAGE_URL[page](s);
+  updatePickbar();
+  if (!keepPick) history.replaceState(null,'','#'+s+'/'+page);
+}
+function jump(d) { if (cur >= 0) select(cur + d); }
+
+/* ===== pick mode ===== */
+function setPickMode(on) {
+  pickMode = on;
+  document.getElementById('pickToggle').classList.toggle('on', on);
+  document.getElementById('pickToggle').textContent = on ? '✓ 挑选中…' : '🎯 挑选模式';
+  document.getElementById('pickbar').classList.toggle('show', on);
+  document.getElementById('pickHint').classList.toggle('show', on);
+  if (on) {
+    if (cur < 0) select(0);
+    updatePickbar();
+  }
+}
+function updatePickbar() {
+  if (!pickMode || cur < 0) return;
+  const s = STYLES[cur];
+  const m = markOf(s);
+  document.querySelectorAll('.pickbar .rate').forEach(b => b.classList.toggle('set', b.dataset.r === m));
+  const unrated = STYLES.filter(x => !markOf(x)).length;
+  document.getElementById('pickCnt').textContent = `已评 ${STYLES.length - unrated}/${STYLES.length}`;
+  document.getElementById('pickHint').textContent = `挑选模式 · ${brandOf(s)} · ${PAGE_NAME[page]} · 点击下方打标,自动跳到下一个`;
+}
+function rate(r) {
+  if (cur < 0) return;
+  const s = STYLES[cur];
+  picks[s] = (picks[s] === r) ? undefined : r;   // 点击已选的 = 取消
+  if (!picks[s]) delete picks[s];
+  savePicks(); refreshMarks(); updatePickbar();
+  if (picks[s]) nextUnrated();
+}
+function nextUnrated() {
+  // 优先跳到"当前筛选可见"的下一个未评风格;全部评完则跳下一个可见风格
+  const visible = [...list.querySelectorAll('.item:not(.hidden)')].map(el => +el.dataset.i);
+  if (!visible.length) return;
+  const order = visible.sort((a,b)=>a-b);
+  const after = order.filter(i => i > cur && !markOf(STYLES[i]));
+  const fromStart = order.filter(i => !markOf(STYLES[i]));
+  const target = after.length ? after[0] : (fromStart.length ? fromStart[0] : order[(order.indexOf(cur)+1) % order.length]);
+  select(target);
+}
+
+document.getElementById('pickToggle').addEventListener('click', () => setPickMode(!pickMode));
+document.getElementById('pickNext').addEventListener('click', () => nextUnrated());
+document.querySelectorAll('.pickbar .rate').forEach(b => b.addEventListener('click', () => rate(b.dataset.r)));
+document.getElementById('filters').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  filter = b.dataset.f; applyFilter();
+});
+list.addEventListener('click', e => { const it = e.target.closest('.item'); if (it) select(+it.dataset.i); });
+document.getElementById('tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) select(cur, b.dataset.p); });
+document.getElementById('q').addEventListener('input', e => {
+  const v = e.target.value.trim().toLowerCase();
+  list.querySelectorAll('.item').forEach(el => el.classList.toggle('hidden', v && !el.dataset.name.includes(v)));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== document.getElementById('q')) { e.preventDefault(); document.getElementById('q').focus(); return; }
+  if (document.activeElement === document.getElementById('q')) { if (e.key === 'Escape') { e.target.value=''; e.target.dispatchEvent(new Event('input')); e.target.blur(); } return; }
+  if (pickMode) {
+    if (e.key === 'l' || e.key === 'L') rate('like');
+    if (e.key === 'm' || e.key === 'M') rate('maybe');
+    if (e.key === 'd' || e.key === 'D') rate('dislike');
+  }
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (cur>=0) jump(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { if (cur>=0) jump(-1); }
+  if (['1','2','3'].includes(e.key) && cur >= 0) select(cur, ['design','front','admin'][+e.key-1]);
+});
+
+refreshMarks(); applyFilter();
+// deep link #style/page
+if (location.hash.length > 1) {
+  const [s, p] = location.hash.slice(1).split('/');
+  const i = STYLES.indexOf(s);
+  if (i >= 0) select(i, PAGE_NAME[p] ? p : undefined);
+}
+</script>
+</body>
+</html>

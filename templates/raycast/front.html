@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raycast — Extension Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#ffffff; --primary-pressed:#e8e8e8; --on-primary:#000000;
+  --ink:#f4f4f6; --body:#cdcdcd; --charcoal:#d3d3d4; --mute:#9c9c9d; --ash:#6a6b6c; --stone:#434345;
+  --canvas:#07080a; --surface:#0d0d0d; --surface-elevated:#101111; --surface-card:#121212;
+  --hairline:#242728; --hairline-soft:rgba(255,255,255,0.08); --hairline-strong:rgba(255,255,255,0.16);
+  --accent-blue:#57c1ff; --accent-red:#ff6161; --accent-green:#59d499; --accent-yellow:#ffc533;
+  --accent-blue-soft:rgba(87,193,255,0.15); --accent-red-soft:rgba(255,97,97,0.15);
+  --accent-green-soft:rgba(89,212,153,0.15); --accent-yellow-soft:rgba(255,197,51,0.15);
+  --stripe-a:#ff5757; --stripe-b:#a1131a;
+  --font-sans:"Inter",system-ui,"Segoe UI",sans-serif;
+  --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:10px; --r-xl:16px; --r-full:9999px;
+  --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:24px; --sp-xxl:32px; --sp-section:96px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--body);font-family:var(--font-sans);font-size:16px;line-height:1.6;font-feature-settings:"calt","kern","liga","ss03";-webkit-font-smoothing:antialiased}
+a{color:var(--on-primary,#fff);text-decoration:none}
+button{cursor:pointer;font-family:var(--font-sans);border:0;font-feature-settings:"calt","kern","liga","ss03"}
+h1,h2,h3{color:var(--ink);font-weight:500}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* ---------- buttons & chips ---------- */
+.btn-white{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:8px 16px;background:var(--primary);color:var(--on-primary);border-radius:var(--r-md);font-size:14px;font-weight:500;letter-spacing:0.2px}
+.btn-white:active{background:var(--primary-pressed)}
+.btn-tert{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:8px 16px;background:var(--surface-elevated);color:var(--on-primary,#fff);border:1px solid var(--hairline);border-radius:var(--r-md);font-size:14px;font-weight:500}
+.btn-secondary{display:inline-flex;align-items:center;gap:6px;height:36px;padding:8px 16px;background:transparent;color:var(--ink);border-radius:var(--r-md);font-size:14px;font-weight:500}
+.install-btn{display:inline-flex;align-items:center;height:32px;padding:6px 14px;background:transparent;color:var(--ink);border:1px solid var(--hairline-strong);border-radius:var(--r-md);font-size:14px;font-weight:500;white-space:nowrap}
+.pill-tab{background:transparent;color:var(--body);font-size:14px;border-radius:var(--r-full);padding:4px 10px}
+.pill-tab.active{background:var(--surface-elevated);color:var(--ink)}
+.badge-pro{display:inline-block;background:var(--surface-elevated);color:rgba(255,255,255,0.72);font-size:12px;letter-spacing:0.4px;border-radius:var(--r-xs);padding:2px 6px}
+.badge-info{display:inline-block;background:var(--accent-blue-soft);color:var(--accent-blue);font-size:12px;letter-spacing:0.4px;border-radius:var(--r-xs);padding:2px 8px}
+.keycap{display:inline-flex;align-items:center;justify-content:center;height:20px;padding:1px 6px;background:linear-gradient(180deg,#121212,#0d0d0d);border:1px solid var(--hairline);color:var(--body);font-size:13px;border-radius:var(--r-xs)}
+
+/* ---------- primary nav ---------- */
+.topnav{background:var(--canvas);height:56px;display:flex;align-items:center;gap:var(--sp-xl);border-bottom:1px solid var(--hairline);position:sticky;top:0;z-index:40}
+.logo{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:15px;font-weight:600;letter-spacing:0.2px}
+.logo .mark{width:22px;height:22px;border-radius:var(--r-sm);background:linear-gradient(135deg,#ff5757,#a1131a);display:inline-block}
+.navlinks{display:flex;gap:var(--sp-lg);font-size:14px;font-weight:500;letter-spacing:0.2px;color:var(--body)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+.avatar{width:32px;height:32px;border-radius:var(--r-full);background:var(--surface-elevated);border:1px solid var(--hairline);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.bag{position:relative;width:32px;height:32px;border-radius:var(--r-md);background:var(--surface-elevated);border:1px solid var(--hairline);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.bag .dot{position:absolute;top:-4px;right:-4px;min-width:15px;height:15px;border-radius:var(--r-full);background:var(--accent-red);color:#fff;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* ---------- hero with stripe band ---------- */
+.hero{position:relative;padding:var(--sp-section) 0;overflow:hidden}
+.hero::before{content:"";position:absolute;top:0;left:0;right:0;height:220px;pointer-events:none;opacity:.5;background:
+  repeating-linear-gradient(115deg,transparent 0 120px,rgba(255,87,87,.18) 120px 150px,transparent 150px 300px,rgba(161,19,26,.28) 300px 330px,transparent 330px 480px),
+  linear-gradient(115deg,var(--stripe-a) -10%,var(--stripe-b) 40%,transparent 70%)}
+.hero-inner{position:relative;display:grid;grid-template-columns:6fr 6fr;gap:var(--sp-xxl);align-items:center}
+.hero h1{font-size:64px;font-weight:600;line-height:1.1;letter-spacing:0;margin-bottom:var(--sp-lg)}
+.hero p{font-size:18px;color:var(--body);max-width:460px;margin-bottom:var(--sp-xl)}
+.hero .cta-row{display:flex;align-items:center;gap:var(--sp-md);flex-wrap:wrap}
+
+/* ---------- command palette mockup ---------- */
+.palette{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-xl);padding:0;box-shadow:0 24px 64px rgba(0,0,0,.5)}
+.p-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--hairline)}
+.tl{display:flex;gap:6px}
+.tl i{width:10px;height:10px;border-radius:var(--r-full);background:var(--stone)}
+.tl i:nth-child(1){background:#ff6161}.tl i:nth-child(2){background:#ffc533}.tl i:nth-child(3){background:#59d499}
+.p-search{flex:1;height:32px;background:var(--surface-elevated);border:1px solid var(--hairline);border-radius:var(--r-md);display:flex;align-items:center;gap:8px;padding:0 10px;font-size:14px;color:var(--mute)}
+.p-body{padding:8px}
+.p-row{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:var(--r-sm);font-size:16px;color:var(--ink)}
+.p-row.active{background:var(--surface-card)}
+.tile{width:28px;height:28px;border-radius:var(--r-sm);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+.t-yellow{background:var(--accent-yellow-soft);color:var(--accent-yellow)}
+.t-red{background:var(--accent-red-soft);color:var(--accent-red)}
+.t-green{background:var(--accent-green-soft);color:var(--accent-green)}
+.t-blue{background:var(--accent-blue-soft);color:var(--accent-blue)}
+.t-gray{background:var(--surface-card);color:var(--mute)}
+.p-row .kc{margin-left:auto;display:flex;gap:4px}
+.p-foot{display:flex;justify-content:flex-end;gap:6px;padding:10px 16px;border-top:1px solid var(--hairline);font-size:13px;color:var(--ash)}
+
+/* ---------- store ---------- */
+.store{padding:var(--sp-section) 0 var(--sp-xl)}
+.store h2{font-size:56px;font-weight:500;line-height:1.17;letter-spacing:0.2px;margin-bottom:var(--sp-md)}
+.store .lead{font-size:18px;color:var(--body);max-width:560px;margin-bottom:var(--sp-xl)}
+.store-search{height:44px;width:100%;max-width:560px;background:var(--surface-elevated);border:1px solid var(--hairline);border-radius:var(--r-md);display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:16px;color:var(--mute);margin-bottom:var(--sp-lg)}
+.store-search input{flex:1;border:0;background:transparent;outline:0;color:var(--ink);font-size:16px;font-family:var(--font-sans)}
+.pills{display:flex;gap:var(--sp-sm);flex-wrap:wrap;margin-bottom:var(--sp-lg)}
+.ext-grid{display:grid;grid-template-columns:2fr 2fr;gap:var(--sp-lg)}
+.ext{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--sp-lg);display:flex;gap:var(--sp-lg);align-items:center;text-align:left}
+.ext .tile{width:48px;height:48px;border-radius:var(--r-md);font-size:22px;flex:none}
+.ext .info{flex:1;min-width:0}
+.ext .nm{font-size:18px;font-weight:500;color:var(--ink);letter-spacing:0.2px}
+.ext .by{font-size:14px;color:var(--mute);letter-spacing:0.2px}
+.ext .ds{font-size:14px;color:var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ext .side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.rated{font-size:13px;color:var(--accent-yellow)}
+
+/* ---------- featured detail row ---------- */
+.detail{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-xl);display:grid;grid-template-columns:6fr 6fr;gap:var(--sp-xxl);margin-bottom:var(--sp-section)}
+.gal{display:grid;grid-template-columns:1fr 96px;gap:var(--sp-md)}
+.stage{border-radius:var(--r-lg);border:1px solid var(--hairline);background:var(--surface-card);padding:0;overflow:hidden}
+.thumbs{display:flex;flex-direction:column;gap:var(--sp-md)}
+.thumb{flex:1;border-radius:var(--r-md);border:1px solid var(--hairline);background:var(--surface-card);position:relative}
+.thumb.active{border-color:var(--hairline-strong)}
+.thumb .mini{position:absolute;inset:12px;display:flex;flex-direction:column;gap:6px}
+.thumb .mini i{height:8px;border-radius:var(--r-full);background:var(--stone);display:block;opacity:.4}
+.d-info .head{display:flex;align-items:center;gap:var(--sp-lg);margin-bottom:var(--sp-lg)}
+.d-info .head .tile{width:64px;height:64px;border-radius:var(--r-md);font-size:28px}
+.d-info h2{font-size:24px;font-weight:500;line-height:1.6;letter-spacing:0.2px}
+.d-info .by{font-size:14px;color:var(--mute)}
+.d-info .desc{margin-bottom:var(--sp-xl)}
+.opt-label{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:0.2px;margin:0 0 var(--sp-sm)}
+.opt-row{display:flex;gap:var(--sp-sm);flex-wrap:wrap;margin-bottom:var(--sp-lg)}
+.opt{background:transparent;border:1px solid var(--hairline);color:var(--body);border-radius:var(--r-md);padding:7px 14px;font-size:14px;font-weight:500}
+.opt.active{border-color:var(--hairline-strong);color:var(--ink);background:var(--surface-elevated)}
+.buy-row{display:flex;align-items:center;gap:var(--sp-md);margin-top:var(--sp-xl);flex-wrap:wrap}
+.buy-row .price{font-size:24px;font-weight:500;color:var(--ink)}
+.review{background:var(--surface-elevated);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-lg);margin-top:var(--sp-xl)}
+.review .top{display:flex;align-items:center;gap:var(--sp-sm);margin-bottom:var(--sp-xs)}
+.review .ava{width:36px;height:36px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:var(--surface-card);border:1px solid var(--hairline);color:var(--ink)}
+.review .who{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:0.2px}
+.review .role{font-size:12px;color:var(--mute)}
+.review p{font-size:14px;color:var(--body)}
+
+/* ---------- cart panel ---------- */
+.cart{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--sp-xl)}
+.cart h3{font-size:20px;margin-bottom:var(--sp-lg)}
+.ci{display:flex;gap:var(--sp-md);padding:var(--sp-sm) 0;border-bottom:1px solid var(--hairline);align-items:center}
+.ci .art{width:40px;height:40px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.ci .n{font-size:14px;font-weight:500;color:var(--ink)}
+.ci .m{font-size:12px;color:var(--mute)}
+.ci .p{margin-left:auto;font-size:14px;font-weight:500;color:var(--ink);white-space:nowrap}
+.sum{margin-top:var(--sp-lg);font-size:14px;color:var(--body)}
+.sum .r{display:flex;justify-content:space-between;padding:4px 0}
+.sum .r.total{border-top:1px solid var(--hairline);margin-top:var(--sp-sm);padding-top:var(--sp-sm);font-weight:500;color:var(--ink)}
+.cart .btn-white{width:100%;margin-top:var(--sp-lg)}
+.cart-note{font-size:12px;color:var(--ash);text-align:center;margin-top:var(--sp-sm)}
+.duo{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-xl);align-items:start}
+
+/* ---------- footer ---------- */
+footer{background:var(--canvas);border-top:1px solid var(--hairline);margin-top:var(--sp-section);position:relative}
+footer::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--stripe-a),var(--stripe-b),transparent);opacity:.6}
+.foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-xl);padding:64px 0 32px}
+.foot-grid h4{font-size:14px;font-weight:500;letter-spacing:0.2px;color:var(--ink);margin-bottom:var(--sp-md)}
+.foot-grid a{display:block;font-size:14px;color:var(--body);padding:5px 0}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding:24px 0 48px;border-top:1px solid var(--hairline);gap:16px;flex-wrap:wrap}
+.legal{font-size:13px;color:var(--mute)}
+.newsletter{display:flex;gap:8px}
+.newsletter input{background:var(--surface-elevated);border:1px solid var(--hairline);border-radius:var(--r-md);height:36px;padding:0 12px;font-size:14px;color:var(--ink);width:220px;font-family:var(--font-sans)}
+.newsletter input::placeholder{color:var(--ash)}
+
+@media (max-width:960px){
+  .hero-inner,.detail,.duo{grid-template-columns:1fr}
+  .ext-grid{grid-template-columns:1fr}
+  .hero h1{font-size:36px}
+  .store h2{font-size:36px}
+  .navlinks{display:none}
+  .foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap topnav">
+  <a class="logo" href="#"><span class="mark"></span>Raycast</a>
+  <nav class="navlinks">
+    <a href="#">Store</a><a href="#">AI</a><a href="#">Notes</a><a href="#">Warp Drive</a><a href="#">Pricing</a>
+  </nav>
+  <div class="nav-right">
+    <a class="btn-secondary" href="#">Sign in</a>
+    <a class="btn-white" href="#">Download</a>
+    <button class="bag" aria-label="Installed">▦<span class="dot">3</span></button>
+    <div class="avatar">TW</div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <h1>Your shortcut to everything</h1>
+      <p>The Raycast Store puts hundreds of extensions one keystroke away. Install, press <span class="keycap">⌘</span> <span class="keycap">K</span>, and ship faster.</p>
+      <div class="cta-row">
+        <a class="btn-white" href="#store">Browse the store</a>
+        <span style="font-size:14px;color:var(--mute)">Free for individuals · macOS &amp; Windows</span>
+      </div>
+    </div>
+    <div class="palette">
+      <div class="p-head">
+        <span class="tl"><i></i><i></i><i></i></span>
+        <div class="p-search">⌕&nbsp;npm&nbsp;search…</div>
+        <span class="keycap">⌘</span><span class="keycap">K</span>
+      </div>
+      <div class="p-body">
+        <div class="p-row active"><span class="tile t-yellow">Y</span>Hacker News<span class="kc"><span class="keycap">⌘</span><span class="keycap">↵</span></span></div>
+        <div class="p-row"><span class="tile t-green">L</span>Linear — My Issues</div>
+        <div class="p-row"><span class="tile t-red">S</span>Slack — Set Status</div>
+        <div class="p-row"><span class="tile t-blue">N</span>Notion — Quick Note</div>
+        <div class="p-row"><span class="tile t-gray">▶</span>Raycast AI — Ask</div>
+      </div>
+      <div class="p-foot"><span class="keycap">↑</span><span class="keycap">↓</span> navigate &nbsp; <span class="keycap">↵</span> open</div>
+    </div>
+  </div>
+</section>
+
+<section class="store wrap" id="store">
+  <h2>Store</h2>
+  <p class="lead">Extensions built by the community, reviewed by Raycast. Install in one click — no accounts, no builds.</p>
+  <div class="store-search">⌕<input type="search" placeholder="Search the store..."></div>
+  <div class="pills">
+    <button class="pill-tab active">All extensions</button>
+    <button class="pill-tab">Recently added</button>
+    <button class="pill-tab">Most popular</button>
+    <button class="pill-tab">AI</button>
+    <button class="pill-tab">Productivity</button>
+    <button class="pill-tab">Developer tools</button>
+  </div>
+
+  <div class="ext-grid">
+    <article class="ext">
+      <span class="tile t-yellow">Y</span>
+      <div class="info"><div class="nm">Hacker News <span class="badge-info">New</span></div><div class="by">by Thomas Paul Mann</div><div class="ds">Browse, search and open stories without leaving your keyboard.</div></div>
+      <div class="side"><span class="rated">★ 4.9</span><button class="install-btn">Install Extension</button></div>
+    </article>
+    <article class="ext">
+      <span class="tile t-green">L</span>
+      <div class="info"><div class="nm">Linear</div><div class="by">by Linear</div><div class="ds">Triage issues, cycle through your queue, update statuses.</div></div>
+      <div class="side"><span class="rated">★ 4.8</span><button class="install-btn">Install Extension</button></div>
+    </article>
+    <article class="ext">
+      <span class="tile t-red">S</span>
+      <div class="info"><div class="nm">Slack <span class="badge-pro">Pro</span></div><div class="by">by Raycast</div><div class="ds">Set status, jump to channels, and read unread in place.</div></div>
+      <div class="side"><span class="rated">★ 4.7</span><button class="install-btn">Install Extension</button></div>
+    </article>
+    <article class="ext">
+      <span class="tile t-blue">N</span>
+      <div class="info"><div class="nm">Notion</div><div class="by">by vrufinesse</div><div class="ds">Search pages, append to docs, create tasks from anywhere.</div></div>
+      <div class="side"><span class="rated">★ 4.8</span><button class="install-btn">Install Extension</button></div>
+    </article>
+    <article class="ext">
+      <span class="tile t-gray">♪</span>
+      <div class="info"><div class="nm">Spotify Player <span class="badge-pro">Pro</span></div><div class="by">by mattisssa</div><div class="ds">Control playback, search tracks, and see what's playing.</div></div>
+      <div class="side"><span class="rated">★ 4.9</span><button class="install-btn">Install Extension</button></div>
+    </article>
+    <article class="ext">
+      <span class="tile t-green">✓</span>
+      <div class="info"><div class="nm">Todoist</div><div class="by">by huzef44</div><div class="ds">Capture tasks with natural-language dates and quick filters.</div></div>
+      <div class="side"><span class="rated">★ 4.6</span><button class="install-btn">Install Extension</button></div>
+    </article>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="duo">
+    <div class="detail">
+      <div class="gal">
+        <div class="stage">
+          <div class="p-head"><span class="tl"><i></i><i></i><i></i></span><div class="p-search">⌕&nbsp;hacker&nbsp;news…</div><span class="keycap">⌘</span><span class="keycap">↵</span></div>
+          <div class="p-body">
+            <div class="p-row active"><span class="tile t-yellow">1</span>Show HN: I built a terminal in WebGPU<span class="kc"><span class="keycap">↵</span></span></div>
+            <div class="p-row"><span class="tile t-yellow">2</span>SQLite is all you need</div>
+            <div class="p-row"><span class="tile t-yellow">3</span>The case against microservices (2024)</div>
+            <div class="p-row"><span class="tile t-yellow">4</span>Rust 2.0 timeline announced</div>
+          </div>
+          <div class="p-foot"><span class="keycap">⌘</span><span class="keycap">O</span> open in browser</div>
+        </div>
+        <div class="thumbs">
+          <div class="thumb active"><span class="mini"><i style="width:70%"></i><i style="width:90%"></i><i style="width:55%"></i></span></div>
+          <div class="thumb"><span class="mini"><i style="width:80%"></i><i style="width:50%"></i><i style="width:65%"></i></span></div>
+          <div class="thumb"><span class="mini"><i style="width:60%"></i><i style="width:85%"></i><i style="width:45%"></i></span></div>
+        </div>
+      </div>
+      <div class="d-info">
+        <div class="head">
+          <span class="tile t-yellow">Y</span>
+          <div>
+            <h2>Hacker News for Raycast</h2>
+            <div class="by">by Thomas Paul Mann · ★ 4.9 (1,203 ratings) · 84k installs</div>
+          </div>
+        </div>
+        <p class="desc">Read the front page, search stories, and open anything — all from the command palette. Supports keyboard-first navigation, comments preview, and per-section filtering.</p>
+        <p class="opt-label">Sections</p>
+        <div class="opt-row">
+          <button class="opt active">Front page</button>
+          <button class="opt">Ask HN</button>
+          <button class="opt">Show HN</button>
+          <button class="opt">Jobs</button>
+        </div>
+        <p class="opt-label">Plan</p>
+        <div class="opt-row">
+          <button class="opt active">Free</button>
+          <button class="opt">Pro · $8/mo</button>
+        </div>
+        <div class="buy-row">
+          <button class="install-btn" style="height:36px">Install Extension</button>
+          <span class="price" style="font-size:16px;color:var(--mute)">Free</span>
+          <a class="btn-secondary" href="#cart">View in Raycast Store</a>
+        </div>
+        <div class="review">
+          <div class="top"><div class="ava">MK</div><div><div class="who">Mira Kovac</div><div class="role">Verified install · Raycast Pro</div></div><span style="margin-left:auto;font-size:13px;color:var(--accent-yellow)">★★★★★</span></div>
+          <p>“My homepage is now <span class="keycap">⌘</span><span class="keycap">H</span>. The inline comments preview means I open the browser maybe twice a day.”</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="cart" id="cart">
+      <h3>Installed on this Mac</h3>
+      <div class="ci"><span class="art t-yellow">Y</span><div><div class="n">Hacker News</div><div class="m">v1.42 · auto-updates</div></div><span class="p">Free</span></div>
+      <div class="ci"><span class="art t-green">L</span><div><div class="n">Linear</div><div class="m">v3.8 · auto-updates</div></div><span class="p">Free</span></div>
+      <div class="ci"><span class="art t-gray">▶</span><div><div class="n">Raycast Pro</div><div class="m">AI · Cloud Sync · Unlimited Notes</div></div><span class="p">$8/mo</span></div>
+      <div class="sum">
+        <div class="r"><span>Subtotal</span><span>$8/mo</span></div>
+        <div class="r"><span>Extensions</span><span>27 installed</span></div>
+        <div class="r total"><span>Total / month</span><span>$8</span></div>
+      </div>
+      <a class="btn-white" href="#">Manage subscription</a>
+      <p class="cart-note">Billed via Apple · Cancel anytime</p>
+    </aside>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Product</h4><a href="#">Download</a><a href="#">Pro</a><a href="#">Store</a><a href="#">Warp Drive</a></div>
+      <div><h4>Core features</h4><a href="#">Clipboard history</a><a href="#">Snippets</a><a href="#">Quicklinks</a><a href="#">Window management</a></div>
+      <div><h4>Developers</h4><a href="#">API docs</a><a href="#">Create an extension</a><a href="#">GitHub</a><a href="#">Changelog</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Brand</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">© 2026 Raycast Technologies Inc.</p>
+      <form class="newsletter" onsubmit="return false">
+        <input type="email" placeholder="Email address" aria-label="Email address">
+        <button class="btn-white" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

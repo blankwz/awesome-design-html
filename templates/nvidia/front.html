@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA — Store: GPUs, SDKs &amp; Developer Kits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#76b900; --on-primary:#000000; --primary-dark:#5a8d00;
+  --ink:#000000; --canvas:#ffffff; --surface-dark:#000000; --surface-soft:#f7f7f7;
+  --surface-elevated:#1a1a1a; --hairline:#cccccc; --hairline-strong:#5e5e5e;
+  --body:#1a1a1a; --mute:#757575; --stone:#898989; --ash:#a7a7a7;
+  --on-dark:#ffffff; --on-dark-mute:rgba(255,255,255,.7);
+  --link-blue:#0046a4; --error:#e52020; --warning:#df6500; --success-deep:#3f8500;
+  --font-ui:'Inter',Arial,Helvetica,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-ui);color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+
+/* ── buttons: 2px radius everywhere ──────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:2px;height:44px;padding:0 24px;font-size:16px;font-weight:700}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--primary-dark)}
+.btn-outline{background:transparent;color:var(--ink);border:2px solid var(--primary);padding:0 20px}
+.btn-outline-dark{background:transparent;color:var(--on-dark);border:1px solid var(--on-dark);padding:0 20px;height:42px;font-size:14.4px}
+.ghost{color:var(--primary);font-weight:700;font-size:16px}
+.ghost::after{content:" \2192"}
+
+/* ── utility bar + nav (black chapters) ──────────────────── */
+.utility{background:var(--surface-dark);height:32px;color:var(--on-dark);font-size:12px}
+.utility .wrap{display:flex;justify-content:flex-end;align-items:center;height:100%;gap:20px}
+.utility a{color:var(--on-dark-mute)}
+.nav{background:var(--surface-dark);height:64px}
+.nav .wrap{display:flex;align-items:center;height:100%;gap:28px}
+.logo{display:flex;align-items:center;gap:8px;color:var(--on-dark)}
+.logo svg{width:36px;height:22px;fill:var(--primary)}
+.logo b{font-size:18px;font-weight:700;letter-spacing:.01em}
+.nav-links{display:flex;gap:4px}
+.nav-links a{color:var(--on-dark);font-weight:700;font-size:15px;padding:21px 12px;border-bottom:3px solid transparent}
+.nav-links a.active{border-bottom-color:var(--primary)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.nav-right .searchbtn{display:flex;align-items:center;gap:8px;color:var(--on-dark-mute);font-weight:700;font-size:14px}
+.crumb-bar{background:var(--surface-soft);height:48px;display:flex;align-items:center;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--body)}
+.crumb-bar i{font-style:normal;color:var(--mute);margin:0 10px;font-weight:400}
+.subnav{background:var(--surface-soft);border-top:1px solid var(--hairline);height:56px}
+.subnav .wrap{display:flex;gap:8px;align-items:center;height:100%}
+.pill-tab{border-radius:2px;padding:10px 18px;font-size:14.4px;font-weight:700;color:var(--ink)}
+.pill-tab.active{background:var(--ink);color:var(--on-dark)}
+.tag{display:inline-block;background:var(--surface-soft);color:var(--body);border-radius:2px;padding:4px 10px;font-size:14px;font-weight:700;text-transform:uppercase}
+
+/* ── hero chapter ────────────────────────────────────────── */
+.hero{background:var(--surface-dark);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(680px 340px at 74% 55%,rgba(118,185,0,.32),transparent 70%),
+   linear-gradient(115deg,#0b1400 0%,#000 55%),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 1px,transparent 1px 56px),
+   repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0 1px,transparent 1px 56px)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;padding-top:80px;padding-bottom:80px;align-items:center}
+.hero .eyebrow{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--primary);display:flex;align-items:center;gap:10px}
+.corner-square{display:inline-block;width:12px;height:12px;background:var(--primary)}
+.hero h1{color:var(--on-dark);font-size:48px;font-weight:700;line-height:1.25;margin-top:16px}
+.hero .sub{color:var(--on-dark-mute);font-size:22px;line-height:1.75;margin-top:16px;max-width:520px}
+.hero-cta{display:flex;gap:14px;margin-top:32px}
+.hero-render{position:relative;aspect-ratio:16/10;border:1px solid var(--hairline-strong);
+  background:
+   linear-gradient(160deg,#131f00 0%,#000 70%),
+   radial-gradient(220px 140px at 60% 45%,rgba(118,185,0,.5),transparent 72%)}
+.hero-render .grid-lines{position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(118,185,0,.18) 0 1px,transparent 1px 40px),
+   repeating-linear-gradient(0deg,rgba(118,185,0,.18) 0 1px,transparent 1px 40px)}
+.hero-render .core{position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%) rotate(45deg);
+  border:2px solid var(--primary);background:rgba(118,185,0,.12)}
+.hero-render .core::after{content:"GB300";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-45deg);color:var(--primary);font-weight:700;font-size:18px}
+.hero-render .caption{position:absolute;left:16px;bottom:12px;color:var(--on-dark-mute);font-size:12px}
+
+/* ── product grid ────────────────────────────────────────── */
+.section{padding:64px 0 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.sec-head h2{font-size:24px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.pcard{position:relative;background:var(--canvas);border:1px solid var(--hairline);border-radius:2px}
+.pcard::before{content:"";position:absolute;top:-1px;left:-1px;width:12px;height:12px;background:var(--primary);z-index:2}
+.pcard .pimg{aspect-ratio:1/1;margin:0;background:var(--surface-soft);position:relative;overflow:hidden;border-bottom:1px solid var(--hairline)}
+.pcard .pimg .chip-art{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);border:2px solid var(--primary);width:38%;aspect-ratio:1/1;background:rgba(118,185,0,.1)}
+.pcard .pimg .chip-art::after{content:attr(data-k);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-45deg);font-weight:700;font-size:12px;color:var(--ink)}
+.pcard .pbody{padding:24px}
+.pcard h3{font-size:17px;font-weight:700;line-height:1.47}
+.pcard .pdesc{font-size:15px;color:var(--mute);margin-top:6px;line-height:1.67}
+.pcard .price{font-size:17px;font-weight:700;margin-top:12px}
+.pcard .price .old{color:var(--mute);text-decoration:line-through;font-weight:400;margin-right:8px}
+.pcard .pfoot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.stocktag{font-size:12px;font-weight:700;text-transform:uppercase}
+.stocktag.in{color:var(--success-deep)}
+.stocktag.back{color:var(--warning)}
+
+/* ── featured detail ─────────────────────────────────────── */
+.featured .f-body{display:grid;grid-template-columns:80px 1fr 440px;gap:24px;align-items:start}
+.thumbs{display:flex;flex-direction:column;gap:8px}
+.thumb{aspect-ratio:1/1;background:var(--surface-soft);border:1px solid var(--hairline);border-radius:2px;cursor:pointer}
+.thumb.on{outline:2px solid var(--primary);outline-offset:-2px}
+.f-media{aspect-ratio:1/1;border:1px solid var(--hairline);border-radius:2px;background:var(--surface-soft);position:relative}
+.f-media .chip-art{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);border:2px solid var(--primary);width:34%;aspect-ratio:1/1;background:rgba(118,185,0,.1)}
+.f-media .chip-art::after{content:"RTX";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-45deg);font-weight:700;font-size:22px}
+.f-panel{border:1px solid var(--hairline);border-radius:2px;padding:32px;position:relative}
+.f-panel::after{content:"";position:absolute;bottom:-1px;right:-1px;width:12px;height:12px;background:var(--primary)}
+.f-panel h3{font-size:24px;font-weight:700}
+.f-panel .fsub{font-size:15px;color:var(--mute);margin-top:4px}
+.f-price{font-size:36px;font-weight:700;margin-top:16px}
+.f-price small{font-size:14px;font-weight:400;color:var(--mute);display:block;margin-top:2px}
+.f-lbl{font-size:14px;font-weight:700;text-transform:uppercase;margin-top:24px}
+.f-lbl .hint{color:var(--mute);font-weight:400;text-transform:none;margin-left:8px}
+.optrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.opt{border:1px solid var(--hairline);border-radius:2px;height:44px;font-size:14.4px;font-weight:700;background:var(--canvas)}
+.opt.on{background:var(--ink);color:var(--on-dark)}
+.opt.dis{color:var(--ash);background:var(--surface-soft);cursor:not-allowed}
+.f-buy{display:flex;gap:12px;margin-top:28px}
+.stepper{display:flex;align-items:center;border:1px solid var(--hairline);border-radius:2px;height:44px}
+.stepper button{width:38px;height:100%;font-size:16px;font-weight:700}
+.stepper span{min-width:28px;text-align:center;font-weight:700}
+.f-buy .btn-primary{flex:1}
+.f-specs{margin-top:24px;border-top:1px solid var(--hairline);padding-top:16px}
+.f-specs li{display:flex;justify-content:space-between;font-size:15px;padding:6px 0;border-bottom:1px solid var(--surface-soft)}
+.f-specs li b{font-weight:700}
+.f-review{margin-top:20px;padding:16px;background:var(--surface-soft);border-radius:2px}
+.f-review .stars{color:var(--ink);letter-spacing:2px;font-size:14px}
+.f-review .stars span{color:var(--ash)}
+.f-review blockquote{font-size:15px;color:var(--body);margin-top:8px;line-height:1.67}
+.f-review .who{font-size:12px;color:var(--mute);margin-top:8px}
+
+/* ── cart summary ────────────────────────────────────────── */
+.cart-sec{padding:64px 0}
+.cart{border:1px solid var(--hairline);border-radius:2px;display:grid;grid-template-columns:1fr 380px}
+.cart-items{padding:32px}
+.cart-items h3{font-size:24px;font-weight:700;margin-bottom:20px}
+.c-row{display:grid;grid-template-columns:96px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--hairline)}
+.c-row:last-child{border-bottom:none}
+.c-img{width:96px;height:72px;background:var(--surface-soft);border:1px solid var(--hairline);position:relative}
+.c-img .chip-art{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);border:2px solid var(--primary);width:40%;aspect-ratio:1/1;background:rgba(118,185,0,.1)}
+.c-img .chip-art::after{content:"";position:absolute;inset:0;transform:rotate(-45deg)}
+.c-row .n{font-weight:700;font-size:16px}
+.c-row .s{font-size:14px;color:var(--mute)}
+.c-row .p{font-weight:700}
+.cart-sum{background:var(--surface-soft);padding:32px;border-left:1px solid var(--hairline)}
+.cart-sum h3{font-size:20px;font-weight:700;margin-bottom:16px}
+.sum-line{display:flex;justify-content:space-between;font-size:15px;margin-bottom:12px;color:var(--body)}
+.sum-line.total{font-weight:700;border-top:1px solid var(--hairline-strong);padding-top:12px;font-size:18px}
+.cart-sum .btn-primary{width:100%;margin-top:16px}
+.cart-sum .ghost{display:inline-block;margin-top:14px;font-size:14.4px}
+
+/* ── footer chapter ──────────────────────────────────────── */
+footer{background:var(--surface-dark);color:var(--on-dark-mute);padding:64px 0;margin-top:64px}
+.f-cols{display:grid;grid-template-columns:repeat(6,1fr);gap:24px}
+.f-cols h4{color:var(--on-dark);font-size:15px;font-weight:700;margin-bottom:16px}
+.f-cols a{display:block;font-size:15px;padding:5px 0;color:var(--on-dark-mute)}
+.f-cols a:hover{color:var(--primary)}
+.f-fine{display:flex;justify-content:space-between;border-top:1px solid var(--hairline-strong);margin-top:40px;padding-top:24px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--mute)}
+.f-social{display:flex;gap:10px}
+.f-social span{width:36px;height:36px;border-radius:9999px;border:1px solid var(--hairline-strong);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--on-dark)}
+
+@media (max-width:1023px){
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .hero .wrap{grid-template-columns:1fr}
+  .featured .f-body{grid-template-columns:1fr}
+  .thumbs{flex-direction:row;order:2}
+  .cart{grid-template-columns:1fr}
+  .cart-sum{border-left:none;border-top:1px solid var(--hairline)}
+  .f-cols{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:959px){
+  .nav-links{display:none}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- utility -->
+<div class="utility"><div class="wrap">
+  <a href="#">EN ▾</a><a href="#">Login</a><a href="#">Account</a>
+</div></div>
+
+<!-- nav -->
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#">
+    <svg viewBox="0 0 36 22" aria-hidden="true"><path d="M13.6 6.8v-2c.2 0 .3 0 .5 0 4.6-.1 7.6 4 7.6 4s-3.3 4.4-6.8 4.4c-.4 0-.9-.1-1.3-.2V8.2c1.7.2 2 1 3.1 2.7L19 8.6s-1.7-2.2-4.5-2.2c-.3 0-.6 0-.9.1v-1c.3 0 .5-.1.8-.1 3.1 0 5.4 2.6 5.4 2.6l3.9-3.1S19.6.4 14.3.4c-.2 0-.5 0-.7 0V.3C8.1.1 3.6 4.9 3.6 4.9s2.5 3.6 6.4 4.9V8.3C8.5 8.1 7.4 7 7.4 7s1.3-2 3.8-2.2c.5 0 1 .1 1.4.2V0C7.9-.2 3.9 3 3.9 3s-2.1 3-2.1 5.9c0 0 .6 1 2.1 2.1 0 0 1.7-2.4 4.1-3v1.5c-2 .6-3.3 2.5-3.3 2.5s1.4 1.9 3.3 2.3v-1.7c-1.3-.3-2-1.3-2-1.3s.7-1 2-1.4v6.9c-2.5-.8-4.3-2.4-4.3-2.4s.3 3.7 4.3 6.1v.1c5.6.1 8.9-4.7 8.9-4.7l-3.9-3.1s-2.3 2.6-5.4 2.6c-.3 0-.5 0-.8-.1v-1c.3.1.6.1.9.1 3.5 0 6.8-4.4 6.8-4.4s-3-4.1-7.6-4c-.2 0-.3 0-.5 0z"/></svg>
+    <b>NVIDIA</b>
+  </a>
+  <nav class="nav-links">
+    <a href="#">Products</a><a href="#" class="active">Store</a><a href="#">Solutions</a><a href="#">Industries</a><a href="#">For You</a><a href="#">Support</a>
+  </nav>
+  <div class="nav-right">
+    <a class="searchbtn" href="#">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/></svg>
+      Search
+    </a>
+    <a class="btn-outline-dark" href="#">Sign In</a>
+    <a class="btn-primary" href="#" style="height:42px;font-size:14.4px">Get Started</a>
+  </div>
+</div></header>
+
+<!-- breadcrumb -->
+<div class="crumb-bar"><div class="wrap">Store <i>›</i> GPUs &amp; Developer Kits</div></div>
+
+<main>
+  <!-- hero chapter -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow"><span class="corner-square"></span> BLACKWELL GENERATION</p>
+        <h1>Accelerated computing, delivered to your rack</h1>
+        <p class="sub">Order GeForce RTX, data-center GPUs, and Jetson developer kits — with SDKs, drivers, and NVIDIA AI Enterprise bundled in.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#">Shop GPUs</a>
+          <a class="btn btn-outline-dark" href="#">Compare Specifications</a>
+        </div>
+      </div>
+      <div class="hero-render" role="img" aria-label="Abstract render of a GB300 compute module">
+        <div class="grid-lines"></div>
+        <div class="core"></div>
+        <p class="caption">FIG 1. DGX GB300 NVL72 MODULE — RENDER</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <!-- sub nav / filters -->
+    <nav class="subnav" aria-label="Category filters" style="margin-top:48px;margin-left:-24px;margin-right:-24px;padding:0 24px">
+      <button class="pill-tab active">All Products</button>
+      <button class="pill-tab">GeForce RTX</button>
+      <button class="pill-tab">Data Center</button>
+      <button class="pill-tab">Jetson &amp; Embedded</button>
+      <button class="pill-tab">Software &amp; SDKs</button>
+    </nav>
+
+    <!-- product grid -->
+    <section class="section">
+      <div class="sec-head"><h2>Featured hardware</h2><a class="ghost" href="#">View all 214 products</a></div>
+      <div class="grid">
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="4090"></div></div>
+          <div class="pbody">
+            <h3>GeForce RTX 4090</h3>
+            <p class="pdesc">24 GB GDDR6X · Ada Lovelace. The definitive GPU for creators and AI tinkerers.</p>
+            <p class="price">$1,599.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag in">In Stock</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="5080"></div></div>
+          <div class="pbody">
+            <h3>GeForce RTX 5080</h3>
+            <p class="pdesc">16 GB GDDR7 · Blackwell. DLSS 4 Multi Frame Generation out of the box.</p>
+            <p class="price"><span class="old">$1,299.00</span>$1,199.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag in">In Stock</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="L40S"></div></div>
+          <div class="pbody">
+            <h3>L40S GPU</h3>
+            <p class="pdesc">48 GB · data-center workhorse for inference, rendering, and video pipelines.</p>
+            <p class="price">$7,500.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag back">Backorder</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="ORIN"></div></div>
+          <div class="pbody">
+            <h3>Jetson AGX Orin 64GB</h3>
+            <p class="pdesc">275 TOPS developer kit for robotics and autonomous machines at the edge.</p>
+            <p class="price">$1,999.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag in">In Stock</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="H100"></div></div>
+          <div class="pbody">
+            <h3>H100 PCIe</h3>
+            <p class="pdesc">80 GB HBM2e · transformer engine for LLM training and inference fleets.</p>
+            <p class="price">$28,500.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag back">Backorder</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="NANO"></div></div>
+          <div class="pbody">
+            <h3>Jetson Orin Nano Super</h3>
+            <p class="pdesc">67 TOPS for $249 — the fastest way to start building with local AI.</p>
+            <p class="price">$249.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag in">In Stock</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="AIE"></div></div>
+          <div class="pbody">
+            <h3>NVIDIA AI Enterprise</h3>
+            <p class="pdesc">1-year license · supported inference microservices, RAG, and TensorRT-LLM.</p>
+            <p class="price">$4,995.00 <span style="color:var(--mute);font-weight:400;font-size:14px">/ GPU / yr</span></p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag in">License</span></div>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pimg"><div class="chip-art" data-k="DGX"></div></div>
+          <div class="pbody">
+            <h3>DGX Spark Dev Kit</h3>
+            <p class="pdesc">128 GB unified memory desk-side petaflop machine for Grace-class prototyping.</p>
+            <p class="price">$3,999.00</p>
+            <div class="pfoot"><a class="ghost" href="#">Learn More</a><span class="stocktag in">In Stock</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- featured detail -->
+    <section class="section featured">
+      <div class="sec-head"><h2>Spotlight: GeForce RTX 5090</h2><a class="ghost" href="#">Full specifications</a></div>
+      <div class="f-body">
+        <div class="thumbs">
+          <div class="thumb on"></div>
+          <div class="thumb"></div>
+          <div class="thumb"></div>
+          <div class="thumb"></div>
+          <div class="thumb"></div>
+        </div>
+        <div class="f-media" role="img" aria-label="RTX 5090 board render"></div>
+        <div class="f-panel">
+          <span class="tag">Flagship</span>
+          <h3 style="margin-top:12px">GeForce RTX 5090 FE</h3>
+          <p class="fsub">32 GB GDDR7 · 21,760 CUDA cores · DLSS 4 · PCIe 5.0</p>
+          <p class="f-price">$1,999.00 <small>Free 2-day shipping · 3-year warranty</small></p>
+          <p class="f-lbl">Memory <span class="hint">select configuration</span></p>
+          <div class="optrow">
+            <button class="opt on">32 GB FE</button>
+            <button class="opt">32 GB OC</button>
+            <button class="opt dis">48 GB Mod</button>
+          </div>
+          <p class="f-lbl">Bundle <span class="hint">software included</span></p>
+          <div class="optrow" style="grid-template-columns:1fr 1fr">
+            <button class="opt on">+ NVIDIA AI Workbench</button>
+            <button class="opt">+ 3-month GeForce NOW</button>
+          </div>
+          <div class="f-buy">
+            <div class="stepper" aria-label="Quantity"><button>−</button><span>1</span><button>+</button></div>
+            <a class="btn btn-primary" href="#">Add to Cart</a>
+          </div>
+          <ul class="f-specs">
+            <li><b>Memory bandwidth</b><span>1,792 GB/s</span></li>
+            <li><b>Boost clock</b><span>2.41 GHz</span></li>
+            <li><b>TGP</b><span>575 W</span></li>
+            <li><b>AI TOPS</b><span>3,352</span></li>
+          </ul>
+          <div class="f-review">
+            <p class="stars">★★★★★ <span>★★★★★ 4.8 · 1,204 reviews</span></p>
+            <blockquote>"This card renders our in-house diffusion pipeline 4x faster than the 4090. Thermal design is genuinely quiet at 575 W."</blockquote>
+            <p class="who">— Review by Kenji Watanabe · Verified purchase · Studio Vertex</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- cart / checkout summary -->
+    <section class="cart-sec">
+      <div class="cart">
+        <div class="cart-items">
+          <h3>Your cart (3)</h3>
+          <div class="c-row">
+            <div class="c-img"><div class="chip-art"></div></div>
+            <div><p class="n">GeForce RTX 5090 FE</p><p class="s">32 GB FE · Qty 1 · Ships in 2 business days</p></div>
+            <p class="p">$1,999.00</p>
+          </div>
+          <div class="c-row">
+            <div class="c-img"><div class="chip-art"></div></div>
+            <div><p class="n">Jetson Orin Nano Super</p><p class="s">Dev Kit · Qty 1 · Ships in 2 business days</p></div>
+            <p class="p">$249.00</p>
+          </div>
+          <div class="c-row">
+            <div class="c-img"><div class="chip-art"></div></div>
+            <div><p class="n">NVIDIA AI Enterprise</p><p class="s">1 GPU · 1-year license · digital delivery</p></div>
+            <p class="p">$4,995.00</p>
+          </div>
+        </div>
+        <aside class="cart-sum">
+          <h3>Order summary</h3>
+          <div class="sum-line"><span>Subtotal</span><span>$7,243.00</span></div>
+          <div class="sum-line"><span>Shipping</span><span>$0.00</span></div>
+          <div class="sum-line"><span>Estimated tax</span><span>$615.66</span></div>
+          <div class="sum-line total"><span>Total</span><span>$7,858.66</span></div>
+          <a class="btn btn-primary" href="#">Secure Checkout</a>
+          <a class="ghost" href="#">Apply developer program discount</a>
+        </aside>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- footer chapter -->
+<footer>
+  <div class="wrap">
+    <div class="f-cols">
+      <div><h4>Products</h4><a href="#">GeForce</a><a href="#">Data Center</a><a href="#">Jetson</a><a href="#">Networking</a></div>
+      <div><h4>Software</h4><a href="#">AI Enterprise</a><a href="#">TensorRT</a><a href="#">CUDA Toolkit</a><a href="#">Omniverse</a></div>
+      <div><h4>Resources</h4><a href="#">Developer Blog</a><a href="#">Technical Docs</a><a href="#">Training</a><a href="#">Forums</a></div>
+      <div><h4>Company</h4><a href="#">About NVIDIA</a><a href="#">Investors</a><a href="#">Careers</a><a href="#">Newsroom</a></div>
+      <div><h4>Solutions</h4><a href="#">AI Inference</a><a href="#">Robotics</a><a href="#">Healthcare</a><a href="#">Automotive</a></div>
+      <div><h4>Support</h4><a href="#">Drivers</a><a href="#">Warranty</a><a href="#">Order Status</a><a href="#">Contact</a></div>
+    </div>
+    <div class="f-fine">
+      <span>© 2026 NVIDIA Corporation · Privacy · Legal · Manage Cookies</span>
+      <div class="f-social"><span>X</span><span>in</span><span>GH</span><span>YT</span></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

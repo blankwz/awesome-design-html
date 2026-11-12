@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notion Admin — Marketplace Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#5645d4; --primary-pressed:#4534b3; --on-primary:#ffffff;
+  --brand-navy:#0a1530; --link-blue:#0075de; --brand-pink:#ff64c8; --brand-orange:#dd5b00;
+  --brand-purple-800:#391c57; --brand-teal:#2a9d99; --brand-green:#1aae39; --brand-yellow:#f5d75e;
+  --tint-peach:#ffe8d4; --tint-rose:#fde0ec; --tint-mint:#d9f3e1; --tint-lavender:#e6e0f5;
+  --tint-sky:#dcecfa; --tint-yellow:#fef7d6; --tint-yellow-bold:#f9e79f;
+  --canvas:#ffffff; --surface:#f6f5f4; --surface-soft:#fafaf9;
+  --hairline:#e5e3df; --hairline-soft:#ede9e4; --hairline-strong:#c8c4be;
+  --ink-deep:#000000; --ink:#1a1a1a; --charcoal:#37352f; --slate:#5d5b54; --steel:#787671;
+  --stone:#a4a097; --muted:#bbb8b1; --on-dark:#ffffff; --on-dark-muted:#a4a097;
+  --success:#1aae39; --warning:#dd5b00; --error:#e03131;
+  --font-ui:'Inter',-apple-system,'Segoe UI',Helvetica,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-ui);color:var(--ink);background:var(--surface-soft);font-size:16px;line-height:1.55}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ── sidebar ─────────────────────────────────────────────── */
+.side{background:var(--canvas);border-right:1px solid var(--hairline);display:flex;flex-direction:column;padding:16px 12px}
+.side .brand{display:flex;align-items:center;gap:8px;padding:6px 10px 18px}
+.logo-mark{width:26px;height:26px;border:1.5px solid var(--ink);border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.side .brand b{font-size:14px;font-weight:600}
+.side .group{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--stone);padding:16px 10px 6px}
+.side nav a{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--slate);padding:7px 10px;border-radius:6px}
+.side nav a:hover{background:var(--surface)}
+.side nav a.active{background:var(--tint-lavender);color:var(--brand-purple-800);font-weight:500}
+.side nav a .ic{width:20px;height:20px;border-radius:5px;background:var(--surface);display:inline-flex;align-items:center;justify-content:center;font-size:11px;border:1px solid var(--hairline)}
+.side nav a.active .ic{background:var(--canvas);border-color:var(--brand-purple-800)}
+.side nav a .count{margin-left:auto;font-size:12px;background:var(--surface);border:1px solid var(--hairline);border-radius:9999px;padding:0 8px;color:var(--steel)}
+.side nav a.active .count{background:var(--canvas);color:var(--brand-purple-800)}
+.user-card{margin-top:auto;border:1px solid var(--hairline);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:9999px;background:var(--tint-peach);color:var(--brand-orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.user-card .u-name{font-size:14px;font-weight:500}
+.user-card .u-role{font-size:12px;color:var(--steel)}
+
+/* ── topbar ──────────────────────────────────────────────── */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--canvas);border-bottom:1px solid var(--hairline);display:flex;align-items:center;gap:16px;padding:14px 32px}
+.crumb{font-size:14px;color:var(--stone)}
+.crumb b{color:var(--ink);font-weight:500}
+.crumb i{font-style:normal;margin:0 6px;color:var(--muted)}
+.search-pill{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--hairline);border-radius:8px;height:44px;padding:0 16px;width:300px;color:var(--steel)}
+.search-pill input{border:none;background:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink)}
+.icon-circle{width:40px;height:40px;border-radius:8px;background:var(--surface);display:inline-flex;align-items:center;justify-content:center;position:relative}
+.icon-circle svg{width:18px;height:18px;stroke:var(--charcoal);fill:none;stroke-width:1.7}
+.icon-circle .dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:9999px;background:var(--error);border:2px solid var(--canvas)}
+.avatar.sm{width:36px;height:36px}
+
+/* content */
+.content{padding:32px;display:flex;flex-direction:column;gap:28px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between}
+.page-head h1{font-size:36px;font-weight:600;letter-spacing:-.5px}
+.page-head p{color:var(--slate);font-size:14px;margin-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:500}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:active{background:var(--primary-pressed)}
+.btn-secondary{border:1px solid var(--hairline-strong);color:var(--ink)}
+.head-actions{display:flex;gap:8px}
+
+/* badges */
+.tagchip{font-size:13px;font-weight:600;border-radius:6px;padding:2px 8px}
+.tc-green{background:var(--tint-mint);color:var(--brand-green)}
+.tc-orange{background:var(--tint-peach);color:var(--brand-orange)}
+.tc-purple{background:var(--tint-lavender);color:var(--brand-purple-800)}
+.tc-sky{background:var(--tint-sky);color:var(--link-blue)}
+.tc-pink{background:var(--tint-rose);color:var(--brand-pink)}
+.tag-yellow{background:var(--tint-yellow-bold);color:var(--charcoal)}
+.badge{display:inline-flex;align-items:center;border-radius:9999px;padding:4px 10px;font-size:13px;font-weight:600}
+.badge::before{content:"";width:6px;height:6px;border-radius:9999px;margin-right:6px;background:currentColor}
+.b-success{background:var(--tint-mint);color:var(--success)}
+.b-warning{background:var(--tint-peach);color:var(--warning)}
+.b-danger{background:var(--tint-rose);color:var(--error)}
+.b-neutral{background:var(--surface);color:var(--steel)}
+
+/* ── KPI cards ───────────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;padding:20px}
+.kpi .k-label{font-size:13px;font-weight:500;color:var(--steel)}
+.kpi .k-value{font-size:28px;font-weight:600;margin-top:6px;letter-spacing:-.5px}
+.kpi .k-delta{font-size:13px;font-weight:500;margin-top:2px}
+.up{color:var(--success)} .down{color:var(--error)}
+.kpi .k-delta span{color:var(--stone);font-weight:400}
+.spark{display:flex;align-items:flex-end;gap:4px;height:32px;margin-top:14px}
+.spark i{flex:1;border-radius:3px;background:var(--tint-lavender)}
+.spark i.hi{background:var(--primary)}
+
+/* ── charts row ──────────────────────────────────────────── */
+.charts{display:grid;grid-template-columns:1.8fr 1fr;gap:16px}
+.panel{background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;padding:24px}
+.panel h3{font-size:18px;font-weight:600}
+.panel .p-sub{font-size:14px;color:var(--steel);margin:2px 0 20px}
+.bars{display:flex;align-items:flex-end;gap:14px;height:190px;border-bottom:1px solid var(--hairline-soft)}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bcol .bar{width:100%;max-width:44px;border-radius:6px 6px 0 0;background:var(--tint-lavender)}
+.bcol .bar.hi{background:var(--primary)}
+.bcol small{font-size:12px;color:var(--stone);padding-bottom:8px}
+.donut-wrap{display:flex;gap:24px;align-items:center}
+.donut{width:150px;height:150px;border-radius:9999px;flex:none;position:relative;
+  background:conic-gradient(var(--primary) 0 42%,var(--brand-pink) 42% 64%,var(--brand-yellow) 64% 84%,var(--brand-teal) 84% 100%)}
+.donut::after{content:"48.2K";position:absolute;inset:36px;background:var(--canvas);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600}
+.legend{flex:1}
+.legend li{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px;color:var(--charcoal)}
+.legend i{width:10px;height:10px;border-radius:9999px;flex:none}
+.legend b{margin-left:auto;font-weight:500;color:var(--ink)}
+
+/* ── table ───────────────────────────────────────────────── */
+.table-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--steel);padding:12px 16px;border-bottom:1px solid var(--hairline)}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--hairline-soft);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+.checkbox{width:16px;height:16px;border:1px solid var(--hairline-strong);border-radius:4px;display:inline-block;vertical-align:middle}
+.tm-name{font-weight:500}
+.tm-by{font-size:13px;color:var(--steel)}
+.amount{font-weight:500}
+.actions button{color:var(--link-blue);font-size:13px;font-weight:500;margin-right:14px}
+tfoot td{padding:12px 16px;font-size:13px;color:var(--steel)}
+.pager{display:flex;gap:6px}
+.pager button{width:32px;height:32px;border-radius:6px;border:1px solid var(--hairline);font-size:13px}
+.pager button.cur{background:var(--ink-deep);color:var(--on-dark);border-color:var(--ink-deep)}
+
+/* ── below row ───────────────────────────────────────────── */
+.below{display:grid;grid-template-columns:1.8fr 1fr;gap:16px;align-items:start}
+.feed li{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--hairline-soft)}
+.feed li:last-child{border-bottom:none}
+.feed .f-dot{width:32px;height:32px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.feed .f-dot.ok{background:var(--tint-mint);color:var(--success)}
+.feed .f-dot.warn{background:var(--tint-peach);color:var(--warning)}
+.feed .f-dot.dgr{background:var(--tint-rose);color:var(--error)}
+.feed .f-dot.nt{background:var(--tint-sky);color:var(--link-blue)}
+.feed p{font-size:14px}
+.feed p b{font-weight:500}
+.feed time{font-size:12px;color:var(--stone)}
+.quick label{display:block;font-size:14px;font-weight:500;margin:16px 0 6px}
+.quick input[type=text],.quick select{width:100%;height:44px;border:1px solid var(--hairline-strong);border-radius:8px;padding:0 12px;font-family:inherit;font-size:14px;outline:none;background:var(--canvas)}
+.quick input:focus{border:2px solid var(--primary)}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-top:16px}
+.switch{width:40px;height:22px;border-radius:9999px;background:var(--hairline);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:9999px;background:#fff;box-shadow:rgba(15,15,15,.08) 0 1px 2px}
+.switch.on{background:var(--primary)}
+.switch.on::after{left:auto;right:3px}
+.quick .btn-primary{width:100%;margin-top:20px}
+
+@media (max-width:1023px){
+  .shell{grid-template-columns:1fr}.side{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.below{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- sidebar -->
+  <aside class="side">
+    <div class="brand"><span class="logo-mark">N</span><b>Marketplace Admin</b></div>
+    <nav>
+      <p class="group">Overview</p>
+      <a href="#" class="active"><span class="ic">▦</span>Dashboard</a>
+      <a href="#"><span class="ic">◔</span>Analytics</a>
+      <p class="group">Marketplace</p>
+      <a href="#"><span class="ic">▤</span>Templates<span class="count">20,481</span></a>
+      <a href="#"><span class="ic">✎</span>Submissions<span class="count">23</span></a>
+      <a href="#"><span class="ic">✦</span>Creators</a>
+      <a href="#"><span class="ic">◍</span>Payouts</a>
+      <a href="#"><span class="ic">⚑</span>Reports</a>
+      <p class="group">Program</p>
+      <a href="#"><span class="ic">◎</span>Collections</a>
+      <a href="#"><span class="ic">☰</span>Reviews</a>
+      <p class="group">System</p>
+      <a href="#"><span class="ic">⚙</span>Settings</a>
+    </nav>
+    <div class="user-card">
+      <span class="avatar">AO</span>
+      <div><p class="u-name">Amara Osei</p><p class="u-role">Marketplace Lead</p></div>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <div class="main">
+    <header class="topbar">
+      <p class="crumb">Marketplace <i>/</i> <b>Dashboard</b></p>
+      <label class="search-pill">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#787671" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/></svg>
+        <input type="search" placeholder="Search templates, creators, payouts" aria-label="Search">
+      </label>
+      <button class="icon-circle" aria-label="Notifications, 4 unread">
+        <svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0v5l2 3H4l2-3V9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="avatar sm">AO</span>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div><h1>Dashboard</h1><p>Template marketplace health · Wed, Oct 26 · All regions</p></div>
+        <div class="head-actions">
+          <button class="btn btn-secondary">Export report</button>
+          <button class="btn btn-primary">New collection</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="k-label">Marketplace revenue (MTD)</p>
+          <p class="k-value">$482K</p>
+          <p class="k-delta up">↑ 14.2% <span>vs last month</span></p>
+          <div class="spark"><i style="height:42%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:64%"></i><i style="height:60%"></i><i style="height:78%"></i><i class="hi" style="height:94%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Duplicates (MTD)</p>
+          <p class="k-value">3.9M</p>
+          <p class="k-delta up">↑ 9.8% <span>vs last month</span></p>
+          <div class="spark"><i style="height:46%"></i><i style="height:52%"></i><i style="height:60%"></i><i style="height:56%"></i><i style="height:70%"></i><i style="height:74%"></i><i class="hi" style="height:88%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Creator payouts pending</p>
+          <p class="k-value">$121K</p>
+          <p class="k-delta down">↑ 6.1% <span>clear by Nov 1</span></p>
+          <div class="spark"><i style="height:60%"></i><i style="height:52%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:64%"></i><i style="height:70%"></i><i class="hi" style="height:76%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Open reports</p>
+          <p class="k-value">17</p>
+          <p class="k-delta up">↓ 5 <span>vs last week</span></p>
+          <div class="spark"><i style="height:76%"></i><i style="height:68%"></i><i style="height:62%"></i><i style="height:56%"></i><i style="height:48%"></i><i style="height:44%"></i><i class="hi" style="height:36%"></i></div>
+        </div>
+      </section>
+
+      <!-- charts -->
+      <section class="charts">
+        <div class="panel">
+          <h3>Paid template sales</h3>
+          <p class="p-sub">Monthly revenue, USD thousands · FY26</p>
+          <div class="bars">
+            <div class="bcol"><div class="bar" style="height:36%"></div><small>Nov</small></div>
+            <div class="bcol"><div class="bar" style="height:58%"></div><small>Dec</small></div>
+            <div class="bcol"><div class="bar" style="height:42%"></div><small>Jan</small></div>
+            <div class="bcol"><div class="bar" style="height:50%"></div><small>Feb</small></div>
+            <div class="bcol"><div class="bar" style="height:47%"></div><small>Mar</small></div>
+            <div class="bcol"><div class="bar" style="height:60%"></div><small>Apr</small></div>
+            <div class="bcol"><div class="bar" style="height:55%"></div><small>May</small></div>
+            <div class="bcol"><div class="bar" style="height:68%"></div><small>Jun</small></div>
+            <div class="bcol"><div class="bar" style="height:63%"></div><small>Jul</small></div>
+            <div class="bcol"><div class="bar" style="height:74%"></div><small>Aug</small></div>
+            <div class="bcol"><div class="bar" style="height:70%"></div><small>Sep</small></div>
+            <div class="bcol"><div class="bar hi" style="height:92%"></div><small>Oct</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Downloads by category</h3>
+          <p class="p-sub">Share of last 30 days</p>
+          <div class="donut-wrap">
+            <div class="donut" role="img" aria-label="Donut chart: Wikis 42%, Planning 22%, Personal 20%, Marketing 16%"></div>
+            <ul class="legend">
+              <li><i style="background:var(--primary)"></i>Wikis &amp; Docs<b>42%</b></li>
+              <li><i style="background:var(--brand-pink)"></i>Projects &amp; Tasks<b>22%</b></li>
+              <li><i style="background:var(--brand-yellow)"></i>Personal<b>20%</b></li>
+              <li><i style="background:var(--brand-teal)"></i>Marketing<b>16%</b></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- table + side panel -->
+      <section class="below">
+        <div class="table-card">
+          <table>
+            <thead><tr>
+              <th style="width:36px"><span class="checkbox"></span></th>
+              <th>Template</th><th>Category</th><th>Status</th><th>Revenue</th><th>Updated</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">Company Home / OS</p><p class="tm-by">by Notion · ★ 4.9</p></td><td><span class="tagchip tc-sky">Wiki</span></td><td><span class="badge b-success">Published</span></td><td class="amount">Free</td><td>Oct 25</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">Content Calendar Pro</p><p class="tm-by">by Studio Mono · ★ 4.7</p></td><td><span class="tagchip tc-pink">Marketing</span></td><td><span class="badge b-success">Published</span></td><td class="amount">$12.4K</td><td>Oct 24</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">Startup CRM &amp; Pipeline</p><p class="tm-by">by Elin Park · ★ 4.8</p></td><td><span class="tagchip tc-orange">CRM</span></td><td><span class="badge b-warning">In review</span></td><td class="amount">$8.9K</td><td>Oct 24</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">Freelance OS</p><p class="tm-by">by Mara Voss · ★ 4.6</p></td><td><span class="tagchip tc-orange">Business</span></td><td><span class="badge b-success">Published</span></td><td class="amount">$6.2K</td><td>Oct 22</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">AI Meeting Notes Hub</p><p class="tm-by">by Devlin Ross · ★ 4.4</p></td><td><span class="tagchip tc-purple">Wiki</span></td><td><span class="badge b-danger">Reported</span></td><td class="amount">$1.8K</td><td>Oct 21</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">Habit Tracker 2026</p><p class="tm-by">by Thomas Frank · ★ 4.8</p></td><td><span class="tagchip tc-sky">Personal</span></td><td><span class="badge b-neutral">Unlisted</span></td><td class="amount">Free</td><td>Oct 19</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+              <tr><td><span class="checkbox"></span></td><td><p class="tm-name">Investor Update Deck</p><p class="tm-by">by Lumen Labs · ★ 4.7</p></td><td><span class="tagchip tc-green">Planning</span></td><td><span class="badge b-success">Published</span></td><td class="amount">$3.1K</td><td>Oct 18</td><td class="actions"><button>View</button><button>Edit</button></td></tr>
+            </tbody>
+            <tfoot><tr>
+              <td colspan="5">Showing 1–7 of 20,481 templates</td>
+              <td colspan="2"><div class="pager"><button>‹</button><button class="cur">1</button><button>2</button><button>3</button><button>…</button><button>2926</button><button>›</button></div></td>
+            </tr></tfoot>
+          </table>
+        </div>
+
+        <div class="panel quick">
+          <h3>Recent activity</h3>
+          <p class="p-sub">Marketplace events · last 6 hours</p>
+          <ul class="feed">
+            <li><span class="f-dot ok">✓</span><div><p><b>Startup CRM &amp; Pipeline</b> passed automated review — ready to publish.</p><time>18 min ago</time></div></li>
+            <li><span class="f-dot dgr">⚑</span><div><p><b>AI Meeting Notes Hub</b> reported for unlicensed artwork — assigned to Amara.</p><time>52 min ago</time></div></li>
+            <li><span class="f-dot nt">✦</span><div><p><b>14 new creators</b> onboarded via the Partner program.</p><time>2 hrs ago</time></div></li>
+            <li><span class="f-dot warn">!</span><div><p><b>Payout run</b> for October closes Nov 1 — $121K across 1,204 creators.</p><time>3 hrs ago</time></div></li>
+            <li><span class="f-dot nt">◎</span><div><p><b>Collection live:</b> "Plan your 2027 offsite" featured on the gallery home.</p><time>5 hrs ago</time></div></li>
+          </ul>
+          <label>Review queue SLA</label>
+          <select><option>48 hours</option><option>24 hours</option><option>72 hours</option></select>
+          <div class="toggle-row"><span>Auto-approve free templates under 10 blocks</span><span class="switch on"></span></div>
+          <div class="toggle-row"><span>Email creators on rejection with notes</span><span class="switch on"></span></div>
+          <button class="btn btn-primary">Save settings</button>
+        </div>
+      </section>
+
+      <!-- infra strip -->
+      <section class="kpis">
+        <div class="kpi">
+          <p class="k-label">Gallery uptime (30d)</p>
+          <p class="k-value" style="font-size:24px">99.99%</p>
+          <p class="k-delta up">↑ stable <span>1 minor incident</span></p>
+          <div class="spark"><i style="height:58%"></i><i style="height:62%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:62%"></i><i style="height:66%"></i><i style="height:64%"></i><i class="hi" style="height:70%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Duplicate p95 latency</p>
+          <p class="k-value" style="font-size:24px">1.3s</p>
+          <p class="k-delta up">↓ 0.2s <span>vs last week</span></p>
+          <div class="spark"><i style="height:68%"></i><i style="height:62%"></i><i style="height:64%"></i><i style="height:56%"></i><i style="height:52%"></i><i style="height:48%"></i><i style="height:46%"></i><i class="hi" style="height:40%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Search index freshness</p>
+          <p class="k-value" style="font-size:24px">4 min</p>
+          <p class="k-delta up">↑ healthy <span>2.1M docs queued</span></p>
+          <div class="spark"><i style="height:40%"></i><i style="height:46%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:50%"></i><i style="height:58%"></i><i style="height:56%"></i><i class="hi" style="height:64%"></i></div>
+        </div>
+        <div class="kpi">
+          <p class="k-label">Next release train</p>
+          <p class="k-value" style="font-size:24px">R148</p>
+          <p class="k-delta up">↑ Thu <span>marketplace: price floors</span></p>
+          <div class="spark"><i style="height:30%"></i><i style="height:38%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:58%"></i><i style="height:66%"></i><i style="height:74%"></i><i class="hi" style="height:84%"></i></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</body>
+</html>

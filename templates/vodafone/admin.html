@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vodafone Ops — Store Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#e60000; --on-primary:#ffffff;
+  --ink:#25282b; --body:#7e7e7e; --mute:#bebebe;
+  --canvas:#ffffff; --canvas-soft:#f2f2f2; --on-dark:#ffffff;
+  --success:#15803d; --success-bg:#e7f4ec;
+  --warning:#b45309; --warning-bg:#fdf1e3;
+  --danger:#e60000; --danger-bg:#fdecec;
+  --font:'Inter','Helvetica Neue',Arial,sans-serif;
+  --r-card:6px; --r-pill-md:32px; --r-pill-lg:60px; --r-full:9999px;
+  --s-xxs:2px; --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-2xl:24px; --s-3xl:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas-soft);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button,input,select{font-family:var(--font)}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.side{background:var(--canvas);border-right:1px solid var(--mute);padding:var(--s-xl) var(--s-md);display:flex;flex-direction:column;gap:var(--s-xl);position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;letter-spacing:-0.4px;padding:0 var(--s-lg)}
+.orb{width:32px;height:32px;background:var(--primary);border-radius:var(--r-card);display:grid;place-items:center;flex:none}
+.side-group{font-size:12px;font-weight:600;letter-spacing:.57px;text-transform:uppercase;color:var(--body);padding:var(--s-md) var(--s-lg) var(--s-xs)}
+.nav{list-style:none;display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;font-size:16px;padding:12px var(--s-lg);border-radius:var(--r-card);color:var(--ink);border-left:4px solid transparent}
+.nav a:hover{background:var(--canvas-soft)}
+.nav a.on{background:var(--canvas-soft);font-weight:700;border-left-color:var(--primary)}
+.nav a svg{flex:none;opacity:.75}
+.user-card{margin-top:auto;background:var(--canvas-soft);border-radius:var(--r-card);padding:var(--s-md);display:flex;align-items:center;gap:10px}
+.user-card .avatar{width:38px;height:38px}
+.user-card b{display:block;font-size:16px;font-weight:700}
+.user-card span{font-size:14px;color:var(--body)}
+.user-card .out{margin-left:auto;background:none;border:0;cursor:pointer;color:var(--body);font-size:16px}
+
+/* ---------- topbar ---------- */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--canvas);border-bottom:1px solid var(--mute);padding:var(--s-md) var(--s-3xl);display:flex;align-items:center;gap:var(--s-xl);position:sticky;top:0;z-index:40}
+.crumbs{font-size:14px;color:var(--body)}
+.crumbs b{color:var(--ink);font-weight:700}
+.top-spacer{flex:1}
+.top-search{display:flex;align-items:center;gap:8px;border:1px solid var(--ink);border-radius:var(--r-card);padding:8px 12px;width:280px}
+.top-search input{border:0;outline:0;font-size:16px;width:100%;color:var(--ink);background:transparent}
+.top-search input::placeholder{color:var(--mute)}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-full);border:1px solid var(--ink);background:var(--canvas);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--primary);border:2px solid var(--canvas)}
+.avatar{width:36px;height:36px;border-radius:var(--r-full);background:var(--ink);color:var(--on-dark);font-size:13px;font-weight:700;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;padding:8px 20px;border-radius:var(--r-pill-lg);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.btn-primary:hover{background:#c90000}
+
+.content{padding:var(--s-3xl);display:flex;flex-direction:column;gap:var(--s-3xl)}
+.pagehead h1{font-size:32px;font-weight:700;line-height:1.25}
+.pagehead p{font-size:16px;color:var(--body);margin-top:4px}
+
+/* ---------- KPI row ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg)}
+.kpi{background:var(--canvas);border:1px solid var(--mute);border-radius:var(--r-card);padding:var(--s-lg)}
+.kpi .k-label{font-size:14px;font-weight:700;color:var(--body)}
+.kpi .k-value{font-size:32px;font-weight:800;margin:6px 0 2px;letter-spacing:-.5px}
+.delta{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill-md)}
+.delta.up{background:var(--success-bg);color:var(--success)}
+.delta.down{background:var(--danger-bg);color:var(--danger)}
+.kpi-foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s-md)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:28px}
+.spark i{width:6px;border-radius:2px;background:var(--mute)}
+.spark i.hot{background:var(--primary)}
+.k-note{font-size:12px;color:var(--body)}
+
+/* ---------- cards / charts ---------- */
+.card{background:var(--canvas);border:1px solid var(--mute);border-radius:var(--r-card);padding:var(--s-xl)}
+.card h3{font-size:18px;font-weight:700}
+.card .sub{font-size:14px;color:var(--body);margin-top:2px}
+.charts{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-lg)}
+.chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s-lg)}
+.legend-tag{font-size:12px;font-weight:600;letter-spacing:.57px;text-transform:uppercase;color:var(--body)}
+.bars{display:flex;align-items:flex-end;gap:var(--s-md);height:190px;padding-top:var(--s-md)}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-col i{width:100%;max-width:34px;background:var(--mute);border-radius:var(--r-xs) var(--r-xs) 0 0}
+.bar-col.hot i{background:var(--primary)}
+.bar-col span{font-size:12px;color:var(--body)}
+.donut-wrap{display:flex;align-items:center;gap:var(--s-xl)}
+.donut{width:160px;height:160px;flex:none}
+.donut circle{fill:none;stroke-width:20;transform:rotate(-90deg);transform-origin:50% 50%}
+.legend{list-style:none;display:flex;flex-direction:column;gap:var(--s-md);font-size:14px;flex:1}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;border-radius:2px;flex:none}
+.legend b{margin-left:auto;font-weight:700}
+
+/* ---------- table + panel ---------- */
+.grid-main{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--s-lg);align-items:start}
+table{width:100%;border-collapse:collapse;font-size:16px}
+thead th{background:var(--canvas-soft);text-align:left;font-size:12px;font-weight:600;letter-spacing:.57px;text-transform:uppercase;color:var(--ink);padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--mute)}
+tbody td{padding:var(--s-md) var(--s-lg);border-bottom:1px solid var(--mute);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--canvas-soft)}
+td .name b{display:block;font-weight:700}
+td .name span{font-size:14px;color:var(--body)}
+.check{width:18px;height:18px;accent-color:var(--primary)}
+.status{display:inline-block;font-size:14px;font-weight:700;padding:4px 12px;border-radius:var(--r-pill-md)}
+.st-success{background:var(--success-bg);color:var(--success)}
+.st-warning{background:var(--warning-bg);color:var(--warning)}
+.st-danger{background:var(--danger-bg);color:var(--danger)}
+.st-neutral{background:var(--canvas-soft);color:var(--body)}
+.amount{font-weight:700;white-space:nowrap}
+.actions{display:flex;gap:6px;justify-content:flex-end}
+.icon-sm{width:32px;height:32px;border-radius:var(--r-full);border:1px solid var(--mute);background:var(--canvas);cursor:pointer;color:var(--ink);display:grid;place-items:center}
+.icon-sm:hover{border-color:var(--ink)}
+.t-foot{display:flex;align-items:center;justify-content:space-between;padding-top:var(--s-md);font-size:14px;color:var(--body)}
+.pager{display:flex;gap:6px}
+.pager button{width:34px;height:34px;border-radius:var(--r-full);border:1px solid var(--mute);background:var(--canvas);cursor:pointer;font-size:14px;font-weight:700;color:var(--ink)}
+.pager button.on{background:var(--ink);color:var(--on-dark);border-color:var(--ink)}
+
+/* activity feed */
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed li{display:flex;gap:var(--s-md);padding:var(--s-md) 0;border-bottom:1px solid var(--mute)}
+.feed li:last-child{border-bottom:0}
+.feed .f-dot{width:38px;height:38px;border-radius:var(--r-full);flex:none;display:grid;place-items:center;font-size:12px;font-weight:700}
+.f-red{background:var(--danger-bg);color:var(--danger)}
+.f-dark{background:var(--ink);color:var(--on-dark)}
+.f-soft{background:var(--canvas-soft);color:var(--ink)}
+.feed p{font-size:16px}
+.feed p b{font-weight:700}
+.feed time{font-size:12px;color:var(--body);letter-spacing:.57px;text-transform:uppercase}
+.card-btn{display:inline-block;margin-top:var(--s-md);font-size:16px;font-weight:700}
+.card-btn:hover{color:var(--primary)}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts,.grid-main{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .top-search{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <a class="logo" href="#">
+      <span class="orb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 15c-1.7 0-3-1.4-3-3.2C2 8 5.2 4.6 9.4 3l.9 1.8C7.2 6.2 5.4 8.3 5.2 10c.2-.1.6-.2 1-.2 1.6 0 2.8 1.2 2.8 2.9S7.7 15 5 15Zm9 0c-1.7 0-3-1.4-3-3.2C11 8 14.2 4.6 18.4 3l.9 1.8c-3.1 1.4-4.9 3.5-5.1 5.2.2-.1.6-.2 1-.2 1.6 0 2.8 1.2 2.8 2.9S16.7 15 14 15Z" fill="#fff"/></svg></span>
+      vodafone ops
+    </a>
+    <div>
+      <div class="side-group">Overview</div>
+      <ul class="nav">
+        <li><a class="on" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Sales</div>
+      <ul class="nav">
+        <li><a href="#">Orders</a></li>
+        <li><a href="#">Devices &amp; Plans</a></li>
+        <li><a href="#">SIM Inventory</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Customers</div>
+      <ul class="nav">
+        <li><a href="#">Accounts</a></li>
+        <li><a href="#">Trade-ins</a></li>
+        <li><a href="#">Support Tickets</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Insight</div>
+      <ul class="nav">
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Network Health</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="side-group">Admin</div>
+      <ul class="nav">
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </div>
+    <div class="user-card">
+      <span class="avatar">RN</span>
+      <div><b>Rosa Nielsen</b><span>Store Manager</span></div>
+      <button class="out" aria-label="Sign out">↦</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs">Dashboard / <b>Overview</b></div>
+      <div class="top-spacer"></div>
+      <div class="top-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bebebe" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" placeholder="Search orders, customers…">
+      </div>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <span class="avatar">RN</span>
+      <button class="btn btn-primary">New order</button>
+    </header>
+
+    <main class="content">
+      <div class="pagehead">
+        <h1>Store overview</h1>
+        <p>Oxford Circus flagship · Week 43, 2026 · Updated 2 minutes ago</p>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k-label">Active connections</div>
+          <div class="k-value">18,402</div>
+          <span class="delta up">▲ 4.2%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:30%"></i><i style="height:45%"></i><i style="height:38%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:66%"></i><i style="height:60%"></i><i style="height:78%"></i><i class="hot" style="height:100%"></i></div><span class="k-note">vs last week</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">New activations</div>
+          <div class="k-value">1,247</div>
+          <span class="delta up">▲ 8.9%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:35%"></i><i style="height:30%"></i><i style="height:44%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:62%"></i><i style="height:58%"></i><i style="height:71%"></i><i class="hot" style="height:88%"></i></div><span class="k-note">week to date</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Churn rate</div>
+          <div class="k-value">1.8%</div>
+          <span class="delta down">▼ 0.3 pt</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:70%"></i><i style="height:64%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:49%"></i><i style="height:44%"></i><i style="height:40%"></i><i class="hot" style="height:34%"></i></div><span class="k-note">30-day window</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">Average revenue / user</div>
+          <div class="k-value">£31.40</div>
+          <span class="delta up">▲ 1.1%</span>
+          <div class="kpi-foot"><div class="spark"><i style="height:40%"></i><i style="height:44%"></i><i style="height:42%"></i><i style="height:50%"></i><i style="height:48%"></i><i style="height:56%"></i><i style="height:54%"></i><i style="height:60%"></i><i class="hot" style="height:68%"></i></div><span class="k-note">blended monthly</span></div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Activations by month</h3><div class="sub">2026 · devices + SIM only</div></div>
+            <span class="legend-tag">Units</span>
+          </div>
+          <div class="bars">
+            <div class="bar-col"><i style="height:52%"></i><span>Jan</span></div>
+            <div class="bar-col"><i style="height:60%"></i><span>Feb</span></div>
+            <div class="bar-col"><i style="height:47%"></i><span>Mar</span></div>
+            <div class="bar-col"><i style="height:66%"></i><span>Apr</span></div>
+            <div class="bar-col"><i style="height:58%"></i><span>May</span></div>
+            <div class="bar-col"><i style="height:72%"></i><span>Jun</span></div>
+            <div class="bar-col"><i style="height:64%"></i><span>Jul</span></div>
+            <div class="bar-col"><i style="height:79%"></i><span>Aug</span></div>
+            <div class="bar-col"><i style="height:70%"></i><span>Sep</span></div>
+            <div class="bar-col"><i style="height:84%"></i><span>Oct</span></div>
+            <div class="bar-col hot"><i style="height:100%"></i><span>Nov</span></div>
+            <div class="bar-col"><i style="height:74%"></i><span>Dec</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Revenue mix</h3><div class="sub">Share of monthly billings</div></div>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="46" stroke="#e60000" stroke-dasharray="179.4 289.0"/>
+              <circle cx="60" cy="60" r="46" stroke="#25282b" stroke-dasharray="69.4 289.0" stroke-dashoffset="-179.4"/>
+              <circle cx="60" cy="60" r="46" stroke="#7e7e7e" stroke-dasharray="26.0 289.0" stroke-dashoffset="-248.8"/>
+              <circle cx="60" cy="60" r="46" stroke="#bebebe" stroke-dasharray="14.2 289.0" stroke-dashoffset="-274.8"/>
+            </svg>
+            <ul class="legend">
+              <li><i style="background:#e60000"></i>Mobile plans <b>62%</b></li>
+              <li><i style="background:#25282b"></i>Broadband <b>24%</b></li>
+              <li><i style="background:#7e7e7e"></i>TV &amp; Entertainment <b>9%</b></li>
+              <li><i style="background:#bebebe"></i>Accessories <b>5%</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-main">
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="chart-head" style="padding:20px 20px 0">
+            <div><h3>Recent orders</h3><div class="sub">Latest 7 · all channels</div></div>
+            <span class="legend-tag">Order desk</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th style="width:36px"><input class="check" type="checkbox" aria-label="Select all"></th><th>Customer</th><th>Plan</th><th>Status</th><th>Amount</th><th>Date</th><th style="text-align:right">Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Amara Okafor</b><span>#VDF-20841</span></td>
+                <td>Galaxy S26 Ultra · Unlimited</td>
+                <td><span class="status st-success">Active</span></td>
+                <td class="amount">£38.00/mo</td>
+                <td>26 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Dylan Rhodes</b><span>#VDF-20840</span></td>
+                <td>iPhone 17 Pro · 100GB</td>
+                <td><span class="status st-warning">Pending</span></td>
+                <td class="amount">£44.00/mo</td>
+                <td>26 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Priya Nair</b><span>#VDF-20839</span></td>
+                <td>Full Fibre 900</td>
+                <td><span class="status st-success">Active</span></td>
+                <td class="amount">£33.00/mo</td>
+                <td>25 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Jonas Weber</b><span>#VDF-20838</span></td>
+                <td>SIM Only · Unlimited</td>
+                <td><span class="status st-success">Active</span></td>
+                <td class="amount">£19.00/mo</td>
+                <td>25 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Chloe Martin</b><span>#VDF-20837</span></td>
+                <td>Vodafone TV · Max</td>
+                <td><span class="status st-danger">Suspended</span></td>
+                <td class="amount">£17.00/mo</td>
+                <td>24 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Owen Price</b><span>#VDF-20836</span></td>
+                <td>Pixel 10 Pro · Unlimited Xtra</td>
+                <td><span class="status st-warning">Pending</span></td>
+                <td class="amount">£36.00/mo</td>
+                <td>24 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+              <tr>
+                <td><input class="check" type="checkbox" aria-label="Select"></td>
+                <td class="name"><b>Freya Lindqvist</b><span>#VDF-20835</span></td>
+                <td>Business · 5 lines</td>
+                <td><span class="status st-neutral">Closed</span></td>
+                <td class="amount">£120.00/mo</td>
+                <td>23 Oct 2026</td>
+                <td><div class="actions"><button class="icon-sm" aria-label="View">👁</button><button class="icon-sm" aria-label="More">⋯</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-foot" style="padding:16px 20px">
+            <span>Showing 1–7 of 2,318 orders</span>
+            <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>›</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="chart-head">
+            <div><h3>Recent activity</h3><div class="sub">Store team feed</div></div>
+          </div>
+          <ul class="feed">
+            <li>
+              <span class="f-dot f-red">!</span>
+              <div><p><b>Fraud hold</b> placed on order #VDF-20831 pending ID check.</p><time>12 min ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">✓</span>
+              <div><p><b>Rosa Nielsen</b> approved 14 trade-in valuations for the S23 buy-back.</p><time>48 min ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-soft">↻</span>
+              <div><p><b>Stock sync</b> completed — 42 Galaxy S26 units received at hub.</p><time>2 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-dark">★</span>
+              <div><p><b>Priya Nair</b> left a 5-star review on Full Fibre 900 installation.</p><time>5 h ago</time></div>
+            </li>
+            <li>
+              <span class="f-dot f-red">⚑</span>
+              <div><p><b>Escalation</b> — Chloe Martin line suspended for unpaid balance.</p><time>Yesterday</time></div>
+            </li>
+          </ul>
+          <a class="card-btn" href="#">View full activity log →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

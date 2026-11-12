@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Verge — Stories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#131313;
+  --slate:#2d2d2d;
+  --frame:#313131;
+  --white:#ffffff;
+  --mint:#3cffd0;
+  --mint-border:#309875;
+  --violet:#5200ff;
+  --violet-rule:#3d00bf;
+  --link-blue:#3860be;
+  --focus:#1eaedb;
+  --meta:#949494;
+  --muted:#e9e9e9;
+  --yellow:#f5f50a;
+  --pink:#ff8bd1;
+  --orange:#ff9a3c;
+  --r-input:2px;
+  --r-img:3px;
+  --r-tile:20px;
+  --r-feature:24px;
+  --r-promo:30px;
+  --r-cta:40px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',Helvetica,Arial,sans-serif;
+  background:var(--canvas);color:var(--white);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;transition:color .15s ease}
+a:hover{color:var(--link-blue)}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.wrap{max-width:1300px;margin:0 auto;padding:0 48px}
+.mono{font-family:'Space Mono','Courier New',monospace;text-transform:uppercase}
+
+/* ---------- Top nav ---------- */
+.topnav{background:var(--canvas);border-bottom:1px solid var(--frame)}
+.topnav-inner{display:flex;align-items:center;gap:28px;padding:16px 48px;max-width:1300px;margin:0 auto}
+.topnav .brand{font-family:'Anton',Impact,sans-serif;font-size:26px;font-weight:400;letter-spacing:1px;line-height:.95;color:var(--white)}
+.topnav .brand:hover{color:var(--white)}
+.topnav-links{display:flex;gap:22px;margin:0 auto}
+.topnav-links a{font-family:'Space Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--white)}
+.topnav-links a.active{box-shadow:0 -1px 0 0 var(--mint) inset}
+.btn-mint{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--mint);color:#000;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
+  border-radius:var(--r-feature);padding:10px 24px;line-height:2;
+  transition:background-color .18s ease,box-shadow .18s ease;
+}
+.btn-mint:hover{background:rgba(255,255,255,.2);color:#000;box-shadow:0 0 0 1px #c2c2c2}
+.btn-slate{
+  background:var(--slate);color:var(--muted);
+  font-size:16px;font-weight:400;border-radius:var(--r-feature);padding:10px 24px;line-height:1.6;
+  transition:background-color .18s ease,box-shadow .18s ease,color .18s ease;
+}
+.btn-slate:hover{background:rgba(255,255,255,.2);color:#000;box-shadow:0 0 0 1px #c2c2c2}
+.btn-outline-mint{
+  background:transparent;color:var(--mint);
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
+  border:1px solid var(--mint);border-radius:var(--r-cta);padding:10px 20px;line-height:2;
+  transition:background-color .15s ease,color .15s ease;
+}
+.btn-outline-mint:hover{background:var(--mint);color:#000}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--frame);display:grid;place-items:center;color:var(--white);position:relative}
+.icon-btn:hover{border-color:var(--white);color:var(--white)}
+.icon-btn .dot{position:absolute;top:2px;right:2px;min-width:16px;height:16px;border-radius:var(--r-tile);background:var(--mint);color:#000;font-family:'Space Mono',monospace;font-size:9px;font-weight:600;display:grid;place-items:center;padding:0 3px}
+
+/* ---------- Masthead ---------- */
+.masthead{padding:48px 0 8px}
+.kicker{font-family:'Space Grotesk';font-weight:300;font-size:20px;letter-spacing:1.9px;color:var(--meta)}
+.wordmark{font-family:'Anton',Impact,sans-serif;font-size:107px;font-weight:900;line-height:.95;letter-spacing:1.07px;color:var(--white)}
+.wordmark .q{color:var(--mint)}
+
+/* ---------- Category strip ---------- */
+.cat-strip{padding:20px 0 8px;display:flex;gap:10px;align-items:center;overflow-x:auto}
+.cat-chip{
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;
+  color:var(--white);border:1px solid var(--frame);border-radius:var(--r-tile);padding:6px 14px;white-space:nowrap;
+  transition:border-color .15s ease,background-color .15s ease,color .15s ease;
+}
+.cat-chip:hover{border-color:var(--white)}
+.cat-chip.active{background:var(--mint);color:#000;border-color:var(--mint)}
+.cat-count{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.1px;color:var(--meta);white-space:nowrap}
+
+/* ---------- Story grid ---------- */
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin:40px 0 20px}
+.section-head h2{font-size:34px;font-weight:700;line-height:1}
+.section-head a{font-family:'Space Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--mint)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tile{
+  border-radius:var(--r-tile);padding:24px;display:flex;flex-direction:column;gap:10px;min-height:250px;
+  background:var(--canvas);border:1px solid var(--white);
+}
+.tile:hover .tile-headline{color:var(--link-blue)}
+.tile-headline{font-size:20px;font-weight:700;line-height:1;margin-top:auto;transition:color .15s ease}
+.kicker-tag{font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:var(--mint)}
+.tile-meta{font-family:'Space Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--meta)}
+.tile-meta b{color:inherit;font-weight:600}
+.fill-mint{background:var(--mint);border:none;color:#000}
+.fill-mint .kicker-tag,.fill-mint .tile-meta{color:rgba(0,0,0,.6)}
+.fill-violet{background:var(--violet);border:none;color:var(--white)}
+.fill-violet .kicker-tag{color:var(--mint)}
+.fill-white{background:var(--white);border:none;color:#000}
+.fill-white .kicker-tag,.fill-white .tile-meta{color:#8c8c8c}
+.fill-yellow{background:var(--yellow);border:none;color:#000}
+.fill-yellow .kicker-tag,.fill-yellow .tile-meta{color:rgba(0,0,0,.55)}
+.fill-pink{background:var(--pink);border:none;color:#000}
+.fill-pink .kicker-tag,.fill-pink .tile-meta{color:rgba(0,0,0,.55)}
+.fill-orange{background:var(--orange);border:none;color:#000}
+.fill-orange .kicker-tag,.fill-orange .tile-meta{color:rgba(0,0,0,.55)}
+.fill-slate{background:var(--slate);border:none;color:var(--muted)}
+.pill-tag{
+  display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;
+  border-radius:var(--r-tile);padding:4px 10px;background:var(--violet);color:#fff;
+}
+.fill-mint .pill-tag,.fill-yellow .pill-tag,.fill-white .pill-tag{background:#000;color:var(--mint)}
+
+/* art inside tiles */
+.tile-art{height:90px;border-radius:var(--r-img);margin-bottom:2px}
+.art-a{background:conic-gradient(from 40deg at 50% 50%,var(--violet),var(--mint),var(--canvas),var(--violet))}
+.art-b{background:repeating-linear-gradient(90deg,#000 0 12px,var(--mint) 12px 24px)}
+.art-c{background:radial-gradient(circle at 30% 40%,var(--orange) 0%,transparent 60%),var(--slate)}
+.art-d{background:linear-gradient(135deg,var(--violet) 0%,var(--pink) 100%)}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="#">THE VERGE</a>
+    <nav class="topnav-links">
+      <a href="#" class="active">Tech</a>
+      <a href="#">Reviews</a>
+      <a href="#">Science</a>
+      <a href="#">AI</a>
+      <a href="#">Transportation</a>
+    </nav>
+    <button class="icon-btn" aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button class="icon-btn" aria-label="Saved stories">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4V3Z"/></svg>
+      <span class="dot">5</span>
+    </button>
+    <a href="#subscribe" class="btn-mint">Subscribe</a>
+  </div>
+</header>
+
+<!-- ============ MASTHEAD ============ -->
+<section class="masthead wrap">
+  <p class="kicker">The frontier of tech, reported daily</p>
+  <h1 class="wordmark">THE VERGE<span class="q">.</span></h1>
+</section>
+
+<!-- ============ CATEGORY STRIP ============ -->
+<div class="wrap cat-strip">
+  <button class="cat-chip active">All</button>
+  <button class="cat-chip">Breaking</button>
+  <button class="cat-chip">Reviews</button>
+  <button class="cat-chip">Gadgets</button>
+  <button class="cat-chip">AI</button>
+  <button class="cat-chip">Crypto</button>
+  <button class="cat-chip">Space</button>
+  <button class="cat-chip">Policy</button>
+  <span class="cat-count">214 stories today</span>
+</div>
+<main class="wrap">
+
+  <!-- ============ STORY GRID ============ -->
+  <section>
+    <div class="section-head">
+      <h2>Today's stream</h2>
+      <a href="#">See all stories →</a>
+    </div>
+    <div class="grid">
+      <article class="tile fill-mint">
+        <span class="kicker-tag">Exclusive</span>
+        <p class="tile-headline">Inside the chip shortage nobody saw coming</p>
+        <p class="tile-meta">12 min read · 418 comments</p>
+      </article>
+      <article class="tile">
+        <div class="tile-art art-b"></div>
+        <span class="kicker-tag">Reviews</span>
+        <p class="tile-headline">The foldable that finally survived our bench tests</p>
+        <p class="tile-meta">9 min read · <b>★★★★☆</b></p>
+      </article>
+      <article class="tile fill-violet">
+        <span class="kicker-tag">AI</span>
+        <p class="tile-headline">Every AI pin, ranked — and which one to actually buy</p>
+        <p class="tile-meta">14 min read · 902 comments</p>
+      </article>
+      <article class="tile fill-white">
+        <span class="kicker-tag">Policy</span>
+        <p class="tile-headline">The hearings, explained in five charts</p>
+        <p class="tile-meta">7 min read · 233 comments</p>
+      </article>
+      <article class="tile fill-yellow">
+        <span class="kicker-tag">Space</span>
+        <p class="tile-headline">Why the next moon lander is printed</p>
+        <p class="tile-meta">11 min read · 511 comments</p>
+      </article>
+      <article class="tile fill-slate">
+        <span class="kicker-tag">Gadgets</span>
+        <p class="tile-headline">A synth the size of a cassette, reviewed</p>
+        <p class="tile-meta">6 min read · <b>★★★★★</b></p>
+      </article>
+      <article class="tile fill-pink">
+        <span class="kicker-tag">Crypto</span>
+        <p class="tile-headline">The exchange trial enters its final week</p>
+        <p class="tile-meta">8 min read · 780 comments</p>
+      </article>
+      <article class="tile fill-orange">
+        <span class="kicker-tag">Transportation</span>
+        <p class="tile-headline">Robotaxi permits expand to three new cities</p>
+        <p class="tile-meta">5 min read · 344 comments</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED STORY ============ -->
+  <section>
+    <div class="section-head"><h2>Featured investigation</h2><a href="#">From the Vergecast →</a></div>
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:32px;background:var(--slate);border-radius:var(--r-feature);padding:32px">
+      <div>
+        <div style="position:relative;height:320px;border-radius:var(--r-img);overflow:hidden;background:
+          radial-gradient(70% 80% at 30% 20%, rgba(60,255,208,.5) 0%, rgba(60,255,208,0) 55%),
+          radial-gradient(60% 70% at 80% 70%, rgba(82,0,255,.75) 0%, rgba(82,0,255,0) 60%),
+          repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, transparent 2px 26px), #1c1c1c">
+          <span style="position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7))"></span>
+          <span class="mono" style="position:absolute;top:14px;left:14px;font-size:10px;font-weight:600;letter-spacing:1.5px;background:#000;color:var(--mint);border-radius:var(--r-input);padding:4px 8px">Doc · Episode 04</span>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button style="flex:1;height:64px;border-radius:var(--r-img);border:1px solid var(--mint);background:linear-gradient(135deg,#1c4a3f,#0d2a24)"></button>
+          <button style="flex:1;height:64px;border-radius:var(--r-img);border:1px solid var(--frame);background:conic-gradient(from 210deg at 50% 50%,var(--violet),var(--pink),#1c1c1c)"></button>
+          <button style="flex:1;height:64px;border-radius:var(--r-img);border:1px solid var(--frame);background:repeating-linear-gradient(45deg,#000 0 10px,var(--yellow) 10px 20px)"></button>
+          <button style="flex:1;height:64px;border-radius:var(--r-img);border:1px dashed var(--meta);background:transparent;color:var(--meta);font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase">+6</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div>
+          <span class="kicker-tag">The silicon wars</span>
+          <h3 style="font-family:'Anton',Impact,sans-serif;font-size:60px;font-weight:900;line-height:.95;letter-spacing:.6px;margin-top:12px">WHO OWNS THE FAB?</h3>
+        </div>
+        <p style="font-family:Georgia,serif;font-size:20px;line-height:1.2;color:var(--muted)">Three governments, two foundries, one island. Our six-month investigation into the supply chain that decides what your phone costs next year.</p>
+        <div class="tile-meta" style="font-size:11px">By Nilay Patel &amp; Adi Robertson · 38 min read · Updated 2 hrs ago</div>
+        <div>
+          <p class="mono" style="font-size:11px;font-weight:600;letter-spacing:1.8px;color:var(--meta);margin-bottom:8px">Read as</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="cat-chip active" style="border-radius:var(--r-tile)">Longread</button>
+            <button class="cat-chip">Audio doc · 42 min</button>
+            <button class="cat-chip">Newsletter series</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;border:1px solid var(--white);border-radius:var(--r-input);background:transparent;color:var(--white)">
+            <button style="padding:10px 14px;font-size:16px;font-weight:700">−</button>
+            <span style="padding:0 8px;font-weight:700">1</span>
+            <button style="padding:10px 14px;font-size:16px;font-weight:700">+</button>
+          </div>
+          <span class="tile-meta">copies of the print annual</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn-mint">Add to reading list</button>
+          <button class="btn-slate">Listen now</button>
+          <button class="btn-outline-mint">Share</button>
+        </div>
+        <div style="border-top:1px solid var(--frame);padding-top:16px">
+          <p style="font-family:Georgia,serif;font-size:16px;line-height:1.3;color:var(--muted)">"The clearest explanation yet of why your next laptop might cost $300 more."</p>
+          <span class="tile-meta" style="display:block;margin-top:6px">— Instit.<em>px</em> Media Review</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUBSCRIPTION PANEL ============ -->
+  <section id="subscribe" style="padding-bottom:64px">
+    <div class="section-head"><h2>Your account</h2><a href="#">Manage →</a></div>
+    <div style="max-width:460px;margin-left:auto;background:var(--canvas);border:1px solid var(--white);border-radius:var(--r-feature);padding:32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <span style="font-size:24px;font-weight:700">Subscription summary</span>
+        <span class="pill-tag">Standard plan</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;border-bottom:1px solid var(--frame);padding-bottom:20px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-img);background:var(--mint);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:16px;font-weight:700">Verge Unlimited — Annual</strong><br><span class="tile-meta">Ad-free · Vergecast+ · print annual</span></div>
+          <strong style="font-size:16px">$80.00</strong>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-img);background:var(--violet);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:16px;font-weight:700">Print annual 2026</strong><br><span class="tile-meta">Qty 1 · ships December</span></div>
+          <strong style="font-size:16px">$35.00</strong>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span style="width:44px;height:44px;border-radius:var(--r-img);background:var(--yellow);flex:none"></span>
+          <div style="flex:1"><strong style="font-size:16px;font-weight:700">Doc series pass</strong><br><span class="tile-meta">Episodes 01–06</span></div>
+          <strong style="font-size:16px">$24.00</strong>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:20px 0;border-bottom:1px solid var(--frame);color:var(--meta);font-size:14px">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span style="color:var(--white);font-weight:700">$139.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Bundle discount</span><span style="color:var(--mint);font-weight:700">−$20.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Tax</span><span style="color:var(--white);font-weight:700">$10.43</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 0 24px">
+        <span style="font-size:16px;font-weight:700">Total due today</span>
+        <span style="font-size:28px;font-weight:700;color:var(--mint)">$129.43</span>
+      </div>
+      <button class="btn-mint" style="width:100%;justify-content:center">Confirm subscription</button>
+      <p class="tile-meta" style="text-align:center;margin-top:12px">Cancel anytime · student rates available</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer style="border-top:1px solid var(--frame)">
+  <div class="wrap" style="padding:48px 48px 32px">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <p style="font-family:'Anton',Impact,sans-serif;font-size:34px;line-height:.95;color:var(--white)">THE VERGE</p>
+        <p style="color:var(--meta);margin-top:12px;max-width:300px;font-size:14px">Reporting on the tools, toys, and policies reshaping how we live — from a newsroom that actually uses them.</p>
+        <div style="display:flex;gap:8px;margin-top:20px;max-width:340px">
+          <input type="email" placeholder="you@example.com" style="flex:1;background:var(--canvas);border:1px solid var(--meta);border-radius:var(--r-input);padding:10px 12px;font-family:'Space Grotesk';font-size:15px;color:var(--white);outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--mint)'" onblur="this.style.borderColor='var(--meta)'">
+          <button class="btn-mint" style="border-radius:var(--r-input)">Join</button>
+        </div>
+      </div>
+      <div><p class="mono" style="font-size:11px;font-weight:600;letter-spacing:1.8px;color:var(--meta);margin-bottom:14px">Sections</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><a href="#">Tech</a><a href="#">Reviews</a><a href="#">Science</a><a href="#">AI</a></div></div>
+      <div><p class="mono" style="font-size:11px;font-weight:600;letter-spacing:1.8px;color:var(--meta);margin-bottom:14px">More</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><a href="#">Vergecast</a><a href="#">Decoder</a><a href="#">Store</a><a href="#">Jobs</a></div></div>
+      <div><p class="mono" style="font-size:11px;font-weight:600;letter-spacing:1.8px;color:var(--meta);margin-bottom:14px">Company</p><div style="display:flex;flex-direction:column;gap:10px;font-size:14px"><a href="#">About</a><a href="#">Ethics</a><a href="#">Contact</a><a href="#">RSS</a></div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--frame);margin-top:40px;padding-top:24px">
+      <span class="tile-meta">© 2026 Vox Media, LLC. All rights reserved.</span>
+      <div style="display:flex;gap:12px">
+        <a href="#" class="icon-btn" aria-label="X" style="width:36px;height:36px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.3 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.5l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.4 3.9H5.5L17.8 20Z"/></svg></a>
+        <a href="#" class="icon-btn" aria-label="Instagram" style="width:36px;height:36px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" class="icon-btn" aria-label="YouTube" style="width:36px;height:36px"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

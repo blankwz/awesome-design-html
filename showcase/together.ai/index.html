@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Together AI — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOGETHER AI — tokens from design-md/together.ai/DESIGN.md
+   The Future → Inter (400/500), PP Neue Montreal Mono → JetBrains Mono
+   ============================================================ */
+:root{
+  --primary:#000000;
+  --on-primary:#ffffff;
+  --ink:#000000;
+  --body:#959494;
+  --body2:#999999;
+  --hairline:#ebebeb;
+  --canvas:#ffffff;
+  --canvas-dark:#010120;
+  --dark-soft:#313641;
+  --dark-hairline:#26263a;
+  --on-dark:#ffffff;
+  --orange:#fc4c02;
+  --magenta:#ef2cc1;
+  --periwinkle:#bdbbff;
+  --mint:#c8f6f9;
+
+  --sans:"The Future","Inter",system-ui,"Helvetica Neue",Arial,sans-serif;
+  --mono:"PP Neue Montreal Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
+
+  --r-none:0px; --r-xs:3.25px; --r-sm:4px; --r-md:8px; --r-full:9999px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:var(--sans);font-size:16px;line-height:1.3;
+  font-variation-settings:"wght" 400;
+  color:var(--ink);background:var(--canvas);
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:1280px;margin:0 auto;padding:0 32px;}
+a{color:inherit;text-decoration:none;}
+.sg-section{padding:80px 0;}
+
+/* mono caps utilities */
+.mono-eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;}
+.mono-btn{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:.005em;text-transform:uppercase;}
+.mono-cap{font-family:var(--mono);font-size:10px;letter-spacing:.005em;}
+h1,h2,h3,h4{font-variation-settings:"wght" 500;}
+
+/* ---------- Spec banner ---------- */
+.sg-banner{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:10px 24px;
+  background:var(--canvas-dark);color:var(--on-dark);
+  border-bottom:1px solid var(--dark-hairline);
+}
+.sg-banner .sg-id{display:flex;align-items:baseline;gap:14px;}
+.sg-banner .sg-folder{
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--mint);border:1px solid var(--dark-soft);border-radius:var(--r-sm);padding:3px 8px;
+}
+.sg-banner .sg-name{font-size:15px;font-variation-settings:"wght" 500;letter-spacing:-0.22px;}
+.sg-banner .sg-desc{font-size:12.5px;color:var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media (max-width:980px){.sg-banner .sg-desc{display:none;}}
+
+/* ---------- Section label ---------- */
+.sg-label{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--body2);display:flex;align-items:center;gap:12px;margin-bottom:24px;
+}
+.sg-label::after{content:"";flex:1;height:1px;background:var(--hairline);}
+.sg-section-title{font-size:40px;line-height:48px;letter-spacing:-0.8px;font-variation-settings:"wght" 500;margin-bottom:12px;}
+.sg-section-sub{font-size:18px;letter-spacing:-0.18px;color:var(--body2);margin-bottom:48px;max-width:560px;}
+
+/* ============================================================
+   1. COLOR TOKENS
+   ============================================================ */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+.swatch{border:1px solid var(--hairline);border-radius:var(--r-sm);overflow:hidden;}
+.swatch .chip{height:72px;}
+.swatch .meta{padding:10px 12px;background:var(--canvas);}
+.swatch .hex{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--body2);}
+.swatch .role{font-size:12px;margin-top:2px;}
+@media (max-width:980px){.swatch-grid{grid-template-columns:repeat(3,1fr);}}
+
+/* ============================================================
+   2. TYPOGRAPHY
+   ============================================================ */
+.type-spec{border:1px solid var(--hairline);border-radius:var(--r-sm);overflow:hidden;}
+.type-row{display:grid;grid-template-columns:250px 1fr;gap:24px;padding:20px 28px;border-bottom:1px solid var(--hairline);align-items:baseline;}
+.type-row:nth-child(even){background:var(--canvas);}
+.type-row:last-child{border-bottom:none;}
+.type-token{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);line-height:1.5;}
+.type-token b{display:block;color:var(--ink);}
+.t-display-xxl{font-size:64px;line-height:70.4px;letter-spacing:-1.92px;font-variation-settings:"wght" 500;}
+.t-display-xl{font-size:40px;line-height:48px;letter-spacing:-0.8px;font-variation-settings:"wght" 500;}
+.t-display-lg{font-size:28px;line-height:32.2px;letter-spacing:-0.42px;font-variation-settings:"wght" 500;}
+.t-display-md{font-size:22px;line-height:25.3px;letter-spacing:-0.22px;font-variation-settings:"wght" 500;}
+.t-body-lg{font-size:18px;line-height:23.4px;letter-spacing:-0.18px;}
+.t-body-md{font-size:16px;line-height:20.8px;letter-spacing:-0.16px;}
+.t-body-md-strong{font-size:16px;line-height:20.8px;letter-spacing:-0.16px;font-variation-settings:"wght" 500;}
+.t-caption{font-size:14px;line-height:19.6px;color:var(--body2);}
+.t-mono-btn{font-family:var(--mono);font-size:16px;text-transform:uppercase;}
+.t-mono-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);}
+.t-mono-caption{font-family:var(--mono);font-size:10px;letter-spacing:.005em;color:var(--body2);}
+
+/* ============================================================
+   3. BUTTONS — mono-caps labels, 4px radius, no shadow
+   ============================================================ */
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:.005em;text-transform:uppercase;
+  padding:4px 24px;height:40px;border-radius:var(--r-sm);border:none;cursor:pointer;
+  transition:background .15s ease,color .15s ease;
+  text-decoration:none;
+}
+.btn-sm{height:32px;padding:4px 16px;font-size:11px;}
+.btn-primary{background:var(--primary);color:var(--on-primary);}
+.btn-primary:hover{background:#1f1f1f;}
+.btn-mint{background:var(--mint);color:var(--ink);}
+.btn-mint:hover{background:#b4eef2;}
+.btn-white{background:var(--canvas);color:var(--ink);}
+.btn-white:hover{background:var(--hairline);}
+.btn-ghost-dark{background:var(--dark-soft);color:var(--on-dark);}
+.btn-ghost-dark:hover{background:#3d434f;}
+.btn-outline{background:var(--canvas);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r-xs);}
+.btn-outline:hover{border-color:var(--body);}
+.btn:disabled{background:var(--hairline);color:var(--body);cursor:not-allowed;}
+.sg-hint{font-size:14px;letter-spacing:-0.16px;color:var(--body2);}
+
+/* ============================================================
+   4. INPUTS — hairline border, 4px radius
+   ============================================================ */
+.input-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:820px;}
+.field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);margin-bottom:6px;}
+.input{
+  width:100%;font-family:var(--sans);font-size:16px;letter-spacing:-0.16px;color:var(--ink);
+  background:var(--canvas);padding:10px 12px;
+  border:1px solid var(--hairline);border-radius:var(--r-sm);outline:none;
+  transition:border-color .15s ease;
+}
+.input::placeholder{color:var(--body);}
+.input:focus{border-color:var(--ink);}
+.input.is-focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(1,1,32,.08);}
+.input:disabled{background:var(--canvas);color:var(--body);cursor:not-allowed;}
+.select{appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%23959994' stroke-width='1.5' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
+.switch-row{display:flex;align-items:center;gap:12px;}
+.switch{position:relative;width:40px;height:22px;border-radius:var(--r-xs);background:var(--hairline);cursor:pointer;transition:background .15s;flex:none;}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:var(--r-xs);background:var(--canvas);border:1px solid var(--hairline);transition:left .15s;}
+.switch.on{background:var(--primary);}
+.switch.on::after{left:21px;border-color:var(--primary);}
+.switch-label{font-size:14px;color:var(--body2);}
+
+/* ============================================================
+   5. CARDS
+   ============================================================ */
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+.card{border-radius:var(--r-sm);padding:24px;}
+.research-card{background:var(--canvas-dark);color:var(--on-dark);border:1px solid var(--dark-soft);}
+.research-card .tag{margin-bottom:14px;display:inline-flex;}
+.research-card h3{font-size:22px;line-height:25.3px;letter-spacing:-0.22px;font-variation-settings:"wght" 500;margin-bottom:8px;}
+.research-card p{font-size:14px;color:#b8b7c9;line-height:1.4;}
+.stat-tile{background:var(--mint);color:var(--ink);padding:32px;border-radius:var(--r-sm);}
+.stat-tile .num{font-size:40px;line-height:48px;letter-spacing:-0.8px;font-variation-settings:"wght" 500;}
+.stat-tile .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-top:8px;}
+.stat-tile.periwinkle{background:var(--periwinkle);}
+.testimonial-card{background:var(--canvas);border:1px solid var(--hairline);}
+.testimonial-card h4{font-size:22px;letter-spacing:-0.22px;margin-bottom:8px;}
+.testimonial-card blockquote{font-size:16px;line-height:1.4;letter-spacing:-0.16px;}
+.testimonial-card .who{margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);}
+.code-editor{background:var(--canvas-dark);color:var(--on-dark);padding:24px;border-radius:var(--r-sm);font-family:var(--mono);font-size:13px;line-height:1.7;}
+.code-editor .cm{color:#7a7a99;}
+.code-editor .kw{color:var(--magenta);}
+.code-editor .str{color:var(--mint);}
+.code-editor .fn{color:var(--periwinkle);}
+
+/* ============================================================
+   6. BADGES
+   ============================================================ */
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.badge{display:inline-flex;align-items:center;font-size:14px;letter-spacing:-0.16px;
+  padding:2px 8px;border-radius:var(--r-sm);background:var(--hairline);color:var(--ink);border:1px solid var(--hairline);}
+.badge.on-dark{background:var(--dark-soft);color:var(--on-dark);border-color:var(--dark-soft);}
+.badge.outline{background:var(--canvas);border-color:var(--hairline);color:var(--body2);}
+.badge.mono{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;}
+.sg-hint2{font-size:13px;color:var(--body2);}
+
+/* ============================================================
+   7. NAVIGATION
+   ============================================================ */
+.nav-demo{border:1px solid var(--hairline);border-radius:var(--r-sm);overflow:hidden;margin-bottom:24px;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;}
+.nav-dark{background:var(--canvas-dark);color:var(--on-dark);}
+.nav-light{background:var(--canvas);color:var(--ink);border-top:1px solid var(--hairline);}
+.nav .brand{font-size:20px;font-variation-settings:"wght" 500;letter-spacing:-0.42px;display:flex;align-items:center;gap:10px;}
+.nav .brand .mark{width:20px;height:20px;border-radius:var(--r-sm);
+  background:linear-gradient(90deg,var(--orange) 0%,var(--magenta) 50%,var(--periwinkle) 100%);}
+.nav .links{display:flex;gap:24px;font-size:16px;letter-spacing:-0.16px;}
+.nav .links a:hover{color:var(--body2);}
+.nav .actions{display:flex;gap:12px;align-items:center;}
+@media (max-width:980px){.nav .links{display:none;}}
+
+/* ============================================================
+   8. DATA TABLE
+   ============================================================ */
+.table-wrap{border:1px solid var(--hairline);border-radius:var(--r-sm);overflow:hidden;max-width:820px;}
+table.dt{width:100%;border-collapse:collapse;font-size:16px;letter-spacing:-0.16px;}
+.dt th{background:var(--hairline);color:var(--body2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  text-align:left;padding:12px 16px;}
+.dt td{padding:12px 16px;border-top:1px solid var(--hairline);}
+.dt td.model{font-variation-settings:"wght" 500;}
+.dt td.price{font-variant-numeric:tabular-nums;}
+.dt .sub{font-size:12px;color:var(--body2);}
+
+/* ============================================================
+   PRODUCT — landing page
+   ============================================================ */
+.product{margin-top:0;}
+/* dark hero band with gradient ribbon */
+.hero{background:var(--canvas-dark);color:var(--on-dark);}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;padding:80px 0;}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;
+  background:var(--dark-soft);border-radius:var(--r-sm);padding:4px 10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;}
+.hero .eyebrow .chip{width:14px;height:14px;border-radius:var(--r-xs);
+  background:linear-gradient(90deg,var(--orange),var(--magenta),var(--periwinkle));}
+.hero h1{font-size:64px;line-height:70.4px;letter-spacing:-1.92px;font-variation-settings:"wght" 500;margin-bottom:16px;}
+.hero .lead{font-size:18px;line-height:23.4px;letter-spacing:-0.18px;color:var(--body);max-width:460px;margin-bottom:32px;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+/* gradient ribbon — the brand's single decorative object */
+.ribbon{position:relative;height:420px;}
+.ribbon .blob{position:absolute;border-radius:50%;filter:blur(0px);}
+.ribbon .b1{width:340px;height:340px;right:0;top:20px;
+  background:radial-gradient(circle at 35% 35%, var(--orange) 0%, rgba(252,76,2,0) 62%);}
+.ribbon .b2{width:300px;height:300px;right:140px;top:90px;
+  background:radial-gradient(circle at 60% 40%, var(--magenta) 0%, rgba(239,44,193,0) 60%);}
+.ribbon .b3{width:320px;height:320px;right:40px;top:150px;
+  background:radial-gradient(circle at 50% 50%, var(--periwinkle) 0%, rgba(189,187,255,0) 65%);}
+.ribbon .ring{position:absolute;border:1px solid rgba(189,187,255,.35);border-radius:50%;}
+.ribbon .r1{width:420px;height:420px;right:-40px;top:0;}
+.ribbon .r2{width:260px;height:260px;right:120px;top:130px;border-color:rgba(239,44,193,.3);}
+.ribbon .halo{position:absolute;right:60px;top:110px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle, rgba(1,1,32,0) 52%, rgba(1,1,32,.55) 70%, rgba(1,1,32,0) 78%);}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr;}.ribbon{height:280px;}.hero h1{font-size:44px;}}
+
+/* logo strip */
+.logos{background:var(--canvas);border-bottom:1px solid var(--hairline);padding:28px 0;}
+.logos .row{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;}
+.logos .hint{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);}
+.logo{font-size:17px;font-variation-settings:"wght" 500;letter-spacing:-0.3px;color:var(--body);}
+/* research dark band */
+.research{background:var(--canvas-dark);color:var(--on-dark);}
+.research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+/* product band (white) with dark code editor as polarity lift */
+.pband{padding:80px 0;}
+.pband-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.tabs{display:inline-flex;gap:4px;background:var(--hairline);padding:4px;border-radius:var(--r-md);}
+.tab{font-size:16px;font-variation-settings:"wght" 500;letter-spacing:-0.16px;padding:12px 24px;border-radius:var(--r-md);background:var(--canvas);cursor:pointer;}
+.tab.on{background:var(--primary);color:var(--on-primary);}
+.tab:not(.on):hover{background:var(--canvas);}
+.pband .code-editor{box-shadow:rgba(1,1,32,.1) 0px 4px 10px 0px;}
+.code-editor .bar{display:flex;gap:6px;margin-bottom:16px;}
+.code-editor .bar span{width:8px;height:8px;border-radius:50%;background:var(--dark-soft);display:block;}
+@media (max-width:980px){.pband-grid{grid-template-columns:1fr;}}
+/* pricing table */
+.pricing{padding:48px 0 80px;}
+.toggle-pill-group{display:inline-flex;background:var(--hairline);padding:4px;border-radius:var(--r-sm);}
+.toggle-pill-group .tp{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  padding:8px 16px;border-radius:var(--r-sm);background:var(--canvas);}
+.toggle-pill-group .tp.on{background:var(--primary);color:var(--on-primary);}
+.pricing .table-wrap{max-width:100%;}
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:48px 0;}
+.tier{border:1px solid var(--hairline);border-radius:var(--r-sm);padding:32px;display:flex;flex-direction:column;}
+.tier .name{font-size:22px;letter-spacing:-0.22px;font-variation-settings:"wght" 500;margin-bottom:4px;}
+.tier .desc{font-size:14px;color:var(--body2);margin-bottom:20px;}
+.tier .price{font-size:40px;line-height:48px;letter-spacing:-0.8px;font-variation-settings:"wght" 500;}
+.tier .per{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);margin:8px 0 24px;}
+.tier ul{list-style:none;display:grid;gap:8px;font-size:14px;color:var(--body2);margin-bottom:28px;}
+.tier ul .tick{color:var(--ink);margin-right:8px;}
+.tier .btn{margin-top:auto;}
+.tier-featured{background:var(--ink);border-color:var(--ink);color:var(--on-primary);}
+.tier-featured .desc,.tier-featured .per,.tier-featured ul{color:#b8b7c9;}
+.tier-featured ul .tick{color:var(--mint);}
+.tier-featured .flag{display:inline-flex;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--mint);color:var(--ink);border-radius:var(--r-sm);padding:3px 8px;margin-bottom:14px;align-self:flex-start;}
+@media (max-width:980px){.tier-grid{grid-template-columns:1fr;}}
+
+/* footer wordmark banner — faint stencil sign-off */
+.footer{background:var(--canvas);padding:80px 0 0;}
+.footer-grid{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:32px;padding-bottom:64px;}
+.footer h5{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--body2);margin-bottom:16px;}
+.footer ul{list-style:none;display:grid;gap:10px;font-size:16px;letter-spacing:-0.16px;}
+.footer ul a:hover{color:var(--body);}
+.footer .fbrand .mark{width:24px;height:24px;border-radius:var(--r-sm);margin-bottom:14px;
+  background:linear-gradient(90deg,var(--orange),var(--magenta),var(--periwinkle));}
+.footer .fbrand p{font-size:14px;color:var(--body2);max-width:230px;}
+.footer .legal{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--hairline);padding:24px 0;
+  font-size:14px;color:var(--body2);flex-wrap:wrap;}
+.wordmark-banner{
+  font-size:clamp(64px,17vw,220px);line-height:.9;letter-spacing:-0.03em;font-variation-settings:"wght" 500;
+  color:var(--hairline);white-space:nowrap;text-align:center;user-select:none;
+  padding-bottom:24px;
+}
+@media (max-width:980px){.footer-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">together.ai</span>
+    <span class="sg-name">Together AI</span>
+  </div>
+  <span class="sg-desc">AI infrastructure platform — near-black hero bands, white technical bands, and a single three-color gradient ribbon as the entire decorative system.</span>
+</header>
+
+<main>
+  <!-- ================= COMPONENTS ================= -->
+  <section id="components" class="container">
+    <div class="sg-section" style="padding-bottom:24px;">
+      <div class="sg-label">Components</div>
+
+      <!-- 1. Colors -->
+      <div class="sg-label">01 — Color tokens</div>
+      <div class="swatch-grid" style="margin-bottom:56px;">
+        <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><div class="hex">#000000</div><div class="role">Ink Black CTA</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#fc4c02"></div><div class="meta"><div class="hex">#FC4C02</div><div class="role">Brand Orange</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ef2cc1"></div><div class="meta"><div class="hex">#EF2CC1</div><div class="role">Brand Magenta</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#bdbbff"></div><div class="meta"><div class="hex">#BDBBFF</div><div class="role">Brand Periwinkle</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#c8f6f9"></div><div class="meta"><div class="hex">#C8F6F9</div><div class="role">Brand Mint</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#010120"></div><div class="meta"><div class="hex">#010120</div><div class="role">Canvas Dark</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid #ebebeb"></div><div class="meta"><div class="hex">#FFFFFF</div><div class="role">Canvas</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ebebeb"></div><div class="meta"><div class="hex">#EBEBEB</div><div class="role">Hairline</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#313641"></div><div class="meta"><div class="hex">#313641</div><div class="role">Surface Dark Soft</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#999999"></div><div class="meta"><div class="hex">#999999</div><div class="role">Body / Muted</div></div></div>
+      </div>
+
+      <!-- 2. Typography -->
+      <div class="sg-label">02 — Typography specimen</div>
+      <div class="type-spec" style="margin-bottom:56px;">
+        <div class="type-row"><div class="type-token"><b>display-xxl</b>64 / 500 / -1.92px</div><div class="t-display-xxl">Build what's next</div></div>
+        <div class="type-row"><div class="type-token"><b>display-xl</b>40 / 500 / -0.8px</div><div class="t-display-xl">The AI Native Cloud</div></div>
+        <div class="type-row"><div class="type-token"><b>display-lg</b>28 / 500 / -0.42px</div><div class="t-display-lg">Serious enough for mono labels</div></div>
+        <div class="type-row"><div class="type-token"><b>display-md</b>22 / 500 / -0.22px</div><div class="t-display-md">Card titles at display-md</div></div>
+        <div class="display-row type-row"><div class="type-token"><b>body-lg</b>18 / 400</div><div class="t-body-lg">Lead paragraphs — poured, slightly condensed, tight leading.</div></div>
+        <div class="type-row"><div class="type-token"><b>body-md</b>16 / 400</div><div class="t-body-md">Default body paragraph. The display sans never carries a button label; the mono never carries a paragraph.</div></div>
+        <div class="type-row"><div class="type-token"><b>mono-caps-eyebrow</b>11 / 500 mono caps</div><div class="t-mono-eyebrow">PRICING · INFERENCE · GPU · GA-DEC '25</div></div>
+        <div class="type-row"><div class="type-token"><b>mono-caption</b>10 / 400 mono</div><div class="t-mono-caption">model = "llama-3-70b" · endpoint us-east-1</div></div>
+      </div>
+
+      <!-- 3. Buttons -->
+      <div class="sg-label">03 — Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Get started now</button>
+        <button class="btn btn-mint">Deploy a model</button>
+        <button class="btn btn-white">Read the docs</button>
+        <button class="btn btn-outline btn-sm">Compare plans</button>
+      </div>
+      <div class="btn-row" style="margin-bottom:56px;">
+        <button class="btn btn-ghost-dark">Read more</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <span class="sg-hint">One black pill per viewport — the brand's whole conversion story.</span>
+      </div>
+
+      <!-- 4. Inputs -->
+      <div class="sg-label">04 — Inputs</div>
+      <div class="input-grid" style="margin-bottom:56px;">
+        <div class="field">
+          <label>Work email</label>
+          <input class="input" type="text" placeholder="dev@company.com">
+        </div>
+        <div class="field">
+          <label>Focused</label>
+          <input class="input is-focus" type="text" value="platform-team@acme.ai">
+        </div>
+        <div class="field">
+          <label>Endpoint region</label>
+          <select class="input select"><option>us-east-1</option><option>us-west-2</option><option>eu-central-1</option></select>
+        </div>
+        <div class="field">
+          <label>Disabled</label>
+          <input class="input" type="text" value="SSO enforced" disabled>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <div class="switch-row"><span class="switch on"></span><span class="switch-label">Dedicated endpoints — reserve throughput for production traffic</span></div>
+        </div>
+      </div>
+
+      <!-- 5. Cards -->
+      <div class="sg-label">05 — Cards</div>
+      <div class="card-grid" style="margin-bottom:56px;">
+        <div class="card research-card">
+          <span class="badge mono on-dark" style="align-self:flex-start;">FlashScience™</span>
+          <h3>Reducing hallucination with grounded decoding</h3>
+          <p>A 4-up research-band card: canvas-dark fill, hairline-on-dark border, mono tag, display-md headline.</p>
+        </div>
+        <div class="stat-tile">
+          <div class="num">4x</div>
+          <div class="lbl">Faster inference vs. self-managed GPUs</div>
+        </div>
+      </div>
+
+      <!-- 6. Badges -->
+      <div class="sg-label">06 — Badges</div>
+      <div class="badge-row" style="margin-bottom:56px;">
+        <span class="badge">Open source</span>
+        <span class="badge on-dark" style="background:#313641;">Dedicated</span>
+        <span class="badge outline">Wholesale</span>
+        <span class="badge mono">GA-DEC '25</span>
+      </div>
+
+      <!-- 7. Navigation -->
+      <div class="sg-label">07 — Navigation</div>
+      <div class="nav-demo" style="margin-bottom:56px;">
+        <nav class="nav nav-dark">
+          <div class="brand"><span class="mark"></span>together.ai</div>
+          <div class="links"><a href="#">Platform</a><a href="#">Models</a><a href="#">Pricing</a><a href="#">Research</a><a href="#">Docs</a></div>
+          <div class="actions">
+            <button class="btn btn-ghost-dark btn-sm">Contact sales</button>
+            <button class="btn btn-white btn-sm">Sign in</button>
+          </div>
+        </nav>
+        <nav class="nav nav-light">
+          <div class="brand" style="color:var(--ink);"><span class="mark"></span>together.ai</div>
+          <div class="links"><a href="#">Platform</a><a href="#">Models</a><a href="#">Pricing</a><a href="#">Research</a><a href="#">Docs</a></div>
+          <div class="actions">
+            <button class="btn btn-outline btn-sm">Contact sales</button>
+            <button class="btn btn-primary btn-sm">Sign in</button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 8. Data table -->
+      <div class="sg-label">08 — Data table · serverless inference pricing</div>
+      <div class="table-wrap" style="margin-bottom:56px;">
+        <table class="dt">
+          <tr><th>Model</th><th>Input / 1M tokens</th><th>Output / 1M tokens</th><th>Context</th></tr>
+          <tr><td class="model">Llama 4 Maverick</td><td class="price">$0.27</td><td class="price">$0.85</td><td class="sub">1M ctx</td></tr>
+          <tr><td class="model">DeepSeek R1</td><td class="price">$3.00</td><td class="price">$7.50</td><td class="sub">128K ctx</td></tr>
+          <tr><td class="model">FLUX.1 [schnell]</td><td class="price">$0.003 / img</td><td class="price">—</td><td class="sub">image</td></tr>
+          <tr><td class="model">Qwen3 Coder</td><td class="price">$0.45</td><td class="price">$1.80</td><td class="sub">262K ctx</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINISHED PRODUCT ================= -->
+  <section id="product" class="product">
+
+    <!-- dark nav -->
+    <nav class="nav nav-dark" style="border-bottom:1px solid var(--dark-hairline);">
+      <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding-top:0;padding-bottom:0;">
+        <div class="brand"><span class="mark"></span>together.ai</div>
+        <div class="links"><a href="#">Platform</a><a href="#">Models</a><a href="#">Pricing</a><a href="#">Research</a></div>
+        <div class="actions">
+          <button class="btn btn-ghost-dark btn-sm">Contact sales</button>
+          <button class="btn btn-white btn-sm">Sign in</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- dark hero band -->
+    <div class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="chip"></span>GA-DEC '25 · NEW ROUTING LAYER</span>
+          <h1>Build what's next on the AI Native Cloud</h1>
+          <p class="lead">Inference, fine-tuning, and dedicated GPU clusters — open and custom models served through one API, on hardware you don't have to think about.</p>
+          <div class="hero-ctas">
+            <button class="btn btn-mint">Get started now</button>
+            <button class="btn btn-white">Read the docs</button>
+          </div>
+        </div>
+        <div class="ribbon">
+          <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+          <span class="ring r1"></span><span class="ring r2"></span><span class="halo"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- logo strip -->
+    <div class="logos">
+      <div class="container row">
+        <span class="hint">POWERING TEAMS AT</span>
+        <span class="logo">Campaign</span><span class="logo">Quora</span><span class="logo">Salesforce</span><span class="logo">Magai</span><span class="logo">VT.ai</span><span class="logo">Writely</span>
+      </div>
+    </div>
+
+    <!-- stats tiles (white band) -->
+    <div class="sg-section" style="padding-bottom:48px;">
+      <div class="container">
+        <div class="sg-label">THE AI NATIVE CLOUD</div>
+        <h2 class="sg-section-title">A full-stack AI cloud, one API away</h2>
+        <p class="sg-section-sub">Four layers of the platform, from serverless inference to dedicated clusters.</p>
+        <div class="card-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="stat-tile"><div class="num">200+</div><div class="lbl">Open models served</div></div>
+          <div class="stat-tile periwinkle"><div class="num">4x</div><div class="lbl">Faster inference</div></div>
+          <div class="stat-tile" style="background:#ffe1d1;"><div class="num">65%</div><div class="lbl">Lower cost vs. hyperscalers</div></div>
+          <div class="stat-tile" style="background:#e3e0ff;"><div class="num">99.99%</div><div class="lbl">Uptime across regions</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- product band: tabs + dark code editor -->
+    <div class="pband">
+      <div class="container pband-grid">
+        <div>
+          <div class="sg-label">FULL-STACK CLOUD</div>
+          <h2 class="sg-section-title">Serverless inference, tuned your way</h2>
+          <p class="sg-section-sub">Point the SDK at any open model. Swap checkpoints with one env var.</p>
+          <div class="tabs">
+            <span class="tab on">Inference</span><span class="tab">Fine-tuning</span><span class="tab">Clusters</span>
+          </div>
+        </div>
+        <div class="code-editor">
+          <div class="bar"><span></span><span></span><span></span></div>
+          <pre style="margin:0;white-space:pre-wrap;"><span class="cm">// serverless inference</span>
+<span class="kw">from</span> together <span class="kw">import</span> Together
+
+client = Together(<span class="str">api_key</span>=<span class="str">"..."</span>)
+
+resp = client.chat.completions.create(
+  model=<span class="str">"meta-llama/Llama-4-Maverick"</span>,
+  messages=[{<span class="str">"role"</span>: <span class="str">"user"</span>,
+    <span class="str">"content"</span>: <span class="str">"Summarize this incident report"</span>}],
+)
+<span class="fn">print</span>(resp.choices[0].message.content)</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- research dark band -->
+    <div class="research sg-section">
+      <div class="container">
+        <div class="sg-label">GROUNDED IN CUTTING-EDGE RESEARCH</div>
+        <h2 class="sg-section-title">Research that ships into the platform</h2>
+        <p class="sg-section-sub">Every paper becomes an endpoint. Three recent ones:</p>
+        <div class="research-grid">
+          <div class="card research-card">
+            <span class="badge mono on-dark" style="align-self:flex-start;">FlashScience™</span>
+            <h3>Grounded decoding reduces hallucination by 42%</h3>
+            <p>Retrieval-aware decoding constraints keep generation anchored to source documents.</p>
+          </div>
+          <div class="card research-card">
+            <span class="badge mono on-dark" style="align-self:flex-start;">MOAB</span>
+            <h3>Multi-objective architecture search for LLM serving</h3>
+            <p>One optimizer balances latency, throughput, and cost across heterogeneous GPUs.</p>
+          </div>
+          <div class="card research-card">
+            <span class="badge mono on-dark" style="align-self:flex-start;">GCPF</span>
+            <h3>Cancellation-free gradient pruning for faster fine-tuning</h3>
+            <p>Gradients collide less, convergence comes sooner, GPUs idle less.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- testimonials (white band) -->
+    <div class="sg-section">
+      <div class="container">
+        <div class="sg-label">AI NATIVES BUILD ON TOGETHER AI</div>
+        <h2 class="sg-section-title">Teams shipping on the platform</h2>
+        <div class="card-grid" style="grid-template-columns:repeat(3,1fr);margin-top:40px;">
+          <div class="card testimonial-card">
+            <h4>Campaign</h4>
+            <blockquote>"We cut p50 latency by 60% moving open models off our own cluster."</blockquote>
+            <div class="who">Priya Raman · VP Engineering</div>
+          </div>
+          <div class="card testimonial-card">
+            <h4>Quora</h4>
+            <blockquote>"Fine-tuning that used to take a sprint now ships in an afternoon."</blockquote>
+            <div class="who">Daniel Okoye · ML Lead</div>
+          </div>
+          <div class="card testimonial-card">
+            <h4>Magai</h4>
+            <blockquote>"One API, every open model — our model evals finally stopped being DevOps."</blockquote>
+            <div class="who">Sofia Marek · CTO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- pricing -->
+    <div class="pricing">
+      <div class="container">
+        <div class="sg-label">PRICING</div>
+        <h2 class="sg-section-title">Start building on Together AI</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin-top:32px;">
+          <div class="toggle-pill-group">
+            <span class="tp on">Standard pricing</span><span class="tp">Wholesale pricing</span>
+          </div>
+          <span class="sg-hint2">Usage-based. No seat fees. Free $1 credit to start.</span>
+        </div>
+        <div class="tier-grid">
+          <div class="tier">
+            <div class="name">Developer</div>
+            <div class="desc">For prototypes and side projects.</div>
+            <div class="price">Pay-as-you-go</div>
+            <div class="per">No minimums</div>
+            <ul>
+              <li><span class="tick">✓</span>Serverless inference, 200+ models</li>
+              <li><span class="tick">✓</span>Community support</li>
+            </ul>
+            <button class="btn btn-outline">Start free</button>
+          </div>
+          <div class="tier tier-featured">
+            <span class="flag">Growth</span>
+            <div class="name">Growth</div>
+            <div class="desc">For products in production.</div>
+            <div class="price">Usage + commit</div>
+            <div class="per">Volume discounts</div>
+            <ul>
+              <li><span class="tick">✓</span>Dedicated endpoints</li>
+              <li><span class="tick">✓</span>Fine-tuning with reserved capacity</li>
+              <li><span class="tick">✓</span>99.9% uptime SLA</li>
+            </ul>
+            <button class="btn btn-white">Start building</button>
+          </div>
+          <div class="tier">
+            <div class="name">Enterprise</div>
+            <div class="desc">For teams with gravity.</div>
+            <div class="price">Custom</div>
+            <div class="per">Annual agreement</div>
+            <ul>
+              <li><span class="tick">✓</span>Reserved GPU clusters (up to 64K GPUs)</li>
+              <li><span class="tick">✓</span>VPC / BYOC deployment</li>
+              <li><span class="tick">✓</span>Solutions engineering</li>
+            </ul>
+            <button class="btn btn-outline">Contact sales</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- final CTA band (dark) -->
+    <div class="research" style="padding:80px 0;">
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;">
+        <div>
+          <h2 class="sg-section-title" style="margin-bottom:8px;">Start building on Together AI</h2>
+          <p style="color:var(--body);font-size:18px;letter-spacing:-0.18px;">Free $1 credit. No credit card required.</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-mint">Get started now</button>
+          <button class="btn btn-ghost-dark">Contact sales</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer + wordmark banner -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="fbrand">
+            <div class="mark"></div>
+            <p>The AI accelerates the acceleration of AI — and we accelerate that.</p>
+          </div>
+          <div><h5>Platform</h5><ul><li><a href="#">Inference</a></li><li><a href="#">Fine-tuning</a></li><li><a href="#">Dedicated clusters</a></li><li><a href="#">Storage</a></li></ul></div>
+          <div><h5>Models</h5><ul><li><a href="#">Serverless models</a></li><li><a href="#">Open source</a></li><li><a href="#">Benchmarks</a></li><li><a href="#">Changelog</a></li></ul></div>
+          <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Research</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li></ul></div>
+          <div><h5>Resources</h5><ul><li><a href="#">Docs</a></li><li><a href="#">Cookbook</a></li><li><a href="#">Status</a></li><li><a href="#">Support</a></li></ul></div>
+        </div>
+        <div class="legal">
+          <span>© 2026 Together AI · Privacy · Terms · Trust</span>
+          <span>110 S. California Ave, Palo Alto, CA</span>
+        </div>
+      </div>
+      <div class="wordmark-banner">together.ai</div>
+    </footer>
+
+</section>
+</main>
+</body>
+</html>
+

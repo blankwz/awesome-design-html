@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template Ops Console — Zapstore Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#ff4f00; --on-primary:#fffefb;
+    --ink:#201515; --ink-soft:#2f2a26; --ink-mid:#36342e;
+    --body:#605d52; --body-mid:#939084; --mute:#c5c0b1;
+    --canvas:#fffefb; --canvas-soft:#f8f4f0;
+    --success:#2f7d4f; --warning:#b96a00; --danger:#c8331f; --neutral:#939084;
+    --radius-sm:6px; --radius-md:12px; --radius-pill:9999px;
+    --sp-xxs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px;
+    --sp-xl:24px; --sp-2xl:32px; --sp-3xl:48px; --sp-4xl:64px;
+    --font-body:'Inter',system-ui,-apple-system,sans-serif;
+    --shadow-card:0 1px 2px rgba(32,21,21,.04),0 4px 16px rgba(32,21,21,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--font-body);font-weight:400;color:var(--ink);
+    background:var(--canvas);font-size:18px;line-height:27px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .eyebrow{
+    font-family:var(--font-body);font-weight:500;font-size:14px;line-height:14px;
+    letter-spacing:1px;text-transform:uppercase;color:var(--ink);
+  }
+  .caption{font-size:14px;line-height:21px;color:var(--body-mid)}
+
+  /* ── Shell ── */
+  .shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+
+  /* ── Sidebar ── */
+  .sidebar{
+    background:var(--canvas);border-right:1px solid var(--canvas-soft);
+    display:flex;flex-direction:column;position:sticky;top:0;height:100vh;
+  }
+  .side-logo{
+    display:flex;align-items:center;gap:var(--sp-md);
+    font-weight:700;font-size:20px;letter-spacing:-.4px;
+    padding:var(--sp-xl) var(--sp-lg);border-bottom:1px solid var(--canvas-soft);
+  }
+  .side-logo svg{display:block}
+  .side-group{padding:var(--sp-xl) var(--sp-md) var(--sp-sm)}
+  .side-group .eyebrow{display:block;color:var(--body-mid);padding:0 var(--sp-md) var(--sp-sm)}
+  .side-link{
+    display:flex;align-items:center;gap:var(--sp-md);
+    font-size:16px;font-weight:500;line-height:24px;color:var(--ink-soft);
+    padding:var(--sp-md) var(--sp-lg);border-radius:var(--radius-sm);
+    border-left:3px solid transparent;
+  }
+  .side-link:hover{background:var(--canvas-soft)}
+  .side-link.on{background:var(--canvas-soft);border-left-color:var(--primary);color:var(--ink)}
+  .side-link svg{flex:none}
+  .side-link .pill{
+    margin-left:auto;font-size:12.5px;font-weight:700;
+    background:var(--canvas-soft);border-radius:var(--radius-pill);padding:var(--sp-xxs) var(--sp-sm);color:var(--body);
+  }
+  .user-card{
+    margin-top:auto;border-top:1px solid var(--canvas-soft);
+    padding:var(--sp-lg);display:flex;align-items:center;gap:var(--sp-md);
+  }
+  .avatar{
+    width:42px;height:42px;border-radius:var(--radius-pill);flex:none;
+    background:linear-gradient(135deg,#ff4f00,#b96a00);color:#fff;
+    font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  .user-card .who{flex:1;min-width:0}
+  .user-card .who b{display:block;font-weight:600;font-size:16px;line-height:24px}
+  .user-card .who span{font-size:14px;color:var(--body-mid)}
+  .user-card .gear{
+    width:36px;height:36px;border:1px solid var(--mute);border-radius:var(--radius-md);
+    background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .user-card .gear:hover{border-color:var(--ink)}
+
+  /* ── Topbar ── */
+  .topbar{
+    display:flex;align-items:center;gap:var(--sp-xl);
+    padding:var(--sp-md) var(--sp-2xl);border-bottom:1px solid var(--canvas-soft);
+    background:var(--canvas);position:sticky;top:0;z-index:40;
+  }
+  .crumb{font-size:16px;color:var(--body-mid)}
+  .crumb b{color:var(--ink);font-weight:600}
+  .top-search{
+    flex:1;max-width:400px;display:flex;align-items:center;gap:var(--sp-sm);
+    border:1px solid var(--ink);border-radius:var(--radius-sm);
+    padding:var(--sp-sm) var(--sp-md);background:var(--canvas);
+  }
+  .top-search input{flex:1;border:0;outline:none;background:none;font-family:var(--font-body);font-size:16px;color:var(--ink)}
+  .top-search input::placeholder{color:var(--body-mid)}
+  .top-actions{margin-left:auto;display:flex;align-items:center;gap:var(--sp-md)}
+  .icon-btn{
+    position:relative;width:42px;height:42px;border-radius:var(--radius-md);
+    border:1px solid var(--mute);background:var(--canvas);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon-btn:hover{border-color:var(--ink)}
+  .dot{
+    position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;
+    border-radius:var(--radius-pill);background:var(--primary);color:var(--on-primary);
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-sm);
+    font-family:var(--font-body);font-weight:600;font-size:16px;line-height:24px;
+    border-radius:var(--radius-md);cursor:pointer;border:1px solid transparent;
+    padding:var(--sp-sm) var(--sp-lg);
+  }
+  .btn-primary{background:var(--primary);color:var(--on-primary)}
+  .btn-primary:hover{background:#e64700}
+
+  /* ── Main ── */
+  .main{padding:var(--sp-2xl);display:grid;gap:var(--sp-2xl)}
+  .page-head h1{font-weight:500;font-size:32px;line-height:36px;letter-spacing:1px;margin-top:var(--sp-xxs)}
+
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-lg)}
+  .kpi{
+    background:var(--canvas-soft);border-radius:var(--radius-md);
+    padding:var(--sp-xl);display:flex;flex-direction:column;gap:var(--sp-sm);
+  }
+  .kpi .label{font-weight:500;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body)}
+  .kpi .value{font-weight:500;font-size:32px;line-height:36px;letter-spacing:-.5px}
+  .kpi .delta-row{display:flex;align-items:center;justify-content:space-between}
+  .delta{font-size:14px;font-weight:600}
+  .delta.up{color:var(--success)} .delta.down{color:var(--danger)}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:26px}
+  .spark i{flex:1;background:var(--mute);opacity:.45;border-radius:2px}
+  .spark i.hot{background:var(--primary);opacity:1}
+  .spark.coffee i.hot{background:var(--ink)}
+  .spark.sage i.hot{background:#2f7d4f}
+
+  /* Charts row */
+  .charts{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--sp-lg)}
+  .panel{background:var(--canvas);border:1px solid var(--canvas-soft);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:var(--sp-xl)}
+  .panel-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--sp-xl)}
+  .panel-head h2{font-weight:600;font-size:24px;line-height:30px;letter-spacing:-.6px}
+  .bars{display:flex;align-items:flex-end;gap:var(--sp-md);height:180px}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:var(--sp-sm);height:100%;justify-content:flex-end}
+  .bar i{width:100%;background:linear-gradient(180deg,#ffd9c2,#ffb28c);border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+  .bar.hot i{background:linear-gradient(180deg,#ff7a35,var(--primary))}
+  .bar span{font-size:13px;font-weight:500;color:var(--body-mid)}
+  .donut-row{display:flex;align-items:center;gap:var(--sp-2xl)}
+  .donut{position:relative;width:160px;height:160px;flex:none}
+  .donut svg{transform:rotate(-90deg)}
+  .donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .donut .center b{font-weight:500;font-size:24px;letter-spacing:-.5px}
+  .donut .center span{font-size:13px;color:var(--body-mid)}
+  .legend{display:grid;gap:var(--sp-md);font-size:16px;color:var(--body)}
+  .legend .row{display:flex;align-items:center;gap:var(--sp-md)}
+  .legend .sw{width:10px;height:10px;border-radius:var(--radius-pill);flex:none}
+  .legend .val{margin-left:auto;font-weight:600;color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="side-logo">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none"><path d="M16.5 2 L6 15.5 H12.5 L11 26 L22 12 H15 Z" fill="#ff4f00"/></svg>
+      Zapstore Ops
+    </div>
+    <nav class="side-group">
+      <span class="eyebrow">Overview</span>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="2" y="2" width="5.4" height="5.4" rx="1.5" stroke="#939084" stroke-width="1.6"/><rect x="9.6" y="2" width="5.4" height="5.4" rx="1.5" stroke="#939084" stroke-width="1.6"/><rect x="2" y="9.6" width="5.4" height="5.4" rx="1.5" stroke="#939084" stroke-width="1.6"/><rect x="9.6" y="9.6" width="5.4" height="5.4" rx="1.5" stroke="#939084" stroke-width="1.6"/></svg>
+        Dashboard
+      </a>
+      <a class="side-link on" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M2.5 4.5 H14.5 M2.5 8.5 H14.5 M2.5 12.5 H10" stroke="#201515" stroke-width="1.6"/><circle cx="13.5" cy="12.5" r="1.6" fill="#ff4f00"/></svg>
+        Orders
+        <span class="pill">418</span>
+      </a>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="6" cy="6" r="3.4" stroke="#939084" stroke-width="1.6"/><path d="M2 15 C2 11.8 10 11.8 10 15 M11.5 3.2 A3.4 3.4 0 0 1 11.5 8.6 M15 15 C15 12.8 13.6 12 12 11.7" stroke="#939084" stroke-width="1.6"/></svg>
+        Customers
+        <span class="pill">9.1k</span>
+      </a>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M2.5 15 L6 10 L9 12 L14.5 3.5" stroke="#939084" stroke-width="1.6"/></svg>
+        Analytics
+      </a>
+    </nav>
+    <nav class="side-group">
+      <span class="eyebrow">Catalog</span>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M3 14.5 V7 M8.5 14.5 V2.5 M14 14.5 V9.5" stroke="#939084" stroke-width="2.2"/></svg>
+        Templates
+        <span class="pill">7,214</span>
+      </a>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M9 1.5 L2.5 9.5 H7.5 L6.8 15.5 L14.5 7 H9 Z" stroke="#939084" stroke-width="1.6"/></svg>
+        Revenue share
+      </a>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M8.5 15.5 C12.5 15.5 15 12.5 15 8.5 C15 4.5 12.5 1.5 8.5 1.5 C4.5 1.5 2 4.5 2 8.5 C2 12.5 4.5 15.5 8.5 15.5 Z M2 8.5 H15 M8.5 1.5 C6.5 4 6.5 13 8.5 15.5 M8.5 1.5 C10.5 4 10.5 13 8.5 15.5" stroke="#939084" stroke-width="1.3"/></svg>
+        Payouts
+      </a>
+      <a class="side-link" href="#">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="2.8" stroke="#939084" stroke-width="1.6"/><path d="M8.5 1.5 V3.4 M8.5 13.6 V15.5 M1.5 8.5 H3.4 M13.6 8.5 H15.5 M3.6 3.6 L4.9 4.9 M12.1 12.1 L13.4 13.4 M13.4 3.6 L12.1 4.9 M4.9 12.1 L3.6 13.4" stroke="#939084" stroke-width="1.6"/></svg>
+        Settings
+      </a>
+    </nav>
+    <div class="user-card">
+      <div class="avatar">MR</div>
+      <div class="who"><b>Maya Reyes</b><span>Catalog ops · Zapstore</span></div>
+      <button class="gear" aria-label="Account settings">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2.4" stroke="#939084" stroke-width="1.5"/><path d="M7.5 1 V2.6 M7.5 12.4 V14 M1 7.5 H2.6 M12.4 7.5 H14 M2.9 2.9 L4 4 M11 11 L12.1 12.1 M12.1 2.9 L11 4 M4 11 L2.9 12.1" stroke="#939084" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main column ── -->
+  <div>
+    <header class="topbar">
+      <span class="crumb">Ops / <b>Orders</b></span>
+      <div class="top-search">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.7" stroke="#939084" stroke-width="1.6"/><path d="M10.2 10.2 L14 14" stroke="#939084" stroke-width="1.6"/></svg>
+        <input type="text" placeholder="Search orders, customers, templates…">
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2 C6.2 2 4.5 4.2 4.5 7 V10.5 L3 13 H15 L13.5 10.5 V7 C13.5 4.2 11.8 2 9 2 Z" stroke="#201515" stroke-width="1.6"/><path d="M7.2 15 C7.6 16 10.4 16 10.8 15" stroke="#201515" stroke-width="1.6"/></svg>
+          <span class="dot">5</span>
+        </button>
+        <button class="btn btn-primary">+ Manual order</button>
+        <div class="avatar">MR</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <span class="eyebrow">Orders — October 2026</span>
+        <h1>Good morning, Maya. Store sales are up.</h1>
+      </div>
+
+      <!-- KPI row -->
+      <section class="kpis">
+        <div class="kpi">
+          <span class="label">Revenue · MTD</span>
+          <span class="value">$128.4k</span>
+          <div class="delta-row">
+            <span class="delta up">↑ 14.2% vs Sep</span>
+            <div class="spark"><i style="height:32%"></i><i style="height:44%"></i><i style="height:40%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:70%"></i><i class="hot" style="height:90%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <span class="label">Orders · MTD</span>
+          <span class="value">418</span>
+          <div class="delta-row">
+            <span class="delta up">↑ 7.8% vs Sep</span>
+            <div class="spark coffee"><i style="height:38%"></i><i style="height:30%"></i><i style="height:52%"></i><i style="height:46%"></i><i style="height:62%"></i><i style="height:56%"></i><i class="hot" style="height:82%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <span class="label">Avg order value</span>
+          <span class="value">$307</span>
+          <div class="delta-row">
+            <span class="delta up">↑ 5.9% vs Sep</span>
+            <div class="spark sage"><i style="height:42%"></i><i style="height:50%"></i><i style="height:44%"></i><i style="height:60%"></i><i style="height:55%"></i><i style="height:68%"></i><i class="hot" style="height:78%"></i></div>
+          </div>
+        </div>
+        <div class="kpi">
+          <span class="label">Refund rate</span>
+          <span class="value">1.8%</span>
+          <div class="delta-row">
+            <span class="delta down">↓ 0.4 pts vs Sep</span>
+            <div class="spark"><i style="height:75%"></i><i style="height:60%"></i><i style="height:66%"></i><i style="height:48%"></i><i style="height:40%"></i><i style="height:30%"></i><i class="hot" style="height:18%"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts row -->
+      <section class="charts">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Revenue by month</h2>
+            <span class="caption">USD · last 12 months</span>
+          </div>
+          <div class="bars">
+            <div class="bar"><i style="height:34%"></i><span>N</span></div>
+            <div class="bar"><i style="height:41%"></i><span>D</span></div>
+            <div class="bar"><i style="height:38%"></i><span>J</span></div>
+            <div class="bar"><i style="height:52%"></i><span>F</span></div>
+            <div class="bar"><i style="height:48%"></i><span>M</span></div>
+            <div class="bar"><i style="height:60%"></i><span>A</span></div>
+            <div class="bar"><i style="height:57%"></i><span>M</span></div>
+            <div class="bar"><i style="height:69%"></i><span>J</span></div>
+            <div class="bar"><i style="height:65%"></i><span>J</span></div>
+            <div class="bar"><i style="height:78%"></i><span>A</span></div>
+            <div class="bar"><i style="height:73%"></i><span>S</span></div>
+            <div class="bar hot"><i style="height:92%"></i><span>O</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Sales mix</h2>
+            <span class="caption">October to date</span>
+          </div>
+          <div class="donut-row">
+            <div class="donut">
+              <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+                <circle cx="80" cy="80" r="62" stroke="#f8f4f0" stroke-width="16"/>
+                <!-- circumference ≈ 389.6 -->
+                <circle cx="80" cy="80" r="62" stroke="#ff4f00" stroke-width="16" stroke-dasharray="170.4 389.6" stroke-dashoffset="0"/>
+                <circle cx="80" cy="80" r="62" stroke="#201515" stroke-width="16" stroke-dasharray="109.1 389.6" stroke-dashoffset="-170.4"/>
+                <circle cx="80" cy="80" r="62" stroke="#b96a00" stroke-width="16" stroke-dasharray="74.0 389.6" stroke-dashoffset="-279.5"/>
+                <circle cx="80" cy="80" r="62" stroke="#c5c0b1" stroke-width="16" stroke-dasharray="36.1 389.6" stroke-dashoffset="-353.5"/>
+              </svg>
+              <div class="center"><b>100%</b><span>of mix</span></div>
+            </div>
+            <div class="legend">
+              <div class="row"><span class="sw" style="background:#ff4f00"></span>Premium templates<span class="val">44%</span></div>
+              <div class="row"><span class="sw" style="background:#201515"></span>Team seats<span class="val">28%</span></div>
+              <div class="row"><span class="sw" style="background:#b96a00"></span>Subscriptions<span class="val">19%</span></div>
+              <div class="row"><span class="sw" style="background:#c5c0b1"></span>Services &amp; other<span class="val">9%</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Table + activity -->
+      <section style="display:grid;grid-template-columns:1.6fr .84fr;gap:var(--sp-lg);align-items:start">
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:16px">
+              <thead>
+                <tr style="background:var(--canvas-soft)">
+                  <th style="text-align:left;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg);width:40px"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select all"></th>
+                  <th style="text-align:left;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Order</th>
+                  <th style="text-align:left;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Template</th>
+                  <th style="text-align:left;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Customer</th>
+                  <th style="text-align:left;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Status</th>
+                  <th style="text-align:right;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Amount</th>
+                  <th style="text-align:left;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Date</th>
+                  <th style="text-align:right;font-weight:600;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--body);padding:var(--sp-md) var(--sp-lg)">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9241</b><div class="caption">Lead capture · 1 seat</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Lead capture to CRM</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Brightline HVAC</b><div class="caption">ws-bl-2210</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:#e7efe9;color:var(--success)">Paid</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">$29.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 26</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">View</button></td>
+                </tr>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9238</b><div class="caption">Pipeline burn-down · 3 seats</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Pipeline burn-down</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Kettle &amp; Crane</b><div class="caption">ws-kc-0877</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:#fdeecd;color:var(--warning)">Awaiting PO</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">$117.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 25</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">Follow up</button></td>
+                </tr>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9234</b><div class="caption">AI meeting notes · monthly</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">AI meeting notes</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Fernwick Legal</b><div class="caption">ws-fl-4431</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:#e7efe9;color:var(--success)">Paid</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">$45.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 25</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">View</button></td>
+                </tr>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9229</b><div class="caption">Invoice reconciliation · 1 seat</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Invoice reconciliation</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Loomis Foods</b><div class="caption">ws-lf-1152</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:#fbe4e0;color:var(--danger)">Payment failed</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">$49.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 24</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">Retry</button></td>
+                </tr>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9221</b><div class="caption">Sprint handoff · 2 seats</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Sprint handoff sync</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Harbor &amp; Pine</b><div class="caption">ws-hp-7730</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:#e7efe9;color:var(--success)">Paid</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">$48.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 24</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">View</button></td>
+                </tr>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9216</b><div class="caption">KPI digest · 1 seat</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">KPI digest to Slack</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Rue Custom Homes</b><div class="caption">ws-rc-5518</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:var(--canvas-soft);color:var(--neutral)">Refunded</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">−$19.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 23</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">Audit</button></td>
+                </tr>
+                <tr style="border-top:1px solid var(--canvas-soft)">
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)" aria-label="Select"></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">#ZS-9208</b><div class="caption">Review alerts · annual upgrade</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Review alerts hub</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><b style="font-weight:600">Juniper Dental</b><div class="caption">ws-jd-9904</div></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)"><span style="display:inline-flex;font-weight:700;font-size:14px;border-radius:var(--radius-pill);padding:2px var(--sp-md);background:#e7efe9;color:var(--success)">Paid</span></td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right;font-weight:600">$96.00</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg)">Oct 22</td>
+                  <td style="padding:var(--sp-md) var(--sp-lg);text-align:right"><button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">View</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-lg) var(--sp-xl);border-top:1px solid var(--canvas-soft)">
+            <span class="caption">418 orders · showing 1–7</span>
+            <div style="display:flex;gap:var(--sp-sm)">
+              <button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">‹</button>
+              <button class="btn btn-primary" style="font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">1</button>
+              <button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">2</button>
+              <button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">3</button>
+              <button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">…</button>
+              <button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">60</button>
+              <button class="btn" style="border:1px solid var(--mute);font-weight:700;font-size:14px;padding:var(--sp-xxs) var(--sp-md)">›</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head" style="margin-bottom:var(--sp-lg)">
+            <h2>Recent activity</h2>
+            <button class="btn" style="border:0;font-weight:700;font-size:14px;color:var(--primary);padding:0">Full log →</button>
+          </div>
+          <div style="display:grid;gap:var(--sp-lg)">
+            <div style="display:flex;gap:var(--sp-md)">
+              <span class="avatar" style="width:34px;height:34px;font-size:13px;background:#e7efe9;color:var(--success)">$</span>
+              <div>
+                <p style="font-size:16px;line-height:24px"><b style="font-weight:600">#ZS-9241</b> paid — Brightline HVAC installed “Lead capture to CRM”.</p>
+                <span class="caption">9:12 AM · today</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--sp-md)">
+              <span class="avatar" style="width:34px;height:34px;font-size:13px;background:#fdeecd;color:var(--warning)">!</span>
+              <div>
+                <p style="font-size:16px;line-height:24px">Card charge failed for <b style="font-weight:600">Loomis Foods</b> — retry scheduled Oct 27.</p>
+                <span class="caption">Yesterday, 4:48 PM</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--sp-md)">
+              <span class="avatar" style="width:34px;height:34px;font-size:13px;background:#ffe6d6;color:#b33d00">★</span>
+              <div>
+                <p style="font-size:16px;line-height:24px"><b style="font-weight:600">AI meeting notes</b> crossed 3,400 installs — featured slot approved.</p>
+                <span class="caption">Yesterday, 11:20 AM</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--sp-md)">
+              <span class="avatar" style="width:34px;height:34px;font-size:13px;background:var(--canvas-soft);color:var(--body)">↺</span>
+              <div>
+                <p style="font-size:16px;line-height:24px"><b style="font-weight:600">#ZS-9216</b> refunded — customer cited setup friction in notes.</p>
+                <span class="caption">Oct 23, 3:05 PM</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--sp-md)">
+              <span class="avatar" style="width:34px;height:34px;font-size:13px;background:#e7efe9;color:var(--success)">✓</span>
+              <div>
+                <p style="font-size:16px;line-height:24px">Payout of <b style="font-weight:600">$41,208.55</b> sent to 214 partner builders.</p>
+                <span class="caption">Oct 22, 9:00 AM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

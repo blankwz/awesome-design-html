@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Store — Quest 3S &amp; Ray-Ban Meta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0064e0; --primary-deep:#0457cb; --primary-soft:#0091ff;
+  --on-primary:#ffffff; --ink-button:#000000; --on-ink-button:#ffffff;
+  --fb-blue:#1876f2; --oculus-purple:#a121ce;
+  --success:#31a24c; --attention:#f2a918; --warning:#f7b928; --critical:#e41e3f; --critical-strong:#f0284a;
+  --canvas:#ffffff; --surface-soft:#f1f4f7; --ink-deep:#0a1317; --ink:#1c1e21; --charcoal:#444950;
+  --slate:#4b4c4f; --steel:#5d6c7b; --stone:#8595a4; --hairline:#ced0d4; --hairline-soft:#dee3e9; --disabled:#bcc0c4;
+  --r-xs:2px; --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:16px; --r-xxl:24px; --r-xxxl:32px; --r-feature:40px; --r-full:100px; --r-circle:9999px;
+  --s-xxs:4px; --s-xs:8px; --s-sm:10px; --s-md:12px; --s-base:16px; --s-lg:20px; --s-xl:24px; --s-xxl:32px; --s-xxxl:40px;
+  --s-sec-sm:48px; --s-sec:64px; --s-sec-lg:80px;
+  --font:'Montserrat','Optimistic VF',Helvetica,Arial,'Noto Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--canvas);color:var(--ink);font-size:16px;line-height:1.5;letter-spacing:-0.16px}
+a{text-decoration:none;color:inherit}
+img,svg{display:block}
+.container{max-width:1280px;margin:0 auto;padding:0 var(--s-xxl)}
+h1,h2,h3{font-weight:500;letter-spacing:0}
+h1{font-size:64px;line-height:1.16;font-feature-settings:"ss01","ss02"}
+h2{font-size:36px;line-height:1.28}
+h3{font-size:24px;line-height:1.25}
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-size:14px;font-weight:700;letter-spacing:-0.14px;border-radius:var(--r-full);cursor:pointer;border:none;transition:background .18s ease}
+.btn-ink{background:var(--ink-button);color:var(--on-ink-button);padding:14px 30px}
+.btn-ink:active{background:var(--charcoal)}
+.btn-buy{background:var(--primary);color:var(--on-primary);padding:14px 30px}
+.btn-buy:active{background:var(--primary-deep)}
+.btn-secondary{background:transparent;color:var(--ink-deep);padding:12px 28px;border:2px solid var(--ink-deep)}
+.btn-ghost{background:transparent;color:var(--ink-deep);padding:10px 22px;border:2px solid rgba(10,19,23,.12)}
+/* ---------- promo banner ---------- */
+.promo-banner{background:var(--ink-deep);color:var(--canvas);font-size:14px;font-weight:700;letter-spacing:-0.14px;padding:var(--s-md) var(--s-xl);text-align:center}
+.promo-banner a{text-decoration:underline;text-underline-offset:3px;margin-left:8px}
+/* ---------- top nav ---------- */
+.topnav{position:sticky;top:0;z-index:50;background:var(--canvas);border-bottom:1px solid var(--hairline-soft)}
+.topnav-inner{display:flex;align-items:center;gap:var(--s-xl);height:64px}
+.logo{font-size:24px;font-weight:500;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px}
+.logo .infinity{width:34px;height:22px}
+.pill-tabs{display:flex;gap:var(--s-xs);flex:1;justify-content:center}
+.pill-tab{font-size:14px;font-weight:700;letter-spacing:-0.14px;color:var(--ink);background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-full);padding:8px 16px;cursor:pointer}
+.pill-tab.active{background:var(--ink-deep);color:var(--canvas);border-color:var(--ink-deep)}
+.nav-right{display:flex;align-items:center;gap:var(--s-md)}
+.search-pill{display:flex;align-items:center;gap:8px;background:var(--surface-soft);color:var(--steel);font-size:14px;border-radius:var(--r-full);height:40px;padding:0 var(--s-lg);width:220px}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:var(--r-circle);background:var(--canvas);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+.icon-btn .dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--critical);border:2px solid var(--canvas)}
+/* ---------- category strip ---------- */
+.cat-strip{padding:var(--s-xl) 0}
+.chip-row{display:flex;gap:var(--s-xs);overflow:hidden}
+/* ---------- section headers ---------- */
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin:var(--s-sec) 0 var(--s-xl)}
+.sec-head p{color:var(--steel);font-size:14px;margin-top:8px;max-width:520px}
+.link-md{font-size:16px;font-weight:700;letter-spacing:-0.16px;color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+/* ---------- product grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-xl)}
+.pcard{display:flex;flex-direction:column}
+.pcard .art{position:relative;aspect-ratio:1/1;border-radius:var(--r-xxxl);overflow:hidden;background:var(--surface-soft)}
+.pcard .art .glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.badge{position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;line-height:1.33;border-radius:var(--r-full);padding:4px 10px}
+.badge-promo{background:var(--warning);color:var(--ink-deep)}
+.badge-attention{background:var(--attention);color:var(--canvas)}
+.badge-success{background:var(--success);color:var(--canvas)}
+.pcard h4{font-size:16px;font-weight:700;letter-spacing:-0.16px;margin:var(--s-md) 0 2px}
+.pcard .meta{font-size:14px;color:var(--steel);letter-spacing:-0.14px}
+.pcard .price-row{display:flex;align-items:baseline;gap:8px;margin-top:6px}
+.pcard .price{font-size:16px;font-weight:700}
+.pcard .was{font-size:14px;color:var(--stone);text-decoration:line-through}
+.stars{color:var(--attention);font-size:13px;letter-spacing:1px}
+.stars span{color:var(--steel);letter-spacing:-0.14px;margin-left:4px}
+/* art variants */
+.art-a{background:linear-gradient(135deg,#e8ecf5 0%,#c9d6ee 55%,#aebfe4 100%)}
+.art-b{background:linear-gradient(160deg,#f3e9f5 0%,#dcc4e8 60%,#b48fd6 100%)}
+.art-c{background:linear-gradient(145deg,#e9f2ef 0%,#c2ded4 60%,#8fc4b2 100%)}
+.art-d{background:linear-gradient(150deg,#f7eee6 0%,#e8cdb0 60%,#d0a678 100%)}
+.art-e{background:linear-gradient(140deg,#eef1f4 0%,#d3dae2 60%,#a9b6c6 100%)}
+.art-f{background:linear-gradient(155deg,#fdeeea 0%,#f4c9bd 60%,#e39b88 100%)}
+.art-g{background:linear-gradient(140deg,#eaf0fa 0%,#c4d5f2 60%,#8fb0e8 100%)}
+.art-h{background:linear-gradient(165deg,#f0eef7 0%,#d4cfe9 60%,#a9a0d6 100%)}
+/* ---------- featured PDP ---------- */
+.pdp{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s-xxxl);margin-top:var(--s-xl);align-items:start}
+.gallery{display:grid;grid-template-columns:80px 1fr;gap:var(--s-base)}
+.thumbs{display:flex;flex-direction:column;gap:var(--s-md)}
+.thumb{aspect-ratio:1/1;border-radius:var(--r-lg);background:var(--surface-soft);border:1px solid var(--hairline-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.thumb.active{border:2px solid var(--ink-deep)}
+.thumb.t2{background:linear-gradient(135deg,#e8ecf5,#aebfe4)}
+.thumb.t3{background:linear-gradient(135deg,#f3e9f5,#b48fd6)}
+.thumb.t4{background:linear-gradient(135deg,#e9f2ef,#8fc4b2)}
+.main-image{position:relative;border-radius:var(--r-xxxl);overflow:hidden;min-height:560px;background:
+  radial-gradient(120% 90% at 70% 20%,#e9eef8 0%,#c4d2ec 45%,#93aad6 100%)}
+.main-image .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.main-image .caption{position:absolute;left:var(--s-xxl);bottom:var(--s-xxl);background:rgba(10,19,23,.55);color:var(--canvas);font-size:12px;font-weight:700;border-radius:var(--r-full);padding:6px 14px}
+.buy-rail{position:sticky;top:88px}
+.checkout-card{background:var(--canvas);border:1px solid var(--hairline-soft);border-radius:var(--r-xl);padding:var(--s-xl);box-shadow:rgba(20,22,26,.3) 0 1px 4px 0}
+.checkout-card h2{font-size:28px;font-weight:300}
+.price-line{display:flex;align-items:baseline;gap:10px;margin:var(--s-sm) 0 var(--s-lg)}
+.price-line .now{font-size:28px;font-weight:700}
+.price-line .was{color:var(--stone);text-decoration:line-through;font-size:16px}
+.price-line .save{background:var(--warning);color:var(--ink-deep);font-size:12px;font-weight:700;border-radius:var(--r-full);padding:4px 10px}
+.opt-label{font-size:14px;font-weight:700;letter-spacing:-0.14px;margin:var(--s-lg) 0 var(--s-sm)}
+.opt-label em{font-style:normal;color:var(--steel);font-weight:400;margin-left:6px}
+.swatch-row{display:flex;gap:var(--s-md)}
+.swatch{width:32px;height:32px;border-radius:var(--r-circle);border:2px solid var(--canvas);box-shadow:0 0 0 1px var(--hairline);cursor:pointer}
+.swatch.sel{box-shadow:0 0 0 2px #0143b5}
+.sku-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-md)}
+.sku{border:1px solid rgba(10,19,23,.12);border-radius:var(--r-lg);padding:var(--s-lg);text-align:center;cursor:pointer}
+.sku.sel{border:2px solid #0143b5}
+.sku b{display:block;font-size:14px;font-weight:700}
+.sku span{font-size:14px;color:var(--steel)}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin:var(--s-lg) 0}
+.stepper{display:flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-full);height:44px}
+.stepper button{width:44px;height:42px;background:none;border:none;font-size:18px;color:var(--ink);cursor:pointer;border-radius:var(--r-full)}
+.stepper span{min-width:36px;text-align:center;font-size:16px;font-weight:700}
+.buy-rail .btn-buy{width:100%;margin-top:var(--s-base)}
+.buy-rail .btn-ghost{width:100%;margin-top:var(--s-sm)}
+.stock-line{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--success);font-weight:700;margin-top:var(--s-md)}
+.stock-line .pip{width:8px;height:8px;border-radius:50%;background:var(--success)}
+.reviews{margin-top:var(--s-xl);border-top:1px solid var(--hairline-soft);padding-top:var(--s-lg)}
+.reviews .score{display:flex;align-items:baseline;gap:10px}
+.reviews .score b{font-size:28px;font-weight:700}
+/* ---------- why buy + footer ---------- */
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-xl);margin-top:var(--s-xl)}
+.why-tile{background:var(--canvas);border:1px solid var(--hairline-soft);border-radius:var(--r-xl);padding:var(--s-xxl) var(--s-xl)}
+.why-tile .ic{width:32px;height:32px;margin-bottom:var(--s-base);color:var(--ink-deep)}
+.why-tile h4{font-size:18px;font-weight:700;line-height:1.44}
+.why-tile p{font-size:14px;color:var(--steel);margin-top:6px;letter-spacing:-0.14px}
+.footer-region{border-top:1px solid var(--hairline-soft);padding:var(--s-sec) 0;margin-top:var(--s-sec-lg)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:var(--s-xl)}
+.foot-brand p{font-size:14px;color:var(--steel);max-width:260px;margin-top:var(--s-base);letter-spacing:-0.14px}
+.newsletter{display:flex;gap:var(--s-sm);margin-top:var(--s-lg)}
+.text-input{flex:1;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:var(--s-md);font-family:var(--font);font-size:16px;height:44px;color:var(--ink)}
+.text-input::placeholder{color:var(--stone)}
+.foot-col h5{font-size:14px;font-weight:700;letter-spacing:-0.14px;color:var(--ink);margin-bottom:var(--s-base)}
+.foot-col a{display:block;font-size:14px;color:var(--steel);letter-spacing:-0.14px;padding:4px 0}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--hairline-soft);margin-top:var(--s-xxxl);padding-top:var(--s-xl)}
+.foot-bottom,.foot-bottom a{font-size:12px;color:var(--stone)}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:36px;height:36px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+@media (max-width:960px){
+  h1{font-size:36px}.grid,.why-grid{grid-template-columns:repeat(2,1fr)}
+  .pdp{grid-template-columns:1fr}.buy-rail{position:static}
+  .pill-tabs{display:none}.foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+.review-quote{font-size:16px;margin-top:var(--s-md)}
+.review-by{display:flex;align-items:center;gap:10px;margin-top:var(--s-md)}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7ea4e8,#41619f);flex-shrink:0}
+.avatar.v2{background:linear-gradient(135deg,#c78fdd,#8a4ba8)}
+.review-by b{font-size:14px;display:block}
+.review-by span{font-size:12px;color:var(--stone)}
+</style>
+</head>
+<body>
+<div class="promo-banner">Get 25% off the #1 selling AI glasses — Meta Skyler, limited time. <a href="#">Shop the offer</a></div>
+<header class="topnav">
+  <div class="container topnav-inner">
+    <a class="logo" href="#">
+      <svg class="infinity" viewBox="0 0 34 22" fill="none"><path d="M17 11C13 4 9.5 2 6.5 2 3 2 1 5.2 1 11s2 9 5.5 9c3 0 6.5-2 10.5-9Zm0 0c4 7 7.5 9 10.5 9 3.5 0 5.5-3.2 5.5-9s-2-9-5.5-9c-3 0-6.5 2-10.5 9Z" stroke="#0064e0" stroke-width="2.6"/></svg>
+      Store
+    </a>
+    <nav class="pill-tabs">
+      <button class="pill-tab active">Glasses</button>
+      <button class="pill-tab">Quest</button>
+      <button class="pill-tab">Accessories</button>
+      <button class="pill-tab">Apps &amp; Games</button>
+    </nav>
+    <div class="nav-right">
+      <div class="search-pill"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#5d6c7b" stroke-width="1.6"/><path d="m11 11 3.5 3.5" stroke="#5d6c7b" stroke-width="1.6" stroke-linecap="round"/></svg> Search store</div>
+      <button class="icon-btn" aria-label="Account"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6.5" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 17c1.2-3 3.6-4.5 6.5-4.5s5.3 1.5 6.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="icon-btn" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 6h12l-1 9H5L4 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 6a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.6"/></svg><span class="dot"></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="cat-strip">
+    <div class="chip-row">
+      <button class="pill-tab active">All products</button>
+      <button class="pill-tab">Ray-Ban Meta</button>
+      <button class="pill-tab">Quest 3S</button>
+      <button class="pill-tab">Quest 3</button>
+      <button class="pill-tab">Quest 2</button>
+      <button class="pill-tab">Charging docks</button>
+      <button class="pill-tab">Carrying cases</button>
+      <button class="pill-tab">Prescription lenses</button>
+      <button class="pill-tab">Gift cards</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2>Trending this week</h2>
+        <p>AI glasses and mixed reality, shipped free in 2 days with free 30-day returns.</p>
+      </div>
+      <a class="link-md" href="#">View all 48 products</a>
+    </div>
+    <div class="grid">
+      <article class="pcard">
+        <div class="art art-a"><span class="badge badge-promo">Limited time</span>
+          <div class="glyph"><svg width="150" height="72" viewBox="0 0 150 72" fill="none"><rect x="6" y="18" width="60" height="38" rx="18" stroke="#24304a" stroke-width="3"/><rect x="84" y="18" width="60" height="38" rx="18" stroke="#24304a" stroke-width="3"/><path d="M66 34c5-5 13-5 18 0" stroke="#24304a" stroke-width="3"/><circle cx="36" cy="37" r="10" fill="#24304a" opacity=".18"/><circle cx="114" cy="37" r="10" fill="#24304a" opacity=".18"/></svg></div>
+        </div>
+        <h4>Ray-Ban Meta Skyler, Gen 2</h4>
+        <div class="meta">AI glasses · Shiny chalky taupe</div>
+        <div class="stars">★★★★★ <span>4.8 (12,431)</span></div>
+        <div class="price-row"><span class="price">$379.00</span><span class="was">$429.00</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-b"><span class="badge badge-success">In stock</span>
+          <div class="glyph"><svg width="150" height="92" viewBox="0 0 150 92" fill="none"><rect x="42" y="8" width="66" height="46" rx="14" fill="#4a2f66"/><rect x="34" y="18" width="82" height="30" rx="12" fill="#65418f"/><rect x="42" y="54" width="18" height="30" rx="8" fill="#3c2454"/><rect x="90" y="54" width="18" height="30" rx="8" fill="#3c2454"/><circle cx="75" cy="31" r="9" fill="#c9a8ea"/></svg></div>
+        </div>
+        <h4>Quest 3S 128GB</h4>
+        <div class="meta">All-in-one headset · White</div>
+        <div class="stars">★★★★★ <span>4.7 (8,902)</span></div>
+        <div class="price-row"><span class="price">$299.99</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-c"><span class="badge badge-attention">Almost gone</span>
+          <div class="glyph"><svg width="150" height="76" viewBox="0 0 150 76" fill="none"><rect x="20" y="22" width="110" height="34" rx="17" stroke="#1d4a3c" stroke-width="3"/><circle cx="55" cy="39" r="11" fill="#1d4a3c" opacity=".2"/><circle cx="95" cy="39" r="11" fill="#1d4a3c" opacity=".2"/><path d="M8 30c4-8 10-8 12-2M142 30c-4-8-10-8-12-2" stroke="#1d4a3c" stroke-width="3" stroke-linecap="round"/></svg></div>
+        </div>
+        <h4>Ray-Ban Meta Wayfarer</h4>
+        <div class="meta">AI glasses · Shiny green</div>
+        <div class="stars">★★★★★ <span>4.9 (21,077)</span></div>
+        <div class="price-row"><span class="price">$329.00</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-d">
+          <div class="glyph"><svg width="140" height="90" viewBox="0 0 140 90" fill="none"><rect x="30" y="14" width="80" height="56" rx="16" fill="#7a4f28"/><rect x="38" y="22" width="64" height="40" rx="10" fill="#a06f3c"/><rect x="30" y="70" width="80" height="8" rx="4" fill="#5e3a1c"/><circle cx="70" cy="42" r="12" fill="#d8b184"/></svg></div>
+        </div>
+        <h4>Quest 3 Elite Carrying Case</h4>
+        <div class="meta">Accessory · Espresso brown</div>
+        <div class="stars">★★★★☆ <span>4.5 (2,318)</span></div>
+        <div class="price-row"><span class="price">$69.99</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-e"><span class="badge badge-success">New</span>
+          <div class="glyph"><svg width="150" height="84" viewBox="0 0 150 84" fill="none"><rect x="20" y="26" width="110" height="26" rx="13" stroke="#37455c" stroke-width="3"/><circle cx="48" cy="39" r="8" fill="#37455c" opacity=".22"/><circle cx="75" cy="39" r="8" fill="#37455c" opacity=".22"/><circle cx="102" cy="39" r="8" fill="#37455c" opacity=".22"/><path d="M32 52v16M118 52v16" stroke="#37455c" stroke-width="3" stroke-linecap="round"/></svg></div>
+        </div>
+        <h4>Charging Dock for Quest 3S</h4>
+        <div class="meta">Accessory · Graphite</div>
+        <div class="stars">★★★★★ <span>4.6 (1,004)</span></div>
+        <div class="price-row"><span class="price">$119.99</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-f">
+          <div class="glyph"><svg width="150" height="70" viewBox="0 0 150 70" fill="none"><path d="M14 22c18-12 42-12 61 0 19-12 43-12 61 0v22c0 10-8 16-18 14l-18-6c-8-2-14-8-25-8s-17 6-25 8l-18 6c-10 2-18-4-18-14V22Z" fill="#c4573d"/><path d="M40 30h20M90 30h20" stroke="#f7d9cd" stroke-width="4" stroke-linecap="round"/></svg></div>
+        </div>
+        <h4>Meta Quest 3S Silicone Cover</h4>
+        <div class="meta">Accessory · Terracotta</div>
+        <div class="stars">★★★★☆ <span>4.4 (867)</span></div>
+        <div class="price-row"><span class="price">$29.99</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-g"><span class="badge badge-success">Prescription ready</span>
+          <div class="glyph"><svg width="150" height="70" viewBox="0 0 150 70" fill="none"><circle cx="50" cy="35" r="24" stroke="#2b4f8f" stroke-width="3"/><circle cx="50" cy="35" r="16" fill="#2b4f8f" opacity=".14"/><circle cx="104" cy="35" r="24" stroke="#2b4f8f" stroke-width="3"/><circle cx="104" cy="35" r="16" fill="#2b4f8f" opacity=".14"/><path d="M74 33c2-3 6-3 8 0" stroke="#2b4f8f" stroke-width="3"/></svg></div>
+        </div>
+        <h4>Prescription Lenses for Ray-Ban Meta</h4>
+        <div class="meta">Lens add-on · Single vision</div>
+        <div class="stars">★★★★★ <span>4.8 (5,512)</span></div>
+        <div class="price-row"><span class="price">$99.00</span></div>
+      </article>
+      <article class="pcard">
+        <div class="art art-h">
+          <div class="glyph"><svg width="150" height="88" viewBox="0 0 150 88" fill="none"><rect x="24" y="10" width="102" height="68" rx="14" fill="#463f7d"/><rect x="34" y="20" width="82" height="48" rx="8" fill="#5d55a3"/><path d="M46 52 60 36l12 12 16-20 16 24" stroke="#cfc7f2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="54" cy="30" r="4" fill="#cfc7f2"/></svg></div>
+        </div>
+        <h4>Meta Quest+ 3-Month Gift Card</h4>
+        <div class="meta">Digital · Delivered by email</div>
+        <div class="stars">★★★★★ <span>4.9 (9,340)</span></div>
+        <div class="price-row"><span class="price">$29.99</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div><h2>Ray-Ban Meta Skyler, Gen 2</h2><p>Capture, listen and stay in the moment — now in four fresh finishes.</p></div>
+      <span class="stars" style="font-size:16px">★★★★★ <span>4.8 · 12,431 reviews</span></span></div>
+    <div class="pdp">
+      <div class="gallery">
+        <div class="thumbs">
+          <div class="thumb active"><svg width="44" height="24" viewBox="0 0 150 72" fill="none"><rect x="6" y="18" width="60" height="38" rx="18" stroke="#24304a" stroke-width="6"/><rect x="84" y="18" width="60" height="38" rx="18" stroke="#24304a" stroke-width="6"/></svg></div>
+          <div class="thumb t2"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="15" stroke="#3c4f77" stroke-width="5"/></svg></div>
+          <div class="thumb t3"><svg width="44" height="24" viewBox="0 0 150 72" fill="none"><rect x="6" y="18" width="60" height="38" rx="18" stroke="#6b4591" stroke-width="6"/><rect x="84" y="18" width="60" height="38" rx="18" stroke="#6b4591" stroke-width="6"/></svg></div>
+          <div class="thumb t4"><svg width="44" height="24" viewBox="0 0 150 72" fill="none"><rect x="6" y="18" width="60" height="38" rx="18" stroke="#3d6b58" stroke-width="6"/><rect x="84" y="18" width="60" height="38" rx="18" stroke="#3d6b58" stroke-width="6"/></svg></div>
+        </div>
+        <div class="main-image">
+          <div class="stage"><svg width="340" height="168" viewBox="0 0 340 168" fill="none">
+            <rect x="14" y="42" width="140" height="88" rx="42" stroke="#1d2a45" stroke-width="6"/>
+            <rect x="196" y="42" width="140" height="88" rx="42" stroke="#1d2a45" stroke-width="6"/>
+            <path d="M154 82c10-10 26-10 36 0" stroke="#1d2a45" stroke-width="6"/>
+            <circle cx="84" cy="86" r="24" fill="#1d2a45" opacity=".22"/>
+            <circle cx="266" cy="86" r="24" fill="#1d2a45" opacity=".22"/>
+            <rect x="316" y="46" width="10" height="24" rx="5" fill="#1d2a45"/>
+            <rect x="14" y="46" width="10" height="24" rx="5" fill="#1d2a45"/>
+          </svg></div>
+          <span class="caption">Skyler · Shiny chalky taupe</span>
+        </div>
+      </div>
+
+      <aside class="buy-rail">
+        <div class="checkout-card">
+          <h2>Ray-Ban Meta Skyler</h2>
+          <div class="price-line"><span class="now">$379.00</span><span class="was">$429.00</span><span class="save">Save $50</span></div>
+          <div class="opt-label">Frame color <em>· Shiny chalky taupe</em></div>
+          <div class="swatch-row">
+            <span class="swatch sel" style="background:#cbbfa8"></span>
+            <span class="swatch" style="background:#2b2f36"></span>
+            <span class="swatch" style="background:#7d5a3c"></span>
+            <span class="swatch" style="background:#5c5f8a"></span>
+          </div>
+          <div class="opt-label">Lens option</div>
+          <div class="sku-row">
+            <div class="sku sel"><b>Classic</b><span>Included</span></div>
+            <div class="sku"><b>Transitions</b><span>+$100</span></div>
+            <div class="sku"><b>Polarized</b><span>+$70</span></div>
+          </div>
+          <div class="qty-row">
+            <div class="opt-label" style="margin:0">Quantity</div>
+            <div class="stepper"><button aria-label="decrease">−</button><span>1</span><button aria-label="increase">+</button></div>
+          </div>
+          <button class="btn btn-buy">Add to cart · $379.00</button>
+          <button class="btn btn-ghost">Save to wishlist</button>
+          <div class="stock-line"><span class="pip"></span>In stock — free 2-day delivery</div>
+          <div class="reviews">
+            <div class="score"><b>4.8</b><span class="stars">★★★★★</span><span style="color:var(--steel);font-size:14px">12,431 verified reviews</span></div>
+            <p class="review-quote">“The camera capture is instant and the audio is shockingly good. I wear them every single day.”</p>
+            <div class="review-by"><span class="avatar"></span><span><b>Priya Raman</b><span>Verified purchase · Austin, TX</span></span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div><h2>Why buy from Meta</h2></div></div>
+    <div class="why-grid">
+      <div class="why-tile"><svg class="ic" viewBox="0 0 32 32" fill="none"><path d="M3 10h16v12H3zM19 14h6l4 4v4h-10z" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="24" r="3" stroke="currentColor" stroke-width="2"/><circle cx="23" cy="24" r="3" stroke="currentColor" stroke-width="2"/></svg><h4>Free 2-day delivery</h4><p>On every order, everywhere Meta Store ships.</p></div>
+      <div class="why-tile"><svg class="ic" viewBox="0 0 32 32" fill="none"><path d="M16 5v14m0 0 6-6m-6 6-6-6M6 25h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><h4>Free 30-day returns</h4><p>Changed your mind? Send it back, on us.</p></div>
+      <div class="why-tile"><svg class="ic" viewBox="0 0 32 32" fill="none"><path d="M16 4 27 8v8c0 7-4.7 11-11 12C9.7 27 5 23 5 16V8l11-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m11.5 16 3 3 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><h4>Worry-free warranty</h4><p>One year of coverage included with every device.</p></div>
+      <div class="why-tile"><svg class="ic" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M4 13h24" stroke="currentColor" stroke-width="2"/></svg><h4>Buy now, pay later</h4><p>Four interest-free payments with Meta Pay.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer-region">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#"><svg class="infinity" viewBox="0 0 34 22" fill="none"><path d="M17 11C13 4 9.5 2 6.5 2 3 2 1 5.2 1 11s2 9 5.5 9c3 0 6.5-2 10.5-9Zm0 0c4 7 7.5 9 10.5 9 3.5 0 5.5-3.2 5.5-9s-2-9-5.5-9c-3 0-6.5 2-10.5 9Z" stroke="#0064e0" stroke-width="2.6"/></svg>Store</a>
+        <p>Sign up for launch news, restock alerts and 10% off your first accessory order.</p>
+        <form class="newsletter" onsubmit="return false">
+          <input class="text-input" type="email" placeholder="Email address">
+          <button class="btn btn-ink" type="submit">Sign up</button>
+        </form>
+      </div>
+      <div class="foot-col"><h5>Shop</h5><a href="#">AI glasses</a><a href="#">Meta Quest</a><a href="#">Accessories</a><a href="#">Gift cards</a><a href="#">Refurbished</a></div>
+      <div class="foot-col"><h5>Support</h5><a href="#">Order status</a><a href="#">Shipping &amp; returns</a><a href="#">Warranty</a><a href="#">Prescription guide</a><a href="#">Contact us</a></div>
+      <div class="foot-col"><h5>Company</h5><a href="#">About Meta</a><a href="#">Newsroom</a><a href="#">Careers</a><a href="#">Sustainability</a></div>
+      <div class="foot-col"><h5>Legal</h5><a href="#">Privacy policy</a><a href="#">Terms of sale</a><a href="#">Cookie settings</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Meta Store. VR products not for children under 13.</span>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="1.5" width="13" height="13" rx="4" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="4" r="1" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1 1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><rect x="1" y="1" width="16" height="12" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="m7.5 4.8 4 2.2-4 2.2V4.8Z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

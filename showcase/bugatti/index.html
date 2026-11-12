@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUGATTI — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400&family=EB+Garamond:ital@0;1&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   BUGATTI — austere luxury-automotive system
+   Canvas #000000 · white type · wide tracking · no bold, no accent
+   ============================================================ */
+:root {
+  /* colors */
+  --c-primary: #ffffff;
+  --c-ink: #ffffff;
+  --c-body: #cccccc;
+  --c-body-strong: #e6e6e6;
+  --c-muted: #999999;
+  --c-muted-soft: #666666;
+  --c-hairline: #262626;
+  --c-hairline-strong: #3a3a3a;
+  --c-canvas: #000000;
+  --c-surface-soft: #0d0d0d;
+  --c-surface-card: #141414;
+  --c-surface-elevated: #1f1f1f;
+  --c-on-dark: #ffffff;
+  --c-link: #c3d9f3;
+  --c-warning: #d4a017;
+  --c-success: #5fa657;
+
+  /* type families — Bugatti trinity substitutes */
+  --f-display: "Saira Condensed", "Bugatti Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-text: "EB Garamond", Garamond, "Times New Roman", serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono", monospace;
+
+  /* radius */
+  --r-none: 0px;
+  --r-pill: 9999px;
+
+  /* spacing */
+  --s-xxs: 4px; --s-xs: 8px; --s-sm: 12px; --s-md: 16px;
+  --s-lg: 24px; --s-xl: 40px; --s-xxl: 64px; --s-section: 120px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--c-canvas);
+  color: var(--c-body);
+  font-family: var(--f-text);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- typography tokens ---------- */
+.t-display-xl { font-family: var(--f-display); font-size: 64px; font-weight: 400; line-height: 1.1; letter-spacing: 4px; text-transform: uppercase; color: var(--c-ink); }
+.t-display-lg { font-family: var(--f-display); font-size: 48px; font-weight: 400; line-height: 1.15; letter-spacing: 3px; text-transform: uppercase; color: var(--c-ink); }
+.t-display-md { font-family: var(--f-display); font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 2px; text-transform: uppercase; color: var(--c-ink); }
+.t-display-sm { font-family: var(--f-display); font-size: 24px; font-weight: 400; line-height: 1.3; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-ink); }
+.t-wordmark   { font-family: var(--f-display); font-size: 14px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: var(--c-ink); }
+.t-title-md   { font-family: var(--f-display); font-size: 20px; font-weight: 400; line-height: 1.3; letter-spacing: 1px; text-transform: uppercase; color: var(--c-ink); }
+.t-title-sm   { font-family: var(--f-display); font-size: 16px; font-weight: 400; line-height: 1.3; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-ink); }
+.t-caption    { font-family: var(--f-mono); font-size: 11px; font-weight: 400; line-height: 1.4; letter-spacing: 2px; text-transform: uppercase; }
+.t-body-md    { font-family: var(--f-text); font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--c-body); }
+.t-body-sm    { font-family: var(--f-text); font-size: 14px; font-weight: 400; line-height: 1.5; }
+.t-button     { font-family: var(--f-mono); font-size: 14px; font-weight: 400; letter-spacing: 2.5px; text-transform: uppercase; }
+.t-nav        { font-family: var(--f-mono); font-size: 12px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--s-xl); }
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.sg-banner {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; padding: 0 var(--s-lg);
+  background: var(--c-canvas);
+  border-bottom: 1px solid var(--c-hairline);
+}
+.sg-banner .sg-id { display: flex; align-items: baseline; gap: var(--s-md); }
+.sg-banner .sg-folder { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); }
+.sg-banner .sg-brand { font-family: var(--f-display); font-size: 14px; letter-spacing: 6px; text-transform: uppercase; color: var(--c-ink); }
+.sg-banner .sg-desc { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted-soft); }
+@media (max-width: 900px) { .sg-banner .sg-desc { display: none; } }
+
+/* ============================================================
+   COMPONENTS SECTION
+   ============================================================ */
+#components { padding: var(--s-xxl) 0; }
+.sg-section-label {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-xl);
+}
+.sg-block { margin-bottom: var(--s-section); }
+.sg-block-title { display: flex; align-items: baseline; gap: var(--s-md); margin-bottom: var(--s-lg); }
+.sg-block-title .num { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; color: var(--c-muted-soft); }
+.sg-block-title h3 { font-family: var(--f-display); font-size: 20px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-ink); }
+.sg-block-title .rule { flex: 1; height: 1px; background: var(--c-hairline); }
+
+/* color tokens */
+.swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-md); }
+.swatch { border: 1px solid var(--c-hairline); }
+.swatch .chip { height: 72px; border-bottom: 1px solid var(--c-hairline); }
+.swatch .meta { padding: var(--s-sm) var(--s-md); }
+.swatch .name { font-family: var(--f-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-body); margin-bottom: 2px; }
+.swatch .hex { font-family: var(--f-mono); font-size: 10px; letter-spacing: 1px; color: var(--c-muted-soft); }
+
+/* typography specimen */
+.specimen .row { display: grid; grid-template-columns: 180px 1fr; gap: var(--s-lg); padding: var(--s-lg) 0; border-bottom: 1px solid var(--c-hairline); }
+.specimen .row:last-child { border-bottom: none; }
+.specimen .tok { font-family: var(--f-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-muted); padding-top: 8px; }
+.specimen .serif { font-family: var(--f-text); font-size: 16px; line-height: 1.5; color: var(--c-body); }
+
+/* buttons */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-lg); }
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 14px 32px;
+  background: transparent; color: var(--c-on-dark);
+  border: 1px solid var(--c-on-dark); border-radius: var(--r-pill);
+  font-family: var(--f-mono); font-size: 14px; font-weight: 400;
+  letter-spacing: 2.5px; text-transform: uppercase; text-decoration: none;
+  cursor: pointer; transition: background 0.25s ease, color 0.25s ease;
+}
+.btn-primary:hover { background: var(--c-on-dark); color: var(--c-canvas); }
+.btn-primary.is-pressed { background: var(--c-on-dark); color: var(--c-canvas); }
+.btn-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; background: transparent;
+  border: 1px solid var(--c-on-dark); border-radius: var(--r-pill);
+  color: var(--c-on-dark); cursor: pointer; transition: background 0.25s ease, color 0.25s ease;
+}
+.btn-icon:hover { background: var(--c-on-dark); color: var(--c-canvas); }
+.btn-icon svg { width: 14px; height: 14px; }
+.text-link { color: var(--c-link); font-family: var(--f-text); font-size: 16px; text-decoration: underline; text-underline-offset: 3px; }
+.btn-label { font-family: var(--f-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted-soft); margin-top: var(--s-md); }
+
+/* inputs */
+.field { max-width: 420px; }
+.field label { display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-xs); }
+.field input {
+  width: 100%; height: 44px; padding: 12px 0;
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--c-hairline-strong);
+  color: var(--c-on-dark); font-family: var(--f-text); font-size: 16px;
+  outline: none; transition: border-color 0.25s ease;
+}
+.field input::placeholder { color: var(--c-muted); }
+.field input:focus { border-bottom: 2px solid var(--c-on-dark); }
+.field input:disabled { color: var(--c-muted-soft); border-bottom-color: var(--c-hairline); cursor: not-allowed; }
+.field + .field { margin-top: var(--s-lg); }
+.select-line {
+  width: 100%; height: 44px; padding: 12px 0; appearance: none;
+  background: transparent; border: none; border-bottom: 1px solid var(--c-hairline-strong);
+  color: var(--c-on-dark); font-family: var(--f-text); font-size: 16px; outline: none;
+}
+.check-line { display: flex; align-items: center; gap: var(--s-sm); margin-top: var(--s-lg); }
+.check-line .box { width: 16px; height: 16px; border: 1px solid var(--c-hairline-strong); display: inline-flex; align-items: center; justify-content: center; }
+.check-line .box.on { background: var(--c-on-dark); border-color: var(--c-on-dark); }
+.check-line .box.on svg { width: 10px; height: 10px; }
+.check-line span { font-family: var(--f-text); font-size: 14px; color: var(--c-body); }
+.check-line.disabled span { color: var(--c-muted-soft); }
+
+/* cards */
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-xl); }
+.news-card { background: var(--c-canvas); border: 1px solid var(--c-hairline); padding: var(--s-lg); }
+.news-card .thumb { width: 100%; aspect-ratio: 16/9; margin-bottom: var(--s-lg);
+  background:
+    radial-gradient(120% 90% at 20% 110%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 55%),
+    linear-gradient(105deg, #0a0a0a 0%, #1c1c1c 45%, #050505 70%, #161616 100%);
+  position: relative; overflow: hidden;
+}
+.news-card .thumb::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(75deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%); }
+.callout-card { background: var(--c-surface-card); padding: var(--s-md); width: 320px; }
+.callout-card .thumb { width: 100%; height: 88px; margin-bottom: var(--s-md);
+  background: linear-gradient(120deg, #050505 0%, #232323 50%, #0a0a0a 100%); }
+.callout-card p { font-family: var(--f-text); font-size: 14px; color: var(--c-body); margin-bottom: var(--s-md); }
+.callout-card .go { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-ink); }
+.date-pill { display: inline-block; font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-sm); }
+
+/* badges / tags */
+.tag-row { display: flex; flex-wrap: wrap; gap: var(--s-lg); align-items: center; }
+.tag { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); }
+.tag.outline { border: 1px solid var(--c-hairline-strong); padding: 6px 14px; }
+.tag.ice { color: var(--c-link); }
+.tag.warn { color: var(--c-warning); }
+.tag.ok { color: var(--c-success); }
+
+/* navigation */
+.nav-demo { border-top: 1px solid var(--c-hairline); border-bottom: 1px solid var(--c-hairline); }
+.topnav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 56px; }
+.topnav .left, .topnav .right { display: flex; align-items: center; gap: var(--s-xl); }
+.topnav .right { justify-content: flex-end; }
+.topnav a { color: var(--c-on-dark); text-decoration: none; font-family: var(--f-mono); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: opacity 0.2s ease; }
+.topnav a:hover { opacity: 0.6; }
+.topnav .wordmark { text-align: center; }
+
+/* spec cells / table */
+.spec-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--c-hairline); }
+.spec-cell { padding: var(--s-lg) 0; border-bottom: 1px solid var(--c-hairline); }
+.spec-cell .val { font-family: var(--f-display); font-size: 20px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; color: var(--c-ink); margin-bottom: var(--s-xxs); }
+.spec-cell .lbl { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); }
+.listing-row { display: flex; align-items: center; justify-content: space-between; padding: var(--s-lg) 0; border-bottom: 1px solid var(--c-hairline); }
+.listing-row .loc { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); }
+.listing-row .arr { font-family: var(--f-mono); font-size: 14px; color: var(--c-ink); }
+
+/* ============================================================
+   PRODUCT SECTION
+   ============================================================ */
+#product { border-top: 1px solid var(--c-hairline); }
+
+/* hero photo band — pure CSS "photography" */
+.hero-band { position: relative; overflow: hidden; padding: 120px 0 96px; }
+.hero-photo {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(90% 60% at 78% 72%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(50% 30% at 30% 90%, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0) 70%),
+    linear-gradient(180deg, #000000 0%, #0c0c0c 55%, #030303 100%);
+}
+.hero-photo::before, .hero-photo::after {
+  content: ""; position: absolute; left: -10%; right: -10%; height: 2px; filter: blur(1px);
+}
+.hero-photo::before { bottom: 34%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35) 30%, rgba(255,255,255,0.9) 55%, transparent 85%); transform: rotate(-3deg); }
+.hero-photo::after { bottom: 28%; background: linear-gradient(90deg, transparent 10%, rgba(195,217,243,0.25) 45%, transparent 80%); transform: rotate(-2deg); }
+.hero-speed { position: absolute; bottom: 30%; left: 0; right: 0; height: 120px; z-index: 1; opacity: 0.5; }
+.hero-inner { position: relative; z-index: 2; text-align: center; padding: 0 var(--s-xl); }
+.hero-inner .over { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-xl); }
+.hero-inner h1 { margin-bottom: var(--s-md); }
+.hero-inner .sub { max-width: 560px; margin: 0 auto var(--s-xl); font-family: var(--f-text); font-size: 16px; color: var(--c-body-strong); }
+
+.model-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-xl); margin-top: var(--s-xxl); }
+.model-card { text-align: left; }
+.model-card .shot { position: relative; aspect-ratio: 16/9; margin-bottom: var(--s-lg); overflow: hidden; border: 1px solid var(--c-hairline); }
+.model-card .shot .glow { position: absolute; inset: 0; }
+.model-card h4 { margin-bottom: var(--s-xs); }
+.model-card .specs { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-sm); }
+.model-card a { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-link); text-decoration: underline; text-underline-offset: 3px; }
+
+.m0 .glow { background: radial-gradient(85% 70% at 70% 60%, rgba(255,255,255,0.14), transparent 60%), linear-gradient(100deg, #000, #191919 60%, #000); }
+.m1 .glow { background: radial-gradient(85% 70% at 30% 65%, rgba(255,255,255,0.12), transparent 60%), linear-gradient(260deg, #000, #141414 55%, #000); }
+.m2 .glow { background: radial-gradient(85% 70% at 50% 75%, rgba(195,217,243,0.12), transparent 60%), linear-gradient(180deg, #020202, #1e1e1e 65%, #000); }
+
+.section-pad { padding: var(--s-section) 0; }
+.section-head { text-align: center; margin-bottom: var(--s-xxl); }
+.section-head .over { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-muted); margin-bottom: var(--s-lg); }
+.section-head p { max-width: 620px; margin: var(--s-md) auto 0; font-family: var(--f-text); font-size: 16px; color: var(--c-body); }
+
+.cta-band { position: relative; padding: 120px 0; text-align: center; overflow: hidden; }
+.cta-band .photo { position: absolute; inset: 0;
+  background:
+    radial-gradient(70% 90% at 50% 100%, rgba(255,255,255,0.10) 0%, transparent 65%),
+    linear-gradient(180deg, #000000 0%, #101010 60%, #000000 100%); }
+.cta-band .photo::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: 30%; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7) 50%, transparent); transform: rotate(-2.5deg); filter: blur(1px); }
+.cta-band .inner { position: relative; z-index: 1; }
+.cta-band h2 { margin-bottom: var(--s-xl); }
+
+.footer { padding: var(--s-xxl) 0 var(--s-xl); background: var(--c-canvas); }
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-xl); margin-bottom: var(--s-xxl); }
+.footer h5 { font-family: var(--f-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--c-ink); margin-bottom: var(--s-lg); }
+.footer ul { list-style: none; }
+.footer li { margin-bottom: var(--s-sm); }
+.footer a { font-family: var(--f-text); font-size: 14px; color: var(--c-muted); text-decoration: none; }
+.footer a:hover { color: var(--c-body-strong); }
+.footer-legal { display: flex; justify-content: space-between; align-items: center; padding-top: var(--s-xl); border-top: 1px solid var(--c-hairline); }
+.footer-legal p { font-family: var(--f-text); font-size: 14px; color: var(--c-muted-soft); }
+.footer-wordmark { text-align: center; padding: var(--s-xxl) 0 var(--s-lg); }
+
+@media (max-width: 900px) {
+  .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+  .specimen .row { grid-template-columns: 1fr; gap: var(--s-xs); }
+  .card-grid, .model-grid { grid-template-columns: 1fr; }
+  .spec-row { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .t-display-xl { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-id">
+    <span class="sg-folder">bugatti</span>
+    <span class="sg-brand">BUGATTI</span>
+  </div>
+  <span class="sg-desc">Austere luxury-automotive interface — pure black, white letterspaced display, photography as the only voltage</span>
+</header>
+
+<main>
+  <section id="components">
+    <div class="wrap">
+      <p class="sg-section-label">Components — Bugatti Design System</p>
+
+      <!-- 1. Color tokens -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">01</span><h3>Color Tokens</h3><span class="rule"></span></div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><p class="name">Canvas</p><p class="hex">#000000</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#0d0d0d"></div><div class="meta"><p class="name">Surface Soft</p><p class="hex">#0D0D0D</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#141414"></div><div class="meta"><p class="name">Surface Card</p><p class="hex">#141414</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#262626"></div><div class="meta"><p class="name">Hairline</p><p class="hex">#262626</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#999999"></div><div class="meta"><p class="name">Muted</p><p class="hex">#999999</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#cccccc"></div><div class="meta"><p class="name">Body</p><p class="hex">#CCCCCC</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#ffffff"></div><div class="meta"><p class="name">Primary / Ink</p><p class="hex">#FFFFFF</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#3a3a3a"></div><div class="meta"><p class="name">Hairline Strong</p><p class="hex">#3A3A3A</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#666666"></div><div class="meta"><p class="name">Muted Soft</p><p class="hex">#666666</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#c3d9f3"></div><div class="meta"><p class="name">Link — only color</p><p class="hex">#C3D9F3</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#d4a017"></div><div class="meta"><p class="name">Warning</p><p class="hex">#D4A017</p></div></div>
+          <div class="swatch"><div class="chip" style="background:#5fa657"></div><div class="meta"><p class="name">Success</p><p class="hex">#5FA657</p></div></div>
+        </div>
+      </div>
+
+      <!-- 2. Typography -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">02</span><h3>Typography</h3><span class="rule"></span></div>
+        <div class="specimen">
+          <div class="row"><span class="tok">display-xl · 64/400/4px</span><p class="t-display-xl">The Tourbillon</p></div>
+          <div class="row"><span class="tok">display-lg · 48/400/3px</span><p class="t-display-lg">Engineered Emotion</p></div>
+          <div class="row"><span class="tok">display-md · 32/400/2px</span><p class="t-display-md">Chiron Super Sport</p></div>
+          <div class="row"><span class="tok">display-sm · 24/400/1.5px</span><p class="t-display-sm">Molsheim, France</p></div>
+          <div class="row"><span class="tok">wordmark · 14/400/6px</span><p class="t-wordmark">BUGATTI</p></div>
+          <div class="row"><span class="tok">caption-uppercase · mono 11/2px</span><p class="t-caption" style="color:var(--c-muted)">8.3 L W16 Quad-Turbo · 1,600 PS</p></div>
+          <div class="row"><span class="tok">body-md · serif 16/0</span><p class="serif">Every Bugatti is a synthesis of engineering and art — a machine whose measures are set not by convention, but by the uncompromising pursuit of what has never been built before.</p></div>
+          <div class="row"><span class="tok">button · mono 14/2.5px</span><p class="t-button" style="color:var(--c-on-dark)">CONFIGURE YOUR BUGATTI</p></div>
+        </div>
+      </div>
+
+      <!-- 3. Buttons -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">03</span><h3>Buttons</h3><span class="rule"></span></div>
+        <div class="btn-row">
+          <button class="btn-primary">Discover</button>
+          <button class="btn-primary is-pressed">Configure</button>
+          <button class="btn-icon" aria-label="Previous"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3 5 8l5 5"/></svg></button>
+          <button class="btn-icon" aria-label="Next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></button>
+          <a class="text-link" href="#">heritage.bugatti.com</a>
+        </div>
+        <div class="btn-row" style="margin-top:var(--s-md)">
+          <span class="btn-label">Button-primary — transparent, 1px white outline, pill</span>
+          <span class="btn-label" style="margin-left:auto">Button-icon — 40px full</span>
+        </div>
+      </div>
+
+      <!-- 4. Inputs -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">04</span><h3>Inputs</h3><span class="rule"></span></div>
+        <div class="field">
+          <label for="nl">Email Address</label>
+          <input id="nl" type="email" placeholder="your.name@example.com">
+        </div>
+        <div class="field">
+          <label for="nl2">Email Address — Focus</label>
+          <input id="nl2" type="email" value="e.torres@molsheim.fr" style="border-bottom:2px solid #ffffff">
+        </div>
+        <div class="field">
+          <label for="sel">Preferred Model</label>
+          <select id="sel" class="select-line">
+            <option>Tourbillon</option>
+            <option>Chiron Super Sport</option>
+            <option>Bolide</option>
+            <option>Mistral</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="dis">Dealer Reference — Disabled</label>
+          <input id="dis" type="text" value="MOLSHEIM-AT-001" disabled>
+        </div>
+        <div class="check-line">
+          <span class="box on"><svg viewBox="0 0 10 10" fill="none" stroke="#000" stroke-width="1.6"><path d="M1.5 5.5 4 8l4.5-6"/></svg></span>
+          <span>Keep me informed about Bugatti news</span>
+        </div>
+        <div class="check-line disabled">
+          <span class="box"></span>
+          <span>Request a factory visit (Molsheim)</span>
+        </div>
+      </div>
+
+      <!-- 5. Cards -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">05</span><h3>Cards</h3><span class="rule"></span></div>
+        <div class="card-grid">
+          <article class="news-card">
+            <div class="thumb"></div>
+            <span class="date-pill">14. March 2026</span>
+            <h4 class="t-title-md" style="margin-bottom:var(--s-sm)">Le Passé, Le Présent, L'Avenir — 115 Years of Bugatti</h4>
+            <p class="t-body-sm" style="color:var(--c-body)">A retrospective exhibition in Molsheim traces the marque from the Type 35 to the Tourbillon, through archive photography and original engineering drawings.</p>
+          </article>
+          <article class="news-card">
+            <div class="thumb"></div>
+            <span class="date-pill">02. April 2026</span>
+            <h4 class="t-title-md" style="margin-bottom:var(--s-sm)">The Bolide: Racing Taken to Its Logical Extreme</h4>
+            <p class="t-body-sm" style="color:var(--c-body)">Born from a question posed on paper — what if weight were stripped to the essential and the W16 left to speak — the Bolide enters its final validation phase.</p>
+          </article>
+        </div>
+        <div style="margin-top:var(--s-xl)">
+          <div class="callout-card">
+            <div class="thumb"></div>
+            <p>Are you ready for a new adventure? Join the team that builds the fastest cars in the world.</p>
+            <a class="go" href="#">Explore Our Opportunities →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Badges -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">06</span><h3>Tags &amp; Captions</h3><span class="rule"></span></div>
+        <div class="tag-row">
+          <span class="tag">Category — Heritage</span>
+          <span class="tag outline">Model — Tourbillon</span>
+          <span class="tag ice">Press Release</span>
+          <span class="tag warn">Technical Notice</span>
+          <span class="tag ok">Confirmed Order</span>
+        </div>
+      </div>
+
+      <!-- 7. Navigation -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">07</span><h3>Navigation</h3><span class="rule"></span></div>
+        <div class="nav-demo">
+          <nav class="topnav">
+            <div class="left"><a href="#">Menu</a><a href="#">Models</a></div>
+            <div class="wordmark"><span class="t-wordmark">BUGATTI</span></div>
+            <div class="right"><a href="#">Store</a><a href="#">Configure</a></div>
+          </nav>
+        </div>
+      </div>
+
+      <!-- 8. Spec cells + career rows -->
+      <div class="sg-block">
+        <div class="sg-block-title"><span class="num">08</span><h3>Spec Cells &amp; Listing Rows</h3><span class="rule"></span></div>
+        <div class="spec-row">
+          <div class="spec-cell"><p class="val">1,800 PS</p><p class="lbl">Combined Power</p></div>
+          <div class="spec-cell"><p class="val">&lt; 2.0 s</p><p class="lbl">0–100 km/h</p></div>
+          <div class="spec-cell"><p class="val">500 km/h</p><p class="lbl">Top Speed</p></div>
+          <div class="spec-cell"><p class="val">8.3 L</p><p class="lbl">V16 Naturally Aspirated</p></div>
+        </div>
+        <div style="margin-top:var(--s-xl)">
+          <div class="listing-row"><h4 class="t-title-md">Aerodynamics Engineer, Hydro</h4><span class="loc">Molsheim · Engineering</span><span class="arr">→</span></div>
+          <div class="listing-row"><h4 class="t-title-md">Interior Craftsmanship Specialist</h4><span class="loc">Molsheim · Atelier</span><span class="arr">→</span></div>
+          <div class="listing-row"><h4 class="t-title-md">Powertrain Calibration Lead</h4><span class="loc">Molsheim · Powertrain</span><span class="arr">→</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINISHED PRODUCT — Bugatti landing page
+       ============================================================ -->
+  <section id="product">
+    <div class="hero-band">
+      <div class="hero-photo"></div>
+      <svg class="hero-speed" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 92 C 360 84 620 70 900 60 C 1120 52 1300 50 1440 48" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.5" fill="none"/>
+        <path d="M0 100 C 380 94 660 82 940 72 C 1160 64 1320 62 1440 60" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="hero-inner">
+        <p class="over">The New Era of Speed</p>
+        <h1 class="t-display-xl">Tourbillon</h1>
+        <p class="sub">Eight hundred years of watchmaking precision, distilled into a hyper sports car. The Tourbillon unites a naturally aspirated V16 with hybrid power — and rewrites what a Bugatti can be.</p>
+        <button class="btn-primary">Discover the Tourbillon</button>
+      </div>
+    </div>
+
+    <div class="wrap section-pad">
+      <div class="section-head">
+        <p class="over">The Lineup</p>
+        <h2 class="t-display-lg">Three Expressions of One Idea</h2>
+        <p>Each Bugatti begins as a question of physics and ends as a work of craft. Choose the one that answers yours.</p>
+      </div>
+      <div class="model-grid">
+        <article class="model-card m0">
+          <div class="shot"><div class="glow"></div></div>
+          <h4 class="t-display-sm">Tourbillon</h4>
+          <p class="specs">1,800 PS · V16 Hybrid · &lt; 2.0 s</p>
+          <a href="#">Discover</a>
+        </article>
+        <article class="model-card m1">
+          <div class="shot"><div class="glow"></div></div>
+          <h4 class="t-display-sm">Chiron Super Sport</h4>
+          <p class="specs">1,600 PS · W16 · 440 km/h+</p>
+          <a href="#">Discover</a>
+        </article>
+        <article class="model-card m2">
+          <div class="shot"><div class="glow"></div></div>
+          <h4 class="t-display-sm">Mistral</h4>
+          <p class="specs">1,600 PS · Roadster · 99 Units</p>
+          <a href="#">Discover</a>
+        </article>
+      </div>
+    </div>
+
+    <div class="wrap section-pad" style="padding-top:0">
+      <div class="section-head">
+        <p class="over">Sur Mesure</p>
+        <h2 class="t-display-lg">Built Around One Owner</h2>
+      </div>
+      <div class="spec-row">
+        <div class="spec-cell"><p class="val">99 Units</p><p class="lbl">Mistral — Sold Out</p></div>
+        <div class="spec-cell"><p class="val">250+</p><p class="lbl">Craftspeople, Molsheim</p></div>
+        <div class="spec-cell"><p class="val">115 Years</p><p class="lbl">Of Marque Heritage</p></div>
+        <div class="spec-cell"><p class="val">1 of 1</p><p class="lbl">Every Commission</p></div>
+      </div>
+    </div>
+
+    <div class="wrap section-pad" style="padding-top:0">
+      <div class="section-head">
+        <p class="over">Newsroom</p>
+        <h2 class="t-display-lg">From Molsheim</h2>
+      </div>
+      <div class="card-grid">
+        <article class="news-card">
+          <div class="thumb"></div>
+          <span class="date-pill">22. May 2026</span>
+          <h4 class="t-title-md" style="margin-bottom:var(--s-sm)">Tourbillon Prototype Completes High-Speed Validation</h4>
+          <p class="t-body-sm" style="color:var(--c-body)">At the Papenburg high-speed oval, the Tourbillon exceeded every development target set at the programme's start — in silence, at times, on electric power alone.</p>
+        </article>
+        <article class="news-card">
+          <div class="thumb"></div>
+          <span class="date-pill">09. June 2026</span>
+          <h4 class="t-title-md" style="margin-bottom:var(--s-sm)">Sur Mesure Atelier Opens Its Doors to Collectors</h4>
+          <p class="t-body-sm" style="color:var(--c-body)">For the first time, owners are invited inside the ateliers where leather, carbon and light are shaped into machines that exist once, for one person.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cta-band">
+      <div class="photo"></div>
+      <div class="inner">
+        <h2 class="t-display-md">Discover Bugatti</h2>
+        <button class="btn-primary">Request an Appointment</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer-grid">
+          <div>
+            <h5>Bugatti</h5>
+            <ul>
+              <li><a href="#">Company</a></li>
+              <li><a href="#">Heritage</a></li>
+              <li><a href="#">Newsroom</a></li>
+              <li><a href="#">Careers</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Models</h5>
+            <ul>
+              <li><a href="#">Tourbillon</a></li>
+              <li><a href="#">Chiron Super Sport</a></li>
+              <li><a href="#">Mistral</a></li>
+              <li><a href="#">Bolide</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Ownership</h5>
+            <ul>
+              <li><a href="#">Sur Mesure</a></li>
+              <li><a href="#">Bugatti boutiques</a></li>
+              <li><a href="#">Service &amp; parts</a></li>
+              <li><a href="#">La Maison Pur Sang</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Connect</h5>
+            <ul>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Dealer network</a></li>
+              <li><a href="#">Press contact</a></li>
+              <li><a href="#">Newsletter</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <p>© 2026 Bugatti International S.A.S. All rights reserved.</p>
+          <p>Imprint · Privacy · Cookies</p>
+        </div>
+        <div class="footer-wordmark"><span class="t-wordmark">BUGATTI</span></div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+</body>
+</html>

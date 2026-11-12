@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webflow Templates — Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inconsolata:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#080808; --on-primary:#ffffff;
+  --ink:#080808; --ink-strong:#222222; --body:#363636; --body-mid:#5a5a5a;
+  --mute:#898989; --mute-soft:#ababab; --hairline:#d8d8d8; --canvas:#ffffff;
+  --accent-purple:#7a3dff; --accent-pink:#ed52cb; --accent-blue:#3b89ff;
+  --accent-orange:#ff6b00; --accent-green:#00d722;
+  --info:#146ef5; --success:#00a832; --warning:#ffae13; --danger:#ee1d36;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-sm:4px; --r-md:8px; --r-full:9999px;
+  --s-xs:4px; --s-sm:8px; --s-md:12px; --s-lg:16px; --s-xl:20px; --s-2xl:24px; --s-3xl:32px;
+  --shadow-l2:0 84px 24px rgba(0,0,0,0),0 54px 22px rgba(0,0,0,.01),0 30px 18px rgba(0,0,0,.04),0 13px 13px rgba(0,0,0,.08),0 3px 7px rgba(0,0,0,.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;letter-spacing:-0.16px}
+a{color:inherit;text-decoration:none}
+button,input{font-family:var(--font)}
+.wrap{max-width:1400px;margin:0 auto;padding:0 var(--s-3xl)}
+.eyebrow{font-size:15px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink)}
+
+/* ---------- nav ---------- */
+.topnav{position:sticky;top:0;z-index:60;background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.topnav .wrap{display:flex;align-items:center;gap:var(--s-2xl);height:68px}
+.logo{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:600;letter-spacing:-0.3px}
+.mark{width:28px;height:28px;background:var(--primary);border-radius:var(--r-sm);display:grid;place-items:center}
+.navlinks{display:flex;gap:var(--s-lg);font-size:14px;font-weight:500}
+.navlinks a{color:var(--ink);padding:6px 2px}
+.navlinks a:hover{color:var(--body-mid)}
+.navlinks a.on{box-shadow:inset 0 -2px 0 var(--primary)}
+.top-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;border:1px solid var(--hairline);border-radius:var(--r-sm);padding:8px 12px;width:240px}
+.nav-search input{border:0;outline:0;font-size:14px;width:100%;color:var(--ink);background:transparent}
+.nav-search input::placeholder{color:var(--mute-soft)}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--hairline);background:var(--canvas);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{border-color:var(--mute)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--danger);border:2px solid var(--canvas)}
+.avatar{width:34px;height:34px;border-radius:var(--r-full);background:var(--accent-purple);color:#fff;font-size:12px;font-weight:500;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;letter-spacing:-0.16px;padding:12px 20px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary:hover{background:var(--ink-strong)}
+.btn-secondary{background:var(--canvas);color:var(--ink);border-color:var(--hairline)}
+.btn-secondary:hover{border-color:var(--mute)}
+.btn-sm{padding:8px 14px;font-size:14px}
+
+/* ---------- hero ---------- */
+.hero{padding:var(--s-3xl) 0 var(--s-2xl)}
+.hero h1{font-size:clamp(44px,6vw,80px);font-weight:600;line-height:1.04;letter-spacing:-0.8px;max-width:16ch}
+.hero p{font-size:20px;color:var(--body);max-width:560px;margin-top:var(--s-lg);letter-spacing:-0.2px}
+.hero-cta{display:flex;gap:var(--s-md);margin-top:var(--s-2xl)}
+
+/* ---------- category cards ---------- */
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s-lg);padding:var(--s-xl) 0 var(--s-2xl)}
+.cat{border-radius:var(--r-md);padding:var(--s-3xl) var(--s-2xl);color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s}
+.cat:hover{transform:translateY(-3px)}
+.cat h3{font-size:24px;font-weight:500;letter-spacing:-0.3px}
+.cat span{font-size:14px;opacity:.85}
+.cat.green{color:var(--primary)}
+
+/* ---------- chips / grid ---------- */
+.chips{display:flex;gap:var(--s-sm);flex-wrap:wrap;padding:var(--s-lg) 0}
+.chip{font-size:14px;font-weight:500;padding:7px 14px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);cursor:pointer}
+.chip:hover{border-color:var(--mute);color:var(--ink)}
+.chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:var(--s-lg);margin:var(--s-md) 0 var(--s-xl)}
+.section-head h2{font-size:44.8px;font-weight:600;line-height:1.04;letter-spacing:-0.5px}
+.section-head a{font-size:16px;font-weight:500;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:2px}
+.section-head a:hover{color:var(--body-mid);border-color:var(--body-mid)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-lg);padding-bottom:var(--s-3xl)}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .15s,border-color .15s}
+.card:hover{border-color:var(--mute-soft);box-shadow:var(--shadow-l2)}
+.art{height:140px;margin:var(--s-sm) var(--s-sm) 0;border-radius:var(--r-sm);position:relative;overflow:hidden;padding:12px 14px 0}
+.browser{background:var(--canvas);border-radius:var(--r-xs);box-shadow:0 4px 14px rgba(0,0,0,.18);height:100%;overflow:hidden}
+.browser .b-bar{height:16px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:4px;padding:0 6px}
+.browser .b-bar i{width:5px;height:5px;border-radius:50%}
+.browser .b-body{padding:8px}
+.browser .b-hero{height:26px;border-radius:2px;margin-bottom:5px;background:rgba(255,255,255,.35)}
+.browser .b-line{height:5px;border-radius:2px;margin-bottom:4px;background:rgba(255,255,255,.35)}
+.browser .b-line.w60{width:60%}
+.art-a{background:linear-gradient(150deg,#7a3dff,#5b2bc4)}
+.art-b{background:linear-gradient(150deg,#ed52cb,#c22d9f)}
+.art-c{background:linear-gradient(150deg,#3b89ff,#1f5fd0)}
+.art-d{background:linear-gradient(150deg,#ff6b00,#d15200)}
+.art-e{background:linear-gradient(150deg,#00d722,#00a11c)}
+.art-f{background:linear-gradient(150deg,#080808,#333)}
+.art-g{background:linear-gradient(150deg,#146ef5,#0a44a0)}
+.art-h{background:linear-gradient(150deg,#ffae13,#e08900)}
+.badge{position:absolute;top:10px;left:10px;font-size:12.8px;font-weight:550;padding:3px 8px;border-radius:var(--r-sm);z-index:2}
+.badge.blue{background:var(--info);color:#fff}
+.badge.soft{background:#fff;color:var(--info)}
+.badge.dark{background:var(--primary);color:#fff}
+.card-body{padding:var(--s-lg);display:flex;flex-direction:column;gap:4px;flex:1}
+.card-title{font-size:20px;font-weight:500;letter-spacing:-0.2px}
+.card-meta{font-size:14px;color:var(--body-mid)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:var(--s-sm)}
+.rating{font-size:14px;color:var(--body-mid)}
+.rating .stars{color:var(--warning);letter-spacing:1px}
+.price{font-size:16px;font-weight:500}
+.price small{font-size:14px;font-weight:400;color:var(--body-mid)}
+
+/* ---------- featured detail ---------- */
+.detail{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s-3xl);background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-3xl);box-shadow:var(--shadow-l2)}
+.preview{background:linear-gradient(150deg,#7a3dff,#4d1fb0);border-radius:var(--r-md);padding:var(--s-2xl) var(--s-2xl) 0;overflow:hidden}
+.preview .browser{height:340px;border-radius:var(--r-sm) var(--r-sm) 0 0;box-shadow:none;border:1px solid rgba(255,255,255,.2)}
+.preview .b-hero{height:60px;background:rgba(122,61,255,.18)}
+.preview .b-line{height:8px}
+.thumbs{display:flex;gap:var(--s-md);margin-top:var(--s-lg)}
+.thumb{flex:1;height:64px;border-radius:var(--r-sm);border:2px solid transparent;cursor:pointer;padding:6px 8px 0}
+.thumb .browser{height:100%;box-shadow:none}
+.thumb.on{border-color:var(--primary)}
+.t-a{background:linear-gradient(150deg,#7a3dff,#5b2bc4)}
+.t-b{background:linear-gradient(150deg,#ed52cb,#c22d9f)}
+.t-c{background:linear-gradient(150deg,#3b89ff,#1f5fd0)}
+.t-d{background:linear-gradient(150deg,#080808,#333)}
+.detail-info h3{font-size:32px;font-weight:500;line-height:1.2;letter-spacing:-0.3px}
+.detail-info .lead{font-size:16px;color:var(--body);margin:var(--s-xs) 0 var(--s-xl)}
+.opt-label{font-size:14px;font-weight:500;margin-bottom:var(--s-sm)}
+.opt-label span{color:var(--body-mid);font-weight:400}
+.opt-row{display:flex;gap:var(--s-sm);flex-wrap:wrap;margin-bottom:var(--s-xl)}
+.opt{font-size:14px;font-weight:500;padding:8px 14px;border-radius:var(--r-sm);border:1px solid var(--hairline);background:var(--canvas);color:var(--body);cursor:pointer}
+.opt:hover{border-color:var(--mute);color:var(--ink)}
+.opt.on{border-color:var(--primary);color:var(--ink);box-shadow:inset 0 0 0 1px var(--primary)}
+.buy-row{display:flex;align-items:center;gap:var(--s-md);flex-wrap:wrap}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-sm)}
+.stepper button{width:40px;height:44px;border:0;background:transparent;font-size:18px;font-weight:500;cursor:pointer;color:var(--ink)}
+.stepper b{min-width:28px;text-align:center;font-size:16px;font-weight:500}
+.detail-price{font-size:24px;font-weight:600;margin:var(--s-lg) 0 var(--s-md)}
+.detail-price small{font-size:16px;font-weight:400;color:var(--body-mid)}
+.mono-note{font-family:var(--mono);font-size:12px;color:var(--body-mid);margin-top:var(--s-sm)}
+.review-box{margin-top:var(--s-xl);border-top:1px solid var(--hairline);padding-top:var(--s-xl)}
+.review{margin-top:var(--s-md);font-size:16px;color:var(--body)}
+.review b{display:block;font-size:14px;font-weight:500;color:var(--body-mid);margin-top:4px}
+
+/* ---------- cart ---------- */
+.cart-band{padding:var(--s-3xl) 0}
+.cart-band h2{font-size:32px;font-weight:500;letter-spacing:-0.3px;margin-bottom:var(--s-xl)}
+.cart{max-width:760px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-md);padding:var(--s-2xl);box-shadow:var(--shadow-l2)}
+.line{display:flex;align-items:center;gap:var(--s-lg);padding:var(--s-md) 0;border-bottom:1px solid var(--hairline)}
+.line:last-of-type{border-bottom:0}
+.line .art-sm{width:64px;height:44px;border-radius:var(--r-sm);flex:none;padding:5px 7px 0}
+.line .art-sm .browser{height:100%}
+.line .li-info{flex:1}
+.line .li-info b{font-size:16px;font-weight:500;display:block}
+.line .li-info span{font-size:14px;color:var(--body-mid)}
+.line .li-price{font-size:16px;font-weight:500}
+.sum-row{display:flex;justify-content:space-between;font-size:16px;color:var(--body);padding:4px 0}
+.sum-row.total{font-size:20px;font-weight:600;color:var(--ink);border-top:1px solid var(--hairline);margin-top:var(--s-sm);padding-top:var(--s-md)}
+.cart .btn-primary{width:100%;margin-top:var(--s-lg)}
+.cart-note{font-size:14px;color:var(--body-mid);text-align:center;margin-top:var(--s-md)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hairline);padding:var(--s-3xl) 0;color:var(--body-mid);font-size:14px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--s-3xl)}
+.foot-eyebrow{font-size:12px;font-weight:500;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);margin-bottom:var(--s-md)}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:var(--s-sm)}
+footer ul a:hover{color:var(--ink)}
+.news{display:flex;gap:var(--s-md);margin-top:var(--s-md);max-width:380px}
+.news input{flex:1;border:1px solid var(--hairline);border-radius:var(--r-sm);color:var(--ink);font-size:14px;padding:10px 12px;outline:0}
+.news input::placeholder{color:var(--mute-soft)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:var(--s-lg);border-top:1px solid var(--hairline);margin-top:var(--s-3xl);padding-top:var(--s-xl);flex-wrap:wrap}
+.socials{display:flex;gap:var(--s-sm)}
+.socials a{width:34px;height:34px;border-radius:var(--r-full);border:1px solid var(--hairline);display:grid;place-items:center;font-size:12px;font-weight:500;color:var(--body-mid)}
+.socials a:hover{color:var(--ink);border-color:var(--mute)}
+
+@media (max-width:1100px){
+  .cats{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:960px){
+  .wrap{padding:0 var(--s-lg)}
+  .navlinks,.nav-search{display:none}
+  .cats{grid-template-columns:1fr 1fr}
+  .detail{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M17.8 7.5s-1.6 5-1.7 5.4c0-.4-1.2-9.4-1.2-9.4-2.8 0-4.3 2-5.1 4.1 0 0-2 5.2-2.2 5.7 0-.4-.3-5.6-.3-5.6-.2-2.6-2.6-4.1-4.5-4.1L5.1 18c2.9 0 4.5-2 5.3-4.1 0 0 1.8-4.6 1.8-4.8.1.2 1.3 8.9 1.3 8.9 2.9 0 4.5-1.8 5.4-3.8L23 3.5c-2.9 0-4.4 2-5.2 4Z"/></svg></span>
+      webflow
+    </a>
+    <nav class="navlinks">
+      <a class="on" href="#">Templates</a>
+      <a href="#">Showcase</a>
+      <a href="#">Experts</a>
+      <a href="#">Apps</a>
+      <a href="#">Pricing</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ababab" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" placeholder="Search 2,400+ templates">
+    </div>
+    <button class="icon-btn" aria-label="Cart">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l-1.2 12H7.2L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <span class="avatar">EV</span>
+    <a class="btn btn-primary btn-sm" href="#">Get started</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Template marketplace</div>
+    <h1>Start from a site that's already won awards</h1>
+    <p>2,400+ production-grade templates built by the community and the Webflow team. Clone to your workspace, swap the content, ship.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#featured">Browse templates</a>
+      <a class="btn btn-secondary" href="#">Become a template author</a>
+    </div>
+    <div class="cats">
+      <div class="cat" style="background:var(--accent-purple)"><h3>Portfolio</h3><span>418 templates</span></div>
+      <div class="cat" style="background:var(--accent-pink)"><h3>Animation</h3><span>233 templates</span></div>
+      <div class="cat" style="background:var(--accent-blue)"><h3>SaaS</h3><span>561 templates</span></div>
+      <div class="cat" style="background:var(--accent-orange)"><h3>Ecommerce</h3><span>389 templates</span></div>
+      <div class="cat green" style="background:var(--accent-green)"><h3>Blog &amp; CMS</h3><span>302 templates</span></div>
+    </div>
+    <div class="chips">
+      <button class="chip active">All</button>
+      <button class="chip">New this week</button>
+      <button class="chip">Best sellers</button>
+      <button class="chip">Free</button>
+      <button class="chip">Ecommerce</button>
+      <button class="chip">Dark mode</button>
+      <button class="chip">Agency</button>
+      <button class="chip">Startup</button>
+    </div>
+    <div class="section-head">
+      <h2>Best sellers this week</h2>
+      <a href="#">View all 2,400+ →</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="art art-a"><span class="badge soft">New</span><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Nocturne</h3>
+          <div class="card-meta">Portfolio · 12 pages · CMS</div>
+          <div class="rating"><span class="stars">★★★★★</span> 4.9 (312)</div>
+          <div class="card-foot"><span class="price">$79</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-c"><span class="badge dark">Best seller</span><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Loopkit</h3>
+          <div class="card-meta">SaaS · 18 pages · Figma incl.</div>
+          <div class="rating"><span class="stars">★★★★★</span> 4.8 (1,204)</div>
+          <div class="card-foot"><span class="price">$129</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-d"><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Marketporium</h3>
+          <div class="card-meta">Ecommerce · 24 pages · Cart</div>
+          <div class="rating"><span class="stars">★★★★☆</span> 4.7 (689)</div>
+          <div class="card-foot"><span class="price">$149</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-e"><span class="badge soft">Free</span><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Fieldnotes</h3>
+          <div class="card-meta">Blog &amp; CMS · 8 pages</div>
+          <div class="rating"><span class="stars">★★★★★</span> 4.8 (921)</div>
+          <div class="card-foot"><span class="price">Free</span><span class="price" style="color:var(--body-mid)"><small>cloneable</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-b"><span class="badge dark">Best seller</span><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Motionhaus</h3>
+          <div class="card-meta">Animation · 10 pages · Interactions</div>
+          <div class="rating"><span class="stars">★★★★★</span> 4.9 (547)</div>
+          <div class="card-foot"><span class="price">$99</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-f"><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Monolith</h3>
+          <div class="card-meta">Agency · 14 pages · Dark mode</div>
+          <div class="rating"><span class="stars">★★★★☆</span> 4.6 (402)</div>
+          <div class="card-foot"><span class="price">$89</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-g"><span class="badge blue">New</span><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Launchpad X</h3>
+          <div class="card-meta">Startup · 16 pages · Pricing CMS</div>
+          <div class="rating"><span class="stars">★★★★★</span> 4.8 (268)</div>
+          <div class="card-foot"><span class="price">$79</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="art art-h"><div class="browser"><div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div><div class="b-body"><div class="b-hero"></div><div class="b-line"></div><div class="b-line w60"></div></div></div></div>
+        <div class="card-body">
+          <h3 class="card-title">Solaris Studio</h3>
+          <div class="card-meta">Portfolio · 9 pages · CMS</div>
+          <div class="rating"><span class="stars">★★★★☆</span> 4.7 (333)</div>
+          <div class="card-foot"><span class="price">$69</span><span class="price" style="color:var(--body-mid)"><small>one-time</small></span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="featured" style="padding-bottom:var(--s-3xl)">
+  <div class="section-head"><h2>Inside: Loopkit</h2></div>
+  <div class="detail">
+    <div>
+      <div class="preview">
+        <div class="browser">
+          <div class="b-bar"><i style="background:#ed52cb"></i><i style="background:#ffae13"></i><i style="background:#00d722"></i></div>
+          <div class="b-body">
+            <div class="b-hero"></div>
+            <div class="b-line" style="width:70%"></div>
+            <div class="b-line" style="width:45%"></div>
+            <div class="b-line" style="width:60%"></div>
+            <div class="b-line" style="width:30%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="thumbs">
+        <span class="thumb on t-a"><span class="browser"><span class="b-body" style="display:block;padding:4px"><i class="b-hero" style="display:block;height:8px;background:rgba(255,255,255,.4);border-radius:2px"></i><i class="b-line" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+        <span class="thumb t-b"><span class="browser"><span class="b-body" style="display:block;padding:4px"><i class="b-hero" style="display:block;height:8px;background:rgba(255,255,255,.4);border-radius:2px"></i><i class="b-line" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+        <span class="thumb t-c"><span class="browser"><span class="b-body" style="display:block;padding:4px"><i class="b-hero" style="display:block;height:8px;background:rgba(255,255,255,.4);border-radius:2px"></i><i class="b-line" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+        <span class="thumb t-d"><span class="browser"><span class="b-body" style="display:block;padding:4px"><i class="b-hero" style="display:block;height:8px;background:rgba(255,255,255,.4);border-radius:2px"></i><i class="b-line" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+      </div>
+    </div>
+    <div class="detail-info">
+      <h3>Loopkit — SaaS template</h3>
+      <p class="lead">18 polished pages with CMS-driven pricing, changelog and docs. Client-first class naming, full accessibility pass, and a matching Figma file.</p>
+      <div class="opt-label">License <span>— one site per license</span></div>
+      <div class="opt-row">
+        <button class="opt on">Standard · $129</button>
+        <button class="opt">Unlimited sites · $399</button>
+      </div>
+      <div class="opt-label">Add-ons</div>
+      <div class="opt-row">
+        <button class="opt">Figma file · $29</button>
+        <button class="opt on">Figma included</button>
+        <button class="opt">Setup call · $149</button>
+      </div>
+      <div class="detail-price">$129<small> · one-time · lifetime updates</small></div>
+      <div class="buy-row">
+        <div class="stepper">
+          <button aria-label="Decrease">−</button><b>1</b><button aria-label="Increase">+</button>
+        </div>
+        <a class="btn btn-primary" href="#cart">Add to cart</a>
+        <a class="btn btn-secondary" href="#">Live preview ↗</a>
+      </div>
+      <p class="mono-note">v2.4.1 · last updated 12 Oct 2026 · Webflow Designer compatible</p>
+      <div class="review-box">
+        <div class="rating" style="font-size:16px"><span class="stars">★★★★★</span> 4.8 · 1,204 reviews</div>
+        <p class="review">“Shipped our marketing site in four days on Loopkit. The CMS structure is exactly how a SaaS site should be wired.”<b>Hana Yoshida — Growth Lead, Quantly</b></p>
+        <p class="review">“Client-first naming means my team actually maintained it after handoff.”<b>Marco Bellini — Freelance Webflow dev</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cart-band wrap" id="cart">
+  <h2>Your cart</h2>
+  <div class="cart">
+    <div class="line">
+      <span class="art-sm art-c"><span class="browser"><span class="b-body" style="display:block"><i class="b-hero" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+      <div class="li-info"><b>Loopkit — SaaS template</b><span>Standard license · Figma included</span></div>
+      <div class="li-price">$129.00</div>
+    </div>
+    <div class="line">
+      <span class="art-sm art-a"><span class="browser"><span class="b-body" style="display:block"><i class="b-hero" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+      <div class="li-info"><b>Nocturne — Portfolio</b><span>Standard license</span></div>
+      <div class="li-price">$79.00</div>
+    </div>
+    <div class="line">
+      <span class="art-sm art-d"><span class="browser"><span class="b-body" style="display:block"><i class="b-hero" style="display:block;background:rgba(255,255,255,.4)"></i></span></span></span>
+      <div class="li-info"><b>Marketporium — Ecommerce</b><span>Standard license</span></div>
+      <div class="li-price">$149.00</div>
+    </div>
+    <div class="sum-row" style="margin-top:12px"><span>Subtotal</span><span>$357.00</span></div>
+    <div class="sum-row"><span>Marketplace fee (included)</span><span>$0.00</span></div>
+    <div class="sum-row total"><span>Total</span><span>$357.00</span></div>
+    <a class="btn btn-primary" href="#">Checkout — clone instantly after purchase</a>
+    <p class="cart-note">14-day refund policy · templates never expire · VAT calculated at checkout</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-eyebrow">Template dispatch</div>
+        <p style="max-width:320px">Fresh templates and author spotlights, every other Tuesday. Unsubscribe anytime.</p>
+        <div class="news">
+          <input type="email" placeholder="you@studio.com">
+          <a class="btn btn-primary btn-sm" href="#">Subscribe</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Marketplace</div>
+        <ul>
+          <li><a href="#">All templates</a></li>
+          <li><a href="#">New releases</a></li>
+          <li><a href="#">Free templates</a></li>
+          <li><a href="#">Become an author</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Product</div>
+        <ul>
+          <li><a href="#">Designer</a></li>
+          <li><a href="#">CMS</a></li>
+          <li><a href="#">Ecommerce</a></li>
+          <li><a href="#">Hosting</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-eyebrow">Company</div>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Webflow, Inc. · Terms of Service · Privacy · Cookies</span>
+      <div class="socials"><a href="#">X</a><a href="#">IG</a><a href="#">YT</a><a href="#">IN</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

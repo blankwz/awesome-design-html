@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slack — Design Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* colors — aubergine chromatic monotheism */
+  --primary:#4a154b;
+  --primary-deep:#481a54;
+  --primary-press:#611f69;
+  --primary-tint:#592466;
+  --on-primary:#ffffff;
+  --ink:#1d1d1d;
+  --ink-mute:#696969;
+  --link-blue:#1264a3;
+  --link-hover:#3860be;
+  --canvas:#ffffff;
+  --canvas-cream:#f4ede4;
+  --canvas-lavender:#f9f0ff;
+  --surface-aubergine:#4a154b;
+  --hairline:#e6e6e6;
+  --on-aubergine-mute:#d9bdde;
+  --semantic-error:#cc4117;
+  --semantic-success:#007a5a;
+  /* pastel mesh stops */
+  --mesh-peach:#fff0e6;
+  --mesh-lavender:#e9d8ff;
+  --mesh-green:#e3ecdf;
+  /* radii */
+  --r-xs:2px; --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-xxl:48px; --r-pill:90px;
+  /* spacing */
+  --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:20px; --sp-xxl:24px; --sp-huge:28px;
+  /* fonts */
+  --font-display:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-ui:'Lato','Inter',system-ui,-apple-system,sans-serif;
+  /* elevation */
+  --shadow-btn:rgba(0,0,0,0.1) 0 5px 20px 0;
+  --shadow-mockup:rgba(0,0,0,0.1) 0 0 32px 0;
+  --shadow-toast:rgba(0,0,0,0.2) 0 1px 10px 0;
+  --inset-aubergine:rgb(97,31,105) 0 0 0 1px inset;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-ui);color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.container{max-width:1240px;margin:0 auto;padding:0 32px}
+button{font-family:var(--font-ui);cursor:pointer;border:none;background:none}
+
+/* ============ Banner ============ */
+.sg-banner{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:var(--surface-aubergine);color:var(--on-primary);height:44px;padding:0 24px;border-bottom:1px solid var(--primary-tint)}
+.sg-banner .sg-id{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.1em;color:var(--on-aubergine-mute)}
+.sg-banner .sg-brand{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--on-primary);margin-left:12px}
+.sg-banner .sg-left{display:flex;align-items:center}
+.sg-banner .sg-desc{font-size:12px;color:var(--on-aubergine-mute);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ============ Components section ============ */
+#components{padding:96px 0 64px;background:var(--canvas)}
+.sec-label{font-family:var(--font-ui);font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;color:var(--link-blue);margin-bottom:8px}
+.sec-title{font-family:var(--font-display);font-size:50px;font-weight:700;line-height:1.12;letter-spacing:-0.6px;margin-bottom:16px}
+.sec-sub{font-size:18px;line-height:1.55;color:var(--ink-mute);max-width:620px;margin-bottom:64px}
+.block{margin-bottom:80px}
+.block-label{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute);
+  border-bottom:1px solid var(--hairline);padding-bottom:8px;margin-bottom:28px}
+
+/* pastel mesh (decorative, reusable) */
+.mesh{position:relative;overflow:hidden}
+.mesh::before{content:"";position:absolute;inset:-20% -10%;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(420px 300px at 12% 18%, rgba(255,214,186,.75), transparent 70%),
+    radial-gradient(460px 340px at 38% 80%, rgba(233,216,255,.85), transparent 70%),
+    radial-gradient(400px 300px at 62% 15%, rgba(227,236,223,.9), transparent 70%),
+    radial-gradient(440px 320px at 86% 70%, rgba(255,236,224,.8), transparent 72%),
+    linear-gradient(115deg, var(--canvas-cream) 0%, var(--canvas-lavender) 55%, var(--mesh-green) 100%)}
+.mesh > *{position:relative;z-index:1}
+
+/* 1. colors */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.swatch{border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden;background:var(--canvas)}
+.swatch .chip{height:64px}
+.swatch .meta{padding:10px 12px}
+.swatch .meta .name{font-size:12px;font-weight:700;margin-bottom:2px}
+.swatch .meta .hex{font-family:'Courier New',monospace;font-size:11px;color:var(--ink-mute)}
+
+/* 2. typography */
+.type-spec{border:1px solid var(--hairline);border-radius:var(--r-xl);padding:8px 32px;background:var(--canvas)}
+.type-row{display:flex;align-items:baseline;gap:32px;padding:22px 0;border-bottom:1px solid var(--hairline)}
+.type-row:last-child{border-bottom:none}
+.type-token{flex:0 0 210px;font-family:'Courier New',monospace;font-size:11px;color:var(--ink-mute)}
+.t-display-xxl{font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1.12;letter-spacing:-0.768px}
+.t-display-md{font-family:var(--font-display);font-size:32px;font-weight:700;line-height:1.25;letter-spacing:-0.256px}
+.t-heading-lg{font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.33;letter-spacing:-0.096px}
+.t-heading-sm{font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.56;letter-spacing:-0.0216px}
+.t-body-lg{font-size:18px;font-weight:400;line-height:1.55;letter-spacing:-0.0216px}
+.t-body-md{font-size:16px;font-weight:400;line-height:1.55}
+.t-body-strong{font-size:16px;font-weight:700;line-height:1.5;letter-spacing:.16px}
+.t-caption{font-size:14px;font-weight:400;line-height:1.43;letter-spacing:.1px;color:var(--ink-mute)}
+.t-micro-cap{font-size:12px;font-weight:700;line-height:1.0;letter-spacing:.96px;text-transform:uppercase}
+
+/* 3. buttons */
+.btn-row{display:flex;flex-wrap:wrap;align-items:center;gap:20px}
+.btn{font-size:16px;font-weight:700;line-height:1.38;letter-spacing:.2px;border-radius:var(--r-pill);display:inline-block;transition:background .2s ease,box-shadow .2s ease,transform .1s ease}
+.btn-primary{background:var(--primary);color:var(--on-primary);padding:14px 28px}
+.btn-primary:hover{box-shadow:var(--shadow-btn)}
+.btn-primary:active,.btn-pressed{background:var(--primary-press)}
+.btn-secondary{background:var(--canvas-lavender);color:var(--ink);padding:10px 30px}
+.btn-secondary:hover{background:#f2e4fb}
+.btn-outline{background:var(--canvas);color:var(--primary);border:2px solid var(--primary);padding:12px 26px}
+.btn-outline:hover{background:var(--canvas-lavender)}
+.btn-outline-dark{background:var(--surface-aubergine);color:var(--on-primary);border:2px solid var(--on-primary);padding:12px 26px}
+.btn-outline-dark:hover{background:var(--primary-tint)}
+.btn-lg{font-size:18px;padding:16px 34px}
+.btn-cap{font-size:14.4px;padding:10px 22px}
+.btn-disabled{opacity:.4;cursor:not-allowed}
+
+/* 4. inputs */
+.input-row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.field{display:flex;flex-direction:column;gap:6px;min-width:230px}
+.field label{font-size:14px;font-weight:700;letter-spacing:.1px}
+.input{font-family:var(--font-ui);font-size:16px;color:var(--ink);background:var(--canvas);
+  border:1px solid var(--hairline);border-radius:var(--r-sm);padding:10px 12px;width:100%;transition:border-color .2s ease}
+.input::placeholder{color:var(--ink-mute)}
+.input:focus{outline:none;border-color:var(--primary);box-shadow:var(--inset-aubergine)}
+.input.focused{border-color:var(--primary);box-shadow:var(--inset-aubergine)}
+.input:disabled{background:var(--canvas-cream);color:var(--ink-mute);cursor:not-allowed}
+select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231d1d1d' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.switch-wrap{display:flex;align-items:center;gap:10px;margin-top:14px}
+.switch{width:40px;height:24px;border-radius:9999px;background:var(--hairline);position:relative;transition:background .2s ease;border:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-toast);transition:left .2s ease}
+.switch.on{background:var(--semantic-success)}
+.switch.on::after{left:19px}
+.check{display:flex;align-items:center;gap:8px;font-size:16px}
+.check .box{width:18px;height:18px;border:1px solid var(--hairline);border-radius:var(--r-sm);display:inline-flex;align-items:center;justify-content:center}
+.check .box svg{opacity:0}
+.check.checked .box{background:var(--primary);border-color:var(--primary)}
+.check.checked .box svg{opacity:1}
+.field-error .input{border-color:var(--semantic-error)}
+.field-error .err{font-size:14px;color:var(--semantic-error)}
+
+/* 5. cards */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{border-radius:var(--r-xl);padding:32px;background:var(--canvas);border:1px solid var(--hairline)}
+.card-cream{background:var(--canvas-cream);border-color:transparent}
+.card-feature-cream h3{font-family:var(--font-display);font-size:24px;font-weight:700;letter-spacing:-.096px;margin-bottom:10px}
+.card-feature-cream p{font-size:16px;line-height:1.55;color:var(--ink-mute)}
+.card-cream .icon-dot{width:44px;height:44px;border-radius:var(--r-md);background:var(--canvas);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:20px}
+.card-stat{background:var(--canvas);text-align:center}
+.card-stat .num{font-family:var(--font-display);font-size:50px;font-weight:700;line-height:1.12;letter-spacing:-0.6px;color:var(--primary)}
+.card-stat .cap{font-size:16px;line-height:1.55;color:var(--ink-mute);margin-top:8px}
+.card-aub{background:var(--surface-aubergine);color:var(--on-primary);padding:48px}
+.card-aub h3{font-family:var(--font-display);font-size:32px;font-weight:700;letter-spacing:-.256px;margin-bottom:12px}
+.card-aub p{font-size:18px;line-height:1.55;color:var(--on-aubergine-mute);margin-bottom:24px}
+
+/* 6. pills */
+.pill-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.pill-cap{background:var(--canvas-cream);color:var(--ink);font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;border-radius:var(--r-pill);padding:4px 12px;display:inline-block}
+.pill-lav{background:var(--canvas-lavender);color:var(--primary);font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;border-radius:var(--r-pill);padding:4px 12px}
+.pill-status{display:inline-flex;align-items:center;gap:6px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-pill);padding:5px 14px;font-size:14px;font-weight:400}
+.pill-status .dot{width:8px;height:8px;border-radius:50%}
+.dot-ok{background:var(--semantic-success)}
+.dot-err{background:var(--semantic-error)}
+.dot-blue{background:var(--link-blue)}
+.pill-plain{background:var(--canvas-lavender);color:var(--ink);border-radius:var(--r-pill);padding:5px 14px;font-size:14px}
+
+/* 7. nav */
+.navbar{background:var(--canvas);padding:16px 24px;display:flex;align-items:center;gap:28px;border:1px solid var(--hairline);border-radius:var(--r-xs)}
+.navbar .logo{font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-.3px;color:var(--primary);display:flex;align-items:center;gap:8px}
+.navbar .logo .hash{width:26px;height:26px;border-radius:var(--r-md);background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:16px}
+.navbar nav{display:flex;gap:22px;flex:1}
+.navbar nav a{font-size:16px;color:var(--ink);padding:6px 2px}
+.navbar nav a:hover{color:var(--link-blue)}
+.navbar .nav-cta{display:flex;gap:12px;align-items:center}
+
+/* 8. table */
+.data-table{width:100%;border-collapse:collapse;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden}
+.data-table th{font-family:var(--font-display);font-size:14px;font-weight:700;text-align:left;padding:14px 20px;border-bottom:1px solid var(--hairline);background:var(--canvas-lavender)}
+.data-table td{font-size:16px;padding:14px 20px;border-bottom:1px solid var(--hairline)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table td.money{font-weight:700}
+.link-blue{color:var(--link-blue)}
+.link-blue:hover{text-decoration:underline;color:var(--link-hover)}
+
+/* ============ Product section ============ */
+#product{background:var(--canvas)}
+.p-nav{background:var(--canvas);padding:20px 0;border-bottom:1px solid var(--hairline)}
+.p-nav .inner{display:flex;align-items:center;gap:32px}
+.p-nav nav{display:flex;gap:26px;flex:1}
+.p-nav nav a{font-size:16px;color:var(--ink)}
+.p-nav nav a:hover{color:var(--link-blue)}
+
+.hero{padding:88px 0 0}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.hero h1{font-family:var(--font-display);font-size:64px;font-weight:700;line-height:1.12;letter-spacing:-0.768px;margin:18px 0 22px}
+.hero h1 .accent{color:var(--primary)}
+.hero .lede{font-size:18px;line-height:1.55;color:var(--ink-mute);max-width:480px;margin-bottom:32px}
+.hero .cta-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.hero .link-note{font-size:16px;color:var(--link-blue)}
+.hero .link-note:hover{text-decoration:underline}
+.hero-mesh{border-radius:var(--r-xl);padding:56px 40px}
+.mockup{background:var(--canvas);border-radius:var(--r-lg);box-shadow:var(--shadow-mockup);overflow:hidden;font-size:14px}
+.mockup .m-titlebar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--hairline);background:var(--canvas-lavender)}
+.mockup .m-titlebar .b{width:10px;height:10px;border-radius:50%}
+.mockup .m-titlebar .t{font-size:12px;font-weight:700;color:var(--ink-mute);margin-left:6px}
+.mockup .m-head{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--hairline)}
+.mockup .m-head .ch{width:36px;height:36px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+.mockup .m-head .nm{font-weight:700}
+.mockup .m-head .sb{font-size:12px;color:var(--ink-mute)}
+.msg{display:flex;gap:12px;padding:12px 20px;border-bottom:1px solid var(--hairline)}
+.msg:last-child{border-bottom:none}
+.msg .av{width:32px;height:32px;border-radius:var(--r-md);flex:0 0 32px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
+.msg .who{font-weight:700;font-size:13px}
+.msg .tm{font-size:11px;color:var(--ink-mute);margin-left:6px;font-weight:400}
+.msg p{font-size:13px;line-height:1.5;color:var(--ink);margin-top:2px}
+.msg .mention{color:var(--link-blue)}
+.msg .react{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:var(--canvas-lavender);border:1px solid var(--primary-tint);border-radius:var(--r-pill);padding:2px 8px;font-size:11px}
+
+.logo-strip{padding:56px 0 24px;text-align:center}
+.logo-strip .cap{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;color:var(--ink-mute);margin-bottom:24px}
+.logo-strip .logos{display:flex;justify-content:center;gap:56px;flex-wrap:wrap}
+.logo-strip .lg{font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-.3px;color:var(--ink);opacity:.45}
+
+.features{padding:96px 0}
+.sec-head{max-width:640px;margin-bottom:56px}
+.sec-head h2{font-family:var(--font-display);font-size:50px;font-weight:700;line-height:1.12;letter-spacing:-0.6px;margin-bottom:16px}
+.sec-head p{font-size:18px;line-height:1.55;color:var(--ink-mute)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.stats{padding:32px 0 96px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+.aub-band{margin:0 0 96px}
+.aub-inner{border-radius:var(--r-xl);background:var(--surface-aubergine);padding:72px 64px;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
+.aub-inner h2{font-family:var(--font-display);font-size:50px;font-weight:700;line-height:1.12;letter-spacing:-0.6px;color:var(--on-primary);margin-bottom:16px}
+.aub-inner p{font-size:18px;line-height:1.55;color:var(--on-aubergine-mute);margin-bottom:28px}
+.aub-inner .side{display:flex;justify-content:center}
+.aub-quote{background:rgba(255,255,255,.06);border:1px solid var(--primary-tint);border-radius:var(--r-lg);padding:28px}
+.aub-quote p{font-size:16px;line-height:1.55;color:var(--on-primary);margin-bottom:14px}
+.aub-quote .who{font-size:14px;color:var(--on-aubergine-mute)}
+
+.pricing{padding:0 0 96px}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.price-card{border:1px solid var(--hairline);border-radius:var(--r-xl);padding:32px;display:flex;flex-direction:column;background:var(--canvas)}
+.price-card .tier{margin-bottom:14px}
+.price-card h3{font-family:var(--font-display);font-size:24px;font-weight:700;letter-spacing:-.096px;margin-bottom:6px}
+.price-card .price{font-family:var(--font-display);font-size:32px;font-weight:700;letter-spacing:-.256px;margin-bottom:6px}
+.price-card .price span{font-family:var(--font-ui);font-size:16px;font-weight:400;color:var(--ink-mute);letter-spacing:0}
+.price-card .desc{font-size:16px;line-height:1.55;color:var(--ink-mute);margin-bottom:20px}
+.price-card ul{list-style:none;margin-bottom:28px;flex:1}
+.price-card li{font-size:16px;line-height:1.55;padding:7px 0 7px 26px;position:relative}
+.price-card li::before{content:"✓";position:absolute;left:0;color:var(--semantic-success);font-weight:700}
+.price-card.featured{background:var(--surface-aubergine);border-color:var(--surface-aubergine);color:var(--on-primary)}
+.price-card.featured .price span,.price-card.featured .desc{color:var(--on-aubergine-mute)}
+.price-card.featured li::before{color:var(--on-primary)}
+.price-card .btn{align-self:flex-start}
+
+.footer-aub{background:var(--surface-aubergine);color:var(--on-primary);padding:48px 0 32px}
+.f-cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+.f-brand .logo{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--on-primary);margin-bottom:12px}
+.f-brand p{font-size:14px;line-height:1.43;color:var(--on-aubergine-mute);max-width:260px}
+.f-col h4{font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;color:var(--on-primary);margin-bottom:14px}
+.f-col a{display:block;font-size:14px;line-height:1.43;letter-spacing:.1px;color:var(--on-aubergine-mute);padding:4px 0}
+.f-col a:hover{color:#fff;text-decoration:underline}
+.f-legal{border-top:1px solid var(--primary-tint);padding-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.f-legal span,.f-legal a{font-size:14px;letter-spacing:.1px;color:var(--on-aubergine-mute)}
+.f-legal a{text-decoration:underline}
+
+@media(max-width:900px){
+  .hero-grid,.aub-inner{grid-template-columns:1fr}
+  .card-grid,.feat-grid,.stats-grid,.price-grid{grid-template-columns:1fr}
+  .swatch-grid{grid-template-columns:repeat(3,1fr)}
+  .f-cols{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:44px}
+  .sec-title,.sec-head h2,.aub-inner h2{font-size:36px}
+  .p-nav nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="sg-banner">
+  <div class="sg-left">
+    <span class="sg-id">slack</span>
+    <span class="sg-brand">Slack</span>
+  </div>
+  <span class="sg-desc">Workplace messaging built on aubergine, cream-lavender heroes, and pill CTAs.</span>
+</header>
+
+<main>
+<section id="components">
+  <div class="container">
+    <div class="sec-label">Components</div>
+    <h1 class="sec-title">One aubergine. Everywhere it matters.</h1>
+    <p class="sec-sub">A deep aubergine primary carries every CTA, the featured pricing tier, and the footer band — staged against cream-lavender canvases with pastel-mesh atmospherics.</p>
+
+    <!-- 1. Color tokens -->
+    <div class="block">
+      <div class="block-label">Color tokens</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip" style="background:#4a154b"></div><div class="meta"><div class="name">Aubergine</div><div class="hex">#4A154B</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#611f69"></div><div class="meta"><div class="name">Aubergine Press</div><div class="hex">#611F69</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#592466"></div><div class="meta"><div class="name">Aubergine Tint</div><div class="hex">#592466</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#1264a3"></div><div class="meta"><div class="name">Link Blue</div><div class="hex">#1264A3</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f4ede4"></div><div class="meta"><div class="name">Canvas Cream</div><div class="hex">#F4EDE4</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#f9f0ff"></div><div class="meta"><div class="name">Canvas Lavender</div><div class="hex">#F9F0FF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid #e6e6e6"></div><div class="meta"><div class="name">Canvas White</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#1d1d1d"></div><div class="meta"><div class="name">Ink</div><div class="hex">#1D1D1D</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#696969"></div><div class="meta"><div class="name">Ink Mute</div><div class="hex">#696969</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#d9bdde"></div><div class="meta"><div class="name">On-Aubergine Mute</div><div class="hex">#D9BDDE</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#007a5a"></div><div class="meta"><div class="name">Success</div><div class="hex">#007A5A</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#cc4117"></div><div class="meta"><div class="name">Error</div><div class="hex">#CC4117</div></div></div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="block">
+      <div class="block-label">Typography specimen</div>
+      <div class="type-spec">
+        <div class="type-row"><span class="type-token">display-xxl / 64 / 700 / -0.768px</span><span class="t-display-xxl">Where work happens</span></div>
+        <div class="type-row"><span class="type-token">display-md / 32 / 700 / -0.256px</span><span class="t-display-md">Channels keep everyone aligned</span></div>
+        <div class="type-row"><span class="type-token">heading-lg / 24 / 700</span><span class="t-heading-lg">Pricing that scales with your team</span></div>
+        <div class="type-row"><span class="type-token">heading-sm / 18 / 600</span><span class="t-heading-sm">Connect the tools you already use</span></div>
+        <div class="type-row"><span class="type-token">body-lg / 18 / 400 / 1.55</span><span class="t-body-lg">Slack replaces email inside your company — a single place for conversations, decisions, and the work that follows them.</span></div>
+        <div class="type-row"><span class="type-token">body-strong / 16 / 700</span><span class="t-body-strong">Trusted by teams at 77% of the Fortune 500.</span></div>
+        <div class="type-row"><span class="type-token">caption / 14 / 400</span><span class="t-caption">Free for teams trying Slack for the first time.</span></div>
+        <div class="type-row"><span class="type-token">micro-cap / 12 / 700 / +0.96px</span><span class="t-micro-cap">Eyebrow label</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="block">
+      <div class="block-label">Buttons — over-padded pills, 90px radius</div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-lg">Get Started</button>
+        <button class="btn btn-primary">Try For Free</button>
+        <button class="btn btn-primary btn-pressed">Primary Pressed</button>
+        <button class="btn btn-secondary">Sign In</button>
+        <button class="btn btn-outline">Contact Sales</button>
+        <button class="btn btn-outline-dark">Outline on Aubergine</button>
+        <button class="btn btn-primary btn-cap">Compact Pill</button>
+        <button class="btn btn-primary btn-disabled" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- 4. Inputs -->
+    <div class="block">
+      <div class="block-label">Inputs &amp; forms</div>
+      <div class="input-row">
+        <div class="field">
+          <label for="f-email">Work email</label>
+          <input class="input" id="f-email" type="email" placeholder="you@company.com">
+        </div>
+        <div class="field">
+          <label for="f-name">Full name</label>
+          <input class="input focused" id="f-name" type="text" value="Ada Byron">
+        </div>
+        <div class="field">
+          <label for="f-size">Team size</label>
+          <select class="input" id="f-size"><option>1 – 20 people</option><option selected>21 – 100 people</option><option>101 – 1,000 people</option></select>
+        </div>
+        <div class="field field-error">
+          <label for="f-domain">Workspace URL</label>
+          <input class="input" id="f-domain" type="text" value="my team!">
+          <span class="err">Only letters, numbers and dashes are allowed.</span>
+        </div>
+        <div class="field">
+          <label>Disabled field</label>
+          <input class="input" type="text" value="Managed by SSO" disabled>
+        </div>
+      </div>
+      <div class="switch-wrap">
+        <button class="switch on" aria-label="Email notifications"></button><span>Email notifications</span>
+        <button class="switch" aria-label="Digest"></button><span style="color:var(--ink-mute)">Weekly digest</span>
+        <span class="check checked" style="margin-left:20px"><span class="box"><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" fill="none"/></svg></span>Remember this device</span>
+        <span class="check" style="margin-left:8px"><span class="box"></span>Auto-join channels</span>
+      </div>
+    </div>
+
+    <!-- 5. Cards -->
+    <div class="block">
+      <div class="block-label">Cards</div>
+      <div class="card-grid">
+        <div class="card card-feature-cream card-cream">
+          <div class="icon-dot">💬</div>
+          <h3>Channels</h3>
+          <p>Organize conversations around projects, teams, and topics — searchable by everyone who needs the context.</p>
+        </div>
+        <div class="card card-stat">
+          <div class="num">87%</div>
+          <div class="cap">of users say Slack improved communication inside their organization.</div>
+        </div>
+        <div class="card card-aub">
+          <h3>Aubergine band</h3>
+          <p>Large horizontal band card used to close marketing pages — generous 48px padding, white type, mauve secondary copy.</p>
+          <button class="btn btn-outline-dark">Learn more</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Pills -->
+    <div class="block">
+      <div class="block-label">Badges, tags &amp; pills</div>
+      <div class="pill-row">
+        <span class="pill-cap">Most popular</span>
+        <span class="pill-lav">New feature</span>
+        <span class="pill-status"><span class="dot dot-ok"></span>All systems operational</span>
+        <span class="pill-status"><span class="dot dot-err"></span>2 channels need review</span>
+        <span class="pill-status"><span class="dot dot-blue"></span>Enterprise Grid</span>
+        <span class="pill-plain">Beta</span>
+      </div>
+    </div>
+
+    <!-- 7. Navigation -->
+    <div class="block">
+      <div class="block-label">Navigation</div>
+      <div class="navbar">
+        <span class="logo"><span class="hash">#</span>slack</span>
+        <nav>
+          <a href="#">Features</a><a href="#">Solutions</a><a href="#">Enterprise</a><a href="#">Resources</a><a href="#">Pricing</a>
+        </nav>
+        <div class="nav-cta">
+          <button class="btn btn-secondary btn-cap">Sign In</button>
+          <button class="btn btn-primary btn-cap">Try For Free</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Table -->
+    <div class="block">
+      <div class="block-label">Table — plan comparison</div>
+      <table class="data-table">
+        <thead><tr><th>Plan</th><th>Price / user / month</th><th>Message history</th><th>Integrations</th></tr></thead>
+        <tbody>
+          <tr><td class="link-blue">Free</td><td class="money">$0</td><td>90 days</td><td>10 apps</td></tr>
+          <tr><td class="link-blue">Pro</td><td class="money">$8.75</td><td>Unlimited</td><td>Unlimited</td></tr>
+          <tr><td class="link-blue">Business+</td><td class="money">$15.00</td><td>Unlimited</td><td>Unlimited + SSO</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINISHED PRODUCT ============ -->
+<section id="product">
+  <div class="p-nav">
+    <div class="container inner">
+      <span class="logo" style="font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.3px;color:var(--primary);display:flex;align-items:center;gap:8px"><span class="hash" style="width:28px;height:28px;border-radius:8px;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px">#</span>slack</span>
+      <nav><a href="#">Features</a><a href="#">Solutions</a><a href="#">Enterprise</a><a href="#">Resources</a><a href="#">Pricing</a></nav>
+      <div class="nav-cta" style="display:flex;gap:12px;align-items:center">
+        <button class="btn btn-secondary btn-cap">Sign In</button>
+        <button class="btn btn-primary btn-cap">Get Started</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero on pastel mesh -->
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="pill-cap">Slack for teams of every size</span>
+        <h1>Where work <span class="accent">happens.</span></h1>
+        <p class="lede">Slack is the digital headquarters that replaces email inside your company — channels, huddles, and apps in one searchable place.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary btn-lg">Get Started</button>
+          <button class="btn btn-outline btn-lg">Contact Sales</button>
+        </div>
+        <p style="margin-top:18px"><a class="link-note" href="#">See plans &amp; pricing →</a></p>
+      </div>
+      <div class="hero-mesh mesh">
+        <div class="mockup">
+          <div class="m-titlebar"><span class="b" style="background:#cc4117"></span><span class="b" style="background:#cba258"></span><span class="b" style="background:#007a5a"></span><span class="t">#launch-week</span></div>
+          <div class="m-head">
+            <span class="ch" style="background:var(--primary)">#</span>
+            <div><div class="nm">launch-week</div><div class="sb">128 members · 4 pins</div></div>
+          </div>
+          <div class="msg">
+            <span class="av" style="background:#1264a3">MK</span>
+            <div><span class="who">Maya K.</span><span class="tm">9:41 AM</span><p>Launch checklist is green across the board. <span class="mention">@dana</span> can you confirm the status page flip?</p></div>
+          </div>
+          <div class="msg">
+            <span class="av" style="background:#007a5a">DR</span>
+            <div><span class="who">Dana R.</span><span class="tm">9:44 AM</span><p>Confirmed — flip is scheduled for 9:00 AM PT. Everything is staged. 🚀</p><span class="react">👍 6</span><span class="react" style="margin-left:6px">🚀 11</span></div>
+          </div>
+          <div class="msg">
+            <span class="av" style="background:var(--primary)">LB</span>
+            <div><span class="who">Luis B.</span><span class="tm">9:47 AM</span><p>Posted the announcement draft in <span class="mention">#comms</span> — one round of edits and we ship.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo strip -->
+  <div class="logo-strip">
+    <div class="container">
+      <div class="cap">Trusted by teams at</div>
+      <div class="logos">
+        <span class="lg">airbnb</span><span class="lg">BBC</span><span class="lg">nordstrom</span><span class="lg">Target</span><span class="lg">lyft</span><span class="lg">Intuit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Everything your team needs to move faster</h2>
+        <p>Conversations, decisions, and the apps that do the work — all in one place your whole company can search.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="card card-feature-cream card-cream">
+          <div class="icon-dot">🗂️</div>
+          <h3>Channels</h3>
+          <p>Organize teams and projects into transparent spaces. Anyone can find the context — no forwarding, no CC'ing.</p>
+        </div>
+        <div class="card card-feature-cream card-cream">
+          <div class="icon-dot">🎥</div>
+          <h3>Huddles</h3>
+          <p>Start an instant audio or video conversation in any channel or DM, with live screen sharing and threaded notes.</p>
+        </div>
+        <div class="card card-feature-cream card-cream">
+          <div class="icon-dot">⚡</div>
+          <h3>Workflow Builder</h3>
+          <p>Automate routine requests and updates with no code — route tickets, collect status, and keep every tool in sync.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="card card-stat"><div class="num">90%</div><div class="cap">of teams report better transparency across projects</div></div>
+        <div class="card card-stat"><div class="num">43</div><div class="cap">average apps connected per active workspace</div></div>
+        <div class="card card-stat"><div class="num">77%</div><div class="cap">of the Fortune 500 run on Slack every day</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aubergine CTA band + quote -->
+  <div class="container aub-band">
+    <div class="aub-inner">
+      <div>
+        <h2>Bring your team together, wherever they are.</h2>
+        <p>Join the companies replacing endless email threads with one searchable, connected headquarters.</p>
+        <div class="cta-row" style="display:flex;gap:16px">
+          <button class="btn btn-primary btn-lg" style="background:#fff;color:var(--primary)">Try For Free</button>
+          <button class="btn btn-outline-dark btn-lg">Talk to Sales</button>
+        </div>
+      </div>
+      <div class="side">
+        <div class="aub-quote">
+          <p>“We cut internal email by 70% in the first quarter. Slack didn't just change our tools — it changed how quickly decisions get made.”</p>
+          <div class="who">Priya Nair · VP Engineering, Northbeam</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="container pricing">
+    <div class="sec-head" style="text-align:center;margin-left:auto;margin-right:auto">
+      <h2>Plans for every kind of team</h2>
+      <p>Start free, upgrade when your team is ready. Cancel anytime.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <span class="tier pill-cap">Free</span>
+        <h3>Free</h3>
+        <div class="price">$0 <span>/ user / month</span></div>
+        <p class="desc">For teams trying Slack for the first time.</p>
+        <ul><li>90 days of message history</li><li>10 app integrations</li><li>1:1 huddles</li></ul>
+        <button class="btn btn-outline">Get Started</button>
+      </div>
+      <div class="price-card featured">
+        <span class="tier" style="background:var(--primary-tint);color:#fff;font-size:12px;font-weight:700;letter-spacing:.96px;text-transform:uppercase;border-radius:var(--r-pill);padding:4px 12px;display:inline-block">Most popular</span>
+        <h3>Pro</h3>
+        <div class="price">$8.75 <span>/ user / month</span></div>
+        <p class="desc">For teams ready to run their work in Slack.</p>
+        <ul><li>Unlimited message history</li><li>Unlimited integrations</li><li>Group huddles with screen share</li></ul>
+        <button class="btn btn-primary" style="background:#fff;color:var(--primary)">Try For Free</button>
+      </div>
+      <div class="price-card">
+        <span class="tier pill-cap">Business+</span>
+        <h3>Business+</h3>
+        <div class="price">$15.00 <span>/ user / month</span></div>
+        <p class="desc">For companies that need advanced security.</p>
+        <ul><li>SAML-based SSO</li><li>Advanced identity management</li><li>99.99% uptime SLA</li></ul>
+        <button class="btn btn-outline">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-aub">
+    <div class="container">
+      <div class="f-cols">
+        <div class="f-brand">
+          <div class="logo"># slack</div>
+          <p>The digital headquarters where work happens — conversations, decisions, and apps in one place.</p>
+        </div>
+        <div class="f-col"><h4>Product</h4><a href="#">Features</a><a href="#">Integrations</a><a href="#">Enterprise</a><a href="#">Pricing</a></div>
+        <div class="f-col"><h4>Why Slack?</h4><a href="#">Slack vs Email</a><a href="#">Channels</a><a href="#">Automation</a><a href="#">Security</a></div>
+        <div class="f-col"><h4>Resources</h4><a href="#">Help Center</a><a href="#">Blog</a><a href="#">Community</a><a href="#">Events</a></div>
+        <div class="f-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Newsroom</a><a href="#">Investors</a></div>
+      </div>
+      <div class="f-legal">
+        <span>© 2026 Slack Technologies, LLC. A showcase page.</span>
+        <span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Cookie Preferences</a></span>
+      </div>
+    </div>
+  </footer>
+</section>
+</main>
+</body>
+</html>
